@@ -333,11 +333,11 @@ int BM1368_send_work(void * pvParameters, bm_job * next_bm_job)
     ESP_LOGI(TAG, "Send Job: %02X (%d)", job.job_id, next_bm_job->connection_id);
     #endif
 
-    if (GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job.job_id] != NULL) {
-        free_bm_job(GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job.job_id]);
+    if (GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job.job_id >> 2] != NULL) {
+        free_bm_job(GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job.job_id >> 2]);
     }
 
-    GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job.job_id] = next_bm_job;
+    GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job.job_id >> 2] = next_bm_job;
 
     _send_BM1368((TYPE_JOB | GROUP_SINGLE | CMD_WRITE), (uint8_t *)&job, sizeof(BM1368_job), BM1368_DEBUG_WORK);
 
@@ -405,7 +405,7 @@ task_result * BM1368_proccess_work(void * pvParameters)
 
     GlobalState * GLOBAL_STATE = (GlobalState *) pvParameters;
 
-    uint32_t rolled_version = GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id]->version | version_bits;
+    uint32_t rolled_version = GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2]->version | version_bits;
 
     result.job_id = job_id;
     result.nonce = asic_result->nonce;

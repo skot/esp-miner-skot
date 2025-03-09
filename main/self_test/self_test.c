@@ -389,7 +389,7 @@ void self_test(void * pvParameters)
         tests_done(GLOBAL_STATE, TESTS_FAILED);
     }
 
-    GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs = malloc(sizeof(bm_job *) * 128);
+    GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs = malloc(sizeof(bm_job *) * 32);
 
     for (int i = 0; i < 128; i++) {
         GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[i] = NULL;

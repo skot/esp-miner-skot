@@ -28,14 +28,14 @@ void ASIC_result_task(void *pvParameters)
         }
 
         uint8_t job_id = asic_result->job_id;
-        StratumConnection *current_connection = &GLOBAL_STATE->connections[GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id]->connection_id];
+        StratumConnection *current_connection = &GLOBAL_STATE->connections[GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2]->connection_id];
         if (current_connection->state != STRATUM_CONNECTED)
         {
             ESP_LOGW(TAG, "Connection for job 0x%02X no longer open", job_id);
             continue;
         }
 
-        if (current_connection->jobs[job_id] == 0)
+        if (current_connection->jobs[job_id >> 2] == 0)
         {
             ESP_LOGW(TAG, "Invalid job nonce found, 0x%02X", job_id);
             continue;
@@ -43,24 +43,24 @@ void ASIC_result_task(void *pvParameters)
 
         // check the nonce difficulty
         double nonce_diff = test_nonce_value(
-            GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id],
+            GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2],
             asic_result->nonce,
             asic_result->rolled_version);
 
         //log the ASIC response
-        ESP_LOGI(TAG, "Ver: %08" PRIX32 " Nonce %08" PRIX32 " diff %.1f of %ld.", asic_result->rolled_version, asic_result->nonce, nonce_diff, GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id]->pool_diff);
+        ESP_LOGI(TAG, "Ver: %08" PRIX32 " Nonce %08" PRIX32 " diff %.1f of %ld.", asic_result->rolled_version, asic_result->nonce, nonce_diff, GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2]->pool_diff);
 
-        if (nonce_diff >= GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id]->pool_diff)
+        if (nonce_diff >= GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2]->pool_diff)
         {
             int ret = STRATUM_V1_submit_share(
                 current_connection->sock,
                 current_connection->send_uid++,
                 current_connection->username,
-                GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id]->jobid,
-                GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id]->extranonce2,
-                GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id]->ntime,
+                GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2]->jobid,
+                GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2]->extranonce2,
+                GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2]->ntime,
                 asic_result->nonce,
-                asic_result->rolled_version ^ GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id]->version);
+                asic_result->rolled_version ^ GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[job_id >> 2]->version);
 
             if (ret < 0) {
                 ESP_LOGI(TAG, "Unable to write share to socket. Closing connection. Ret: %d (errno %d: %s)", ret, errno, strerror(errno));

@@ -21,9 +21,9 @@ void ASIC_task(void *pvParameters)
     //initialize the semaphore
     GLOBAL_STATE->ASIC_TASK_MODULE.semaphore = xSemaphoreCreateBinary();
 
-    GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs = malloc(sizeof(bm_job *) * 128);
+    GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs = malloc(sizeof(bm_job *) * 32);
     // GLOBAL_STATE->stratum_context.jobs = malloc(sizeof(uint8_t) * 128);
-    for (int i = 0; i < 128; i++)
+    for (int i = 0; i < 32; i++)
     {
         GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[i] = NULL;
         // GLOBAL_STATE->stratum_context.jobs[i] = 0;
@@ -55,7 +55,7 @@ void ASIC_task(void *pvParameters)
 
         pthread_mutex_lock(&current_connection->jobs_lock);
         int job_id = ASIC_send_work(GLOBAL_STATE, next_bm_job);
-        current_connection->jobs[job_id] = 1;
+        current_connection->jobs[job_id >> 2] = 1;
         pthread_mutex_unlock(&current_connection->jobs_lock);
 
         // Time to execute the above code is ~0.3ms

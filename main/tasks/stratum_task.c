@@ -162,7 +162,8 @@ void stratum_clear_queue(const char * POOL_TAG, StratumConnection * connection)
     queue_clear(&connection->stratum_queue);
 
     pthread_mutex_lock(&connection->jobs_lock);
-    for (int i = 0; i < 128; i = i + 4) {
+    for (int i = 0; i < 32; i++)
+    {
         connection->jobs[i] = 0;
     }
     pthread_mutex_unlock(&connection->jobs_lock);
@@ -183,8 +184,8 @@ void stratum_task_init_connection(StratumConnection * connection)
     connection->retry_attempts = 0;
     connection->state = STRATUM_CONNECTING;
     connection->message = malloc(sizeof(StratumApiV1Message));
-    connection->jobs = malloc(sizeof(uint8_t) * 128);
-    for (int i = 0; i < 128; i++)
+    connection->jobs = malloc(sizeof(uint8_t) * 32);
+    for (int i = 0; i < 32; i++)
     {
         connection->jobs[i] = 0;
     }
