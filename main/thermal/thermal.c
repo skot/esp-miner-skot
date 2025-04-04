@@ -17,6 +17,7 @@ esp_err_t Thermal_init(DeviceModel device_model, bool polarity) {
             EMC2101_set_beta_compensation(EMC2101_BETA_11);
             break;
         case DEVICE_GAMMATURBO:
+        case DEVICE_AURA:
             EMC2103_init(polarity);
             break;
         default:
@@ -36,6 +37,7 @@ esp_err_t Thermal_set_fan_percent(DeviceModel device_model, float percent) {
             EMC2101_set_fan_speed(percent);
             break;
         case DEVICE_GAMMATURBO:
+        case DEVICE_AURA:
             EMC2103_set_fan_speed(percent);
             break;
         default:
@@ -51,6 +53,7 @@ uint16_t Thermal_get_fan_speed(DeviceModel device_model) {
         case DEVICE_GAMMA:
             return EMC2101_get_fan_speed();
         case DEVICE_GAMMATURBO:
+        case DEVICE_AURA:
             return EMC2103_get_fan_speed();
         default:
     }
@@ -75,6 +78,7 @@ float Thermal_get_chip_temp(GlobalState * GLOBAL_STATE) {
         case DEVICE_GAMMA:
             return EMC2101_get_external_temp();
         case DEVICE_GAMMATURBO:
+        case DEVICE_AURA:
             return EMC2103_get_external_temp();
         default:
     }

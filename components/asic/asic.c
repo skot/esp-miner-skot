@@ -6,6 +6,7 @@
 #include "bm1366.h"
 #include "bm1368.h"
 #include "bm1370.h"
+#include "AUD1123.h"
 
 #include "asic.h"
 
@@ -26,6 +27,8 @@ uint8_t ASIC_init(GlobalState * GLOBAL_STATE) {
             return BM1370_init(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value, BITAXE_GAMMA_ASIC_COUNT);
         case DEVICE_GAMMATURBO:
             return BM1370_init(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value, BITAXE_GAMMATURBO_ASIC_COUNT);
+        case DEVICE_AURA:
+            return AUD1123_init(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value, BITAXE_AURA_ASIC_COUNT);
         default:
     }
     return ESP_OK;
@@ -43,6 +46,8 @@ uint8_t ASIC_get_asic_count(GlobalState * GLOBAL_STATE) {
             return BITAXE_GAMMA_ASIC_COUNT;
         case DEVICE_GAMMATURBO:
             return BITAXE_GAMMATURBO_ASIC_COUNT;
+        case DEVICE_AURA:
+            return BITAXE_AURA_ASIC_COUNT;
         default:
     }
     return 0;
@@ -60,6 +65,8 @@ uint16_t ASIC_get_small_core_count(GlobalState * GLOBAL_STATE) {
             return BM1370_SMALL_CORE_COUNT;
         case DEVICE_GAMMATURBO:
             return BM1370_SMALL_CORE_COUNT;
+        case DEVICE_AURA:
+            return AUD1123_SMALL_CORE_COUNT;
         default:
     }
     return 0;
@@ -77,6 +84,8 @@ task_result * ASIC_process_work(GlobalState * GLOBAL_STATE) {
         case DEVICE_GAMMA:
         case DEVICE_GAMMATURBO:
             return BM1370_process_work(GLOBAL_STATE);
+        case DEVICE_AURA:
+            return AUD1123_process_work(GLOBAL_STATE);
         default:
     }
     return NULL;
@@ -94,6 +103,8 @@ int ASIC_set_max_baud(GlobalState * GLOBAL_STATE) {
         case DEVICE_GAMMA:
         case DEVICE_GAMMATURBO:
             return BM1370_set_max_baud();
+        case DEVICE_AURA:
+            return AUD1123_set_max_baud();
         default:
     return 0;
     }
@@ -115,6 +126,9 @@ void ASIC_set_job_difficulty_mask(GlobalState * GLOBAL_STATE, uint8_t mask) {
         case DEVICE_GAMMATURBO:
             BM1370_set_job_difficulty_mask(mask);
             break;
+        case DEVICE_AURA:
+            AUD1123_set_job_difficulty_mask(mask);
+            break;
         default:
     }
 }
@@ -134,6 +148,9 @@ void ASIC_send_work(GlobalState * GLOBAL_STATE, void * next_job) {
         case DEVICE_GAMMA:
         case DEVICE_GAMMATURBO:
             BM1370_send_work(GLOBAL_STATE, next_job);
+            break;
+        case DEVICE_AURA:
+            AUD1123_send_work(GLOBAL_STATE, next_job);
             break;
         default:
     return;
@@ -156,6 +173,9 @@ void ASIC_set_version_mask(GlobalState * GLOBAL_STATE, uint32_t mask) {
         case DEVICE_GAMMATURBO:
             BM1370_set_version_mask(mask);
             break;
+        case DEVICE_AURA:
+            AUD1123_set_version_mask(mask);
+            break;
         default:
     return;
     }
@@ -174,6 +194,9 @@ bool ASIC_set_frequency(GlobalState * GLOBAL_STATE, float target_frequency) {
             break;
         case ASIC_BM1370:
             success = BM1370_set_frequency(target_frequency);
+            break;
+        case ASIC_AUD1123:
+            success = AUD1123_set_frequency(target_frequency);
             break;
         case ASIC_BM1397:
             // BM1397 doesn't have a set_frequency function yet
@@ -246,6 +269,14 @@ esp_err_t ASIC_set_device_model(GlobalState * GLOBAL_STATE) {
         ESP_LOGI(TAG, "ASIC: %dx BM1370 (%" PRIu64 " cores)", BITAXE_GAMMATURBO_ASIC_COUNT, BM1370_CORE_COUNT);
         GLOBAL_STATE->device_model = DEVICE_GAMMATURBO;
 
+    } else if (strcmp(GLOBAL_STATE->device_model_str, "aura") == 0) {
+        GLOBAL_STATE->asic_model = ASIC_AUD1123;
+        //GLOBAL_STATE.asic_job_frequency_ms = (NONCE_SPACE / (double) (GLOBAL_STATE.POWER_MANAGEMENT_MODULE.frequency_value * BM1370_CORE_COUNT * 1000)) / (double) BITAXE_GAMMATURBO_ASIC_COUNT; // version-rolling so Small Cores have different Nonce Space
+        GLOBAL_STATE->asic_job_frequency_ms = 500; //ms
+        GLOBAL_STATE->ASIC_difficulty = AUD1123_ASIC_DIFFICULTY;
+        ESP_LOGI(TAG, "DEVICE: bitaxeAura");
+        ESP_LOGI(TAG, "ASIC: %dx AUD1123 (%" PRIu64 " cores)", BITAXE_AURA_ASIC_COUNT, BAUD1123_CORE_COUNT);
+        GLOBAL_STATE->device_model = DEVICE_AURA;
     } else {
         ESP_LOGE(TAG, "Invalid DEVICE model");
         GLOBAL_STATE->device_model = DEVICE_UNKNOWN;

@@ -8,6 +8,7 @@
 #include "bm1368.h"
 #include "bm1366.h"
 #include "bm1397.h"
+#include "AUD1123.h"
 #include "common.h"
 #include "power_management_task.h"
 #include "serial.h"
@@ -28,6 +29,7 @@ typedef enum
     DEVICE_SUPRA,
     DEVICE_GAMMA,
     DEVICE_GAMMATURBO,
+    DEVICE_AURA,
 } DeviceModel;
 
 typedef enum
@@ -37,6 +39,7 @@ typedef enum
     ASIC_BM1366,
     ASIC_BM1368,
     ASIC_BM1370,
+    ASIC_AUD1123,
 } AsicModel;
 
 // typedef struct
