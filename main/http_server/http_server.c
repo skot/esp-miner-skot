@@ -41,44 +41,6 @@
 static const char * TAG = "http_server";
 static const char * CORS_TAG = "CORS";
 
-/* Handler for WiFi scan endpoint */
-static esp_err_t GET_wifi_scan(httpd_req_t *req)
-{
-    httpd_resp_set_type(req, "application/json");
-    
-    // Give some time for the connected flag to take effect
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    
-    wifi_ap_record_simple_t ap_records[20];
-    uint16_t ap_count = 0;
-
-    esp_err_t err = wifi_scan(ap_records, &ap_count);
-    if (err != ESP_OK) {
-        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "WiFi scan failed");
-        return ESP_OK;
-    }
-
-    cJSON *root = cJSON_CreateObject();
-    cJSON *networks = cJSON_CreateArray();
-
-    for (int i = 0; i < ap_count; i++) {
-        cJSON *network = cJSON_CreateObject();
-        cJSON_AddStringToObject(network, "ssid", (char *)ap_records[i].ssid);
-        cJSON_AddNumberToObject(network, "rssi", ap_records[i].rssi);
-        cJSON_AddNumberToObject(network, "authmode", ap_records[i].authmode);
-        cJSON_AddItemToArray(networks, network);
-    }
-
-    cJSON_AddItemToObject(root, "networks", networks);
-
-    const char *response = cJSON_Print(root);
-    httpd_resp_sendstr(req, response);
-
-    free((void *)response);
-    cJSON_Delete(root);
-    return ESP_OK;
-}
-
 static GlobalState * GLOBAL_STATE;
 static httpd_handle_t server = NULL;
 QueueHandle_t log_queue = NULL;
@@ -104,6 +66,56 @@ typedef struct rest_server_context
 } rest_server_context_t;
 
 #define CHECK_FILE_EXTENSION(filename, ext) (strcasecmp(&filename[strlen(filename) - strlen(ext)], ext) == 0)
+
+/* Handler for WiFi scan endpoint */
+static esp_err_t GET_wifi_scan(httpd_req_t *req)
+{
+    ESP_LOGI(TAG, "Wi-Fi scan API Request");
+
+    httpd_resp_set_type(req, "application/json");
+
+    // Give some time for the connected flag to take effect
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    wifi_ap_record_simple_t ap_records[20];
+    uint16_t ap_count = 0;
+
+    esp_err_t err = wifi_scan(ap_records, &ap_count);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "WiFi scan failed");
+        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "WiFi scan failed");
+        return ESP_OK;
+    }
+
+    ESP_LOGI(TAG, "Wi-Fi creating json");
+
+    cJSON *root = cJSON_CreateObject();
+    cJSON *networks = cJSON_CreateArray();
+
+    for (int i = 0; i < ap_count; i++) {
+        cJSON *network = cJSON_CreateObject();
+        cJSON_AddStringToObject(network, "ssid", (char *)ap_records[i].ssid);
+        cJSON_AddNumberToObject(network, "rssi", ap_records[i].rssi);
+        cJSON_AddNumberToObject(network, "authmode", ap_records[i].authmode);
+        cJSON_AddItemToArray(networks, network);
+    }
+
+    cJSON_AddItemToObject(root, "networks", networks);
+
+    const char *response = cJSON_Print(root);
+
+    ESP_LOGI(TAG, "Wi-Fi json done");
+
+    httpd_resp_sendstr(req, response);
+
+    ESP_LOGI(TAG, "Wi-Fi sent response");
+
+    free((void *)response);
+    cJSON_Delete(root);
+
+    ESP_LOGI(TAG, "Wi-Fi API request completed");
+    return ESP_OK;
+}
 
 static esp_err_t ip_in_private_range(uint32_t address) {
     uint32_t ip_address = ntohl(address);

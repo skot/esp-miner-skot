@@ -112,7 +112,7 @@ esp_err_t wifi_scan(wifi_ap_record_simple_t *ap_records, uint16_t *ap_count)
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 
-    ESP_LOGD(TAG, "Wi-Fi networks found: %d", ap_number);
+    ESP_LOGI(TAG, "Wi-Fi networks found: %d", ap_number);
     if (ap_number == 0) {
         ESP_LOGW(TAG, "No Wi-Fi networks found");
     }
@@ -121,11 +121,12 @@ esp_err_t wifi_scan(wifi_ap_record_simple_t *ap_records, uint16_t *ap_count)
     memset(ap_records, 0, (*ap_count) * sizeof(wifi_ap_record_simple_t));
     for (int i = 0; i < ap_number; i++) {
         memcpy(ap_records[i].ssid, ap_info[i].ssid, sizeof(ap_records[i].ssid));
+        ESP_LOGI(TAG, "SSID Found: %s", ap_info[i].ssid);
         ap_records[i].rssi = ap_info[i].rssi;
         ap_records[i].authmode = ap_info[i].authmode;
     }
 
-    ESP_LOGD(TAG, "Finished Wi-Fi scan!");
+    ESP_LOGI(TAG, "Finished Wi-Fi scan!");
 
     return ESP_OK;
 }
