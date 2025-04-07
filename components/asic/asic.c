@@ -275,7 +275,7 @@ esp_err_t ASIC_set_device_model(GlobalState * GLOBAL_STATE) {
         GLOBAL_STATE->asic_job_frequency_ms = 500; //ms
         GLOBAL_STATE->ASIC_difficulty = AUD1123_ASIC_DIFFICULTY;
         ESP_LOGI(TAG, "DEVICE: bitaxeAura");
-        ESP_LOGI(TAG, "ASIC: %dx AUD1123 (%" PRIu64 " cores)", BITAXE_AURA_ASIC_COUNT, BAUD1123_CORE_COUNT);
+        ESP_LOGI(TAG, "ASIC: %dx AUD1123 (%" PRIu64 " cores)", BITAXE_AURA_ASIC_COUNT, AUD1123_CORE_COUNT);
         GLOBAL_STATE->device_model = DEVICE_AURA;
     } else {
         ESP_LOGE(TAG, "Invalid DEVICE model");
