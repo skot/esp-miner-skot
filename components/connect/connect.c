@@ -92,7 +92,7 @@ esp_err_t wifi_scan(wifi_ap_record_simple_t *ap_records, uint16_t *ap_count)
         .ssid = 0,
         .bssid = 0,
         .channel = 0,
-        .show_hidden = false
+        .show_hidden = false,
     };
 
     esp_err_t err = esp_wifi_scan_start(&scan_config, false);
@@ -142,7 +142,7 @@ static void event_handler(void * arg, esp_event_base_t event_base, int32_t event
     {
         if (event_id == WIFI_EVENT_SCAN_DONE) {
             esp_wifi_scan_get_ap_num(&ap_number);
-            ESP_LOGI(TAG, "Wi-Fi Scan Done");
+            ESP_LOGI(TAG, "Wi-Fi Scan Done: %d", ap_number);
             if (esp_wifi_scan_get_ap_records(&ap_number, ap_info) != ESP_OK) {
                 ESP_LOGI(TAG, "Failed esp_wifi_scan_get_ap_records");
             }
