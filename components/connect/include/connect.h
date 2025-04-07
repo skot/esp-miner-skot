@@ -18,6 +18,8 @@ typedef struct {
 #define WIFI_PASS CONFIG_ESP_WIFI_PASSWORD
 #define HOSTNAME CONFIG_LWIP_LOCAL_HOSTNAME
 
+// Maximum number of access points to scan
+#define MAX_AP_COUNT 200
 
 
 /* The event group allows multiple bits for each event, but we only care about two events:
@@ -40,5 +42,5 @@ void wifi_softap_off(void);
 void wifi_init(const char * wifi_ssid, const char * wifi_pass, const char * hostname, char * ip_addr_str);
 EventBits_t wifi_connect(void);
 void generate_ssid(char * ssid);
-esp_err_t wifi_scan(wifi_ap_record_simple_t *ap_records, uint16_t *ap_count);
+esp_err_t wifi_scan(wifi_ap_record_t *ap_info, uint16_t *ap_count);
 esp_err_t get_wifi_current_rssi(int8_t *rssi);

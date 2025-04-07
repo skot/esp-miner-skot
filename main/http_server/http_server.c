@@ -77,10 +77,9 @@ static esp_err_t GET_wifi_scan(httpd_req_t *req)
     // Give some time for the connected flag to take effect
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    wifi_ap_record_simple_t ap_records[200];
     uint16_t ap_count = 0;
-
-    esp_err_t err = wifi_scan(ap_records, &ap_count);
+    wifi_ap_record_t ap_info[MAX_AP_COUNT];
+    esp_err_t err = wifi_scan(ap_info, &ap_count);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "WiFi scan failed");
         httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "WiFi scan failed");
@@ -94,9 +93,9 @@ static esp_err_t GET_wifi_scan(httpd_req_t *req)
 
     for (int i = 0; i < ap_count; i++) {
         cJSON *network = cJSON_CreateObject();
-        cJSON_AddStringToObject(network, "ssid", (char *)ap_records[i].ssid);
-        cJSON_AddNumberToObject(network, "rssi", ap_records[i].rssi);
-        cJSON_AddNumberToObject(network, "authmode", ap_records[i].authmode);
+        cJSON_AddStringToObject(network, "ssid", (char *)ap_info[i].ssid);
+        cJSON_AddNumberToObject(network, "rssi", ap_info[i].rssi);
+        cJSON_AddNumberToObject(network, "authmode", ap_info[i].authmode);
         cJSON_AddItemToArray(networks, network);
     }
 

@@ -14,9 +14,6 @@
 #include "main.h"
 #include "global_state.h"
 
-// Maximum number of access points to scan
-#define MAX_AP_COUNT 20
-
 #if CONFIG_ESP_WPA3_SAE_PWE_HUNT_AND_PECK
 #define ESP_WIFI_SAE_MODE WPA3_SAE_PWE_HUNT_AND_PECK
 #define EXAMPLE_H2E_IDENTIFIER ""
@@ -55,7 +52,7 @@ static const char * TAG = "wifi_station";
 
 static bool is_scanning = false;
 static uint16_t ap_number = 0;
-static wifi_ap_record_t ap_info[MAX_AP_COUNT];
+
 
 esp_err_t get_wifi_current_rssi(int8_t *rssi)
 {
@@ -71,7 +68,7 @@ esp_err_t get_wifi_current_rssi(int8_t *rssi)
 }
 
 // Function to scan for available WiFi networks
-esp_err_t wifi_scan(wifi_ap_record_simple_t *ap_records, uint16_t *ap_count)
+esp_err_t wifi_scan(wifi_ap_record_t *ap_info, uint16_t *ap_count)
 {
     if (is_scanning) {
         ESP_LOGW(TAG, "Scan already in progress");
@@ -112,22 +109,22 @@ esp_err_t wifi_scan(wifi_ap_record_simple_t *ap_records, uint16_t *ap_count)
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 
+    ESP_LOGI(TAG, "No Wi-Fi networks found");
+    err = esp_wifi_scan_get_ap_records(&ap_number, ap_info);
+    if (err != ESP_OK) {
+        ESP_LOGI(TAG, "Failed esp_wifi_scan_get_ap_records");
+        return err;
+    }
+
     ESP_LOGI(TAG, "Wi-Fi networks found: %d", ap_number);
     if (ap_number == 0) {
         ESP_LOGW(TAG, "No Wi-Fi networks found");
+        return ESP_FAIL;
     }
 
     *ap_count = ap_number;
-    memset(ap_records, 0, (*ap_count) * sizeof(wifi_ap_record_simple_t));
-    for (int i = 0; i < ap_number; i++) {
-        memcpy(ap_records[i].ssid, ap_info[i].ssid, sizeof(ap_records[i].ssid));
-        ESP_LOGI(TAG, "SSID Found: %s", ap_info[i].ssid);
-        ap_records[i].rssi = ap_info[i].rssi;
-        ap_records[i].authmode = ap_info[i].authmode;
-    }
 
     ESP_LOGI(TAG, "Finished Wi-Fi scan!");
-
     return ESP_OK;
 }
 
@@ -143,9 +140,6 @@ static void event_handler(void * arg, esp_event_base_t event_base, int32_t event
         if (event_id == WIFI_EVENT_SCAN_DONE) {
             esp_wifi_scan_get_ap_num(&ap_number);
             ESP_LOGI(TAG, "Wi-Fi Scan Done: %d", ap_number);
-            if (esp_wifi_scan_get_ap_records(&ap_number, ap_info) != ESP_OK) {
-                ESP_LOGI(TAG, "Failed esp_wifi_scan_get_ap_records");
-            }
             is_scanning = false;
         }
 
