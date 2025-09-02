@@ -12,6 +12,8 @@
 #define GPIO_ASIC_ENABLE CONFIG_GPIO_ASIC_ENABLE
 #define GPIO_PLUG_SENSE  CONFIG_GPIO_PLUG_SENSE
 
+#define TPS546_VERBOSE_DEBUG 1
+
 static const char *TAG = "vcore";
 
 static TPS546_CONFIG TPS546_CONFIG_GAMMATURBO = {
@@ -27,7 +29,10 @@ static TPS546_CONFIG TPS546_CONFIG_GAMMATURBO = {
     .TPS546_INIT_VOUT_COMMAND = 1.2,
     /* iout current */
     .TPS546_INIT_IOUT_OC_WARN_LIMIT = 50.00, /* A */
-    .TPS546_INIT_IOUT_OC_FAULT_LIMIT = 55.00 /* A */
+    .TPS546_INIT_IOUT_OC_FAULT_LIMIT = 55.00, /* A */
+    /* config */
+    .TPS546_INIT_STACK_CONFIG = 0x0001, /* 2 modules */
+    .TPS546_INIT_COMPENSATION_CONFIG = {0x12, 0x40, 0x42, 0x22, 0x46} /* Default compensation config */
 };
 
 static TPS546_CONFIG TPS546_CONFIG_GAMMA = {
@@ -43,7 +48,10 @@ static TPS546_CONFIG TPS546_CONFIG_GAMMA = {
     .TPS546_INIT_VOUT_COMMAND = 1.2,
     /* iout current */
     .TPS546_INIT_IOUT_OC_WARN_LIMIT = 25.00, /* A */
-    .TPS546_INIT_IOUT_OC_FAULT_LIMIT = 30.00 /* A */
+    .TPS546_INIT_IOUT_OC_FAULT_LIMIT = 30.00, /* A */
+    /* config */
+    .TPS546_INIT_STACK_CONFIG = 0x0000, /* 1 module */
+    .TPS546_INIT_COMPENSATION_CONFIG = {0x13, 0x11, 0x08, 0x19, 0x04} /* Default compensation config */
 };
 
 esp_err_t VCORE_init(GlobalState * GLOBAL_STATE) {
@@ -112,7 +120,15 @@ int16_t VCORE_get_voltage_mv(GlobalState * GLOBAL_STATE)
 esp_err_t VCORE_check_fault(GlobalState * GLOBAL_STATE) 
 {
     if (GLOBAL_STATE->DEVICE_CONFIG.TPS546) {
-        ESP_RETURN_ON_ERROR(TPS546_check_status(GLOBAL_STATE), TAG, "TPS546 check status failed!");
+
+    #if !TPS546_VERBOSE_DEBUG
+    ESP_RETURN_ON_ERROR(TPS546_check_status(GLOBAL_STATE), TAG, "TPS546 check status failed!");
+    #else
+    TPS546_StatusSnapshot snap;
+    if (TPS546_snapshot_status(&snap) == ESP_OK) {
+        TPS546_log_snapshot(&snap);
+    }
+    #endif
     }
     return ESP_OK;
 }

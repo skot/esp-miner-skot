@@ -40,7 +40,18 @@ typedef struct
   /* iout current */
   float TPS546_INIT_IOUT_OC_WARN_LIMIT; /* A */
   float TPS546_INIT_IOUT_OC_FAULT_LIMIT; /* A */
+  uint16_t TPS546_INIT_STACK_CONFIG; /* Stack configuration */
+  uint8_t TPS546_INIT_COMPENSATION_CONFIG[5];
 } TPS546_CONFIG;
+
+typedef struct {
+  uint16_t status_word;
+  uint8_t  st_vout, st_input, st_iout, st_temp, st_cml, st_mfr, st_other;
+  uint8_t  operation, on_off_config;
+  float    read_vout, read_vin, read_iout;
+  int      read_temp1;
+  float    vout_command;
+} TPS546_StatusSnapshot;
 
 /* vin voltage */
 // #define TPS546_INIT_VIN_ON  11.0  /* V */
@@ -98,8 +109,6 @@ typedef struct
 #define TPS546_INIT_TOFF_DELAY 0
 #define TPS546_INIT_TOFF_FALL 0
 
-#define INIT_STACK_CONFIG 0x0001 //One-Slave, 2-phase
-#define INIT_SYNC_CONFIG 0x00D0 //Enable Auto Detect SYNC
 #define INIT_PIN_DETECT_OVERRIDE 0xFFFF //use pin values
 
 /*-------------------------*/
@@ -187,5 +196,8 @@ esp_err_t TPS546_check_status(GlobalState * GLOBAL_STATE);
 esp_err_t TPS546_clear_faults(void);
 
 const char* TPS546_get_error_message(void); //Get the current TPS error message
+
+void TPS546_log_snapshot(const TPS546_StatusSnapshot *s);
+esp_err_t TPS546_snapshot_status(TPS546_StatusSnapshot *s);
 
 #endif /* TPS546_H_ */
