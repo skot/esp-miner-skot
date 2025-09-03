@@ -24,6 +24,8 @@
 #define NACK_VALUE     0x1
 #define MAX_BLOCK_LEN  32
 
+#define VOUTMODE 0x97
+
 static const char *TAG = "TPS546";
 
 static uint8_t DEVICE_ID1[] = {0x54, 0x49, 0x54, 0x6B, 0x24, 0x41}; // TPS546D24A
@@ -281,17 +283,14 @@ static uint16_t float_2_slinear11(float value)
  */
 static float ulinear16_2_float(uint16_t value)
 {
-    uint8_t voutmode;
     int exponent;
     float result;
 
-    smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
-
-    if (voutmode & 0x10) {
+    if (VOUTMODE & 0x10) {
         // exponent is negative
-        exponent = -1 * ((~voutmode & 0x1F) + 1);
+        exponent = -1 * ((~VOUTMODE & 0x1F) + 1);
     } else {
-        exponent = (voutmode & 0x1F);
+        exponent = (VOUTMODE & 0x1F);
     }
     result = (value * powf(2.0, exponent));
     return result;
@@ -306,16 +305,14 @@ static float ulinear16_2_float(uint16_t value)
 */
 static uint16_t float_2_ulinear16(float value)
 {
-    uint8_t voutmode;
     float exponent;
     uint16_t result;
 
-    smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
-    if (voutmode & 0x10) {
+    if (VOUTMODE & 0x10) {
         // exponent is negative
-        exponent = -1 * ((~voutmode & 0x1F) + 1);
+        exponent = -1 * ((~VOUTMODE & 0x1F) + 1);
     } else {
-        exponent = (voutmode & 0x1F);
+        exponent = (VOUTMODE & 0x1F);
     }
 
     result = (value / powf(2.0, exponent));
@@ -378,8 +375,8 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     // ESP_LOGI(TAG, "--------------------------------");
     // ESP_LOGI(TAG, "Config version mismatch, writing new config values");
     ESP_LOGI(TAG, "Writing new config values");
-    smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
-    ESP_LOGI(TAG, "VOUT_MODE: %02x", voutmode);
+    // smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
+    ESP_LOGI(TAG, "VOUT_MODE: %02x", VOUTMODE);
     TPS546_write_entire_config();
     //}
 
@@ -715,7 +712,7 @@ float TPS546_get_iout(void)
     float iout;
 
     //set the phase register to 0xFF to read all phases
-    smb_write_byte(PMBUS_PHASE, 0xFF);
+    //smb_write_byte(PMBUS_PHASE, 0xFF);
 
     /* Get current output (SLINEAR11) */
     if (smb_read_word(PMBUS_READ_IOUT, &u16_value) != ESP_OK) {
@@ -729,7 +726,7 @@ float TPS546_get_iout(void)
     #endif
 
     //set the phase register back to the default
-    smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
+    //smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
 
         return iout;
     }
