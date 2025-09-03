@@ -128,7 +128,7 @@ static esp_err_t smb_write_block(uint8_t command, uint8_t *data, uint8_t len)
     memcpy(buf+2, data, len);
 
     //write it all
-    if (i2c_bitaxe_register_write_bytes(tps546_i2c_handle, buf, len+2) != ESP_OK) {
+    if (i2c_bitaxe_register_write_bytes(tps546_i2c_handle, buf, len) != ESP_OK) {
         free(buf);
         return ESP_FAIL;
     } else {
@@ -333,7 +333,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
 	uint8_t data[7];
     uint8_t u8_value = 0;
     uint16_t u16_value = 0;
-    uint8_t read_mfr_revision[4];
+    //uint8_t read_mfr_revision[4];
     int temp;
     uint8_t comp_config[5];
     uint8_t voutmode;
@@ -359,6 +359,10 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     ESP_LOGI(TAG, "Power config-OPERATION: %02X", u8_value);
     smb_write_byte(PMBUS_OPERATION, u8_value);
 
+    /* configure the bootup behavior regarding pin detect values vs NVM values */
+    ESP_LOGI(TAG, "Setting PIN_DETECT_OVERRIDE: %04X", INIT_PIN_DETECT_OVERRIDE);
+    smb_write_word(PMBUS_PIN_DETECT_OVERRIDE, INIT_PIN_DETECT_OVERRIDE);
+
     /* Make sure power is turned off until commanded */
     //u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
     u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
@@ -367,7 +371,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value);
 
     /* Read version number and see if it matches */
-    TPS546_read_mfr_info(read_mfr_revision);
+    //TPS546_read_mfr_info(read_mfr_revision);
     // if (memcmp(read_mfr_revision, MFR_REVISION, 3) != 0) {
     
     // If it doesn't match, then write all the registers and set new version number
@@ -511,12 +515,20 @@ void TPS546_write_entire_config(void)
     // }
 
     /* Stack Config */
-    ESP_LOGI(TAG, "Setting STACK_CONFIG: %02X", tps546_config.TPS546_INIT_STACK_CONFIG);
+    ESP_LOGI(TAG, "Setting STACK_CONFIG: %04X", tps546_config.TPS546_INIT_STACK_CONFIG);
     smb_write_word(PMBUS_STACK_CONFIG, tps546_config.TPS546_INIT_STACK_CONFIG);
 
+    /* Interleave */
+    ESP_LOGI(TAG, "Setting INTERLEAVE: %04X", 0x0000);
+    smb_write_byte(PMBUS_INTERLEAVE, 0x0000);
+
+    /* Sync Config */
+    ESP_LOGI(TAG, "Setting SYNC_CONFIG: %02X", tps546_config.TPS546_INIT_SYNC_CONFIG);
+    smb_write_byte(PMBUS_SYNC_CONFIG, tps546_config.TPS546_INIT_SYNC_CONFIG);
+
     /* Phase */
-    ESP_LOGI(TAG, "Setting PHASE: %02X", TPS546_INIT_PHASE);
-    smb_write_byte(PMBUS_PHASE, TPS546_INIT_PHASE);
+    ESP_LOGI(TAG, "Setting PHASE: %02X", tps546_config.TPS546_INIT_PHASE);
+    smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
 
     /* Switch frequency */
     ESP_LOGI(TAG, "Setting FREQUENCY: %dMHz", TPS546_INIT_FREQUENCY);
@@ -717,7 +729,7 @@ float TPS546_get_iout(void)
     #endif
 
     //set the phase register back to the default
-    smb_write_byte(PMBUS_PHASE, TPS546_INIT_PHASE);
+    smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
 
         return iout;
     }

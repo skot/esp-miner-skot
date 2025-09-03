@@ -21,8 +21,6 @@
 #define OPERATION_OFF 0x00
 #define OPERATION_ON  0x80
 
-#define TPS546_INIT_PHASE 0xFF  /* default phase register value from TPS546 datasheet */
-
 #define TPS546_INIT_FREQUENCY 650  /* KHz */
 
 typedef struct
@@ -41,6 +39,8 @@ typedef struct
   float TPS546_INIT_IOUT_OC_WARN_LIMIT; /* A */
   float TPS546_INIT_IOUT_OC_FAULT_LIMIT; /* A */
   uint16_t TPS546_INIT_STACK_CONFIG; /* Stack configuration */
+  uint8_t TPS546_INIT_SYNC_CONFIG; /* Sync configuration */
+  uint8_t TPS546_INIT_PHASE; /* Pin detect override */
   uint8_t TPS546_INIT_COMPENSATION_CONFIG[5];
 } TPS546_CONFIG;
 
@@ -109,7 +109,7 @@ typedef struct {
 #define TPS546_INIT_TOFF_DELAY 0
 #define TPS546_INIT_TOFF_FALL 0
 
-#define INIT_PIN_DETECT_OVERRIDE 0xFFFF //use pin values
+#define INIT_PIN_DETECT_OVERRIDE 0x0000 //use PMBus/NVM values
 
 /*-------------------------*/
 
