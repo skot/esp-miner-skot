@@ -124,17 +124,15 @@ static esp_err_t smb_read_block(uint8_t command, uint8_t *data, uint8_t len)
  */
 static esp_err_t smb_write_block(uint8_t command, uint8_t *data, uint8_t len)
 {
-    len += 2; //make room for command and length bytes
-    
-    //malloc a buffer len to store the command byte and then the length byte
-    uint8_t *buf = (uint8_t *)malloc(len);
+    //malloc a buffer len+2 to store the command byte and then the length byte
+    uint8_t *buf = (uint8_t *)malloc(len+2);
     buf[0] = command;
     buf[1] = len;
     //copy the data into the buffer
-    memcpy(buf, data, len);
+    memcpy(buf+2, data, len);
 
     //write it all
-    if (i2c_bitaxe_register_write_bytes(tps546_i2c_handle, buf, len) != ESP_OK) {
+    if (i2c_bitaxe_register_write_bytes(tps546_i2c_handle, buf, len+2) != ESP_OK) {
         free(buf);
         return ESP_FAIL;
     } else {
