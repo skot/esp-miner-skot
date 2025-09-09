@@ -181,7 +181,6 @@ typedef struct {
 esp_err_t TPS546_init(TPS546_CONFIG config);
 
 void TPS546_read_mfr_info(uint8_t *);
-void TPS546_write_entire_config(void);
 int TPS546_get_frequency(void);
 void TPS546_set_frequency(int);
 int TPS546_get_temperature(void);
@@ -189,7 +188,6 @@ float TPS546_get_vin(void);
 float TPS546_get_iout(void);
 float TPS546_get_vout(void);
 esp_err_t TPS546_set_vout(float volts);
-void TPS546_show_voltage_settings(void);
 void TPS546_print_status(void);
 
 esp_err_t TPS546_check_status(GlobalState * GLOBAL_STATE);

@@ -34,7 +34,7 @@ static TPS546_CONFIG TPS546_CONFIG_GAMMATURBO = {
     .TPS546_INIT_STACK_CONFIG = 0x0001, /* 2 modules */
     .TPS546_INIT_SYNC_CONFIG = 0xF0, /* Enable Auto Detect SYNC */
     .TPS546_INIT_PHASE = 0xFF, /* Phase addressing */
-    .TPS546_INIT_COMPENSATION_CONFIG = {0x12, 0x40, 0x42, 0x22, 0x46} /* Default compensation config */
+    .TPS546_INIT_COMPENSATION_CONFIG = {0x12, 0x34, 0x42, 0x21, 0x04} /* Default compensation config */
 };
 
 static TPS546_CONFIG TPS546_CONFIG_GAMMA = {
