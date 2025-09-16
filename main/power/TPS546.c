@@ -332,6 +332,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     uint8_t u8_value = 0;
     uint16_t u16_value = 0;
     uint8_t device_data[7];
+    TPS546_StatusSnapshot snap;
 
     tps546_config = config;
 
@@ -349,7 +350,12 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
         return ESP_FAIL;
     }
 
-    read_settings();
+    //write operation register to turn off power - note ON_OFF_CONFIG needs to be changed to 0x1B for this to take effect. do that next
+    ESP_LOGI(TAG, "Setting OPERATION: %02X", OPERATION_OFF);
+    smb_write_byte(PMBUS_OPERATION, OPERATION_OFF);
+
+    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
 
     // ON_OFF_CONFIG
     //u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
@@ -357,24 +363,31 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     ESP_LOGI(TAG, "Setting ON_OFF_CONFIG: %02X", u8_value);
     smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value);
 
-    //write operation register to turn off power
-    ESP_LOGI(TAG, "Setting OPERATION: %02X", OPERATION_OFF);
-    smb_write_byte(PMBUS_OPERATION, OPERATION_OFF);
+    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
+
+    read_settings();
+
+    if (TPS546_snapshot_status(&snap) == ESP_OK) {
+        TPS546_log_snapshot(&snap);
+    }
 
     ESP_LOGI(TAG, "Writing new config values");
 
     write_settings();
 
-    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
-    ESP_LOGI(TAG, "read STATUS_WORD: %04X", u16_value);
+    if (TPS546_snapshot_status(&snap) == ESP_OK) {
+        TPS546_log_snapshot(&snap);
+    }
 
     read_settings();
 
     ESP_LOGI(TAG, "Clearing faults");
     TPS546_clear_faults();
 
-    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
-    ESP_LOGI(TAG, "read STATUS_WORD: %04X", u16_value);
+    if (TPS546_snapshot_status(&snap) == ESP_OK) {
+        TPS546_log_snapshot(&snap);
+    }
 
     return ESP_OK;
 }
@@ -383,6 +396,7 @@ static void read_settings(void) {
     uint8_t u8_value = 0;
     uint16_t u16_value = 0;
     uint8_t comp_config[5] = {0, 0, 0, 0, 0};
+    TPS546_StatusSnapshot snap;
 
     ESP_LOGI(TAG, "Reading Settings");
 
@@ -491,8 +505,9 @@ static void read_settings(void) {
     ESP_LOGI(TAG, "read VOUT_UV_FAULT_LIMIT: %.2fV", ulinear16_2_float(u16_value) * tps546_config.TPS546_INIT_VOUT_COMMAND);
 
     // STATUS_WORD
-    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
-    ESP_LOGI(TAG, "read STATUS_WORD: %04X", u16_value);
+    if (TPS546_snapshot_status(&snap) == ESP_OK) {
+        TPS546_log_snapshot(&snap);
+    }
 
     ESP_LOGI(TAG, "----- VOLTAGE/CURRENT");
 
@@ -571,12 +586,17 @@ static void read_settings(void) {
 static void write_settings(void)
 {
     uint8_t u8_value = 0;
+    uint16_t u16_value = 0;
+    TPS546_StatusSnapshot snap;
 
     ESP_LOGI(TAG, "---Setting TPS546 values---");
 
-    // PIN_DETECT_OVERRIDE
-    ESP_LOGI(TAG, "Setting PIN_DETECT_OVERRIDE: %04X", INIT_PIN_DETECT_OVERRIDE);
-    smb_write_word(PMBUS_PIN_DETECT_OVERRIDE, INIT_PIN_DETECT_OVERRIDE);
+    // // PIN_DETECT_OVERRIDE
+    // ESP_LOGI(TAG, "Setting PIN_DETECT_OVERRIDE: %04X", INIT_PIN_DETECT_OVERRIDE);
+    // smb_write_word(PMBUS_PIN_DETECT_OVERRIDE, INIT_PIN_DETECT_OVERRIDE);
+
+    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
 
     // ON_OFF_CONFIG
     //u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
@@ -584,25 +604,43 @@ static void write_settings(void)
     ESP_LOGI(TAG, "Setting ON_OFF_CONFIG: %02X", u8_value);
     smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value);
 
+    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
+
     // STACK_CONFIG
     ESP_LOGI(TAG, "Setting STACK_CONFIG: %04X", tps546_config.TPS546_INIT_STACK_CONFIG);
     smb_write_word(PMBUS_STACK_CONFIG, tps546_config.TPS546_INIT_STACK_CONFIG);
 
-    // INTERLEAVE
-    ESP_LOGI(TAG, "Setting INTERLEAVE: %04X", 0x0000);
-    smb_write_byte(PMBUS_INTERLEAVE, 0x0000);
+    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
+
+    // // INTERLEAVE
+    // ESP_LOGI(TAG, "Setting INTERLEAVE: %04X", tps546_config.TPS546_INIT_INTERLEAVE);
+    // smb_write_byte(PMBUS_INTERLEAVE, tps546_config.TPS546_INIT_INTERLEAVE);
+
+    // smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    // ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
 
     // SYNC_CONFIG
     ESP_LOGI(TAG, "Setting SYNC_CONFIG: %02X", tps546_config.TPS546_INIT_SYNC_CONFIG);
     smb_write_byte(PMBUS_SYNC_CONFIG, tps546_config.TPS546_INIT_SYNC_CONFIG);
 
+    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
+
     // PHASE
     ESP_LOGI(TAG, "Setting PHASE: %02X", tps546_config.TPS546_INIT_PHASE);
     smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
 
+    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
+
     // FREQUENCY
     ESP_LOGI(TAG, "Setting FREQUENCY: %dMHz", TPS546_INIT_FREQUENCY);
     smb_write_word(PMBUS_FREQUENCY_SWITCH, int_2_slinear11(TPS546_INIT_FREQUENCY));
+
+    smb_read_word(PMBUS_STATUS_WORD, &u16_value);
+    ESP_LOGI(TAG, "STATUS_WORD: %04X", u16_value);
 
     // COMPENSATION_CONFIG
     ESP_LOGI(TAG, "Setting COMPENSATION_CONFIG: %02X %02X %02X %02X %02X",
@@ -611,6 +649,9 @@ static void write_settings(void)
         tps546_config.TPS546_INIT_COMPENSATION_CONFIG[4]);
     smb_write_block(PMBUS_COMPENSATION_CONFIG, tps546_config.TPS546_INIT_COMPENSATION_CONFIG, 5);
 
+    if (TPS546_snapshot_status(&snap) == ESP_OK) {
+        TPS546_log_snapshot(&snap);
+    }
 
     /* vin voltage */
 
