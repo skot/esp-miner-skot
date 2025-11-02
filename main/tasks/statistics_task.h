@@ -5,8 +5,8 @@ typedef struct StatisticsData * StatisticsDataPtr;
 
 struct StatisticsData
 {
-    int64_t timestamp;
-    double hashrate;
+    uint32_t timestamp;
+    float hashrate;
     uint32_t errorCount;
     float chipTemperature;
     float vrTemperature;
