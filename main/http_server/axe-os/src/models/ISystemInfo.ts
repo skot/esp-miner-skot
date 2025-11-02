@@ -83,7 +83,7 @@ export interface ISystemInfo {
 
     blockHeight?: number,
     scriptsig?: string,
-    networkDifficulty?: string,
+    networkDifficulty?: number,
 
     hashrateMonitor: IHashrateMonitor,
     blockFound: number,
