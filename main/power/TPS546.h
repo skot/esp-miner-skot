@@ -42,6 +42,8 @@ typedef struct
   float TPS546_INIT_IOUT_OC_FAULT_LIMIT; /* A */
 } TPS546_CONFIG;
 
+#define TPS546_VOUT_MODE 0x97  /* VOUT_MODE ULINEAR16 */
+
 /* vin voltage */
 // #define TPS546_INIT_VIN_ON  11.0  /* V */
 // #define TPS546_INIT_VIN_OFF 10.5  /* V */
@@ -67,6 +69,20 @@ typedef struct
 #define TPS546_INIT_VOUT_UV_FAULT_LIMIT 0.75 /* %/100 below VOUT_COMMAND */
 //#define TPS546_INIT_VOUT_MIN 1 /* v */
 
+//VOUT_OV_FAULT_RESPONSE - pg84
+//0x80 -> 1000 0000
+//10 -> Shutdown. Shutdown and retry according to VO_OV_RETRY.
+//000 -> VOUT_OV_RETRY - Do not attempt to restart (latch off).
+//000 -> VO_OV HICCUP period is equal to TON_RISE.
+#define TPS546_INIT_VOUT_OV_FAULT_RESPONSE 0x80  /* shut down, no retries */
+
+//VOUT_UV_FAULT_RESPONSE
+//0x80 -> 1000 0000
+//10 -> Shutdown Immediately
+//000 -> Do not attempt to restart (latch off).
+//000 -> Shutdown delay of one PWM_CLK, HICCUP equal to TON_RISE
+#define TPS546_INIT_VOUT_UV_FAULT_RESPONSE 0x80  /* shut down, no retries */
+
   /* iout current */
 // #define TPS546_INIT_IOUT_OC_WARN_LIMIT  50.00 /* A */
 // #define TPS546_INIT_IOUT_OC_FAULT_LIMIT 55.00 /* A */
@@ -84,17 +100,23 @@ typedef struct
 #define TPS546_INIT_OT_FAULT_LIMIT 145 /* degrees C */
 
 //OT_FAULT_RESPONSE - pg94
-//0xFF -> 1111 1111
-//11 -> Shutdown until Temperature is below OT_WARN_LIMIT, then restart according to OT_RETRY*.
-//111 -> After shutting down, wait one HICCUP period, and attempt to restart indefinitely, until commanded OFF or a successful start-up occurs.
-//111 -> Shutdown delay of 7 ms, HICCUP equal to 4 times TON_RISE
-#define TPS546_INIT_OT_FAULT_RESPONSE 0xFF /* wait for cooling, and retry */
+//0x80 -> 1000 0000
+//10 ->  Immediate Shutdown. Shut down and restart according to OT_RETRY.
+//000 -> OT_RETRY - Do not attempt to restart (latch off).
+//000 -> Shutdown delay of 10 ms, HICCUP equal to TON_RISE, HICCUP delay equal to TON_RISE
+#define TPS546_INIT_OT_FAULT_RESPONSE 0x80 /* wait for cooling, and retry */
 
   /* timing */
 #define TPS546_INIT_TON_DELAY 0
 #define TPS546_INIT_TON_RISE 3
 #define TPS546_INIT_TON_MAX_FAULT_LIMIT 0
-#define TPS546_INIT_TON_MAX_FAULT_RESPONSE 0x3B
+
+//TON_MAX_FAULT_RESPONSE - pg102
+//0x80 -> 1000 0000
+//10 ->  Shutdown Immediately and restart according to TONMAX_RETRY.
+//000 -> TONMAX_RETRY - Do not attempt to restart (latch off).
+//000 -> Shutdown delay of 1 ms, HICCUP equal to TON_RISE
+#define TPS546_INIT_TON_MAX_FAULT_RESPONSE 0x80
 #define TPS546_INIT_TOFF_DELAY 0
 #define TPS546_INIT_TOFF_FALL 0
 
