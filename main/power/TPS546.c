@@ -30,6 +30,10 @@ static uint8_t DEVICE_ID1[] = {0x54, 0x49, 0x54, 0x6B, 0x24, 0x41}; // TPS546D24
 static uint8_t DEVICE_ID2[] = {0x54, 0x49, 0x54, 0x6D, 0x24, 0x41}; // TPS546D24A
 static uint8_t DEVICE_ID3[] = {0x54, 0x49, 0x54, 0x6D, 0x24, 0x62}; // TPS546D24S
 
+static uint8_t MFR_ID[] = {'B', 'I', 'T'};
+static uint8_t MFR_MODEL[] = {'A', 'X', 'E'};
+static uint8_t MFR_REVISION[] = {0, 0, 1};
+
 //static uint8_t COMPENSATION_CONFIG[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 static i2c_master_dev_handle_t tps546_i2c_handle;
@@ -339,7 +343,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     uint8_t read_mfr_revision[4];
     int temp;
     uint8_t comp_config[5];
-    uint8_t voutmode;
+    //uint8_t voutmode;
 
     tps546_config = config;
 
@@ -377,14 +381,8 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
         ESP_LOGI(TAG, "--------------------------------");
         ESP_LOGI(TAG, "Config version mismatch, writing new config values");
 
-        
         TPS546_write_entire_config();
     }
-
-    /* Show voltage settings */
-    TPS546_show_voltage_settings();
-
-    read_status_word();
 
     ESP_LOGI(TAG, "---------CONFIG--------------------");
     smb_read_byte(PMBUS_VOUT_MODE, &u8_value);
@@ -401,6 +399,14 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     ESP_LOGI(TAG, "read CAPABILITY: %02x", u8_value);
     smb_read_word(PMBUS_PIN_DETECT_OVERRIDE, &u16_value);
     ESP_LOGI(TAG, "read PIN_DETECT_OVERRIDE: %04x", u16_value);
+    smb_read_block(PMBUS_COMPENSATION_CONFIG, comp_config, 5);
+    ESP_LOGI(TAG, "read COMPENSATION CONFIG: %02x %02x %02x %02x %02x", comp_config[0], comp_config[1], comp_config[2], comp_config[3], comp_config[4]);
+
+    /* Show voltage settings */
+    TPS546_show_voltage_settings();
+
+    read_status_word();
+
     ESP_LOGI(TAG, "-----------VOLTAGE/CURRENT---------------------");
     smb_read_word(PMBUS_READ_VIN, &u16_value);
     ESP_LOGI(TAG, "read READ_VIN: %.2fV", slinear11_2_float(u16_value));
@@ -432,17 +438,6 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     ESP_LOGI(TAG, "read OPERATION: %02x", u8_value);
     smb_read_byte(PMBUS_ON_OFF_CONFIG, &u8_value);
     ESP_LOGI(TAG, "read ON_OFF_CONFIG: %02x", u8_value);
-
-
-
-    // Read the compensation config registers
-    if (smb_read_block(PMBUS_COMPENSATION_CONFIG, comp_config, 5) != ESP_OK) {
-        ESP_LOGE(TAG, "Failed to read COMPENSATION CONFIG");
-        return ESP_FAIL;
-    }
-    ESP_LOGI(TAG, "read COMPENSATION CONFIG");
-    ESP_LOGI(TAG, "%02x %02x %02x %02x %02x", comp_config[0], comp_config[1],
-        comp_config[2], comp_config[3], comp_config[4]);
 
 
     TPS546_clear_faults();
@@ -501,26 +496,31 @@ void TPS546_read_mfr_info(uint8_t *read_mfr_revision)
 void TPS546_write_entire_config(void)
 {
     ESP_LOGI(TAG, "---Writing new config values to TPS546---");
+    ESP_LOGI(TAG, "----- CONFIG");
     /* set up the ON_OFF_CONFIG */
     /* Make sure power is turned off until commanded */
-    u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
-    ESP_LOGI(TAG, "Power config-ON_OFF_CONFIG: %02X", u8_value);
-    smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value);
+    // (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
+    ESP_LOGI(TAG, "Setting ON_OFF_CONFIG: %02X", TPS546_ONOFF_CONFIG);
+    smb_write_byte(PMBUS_ON_OFF_CONFIG, TPS546_ONOFF_CONFIG);
 
     /* Vout mode*/
     ESP_LOGI(TAG, "Setting VOUT_MODE: %02X", TPS546_VOUT_MODE);
     smb_write_byte(PMBUS_VOUT_MODE, TPS546_VOUT_MODE);
 
     /* Phase */
-    ESP_LOGI(TAG, "Setting PHASE: %02X", TPS546_INIT_PHASE);
-    smb_write_byte(PMBUS_PHASE, TPS546_INIT_PHASE);
+    ESP_LOGI(TAG, "Setting PHASE: %02X", tps546_config.TPS546_INIT_PHASE);
+    smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
 
     /* Switch frequency */
     ESP_LOGI(TAG, "Setting FREQUENCY: %dKHz", TPS546_INIT_FREQUENCY);
     smb_write_word(PMBUS_FREQUENCY_SWITCH, int_2_slinear11(TPS546_INIT_FREQUENCY));
 
-    /* vin voltage */
+    /* configure the bootup behavior regarding pin detect values vs NVM values */
+    ESP_LOGI(TAG, "Setting PIN_DETECT_OVERRIDE: %04X", INIT_PIN_DETECT_OVERRIDE);
+    smb_write_word(PMBUS_PIN_DETECT_OVERRIDE, INIT_PIN_DETECT_OVERRIDE);
 
+    /* vin voltage */
+    ESP_LOGI(TAG, "----- VIN / VOUT");
     //deal with the UV_WARN_LIMIT bug
     if (tps546_config.TPS546_INIT_VIN_UV_WARN_LIMIT > 0) {
         ESP_LOGI(TAG, "Setting VIN_UV_WARN_LIMIT: %.2f", tps546_config.TPS546_INIT_VIN_UV_WARN_LIMIT);
@@ -611,15 +611,7 @@ void TPS546_write_entire_config(void)
     ESP_LOGI(TAG, "Setting TOFF_FALL: %dms", TPS546_INIT_TOFF_FALL);
     smb_write_word(PMBUS_TOFF_FALL, int_2_slinear11(TPS546_INIT_TOFF_FALL));
 
-    /* Compensation config */
-    //ESP_LOGI(TAG, "COMPENSATION");
-    //smb_write_block(PMBUS_COMPENSATION_CONFIG, COMPENSATION_CONFIG, 5);
-
-    /* configure the bootup behavior regarding pin detect values vs NVM values */
-    ESP_LOGI(TAG, "Setting PIN_DETECT_OVERRIDE: %04X", INIT_PIN_DETECT_OVERRIDE);
-    smb_write_word(PMBUS_PIN_DETECT_OVERRIDE, INIT_PIN_DETECT_OVERRIDE);
-
-    /* TODO write new MFR_REVISION number to reflect these parameters */
+    /* Write new MFR_REVISION number to reflect these parameters */
     ESP_LOGI(TAG, "Setting MFR ID");
     smb_write_block(PMBUS_MFR_ID, MFR_ID, 3);
     ESP_LOGI(TAG, "Setting MFR MODEL");
@@ -627,14 +619,12 @@ void TPS546_write_entire_config(void)
     ESP_LOGI(TAG, "Setting MFR REVISION");
     smb_write_block(PMBUS_MFR_ID, MFR_REVISION, 3);
 
-    /*
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // Never write this to NVM as it can corrupt the TPS in an unrecoverable state, just do it on boot every time
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!
-    */
     /* store configuration in NVM */
-    // ESP_LOGI(TAG, "---Saving new config---");
-    // smb_write_byte(PMBUS_STORE_USER_ALL, 0x98);
+    ESP_LOGI(TAG, "---Saving new config---");
+    smb_write_byte(PMBUS_STORE_USER_ALL, 0x98);
+
+    //wait 100ms for NVM write to complete
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
 }
 
@@ -712,7 +702,7 @@ float TPS546_get_iout(void)
     #endif
 
     //set the phase register back to the default
-    smb_write_byte(PMBUS_PHASE, TPS546_INIT_PHASE);
+    smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
 
         return iout;
     }

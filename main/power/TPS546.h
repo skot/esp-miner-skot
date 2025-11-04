@@ -21,7 +21,7 @@
 #define OPERATION_OFF 0x00
 #define OPERATION_ON  0x80
 
-#define TPS546_INIT_PHASE 0xFF  /* default phase register value from TPS546 datasheet */
+//#define TPS546_INIT_PHASE 0xFF  /* default phase register value from TPS546 datasheet */
 
 #define TPS546_INIT_FREQUENCY 650  /* KHz */
 
@@ -40,6 +40,11 @@ typedef struct
   /* iout current */
   float TPS546_INIT_IOUT_OC_WARN_LIMIT; /* A */
   float TPS546_INIT_IOUT_OC_FAULT_LIMIT; /* A */
+  uint16_t TPS546_INIT_STACK_CONFIG; /* Stack configuration */
+  uint8_t TPS546_INIT_SYNC_CONFIG; /* Sync configuration */
+  uint8_t TPS546_INIT_PHASE; /* Pin detect override */
+  uint16_t TPS546_INIT_INTERLEAVE; /* SYNC Phase delay */
+  uint8_t TPS546_INIT_COMPENSATION_CONFIG[5];
 } TPS546_CONFIG;
 
 #define TPS546_VOUT_MODE 0x97  /* VOUT_MODE ULINEAR16 */
@@ -122,7 +127,7 @@ typedef struct
 
 #define INIT_STACK_CONFIG 0x0001 //One-Slave, 2-phase
 #define INIT_SYNC_CONFIG 0x00D0 //Enable Auto Detect SYNC
-#define INIT_PIN_DETECT_OVERRIDE 0xFFFF //use pin values
+#define INIT_PIN_DETECT_OVERRIDE 0x0000 //use NVM values
 
 /*-------------------------*/
 
@@ -188,6 +193,8 @@ typedef struct
 #define TPS546_STATUS_MFR_RESET   0x08 //bit 3 - A RESET_VOUT event has occurred.
 #define TPS546_STATUS_MFR_BCX     0x04 //bit 2 - A BCX fault event has occurred.
 #define TPS546_STATUS_MFR_SYNC    0x02 //bit 1 - A SYNC fault has been detected.
+
+#define TPS546_ONOFF_CONFIG (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU) /* use ON_OFF command to control power */
 
 
 /* public functions */
