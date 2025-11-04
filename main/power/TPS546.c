@@ -115,12 +115,12 @@ static esp_err_t smb_read_block(uint8_t command, uint8_t *data, uint8_t len)
     return ESP_OK;
 }
 
-// /**
-//  * @brief SMBus write block - don;t forget the length byte first :P
-//  * @param command The command to write
-//  * @param data The data to write
-//  * @param len The number of bytes to write
-//  */
+/**
+ * @brief SMBus write block - don;t forget the length byte first :P
+ * @param command The command to write
+ * @param data The data to write
+ * @param len The number of bytes to write
+ */
 static esp_err_t smb_write_block(uint8_t command, uint8_t *data, uint8_t len)
 {
     //malloc a buffer len+2 to store the command byte and then the length byte
