@@ -49,6 +49,8 @@ typedef struct
 
 #define TPS546_VOUT_MODE 0x97  /* VOUT_MODE ULINEAR16 */
 
+#define TPS546_CAPABILITY 0xD0  /* Capability register */
+
 /* vin voltage */
 // #define TPS546_INIT_VIN_ON  11.0  /* V */
 // #define TPS546_INIT_VIN_OFF 10.5  /* V */
@@ -200,8 +202,6 @@ typedef struct
 /* public functions */
 esp_err_t TPS546_init(TPS546_CONFIG config);
 
-void TPS546_read_mfr_info(uint8_t *);
-void TPS546_write_entire_config(void);
 int TPS546_get_frequency(void);
 void TPS546_set_frequency(int);
 int TPS546_get_temperature(void);
@@ -209,11 +209,8 @@ float TPS546_get_vin(void);
 float TPS546_get_iout(void);
 float TPS546_get_vout(void);
 esp_err_t TPS546_set_vout(float volts);
-void TPS546_show_voltage_settings(void);
-void TPS546_print_status(void);
 
 esp_err_t TPS546_check_status(GlobalState * GLOBAL_STATE);
-esp_err_t TPS546_clear_faults(void);
 
 const char* TPS546_get_error_message(void); //Get the current TPS error message
 
