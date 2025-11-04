@@ -26,13 +26,13 @@
 
 static const char *TAG = "TPS546";
 
-static uint8_t DEVICE_ID1[] = {0x54, 0x49, 0x54, 0x6B, 0x24, 0x41}; // TPS546D24A
+static uint8_t DEVICE_ID1[] = {0x54, 0x49, 0x54, 0x6B, 0x24, 0x41}; // TPS546B24A
 static uint8_t DEVICE_ID2[] = {0x54, 0x49, 0x54, 0x6D, 0x24, 0x41}; // TPS546D24A
 static uint8_t DEVICE_ID3[] = {0x54, 0x49, 0x54, 0x6D, 0x24, 0x62}; // TPS546D24S
 
 static uint8_t MFR_ID[] = {'B', 'I', 'T'};
 static uint8_t MFR_MODEL[] = {'A', 'X', 'E'};
-static uint8_t MFR_REVISION[] = {0, 0, 1}; //any change to the TPS546D24 settings require this to be incremented to write to NVM
+static uint8_t MFR_REVISION[] = {0, 0, 2}; //any change to the TPS546D24 settings require this to be incremented to write to NVM
 
 static i2c_master_dev_handle_t tps546_i2c_handle;
 
@@ -290,17 +290,14 @@ static uint16_t float_2_slinear11(float value)
  */
 static float ulinear16_2_float(uint16_t value)
 {
-    uint8_t voutmode;
     int exponent;
     float result;
 
-    smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
-
-    if (voutmode & 0x10) {
+    if (TPS546_VOUT_MODE & 0x10) {
         // exponent is negative
-        exponent = -1 * ((~voutmode & 0x1F) + 1);
+        exponent = -1 * ((~TPS546_VOUT_MODE & 0x1F) + 1);
     } else {
-        exponent = (voutmode & 0x1F);
+        exponent = (TPS546_VOUT_MODE & 0x1F);
     }
     result = (value * powf(2.0, exponent));
     return result;
@@ -315,16 +312,14 @@ static float ulinear16_2_float(uint16_t value)
 */
 static uint16_t float_2_ulinear16(float value)
 {
-    uint8_t voutmode;
     float exponent;
     uint16_t result;
 
-    smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
-    if (voutmode & 0x10) {
+    if (TPS546_VOUT_MODE & 0x10) {
         // exponent is negative
-        exponent = -1 * ((~voutmode & 0x1F) + 1);
+        exponent = -1 * ((~TPS546_VOUT_MODE & 0x1F) + 1);
     } else {
-        exponent = (voutmode & 0x1F);
+        exponent = (TPS546_VOUT_MODE & 0x1F);
     }
 
     result = (value / powf(2.0, exponent));
@@ -341,7 +336,6 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
 {
 	uint8_t data[7];
     uint8_t read_mfr_revision[4];
-    //uint8_t voutmode;
 
     tps546_config = config;
 
@@ -360,9 +354,11 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     {
         ESP_LOGE(TAG, "Cannot find TPS546 regulator - Device ID mismatch");
         return ESP_FAIL;
+    } else {
+        ESP_LOGI(TAG, "TPS%02X%02X%02X%c regulator found", data[2], data[3], data[4], data[5]);
     }
 
-    //write operation register to turn off power
+    //hopefully unnecessary write operation register to turn off power
     ESP_LOGI(TAG, "Setting OPERATION: %02X", OPERATION_OFF);
     smb_write_byte(PMBUS_OPERATION, OPERATION_OFF);
 
