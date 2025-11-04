@@ -364,7 +364,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
 
     read_status_word();
 
-    clear_faults();
+    //clear_faults();
 
     /* Read version number and see if it matches */
     read_mfr_info(read_mfr_revision);
@@ -386,7 +386,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
 
     read_registers();
 
-    clear_faults();
+    //clear_faults();
 
     read_status_word();
 
