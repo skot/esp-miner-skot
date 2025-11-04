@@ -14,7 +14,7 @@
 //#define DEBUG_TPS546_MEAS 1 //uncomment to debug TPS546 measurements
 //#define DEBUG_TPS546_STATUS 1 //uncomment to debug TPS546 status bits
 
-#define I2C_MASTER_NUM 0 /*!< I2C master i2c port number, the number of i2c peripheral interfaces available will depend on the chip */
+#define I2C_MASTER_NUM 0 // I2C master i2c port number
 
 #define WRITE_BIT      I2C_MASTER_WRITE
 #define READ_BIT       I2C_MASTER_READ
@@ -32,9 +32,7 @@ static uint8_t DEVICE_ID3[] = {0x54, 0x49, 0x54, 0x6D, 0x24, 0x62}; // TPS546D24
 
 static uint8_t MFR_ID[] = {'B', 'I', 'T'};
 static uint8_t MFR_MODEL[] = {'A', 'X', 'E'};
-static uint8_t MFR_REVISION[] = {0, 0, 1};
-
-//static uint8_t COMPENSATION_CONFIG[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+static uint8_t MFR_REVISION[] = {0, 0, 1}; //any change to the TPS546D24 settings require this to be incremented to write to NVM
 
 static i2c_master_dev_handle_t tps546_i2c_handle;
 
@@ -356,7 +354,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
 
     /* Establish communication with regulator */
     smb_read_block(PMBUS_IC_DEVICE_ID, data, 6); //the DEVICE_ID block first byte is the length.
-    ESP_LOGI(TAG, "Device ID: %02x %02x %02x %02x %02x %02x", data[0], data[1], data[2], data[3], data[4], data[5]);
+    ESP_LOGI(TAG, "Device ID: %02X %02X %02X %02X %02X %02X", data[0], data[1], data[2], data[3], data[4], data[5]);
     /* There's 3 different known device IDs observed so far */
     if ( (memcmp(data, DEVICE_ID1, 6) != 0) && (memcmp(data, DEVICE_ID2, 6) != 0) && (memcmp(data, DEVICE_ID3, 6) != 0))
     {
@@ -365,9 +363,8 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     }
 
     //write operation register to turn off power
-    u8_value = OPERATION_OFF;
-    ESP_LOGI(TAG, "Power config-OPERATION: %02X", u8_value);
-    smb_write_byte(PMBUS_OPERATION, u8_value);
+    ESP_LOGI(TAG, "Setting OPERATION: %02X", OPERATION_OFF);
+    smb_write_byte(PMBUS_OPERATION, OPERATION_OFF);
 
     read_status_word();
 
@@ -466,8 +463,8 @@ esp_err_t TPS546_clear_faults(void) {
 */
 void TPS546_read_mfr_info(uint8_t *read_mfr_revision)
 {
-    uint8_t read_mfr_id[4];
-    uint8_t read_mfr_model[4];
+    uint8_t read_mfr_id[4] = {0};
+    uint8_t read_mfr_model[4] = {0};
 
     ESP_LOGI(TAG, "Reading MFR info");
     if (smb_read_block(PMBUS_MFR_ID, read_mfr_id, 3) != ESP_OK) {
@@ -484,6 +481,7 @@ void TPS546_read_mfr_info(uint8_t *read_mfr_revision)
         ESP_LOGE(TAG, "Failed to read MFR REVISION");
         return;
     }
+    read_mfr_revision[3] = 0x00;
 
     ESP_LOGI(TAG, "MFR_ID: %02X %02X %02X", read_mfr_id[0], read_mfr_id[1], read_mfr_id[2]);
     ESP_LOGI(TAG, "MFR_MODEL: %02X %02X %02X", read_mfr_model[0], read_mfr_model[1], read_mfr_model[2]);
@@ -496,6 +494,7 @@ void TPS546_read_mfr_info(uint8_t *read_mfr_revision)
 void TPS546_write_entire_config(void)
 {
     ESP_LOGI(TAG, "---Writing new config values to TPS546---");
+    read_status_word();
     ESP_LOGI(TAG, "----- CONFIG");
     /* set up the ON_OFF_CONFIG */
     /* Make sure power is turned off until commanded */
@@ -511,13 +510,30 @@ void TPS546_write_entire_config(void)
     ESP_LOGI(TAG, "Setting PHASE: %02X", tps546_config.TPS546_INIT_PHASE);
     smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
 
+    /* Stack Config */
+    ESP_LOGI(TAG, "Setting STACK CONFIG: %02X", TPS546_STACK_CONFIG);
+    smb_write_byte(PMBUS_STACK_CONFIG, TPS546_STACK_CONFIG);
+    /* Sync Config */
+    ESP_LOGI(TAG, "Setting SYNC CONFIG: %02X", TPS546_SYNC_CONFIG);
+    smb_write_byte(PMBUS_SYNC_CONFIG, TPS546_SYNC_CONFIG);
+    /* Interleave */
+    ESP_LOGI(TAG, "Setting INTERLEAVE: %04X", TPS546_INTERLEAVE);
+    smb_write_word(PMBUS_INTERLEAVE, TPS546_INTERLEAVE);
+    /* capability */
+    ESP_LOGI(TAG, "Setting CAPABILITY: %02X", TPS546_CAPABILITY);
+    smb_write_byte(PMBUS_CAPABILITY, TPS546_CAPABILITY);
+    /* configure the bootup behavior regarding pin detect values vs NVM values */
+    ESP_LOGI(TAG, "Setting PIN_DETECT_OVERRIDE: %04X", INIT_PIN_DETECT_OVERRIDE);
+    smb_write_word(PMBUS_PIN_DETECT_OVERRIDE, INIT_PIN_DETECT_OVERRIDE);
+
     /* Switch frequency */
     ESP_LOGI(TAG, "Setting FREQUENCY: %dKHz", TPS546_INIT_FREQUENCY);
     smb_write_word(PMBUS_FREQUENCY_SWITCH, int_2_slinear11(TPS546_INIT_FREQUENCY));
 
-    /* configure the bootup behavior regarding pin detect values vs NVM values */
-    ESP_LOGI(TAG, "Setting PIN_DETECT_OVERRIDE: %04X", INIT_PIN_DETECT_OVERRIDE);
-    smb_write_word(PMBUS_PIN_DETECT_OVERRIDE, INIT_PIN_DETECT_OVERRIDE);
+
+
+
+    read_status_word();
 
     /* vin voltage */
     ESP_LOGI(TAG, "----- VIN / VOUT");
@@ -576,6 +592,8 @@ void TPS546_write_entire_config(void)
     ESP_LOGI(TAG, "Setting VOUT_UV_FAULT_RESPONSE: %02x", TPS546_INIT_VOUT_UV_FAULT_RESPONSE);
     smb_write_byte(PMBUS_VOUT_UV_FAULT_RESPONSE, TPS546_INIT_VOUT_UV_FAULT_RESPONSE);
 
+    read_status_word();
+
     /* iout current */
     ESP_LOGI(TAG, "----- IOUT");
     ESP_LOGI(TAG, "Setting IOUT_OC_WARN_LIMIT: %.2fA", tps546_config.TPS546_INIT_IOUT_OC_WARN_LIMIT);
@@ -586,6 +604,8 @@ void TPS546_write_entire_config(void)
 
     ESP_LOGI(TAG, "Setting IOUT_OC_FAULT_RESPONSE: %02x", TPS546_INIT_IOUT_OC_FAULT_RESPONSE);
     smb_write_byte(PMBUS_IOUT_OC_FAULT_RESPONSE, TPS546_INIT_IOUT_OC_FAULT_RESPONSE);
+
+    read_status_word();
 
     /* temperature */
     ESP_LOGI(TAG, "----- TEMPERATURE");
@@ -611,15 +631,19 @@ void TPS546_write_entire_config(void)
     ESP_LOGI(TAG, "Setting TOFF_FALL: %dms", TPS546_INIT_TOFF_FALL);
     smb_write_word(PMBUS_TOFF_FALL, int_2_slinear11(TPS546_INIT_TOFF_FALL));
 
-    /* Write new MFR_REVISION number to reflect these parameters */
-    ESP_LOGI(TAG, "Setting MFR ID");
-    smb_write_block(PMBUS_MFR_ID, MFR_ID, 3);
-    ESP_LOGI(TAG, "Setting MFR MODEL");
-    smb_write_block(PMBUS_MFR_ID, MFR_MODEL, 3);
-    ESP_LOGI(TAG, "Setting MFR REVISION");
-    smb_write_block(PMBUS_MFR_ID, MFR_REVISION, 3);
+    read_status_word();
 
-    /* store configuration in NVM */
+    /* Write new MFR_REVISION number to reflect these parameters */
+    ESP_LOGI(TAG, "Setting MFR ID: %02X %02X %02X", MFR_ID[0], MFR_ID[1], MFR_ID[2]);
+    smb_write_block(PMBUS_MFR_ID, MFR_ID, 3);
+    ESP_LOGI(TAG, "Setting MFR MODEL: %02X %02X %02X", MFR_MODEL[0], MFR_MODEL[1], MFR_MODEL[2]);
+    smb_write_block(PMBUS_MFR_MODEL, MFR_MODEL, 3);
+    ESP_LOGI(TAG, "Setting MFR REVISION: %02X %02X %02X", MFR_REVISION[0], MFR_REVISION[1], MFR_REVISION[2]);
+    smb_write_block(PMBUS_MFR_REVISION, MFR_REVISION, 3);
+
+    read_status_word();
+
+    // store configuration in NVM
     ESP_LOGI(TAG, "---Saving new config---");
     smb_write_byte(PMBUS_STORE_USER_ALL, 0x98);
 
