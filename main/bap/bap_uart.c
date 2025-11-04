@@ -177,7 +177,6 @@ static void uart_send_task(void *pvParameters) {
     bap_message_t msg;
     while (1) {
         if (xQueueReceive(bap_uart_send_queue, &msg, portMAX_DELAY) == pdTRUE) {
-            bool message_sent = false;
             
             if (bap_uart_send_mutex != NULL && xSemaphoreTake(bap_uart_send_mutex, pdMS_TO_TICKS(100)) == pdTRUE) {
                 size_t available;
@@ -185,24 +184,19 @@ static void uart_send_task(void *pvParameters) {
                 if (ret != ESP_OK) {
                     ESP_LOGE(TAG, "Failed to get UART buffer status");
                     xSemaphoreGive(bap_uart_send_mutex);
-                    message_sent = true;
                 } else if (available > UART_BUFFER_THRESHOLD) {
                     ESP_LOGW(TAG, "UART buffer threshold exceeded (%zu bytes), dropping message", available);
                     xSemaphoreGive(bap_uart_send_mutex);
-                    message_sent = true;
                 } else {
                     int bytes_sent = uart_write_bytes(BAP_UART_NUM, msg.message, msg.length);
                     if (bytes_sent == msg.length) {
-                        message_sent = true;
                     } else {
                         ESP_LOGW(TAG, "UART send failed or partial: %d of %d bytes", bytes_sent, msg.length);
-                        message_sent = true;
                     }
                     xSemaphoreGive(bap_uart_send_mutex);
                 }
             } else {
                 ESP_LOGW(TAG, "Failed to take UART send mutex, dropping message");
-                message_sent = true;
             }
 
             if (msg.message) {
@@ -216,13 +210,14 @@ static void uart_send_task(void *pvParameters) {
 }
 
 esp_err_t BAP_start_uart_receive_task(void) {
-    xTaskCreate(
+    xTaskCreateWithCaps(
         uart_receive_task,
         "uart_receive_ta",
-        4096,
+        8192,
         NULL,
         5,
-        &uart_receive_task_handle
+        &uart_receive_task_handle,
+        MALLOC_CAP_SPIRAM
     );
 
     //ESP_LOGI(TAG, "UART receive task started");
@@ -266,13 +261,14 @@ esp_err_t BAP_uart_init(void) {
     
     ESP_LOGI(TAG, "BAP UART interface initialized successfully");
     
-    BaseType_t task_result = xTaskCreate(
+    BaseType_t task_result = xTaskCreateWithCaps(
         uart_send_task,
         "uart_send_task",
-        3072,
+        8192,
         NULL,
         5,
-        &uart_send_task_handle
+        &uart_send_task_handle,
+        MALLOC_CAP_SPIRAM
     );
     
     if (task_result != pdPASS) {

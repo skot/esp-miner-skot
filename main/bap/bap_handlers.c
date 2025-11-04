@@ -326,7 +326,7 @@ void BAP_handle_settings(const char *parameter, const char *value) {
 
         case BAP_PARAM_SSID:
             {
-                char *current_ssid = nvs_config_get_string(NVS_CONFIG_WIFI_SSID, "myssid");
+                char *current_ssid = nvs_config_get_string(NVS_CONFIG_WIFI_SSID);
 
                 if (current_ssid && strcmp(current_ssid, value) == 0) {
                     //ESP_LOGI(TAG, "WiFi SSID is already set to: %s", value);
@@ -348,7 +348,7 @@ void BAP_handle_settings(const char *parameter, const char *value) {
         
         case BAP_PARAM_PASSWORD:
             {   
-                char *current_pass = nvs_config_get_string(NVS_CONFIG_WIFI_PASS, "mypass");
+                char *current_pass = nvs_config_get_string(NVS_CONFIG_WIFI_PASS);
 
                 if (current_pass && strcmp(current_pass, value) == 0) {
                     //ESP_LOGI(TAG, "WiFi password is already set");
@@ -375,13 +375,13 @@ void BAP_handle_settings(const char *parameter, const char *value) {
             {
                 uint16_t fan_speed = (uint16_t)atoi(value);
 
-                if (fan_speed < 0 || fan_speed > 100) {
+                if (fan_speed > 100) {
                     ESP_LOGE(TAG, "Invalid fan speed value: %d%% (valid range: 0-100%%)", fan_speed);
                     BAP_send_message(BAP_CMD_ERR, parameter, "invalid_range");
                     return;
                 }
                 //ESP_LOGI(TAG, "Setting fan speed to %d%%", fan_speed);
-                nvs_config_set_u16(NVS_CONFIG_AUTO_FAN_SPEED, 0);
+                nvs_config_set_bool(NVS_CONFIG_AUTO_FAN_SPEED, false);
                 nvs_config_set_u16(NVS_CONFIG_FAN_SPEED, fan_speed);
             }
             break;
@@ -389,13 +389,13 @@ void BAP_handle_settings(const char *parameter, const char *value) {
             {
                 uint16_t auto_fan_speed = (uint16_t)atoi(value);
 
-                if (auto_fan_speed < 0 || auto_fan_speed > 1) {
+                if (auto_fan_speed > 1) {
                     ESP_LOGE(TAG, "Invalid auto fan speed value: %d (valid range: 0-1)", auto_fan_speed);
                     BAP_send_message(BAP_CMD_ERR, parameter, "invalid_range");
                     return;
                 }
                 //ESP_LOGI(TAG, "Setting auto fan speed to %d", auto_fan_speed);
-                nvs_config_set_u16(NVS_CONFIG_AUTO_FAN_SPEED, auto_fan_speed);
+                nvs_config_set_bool(NVS_CONFIG_AUTO_FAN_SPEED, auto_fan_speed);
                 BAP_send_message(BAP_CMD_ACK, parameter, "auto_fan_speed_set");
                 return;
             }

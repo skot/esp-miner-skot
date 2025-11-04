@@ -6,7 +6,7 @@
 #include "asic_task.h"
 #include "common.h"
 #include "power_management_task.h"
-#include "statistics_task.h"
+#include "hashrate_monitor_task.h"
 #include "serial.h"
 #include "stratum_api.h"
 #include "work_queue.h"
@@ -26,15 +26,11 @@ typedef struct {
 
 typedef struct
 {
-    double duration_start;
-    int historical_hashrate_rolling_index;
-    double historical_hashrate_time_stamps[HISTORY_LENGTH];
-    double historical_hashrate[HISTORY_LENGTH];
-    int historical_hashrate_init;
-    double current_hashrate;
+    float current_hashrate;
     int64_t start_time;
     uint64_t shares_accepted;
     uint64_t shares_rejected;
+    uint64_t work_received;
     RejectedReasonStat rejected_reason_stats[10];
     int rejected_reason_stats_count;
     int screen_page;
@@ -42,10 +38,11 @@ typedef struct
     char best_diff_string[DIFF_STRING_SIZE];
     uint64_t best_session_nonce_diff;
     char best_session_diff_string[DIFF_STRING_SIZE];
-    bool FOUND_BLOCK;
+    bool block_found;
     char ssid[32];
     char wifi_status[256];
     char ip_addr_str[16]; // IP4ADDR_STRLEN_MAX
+    char ipv6_addr_str[64]; // IPv6 address string with zone identifier (INET6_ADDRSTRLEN=46 + % + interface=15)
     char ap_ssid[32];
     bool ap_enabled;
     bool is_connected;
@@ -62,8 +59,9 @@ typedef struct
     bool pool_extranonce_subscribe;
     bool fallback_pool_extranonce_subscribe;
     double response_time;
+    bool use_fallback_stratum;
     bool is_using_fallback;
-    uint16_t overheat_mode;
+    bool overheat_mode;
     uint16_t power_fault;
     uint32_t lastClockSync;
     bool is_screen_active;
@@ -93,7 +91,7 @@ typedef struct
     AsicTaskModule ASIC_TASK_MODULE;
     PowerManagementModule POWER_MANAGEMENT_MODULE;
     SelfTestModule SELF_TEST_MODULE;
-    StatisticsModule STATISTICS_MODULE;
+    HashrateMonitorModule HASHRATE_MONITOR_MODULE;
 
     char * extranonce_str;
     int extranonce_2_len;
@@ -115,6 +113,11 @@ typedef struct
 
     bool ASIC_initalized;
     bool psram_is_available;
+
+    int block_height;
+    char * scriptsig;
+    uint64_t network_nonce_diff;
+    char network_diff_string[DIFF_STRING_SIZE];
 } GlobalState;
 
 #endif /* GLOBAL_STATE_H_ */

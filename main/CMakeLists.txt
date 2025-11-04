@@ -9,7 +9,6 @@ SRCS
     "input.c"
     "system.c"
     "work_queue.c"
-    "nvs_device.c"
     "lv_font_portfolio-6x8.c"
     "logo.c"
     "./bap/bap.c"
@@ -29,8 +28,10 @@ SRCS
     "./tasks/asic_result_task.c"
     "./tasks/power_management_task.c"
     "./tasks/statistics_task.c"
+    "./tasks/hashrate_monitor_task.c"
     "./thermal/EMC2101.c"
     "./thermal/EMC2103.c"
+    "./thermal/EMC2302.c"
     "./thermal/TMP1075.c"
     "./thermal/thermal.c"
     "./thermal/PID.c"
@@ -40,6 +41,7 @@ SRCS
     "./power/power.c"
     "./power/vcore.c"
     "./power/asic_reset.c"
+    "./power/asic_init.c"
 
 INCLUDE_DIRS
     "."
