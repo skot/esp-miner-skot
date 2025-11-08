@@ -121,10 +121,10 @@ static void nvs_config_init_fallback(NvsConfigKey key, Settings * setting)
             uint16_t val;
             ret = nvs_get_u16(handle, FALLBACK_KEY_ASICFREQUENCY, &val);
             if (ret == ESP_OK) {
-                ESP_LOGI(TAG, "Migrating NVS config %s to %s (%d)", FALLBACK_KEY_ASICFREQUENCY, setting->nvs_key_name, val);
                 char buf[32];
                 snprintf(buf, sizeof(buf), "%d", val);
                 nvs_set_str(handle, setting->nvs_key_name, buf);
+                ESP_LOGI(TAG, "Migrating NVS config %s to %s (%d)", FALLBACK_KEY_ASICFREQUENCY, setting->nvs_key_name, val);
             }
         }
     }
@@ -133,8 +133,8 @@ static void nvs_config_init_fallback(NvsConfigKey key, Settings * setting)
             uint16_t val;
             ret = nvs_get_u16(handle, FALLBACK_KEY_FANSPEED, &val);
             if (ret == ESP_OK) {
-                ESP_LOGI(TAG, "Migrating NVS config %s to %s (%d)", NVS_CONFIG_MANUAL_FAN_SPEED, setting->nvs_key_name, val);
                 nvs_set_u16(handle, setting->nvs_key_name, val);
+                ESP_LOGI(TAG, "Migrating NVS config %s to %s (%d)", NVS_CONFIG_MANUAL_FAN_SPEED, setting->nvs_key_name, val);
             }
         }
     }
