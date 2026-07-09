@@ -43,19 +43,42 @@ static TPS546_CONFIG get_tps546_config(const FamilyConfig * family)
         config.TPS546_INIT_COMPENSATION_CONFIG[4] = 0x04;
         break;
     case PROTO:
-        config.TPS546_INIT_PHASE = TPS546_INIT_PHASE_SINGLE;
+        config.TPS546_INIT_PHASE = TPS546_INIT_PHASE_MULTI;
         config.TPS546_INIT_VIN_ON = 11.0;
         config.TPS546_INIT_VIN_OFF = 10.5;
         config.TPS546_INIT_VIN_UV_WARN_LIMIT = 11.0;
         config.TPS546_INIT_VIN_OV_FAULT_LIMIT = 14.0;
-        config.TPS546_INIT_SCALE_LOOP = 0.25;
+        config.TPS546_INIT_HAS_EXTENDED_CONFIG = true;
+        config.TPS546_INIT_SMBALERT_MASK[0] = 0x0200;
+        config.TPS546_INIT_SMBALERT_MASK[1] = 0x1800;
+        config.TPS546_INIT_SMBALERT_MASK[2] = 0xE800;
+        config.TPS546_INIT_SMBALERT_MASK[3] = 0x0000;
+        config.TPS546_INIT_SMBALERT_MASK[4] = 0x0000;
+        config.TPS546_INIT_SMBALERT_MASK[5] = 0x0100;
+        config.TPS546_INIT_SMBALERT_MASK[6] = 0x4200;
+        config.TPS546_INIT_INTERLEAVE = 0x0010;
+        config.TPS546_INIT_MISC_OPTIONS = 0x0000;
+        config.TPS546_INIT_PIN_DETECT_OVERRIDE = 0x0000; // use NVM values
+        config.TPS546_INIT_DEVICE_ADDRESS = 0x24;
+        config.TPS546_INIT_POWER_STAGE_CONFIG = 0x70;
+        config.TPS546_INIT_TELEMETRY_CONFIG[0] = 0x03;
+        config.TPS546_INIT_TELEMETRY_CONFIG[1] = 0x03;
+        config.TPS546_INIT_TELEMETRY_CONFIG[2] = 0x03;
+        config.TPS546_INIT_TELEMETRY_CONFIG[3] = 0x03;
+        config.TPS546_INIT_TELEMETRY_CONFIG[4] = 0x03;
+        config.TPS546_INIT_TELEMETRY_CONFIG[5] = 0x00;
+        config.TPS546_INIT_VOUT_TRIM = 0x0000;
+        config.TPS546_INIT_VOUT_TRANSITION_RATE = 0xE010;
+        config.TPS546_INIT_IOUT_CAL_GAIN = 0xC880;
+        config.TPS546_INIT_IOUT_CAL_OFFSET = 0xE000;
+        config.TPS546_INIT_SCALE_LOOP = 0.125;
         config.TPS546_INIT_VOUT_MIN = 1.92;
         config.TPS546_INIT_VOUT_MAX = 2.4;
-        config.TPS546_INIT_VOUT_COMMAND = 1.2;
-        config.TPS546_INIT_IOUT_OC_WARN_LIMIT = 50.00;
-        config.TPS546_INIT_IOUT_OC_FAULT_LIMIT = 55.00;
+        config.TPS546_INIT_VOUT_COMMAND = 2.2;
+        config.TPS546_INIT_IOUT_OC_WARN_LIMIT = 35.00;
+        config.TPS546_INIT_IOUT_OC_FAULT_LIMIT = 40.00;
         config.TPS546_INIT_FREQUENCY = 1300;
-        // Multi-phase stacking configuration for 2 TPS modules
+        // single phase configuration for 1 TPS module
         config.TPS546_INIT_STACK_CONFIG = 0x0000; // 1 module
         config.TPS546_INIT_SYNC_CONFIG = 0x00; // Enable Auto Detect SYNC
         config.TPS546_INIT_COMPENSATION_CONFIG[0] = 0x13;

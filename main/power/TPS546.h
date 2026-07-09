@@ -55,6 +55,20 @@ typedef struct
   
   uint16_t TPS546_INIT_STACK_CONFIG; /* Stack configuration */
   uint8_t TPS546_INIT_SYNC_CONFIG; /* Sync configuration */
+
+  bool TPS546_INIT_HAS_EXTENDED_CONFIG;
+  uint16_t TPS546_INIT_SMBALERT_MASK[7];
+  uint16_t TPS546_INIT_INTERLEAVE;
+  uint16_t TPS546_INIT_MISC_OPTIONS;
+  uint16_t TPS546_INIT_PIN_DETECT_OVERRIDE; /* Pin detect override configuration */
+  uint8_t TPS546_INIT_DEVICE_ADDRESS;
+  uint8_t TPS546_INIT_POWER_STAGE_CONFIG;
+  uint8_t TPS546_INIT_TELEMETRY_CONFIG[6];
+  uint16_t TPS546_INIT_VOUT_TRIM;
+  uint16_t TPS546_INIT_VOUT_TRANSITION_RATE;
+  uint16_t TPS546_INIT_IOUT_CAL_GAIN;
+  uint16_t TPS546_INIT_IOUT_CAL_OFFSET;
+
   uint8_t TPS546_INIT_COMPENSATION_CONFIG[5];
   
 } TPS546_CONFIG;
@@ -117,8 +131,6 @@ typedef struct
 
 #define INIT_STACK_CONFIG 0x0001 //One-Slave, 2-phase
 #define INIT_SYNC_CONFIG 0x00D0 //Enable Auto Detect SYNC
-#define INIT_PIN_DETECT_OVERRIDE 0xFFFF //use pin values
-
 /*-------------------------*/
 
 /* PMBUS_ON_OFF_CONFIG initialization values */
