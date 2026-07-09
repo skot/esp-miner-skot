@@ -576,6 +576,7 @@
                             <thead>
                                 <tr>
                                     <th *ngIf="asicAmount > 1" class="text-left">ASIC</th>
+                                    <th>Total</th>
                                     <ng-container *ngIf="asicDomainsAmount as asicDomainsAmount">
                                         <th *ngIf="asicDomainsAmount > 0" [attr.colspan]="asicDomainsAmount">
                                             {{ asicDomainsAmount == 1 ? "Domain" : "Domains" }}
@@ -584,14 +585,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr class="cursor-pointer" *ngFor="let asic of info.hashrateMonitor?.asics; let i = index; trackBy: trackByIndex"
-                                        [pTooltip]="(asicAmount > 1 ? 'ASIC ' + (i + 1) + ' - ' : '') + 'Error count: ' + asic.errorCount"
-                                        tooltipPosition="bottom">
+                                <tr class="cursor-pointer" *ngFor="let asic of info.hashrateMonitor?.asics; let i = index; trackBy: trackByIndex"
+                                    [pTooltip]="(asicAmount > 1 ? 'ASIC ' + (i + 1) + ' - ' : '') + 'Error count: ' + asic.errorCount"
+                                    tooltipPosition="bottom">
                                     <td *ngIf="asicAmount > 1" class="text-color-secondary text-left">
                                         {{ i + 1 }}
                                     </td>
-                                <td *ngFor="let domain of asic?.domains; trackBy: trackByIndex"
-                                    [style.--heatmap-bg]="getHeatmapColor(domain, info.expectedHashrate)"
+                                    <td [style.--heatmap-bg]="getAsicHeatmapColor(asic.total, info.expectedHashrate)"
+                                        [style.height]="(asicAmount <= 2 ? '2rem' : null)"
+                                        class="text-center">
+                                        <span class="text-xs">{{ asic.total | hashSuffix }}</span>
+                                    </td>
+                                    <td *ngFor="let domain of asic?.domains; trackBy: trackByIndex"
+                                        [style.--heatmap-bg]="getHeatmapColor(domain, info.expectedHashrate)"
                                         [style.height]="(asicAmount <= 2 ? '2rem' : null)"
                                         class="text-center">
                                         <span class="text-xs">{{ domain | hashSuffix }}</span>

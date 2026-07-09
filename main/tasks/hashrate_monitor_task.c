@@ -28,6 +28,7 @@ static float hashrate_1h_prev;
 static float hashrate_1h[HASHRATE_1H_SIZE];
 
 static const char *TAG = "hashrate_monitor";
+static uint8_t hashrate_publish_debug_count = 5;
 
 static float sum_hashrates(measurement_t * measurement, int asic_count)
 {
@@ -85,6 +86,26 @@ void update_hash_counter(measurement_t * measurement, uint32_t value, uint64_t t
 
     measurement->value = value;
     measurement->time_us = time_us;
+}
+
+void hashrate_monitor_set_hashrate(void *pvParameters, uint8_t asic_nr, float hashrate_ghs, uint64_t timestamp_us)
+{
+    GlobalState * GLOBAL_STATE = (GlobalState *)pvParameters;
+    HashrateMonitorModule * HASHRATE_MONITOR_MODULE = &GLOBAL_STATE->HASHRATE_MONITOR_MODULE;
+
+    int asic_count = GLOBAL_STATE->DEVICE_CONFIG.family.asic_count;
+
+    if (asic_nr >= asic_count) {
+        ESP_LOGE(TAG, "Asic nr out of bounds [%d]", asic_nr);
+        return;
+    }
+
+    pthread_mutex_lock(&HASHRATE_MONITOR_MODULE->lock);
+    HASHRATE_MONITOR_MODULE->total_measurement[asic_nr].hashrate = hashrate_ghs;
+    HASHRATE_MONITOR_MODULE->total_measurement[asic_nr].time_us = timestamp_us;
+    HASHRATE_MONITOR_MODULE->domain_measurements[asic_nr][0].hashrate = hashrate_ghs;
+    HASHRATE_MONITOR_MODULE->domain_measurements[asic_nr][0].time_us = timestamp_us;
+    pthread_mutex_unlock(&HASHRATE_MONITOR_MODULE->lock);
 }
 
 static void init_averages()
@@ -186,6 +207,13 @@ void hashrate_monitor_task(void *pvParameters)
             pthread_mutex_lock(&HASHRATE_MONITOR_MODULE->lock);
             float current_hashrate = sum_hashrates(HASHRATE_MONITOR_MODULE->total_measurement, asic_count);
             float error_hashrate = sum_hashrates(HASHRATE_MONITOR_MODULE->error_measurement, asic_count);
+            if (hashrate_publish_debug_count > 0) {
+                ESP_LOGI(TAG, "Publishing hashrate %.2f GH/s", current_hashrate);
+                for (int asic_nr = 0; asic_nr < asic_count; asic_nr++) {
+                    ESP_LOGI(TAG, "  ASIC %d total %.2f GH/s", asic_nr, HASHRATE_MONITOR_MODULE->total_measurement[asic_nr].hashrate);
+                }
+                hashrate_publish_debug_count--;
+            }
             pthread_mutex_unlock(&HASHRATE_MONITOR_MODULE->lock);
 
             SYSTEM_MODULE->current_hashrate = current_hashrate;

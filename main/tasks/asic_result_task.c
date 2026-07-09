@@ -63,6 +63,9 @@ void ASIC_result_task(void *pvParameters)
         active_job_snapshot.jobid = active_job_snapshot.jobid ? strdup(active_job_snapshot.jobid) : NULL;
         active_job_snapshot.extranonce2 = active_job_snapshot.extranonce2 ? strdup(active_job_snapshot.extranonce2) : NULL;
         pthread_mutex_unlock(&GLOBAL_STATE->valid_jobs_lock);
+
+        uint32_t share_ntime = asic_result->ntime != 0 ? asic_result->ntime : active_job_snapshot.ntime;
+        active_job_snapshot.ntime = share_ntime;
         bm_job *active_job = &active_job_snapshot;
         // check the nonce difficulty
         double nonce_diff = test_nonce_value(active_job, asic_result->nonce, asic_result->rolled_version);
@@ -91,13 +94,13 @@ void ASIC_result_task(void *pvParameters)
                     hex2bin(active_job->extranonce2, extranonce_2, en2_len);
                     ret = stratum_v2_submit_share_extended(GLOBAL_STATE, sv2_job_id,
                                                            asic_result->nonce,
-                                                           active_job->ntime,
+                                                           share_ntime,
                                                            asic_result->rolled_version,
                                                            extranonce_2, en2_len);
                 } else {
                     ret = stratum_v2_submit_share(GLOBAL_STATE, sv2_job_id,
                                                    asic_result->nonce,
-                                                   active_job->ntime,
+                                                   share_ntime,
                                                    asic_result->rolled_version);
                 }
 
@@ -124,7 +127,7 @@ void ASIC_result_task(void *pvParameters)
                         user,
                         active_job->jobid,
                         active_job->extranonce2,
-                        active_job->ntime,
+                        share_ntime,
                         asic_result->nonce,
                         version_bits,
                         &sent_time_us);
@@ -146,7 +149,7 @@ void ASIC_result_task(void *pvParameters)
 
         SYSTEM_notify_found_nonce(GLOBAL_STATE, nonce_diff, active_job->target);
 
-        scoreboard_add(&GLOBAL_STATE->SYSTEM_MODULE.scoreboard, nonce_diff, active_job->jobid, active_job->extranonce2, active_job->ntime, asic_result->nonce, version_bits);
+        scoreboard_add(&GLOBAL_STATE->SYSTEM_MODULE.scoreboard, nonce_diff, active_job->jobid, active_job->extranonce2, share_ntime, asic_result->nonce, version_bits);
 
         free(active_job->jobid);
         free(active_job->extranonce2);

@@ -6,6 +6,7 @@
 #include "bm1366.h"
 #include "bm1368.h"
 #include "bm1370.h"
+#include "mc3.h"
 
 #include "asic.h"
 #include "device_config.h"
@@ -25,6 +26,8 @@ uint8_t ASIC_init(GlobalState * GLOBAL_STATE)
             return BM1368_init(GLOBAL_STATE);
         case BM1370:
             return BM1370_init(GLOBAL_STATE);
+        case MC3:
+            return MC3_init(GLOBAL_STATE);
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
             return 0;
@@ -42,6 +45,8 @@ task_result * ASIC_process_work(GlobalState * GLOBAL_STATE)
             return BM1368_process_work(GLOBAL_STATE);
         case BM1370:
             return BM1370_process_work(GLOBAL_STATE);
+        case MC3:
+            return MC3_process_work(GLOBAL_STATE);
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot process work", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
             return NULL;
@@ -59,6 +64,8 @@ int ASIC_set_max_baud(GlobalState * GLOBAL_STATE)
             return BM1368_set_max_baud();
         case BM1370:
             return BM1370_set_max_baud();
+        case MC3:
+            return MC3_set_max_baud();
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot set max baud", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
             return 0;
@@ -79,6 +86,9 @@ void ASIC_send_work(GlobalState * GLOBAL_STATE, void * next_job)
             break;
         case BM1370:
             BM1370_send_work(GLOBAL_STATE, next_job);
+            break;
+        case MC3:
+            MC3_send_work(GLOBAL_STATE, next_job);
             break;
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot send work", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
@@ -101,6 +111,9 @@ void ASIC_set_version_mask(GlobalState * GLOBAL_STATE, uint32_t mask)
         case BM1370:
             BM1370_set_version_mask(mask);
             break;
+        case MC3:
+            MC3_set_version_mask(mask);
+            break;
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot set version mask", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
             break;
@@ -121,6 +134,9 @@ void ASIC_set_frequency(GlobalState * GLOBAL_STATE)
             return;
         case BM1370:
             do_frequency_transition(GLOBAL_STATE, BM1370_send_hash_frequency);
+            return;
+        case MC3:
+            GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency = MC3_send_hash_frequency(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value);
             return;
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot set frequency", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
@@ -147,6 +163,9 @@ void ASIC_set_nonce_space(GlobalState * GLOBAL_STATE)
         case BM1370:
             BM1370_set_nonce_space(nonce_percent, frequency, asic_count, cores);
             return;
+        case MC3:
+            MC3_set_nonce_space(nonce_percent, frequency, asic_count, cores);
+            return;
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot set nonce space", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
             return;
@@ -169,6 +188,8 @@ double ASIC_get_asic_job_frequency_ms(GlobalState * GLOBAL_STATE)
         case BM1368:
         case BM1370:
             return asic_default_timeout_divided;
+        case MC3:
+            return 100;
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot compute job frequency", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
             return 500;
@@ -189,6 +210,9 @@ void ASIC_read_registers(GlobalState * GLOBAL_STATE)
             break;
         case BM1370:
             BM1370_read_registers();
+            break;
+        case MC3:
+            MC3_read_registers(GLOBAL_STATE);
             break;
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot read registers", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);

@@ -56,6 +56,7 @@ void create_jobs_task(void *pvParameters)
     double difficulty = GLOBAL_STATE->pool_difficulty;
     void *current_work = NULL;
     stratum_protocol_t current_work_protocol = GLOBAL_STATE->stratum_protocol;
+    bool current_work_sent = false;
     uint64_t extranonce_2 = 0;
     int timeout_ms = ASIC_get_asic_job_frequency_ms(GLOBAL_STATE);
 
@@ -76,6 +77,7 @@ void create_jobs_task(void *pvParameters)
                          active_protocol == STRATUM_PROTOCOL_V2 ? STRATUM_V2 : STRATUM_V1);
                 free_work_item(GLOBAL_STATE, current_work, current_work_protocol);
                 current_work = NULL;
+                current_work_sent = false;
             }
             current_work_protocol = active_protocol;
         }
@@ -90,6 +92,7 @@ void create_jobs_task(void *pvParameters)
             // Free previous work using the protocol it was created under
             free_work_item(GLOBAL_STATE, current_work, current_work_protocol);
             current_work = NULL;
+            current_work_sent = false;
 
             if (active_protocol != current_work_protocol) {
                 // Protocol switched during our blocking dequeue.
@@ -116,6 +119,7 @@ void create_jobs_task(void *pvParameters)
             }
 
             current_work = new_work;
+            current_work_sent = false;
 
             if (GLOBAL_STATE->new_set_mining_difficulty_msg) {
                 ESP_LOGI(TAG, "New pool difficulty %.2f", GLOBAL_STATE->pool_difficulty);
@@ -142,7 +146,7 @@ void create_jobs_task(void *pvParameters)
             } else {
                 clean = ((mining_notify *)current_work)->clean_jobs;
             }
-            if (!clean) {
+            if (!clean && GLOBAL_STATE->DEVICE_CONFIG.family.asic.id != MC3) {
                 continue;
             }
         } else {
@@ -150,12 +154,11 @@ void create_jobs_task(void *pvParameters)
                 vTaskDelay(100 / portTICK_PERIOD_MS);
                 continue;
             }
-            // SV2 standard channel: the ASIC has enough nonce+version space
-            // (2^32 nonces x version rolls) to keep mining without re-feeding.
-            // Re-sending the same job restarts the nonce search from 0 and
-            // produces duplicate shares. Only send work on new jobs.
-            // (V1 and SV2 extended are fine — extranonce_2 gives unique work each time.)
-            if (active_protocol == STRATUM_PROTOCOL_V2 && !stratum_v2_is_extended_channel(GLOBAL_STATE)) {
+            // SV2 standard and MC3 have enough nonce+version space to keep mining
+            // without re-feeding. Re-sending the same job restarts the search and,
+            // on MC3, hammers the register path. Only send work on new jobs.
+            if ((active_protocol == STRATUM_PROTOCOL_V2 && !stratum_v2_is_extended_channel(GLOBAL_STATE)) ||
+                (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3 && current_work_sent)) {
                 timeout_ms = ASIC_get_asic_job_frequency_ms(GLOBAL_STATE);
                 continue;
             }
@@ -167,6 +170,7 @@ void create_jobs_task(void *pvParameters)
         if (active_protocol != current_work_protocol) {
             free_work_item(GLOBAL_STATE, current_work, current_work_protocol);
             current_work = NULL;
+            current_work_sent = false;
             current_work_protocol = active_protocol;
             timeout_ms = ASIC_get_asic_job_frequency_ms(GLOBAL_STATE);
             continue;
@@ -184,6 +188,7 @@ void create_jobs_task(void *pvParameters)
             generate_work(GLOBAL_STATE, (mining_notify *)current_work, extranonce_2, difficulty);
             extranonce_2++;
         }
+        current_work_sent = true;
         timeout_ms = ASIC_get_asic_job_frequency_ms(GLOBAL_STATE);
     }
 }

@@ -1144,6 +1144,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     return `rgb(${finalR}, ${finalG}, ${finalB})`;
   }
 
+  public getAsicHeatmapColor(asicHashrate: number, expectedHashrate: number): string {
+    const expected = expectedHashrate || 1;
+    const ratio = Math.max(0, Math.min(2, (asicHashrate / expected) * this.asicsAmount));
+    const deviation = isNaN(ratio) ? 1 : Math.abs(ratio - 1);
+    const t = 1 - Math.pow(1 - deviation, 1.5);
+    const target = ratio > 1 ? 255 : 0;
+
+    const { r, g, b } = this.primaryColorRgb;
+
+    const finalR = (r * (1 - t) + target * t) | 0;
+    const finalG = (g * (1 - t) + target * t) | 0;
+    const finalB = (b * (1 - t) + target * t) | 0;
+
+    return `rgb(${finalR}, ${finalG}, ${finalB})`;
+  }
+
   private updateChartDataSources(info: ISystemInfo) {
     const hasVrTemp = !!info.vrTemp;
     const hasAsicTemp2 = !!(info.temp2 && info.temp2 !== -1);

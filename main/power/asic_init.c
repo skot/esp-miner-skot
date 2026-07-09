@@ -1,4 +1,5 @@
 #include "asic_init.h"
+#include "esp_check.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -6,8 +7,33 @@
 #include "asic_common.h"
 #include "serial.h"
 #include "asic_reset.h"
+#include "device_config.h"
+#include "driver/gpio.h"
+
+#define GPIO_PROTO_VDDIO_5V_EN GPIO_NUM_21
 
 static const char *TAG = "asic_init";
+
+static esp_err_t enable_proto_vddio_5v(const GlobalState *GLOBAL_STATE)
+{
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id != PROTO) {
+        return ESP_OK;
+    }
+
+    gpio_config_t vddio_5v_conf = {
+        .pin_bit_mask = (1ULL << GPIO_PROTO_VDDIO_5V_EN),
+        .mode = GPIO_MODE_OUTPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
+
+    ESP_RETURN_ON_ERROR(gpio_config(&vddio_5v_conf), TAG, "Failed to configure Proto VDDIO 5V enable GPIO");
+    ESP_RETURN_ON_ERROR(gpio_set_level(GPIO_PROTO_VDDIO_5V_EN, 1), TAG, "Failed to enable Proto VDDIO 5V");
+    ESP_LOGI(TAG, "Proto VDDIO 5V enabled on GPIO%d", GPIO_PROTO_VDDIO_5V_EN);
+
+    return ESP_OK;
+}
 
 uint8_t asic_initialize(GlobalState *GLOBAL_STATE, asic_init_mode_t mode, uint32_t stabilization_delay_ms)
 {
@@ -41,6 +67,11 @@ uint8_t asic_initialize(GlobalState *GLOBAL_STATE, asic_init_mode_t mode, uint32
         ESP_LOGI(TAG, "UART already initialized, resetting baud to %d", UART_FREQ);
         SERIAL_set_baud(UART_FREQ);
         vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
+
+    if (enable_proto_vddio_5v(GLOBAL_STATE) != ESP_OK) {
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto VDDIO 5V enable failed";
+        return 0;
     }
 
     ESP_LOGI(TAG, "Detecting ASIC chips...");
