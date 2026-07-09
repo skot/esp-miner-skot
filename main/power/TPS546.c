@@ -550,8 +550,8 @@ void TPS546_write_entire_config(void)
     smb_write_byte(PMBUS_PHASE, tps546_config.TPS546_INIT_PHASE);
 
     /* Switch frequency */
-    ESP_LOGI(TAG, "Setting FREQUENCY: %dMHz", TPS546_INIT_FREQUENCY);
-    smb_write_word(PMBUS_FREQUENCY_SWITCH, int_2_slinear11(TPS546_INIT_FREQUENCY));
+    ESP_LOGI(TAG, "Setting FREQUENCY: %dkHz", tps546_config.TPS546_INIT_FREQUENCY);
+    smb_write_word(PMBUS_FREQUENCY_SWITCH, int_2_slinear11(tps546_config.TPS546_INIT_FREQUENCY));
 
     if(tps546_config.TPS546_INIT_COMPENSATION_CONFIG[0] != 0 &&
        tps546_config.TPS546_INIT_COMPENSATION_CONFIG[1] != 0 &&
@@ -1288,4 +1288,3 @@ esp_err_t TPS546_snapshot_status(TPS546_StatusSnapshot *s) {
 
     ESP_LOGE(TAG, "=================================================");
 }
-
