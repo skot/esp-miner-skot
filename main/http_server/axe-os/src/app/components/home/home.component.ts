@@ -840,6 +840,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         processed.voltage = processed.voltage / 1000;
         processed.current = processed.current / 1000;
         processed.coreVoltageActual = processed.coreVoltageActual / 1000;
+        processed.asicVoltages = (processed.asicVoltages || []).map(voltage => voltage / 1000);
         processed.coreVoltage = processed.coreVoltage / 1000;
         return processed;
       }),
@@ -854,7 +855,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.maxPower = Math.max(info.maxPower || 0, info.power || 0);
         this.nominalVoltage = info.nominalVoltage || 5;
-        this.maxTemp = Math.max(75, info.temp || 0);
+        this.maxTemp = Math.max(75, info.temp || 0, ...(info.asicTemps || []));
         this.maxRpm = Math.max(7000, info.fanrpm || 0, info.fan2rpm || 0);
         this.maxFrequency = Math.max(800, info.actualFrequency || info.frequency || 0);
         this.statsLimit = info.statsLimit || 720;
@@ -938,9 +939,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         formatted.voltage = parseFloat(formatted.voltage.toFixed(1));
         formatted.current = parseFloat(formatted.current.toFixed(1));
         formatted.coreVoltageActual = parseFloat(formatted.coreVoltageActual.toFixed(2));
+        formatted.asicVoltages = (formatted.asicVoltages || []).map(voltage => parseFloat(voltage.toFixed(2)));
         formatted.coreVoltage = parseFloat(formatted.coreVoltage.toFixed(2));
         formatted.temp = parseFloat(formatted.temp.toFixed(1));
         formatted.temp2 = parseFloat(formatted.temp2.toFixed(1));
+        formatted.asicTemps = (formatted.asicTemps || []).map(temp => parseFloat(temp.toFixed(1)));
         formatted.responseTime = parseFloat(formatted.responseTime.toFixed(1));
 
         return formatted;

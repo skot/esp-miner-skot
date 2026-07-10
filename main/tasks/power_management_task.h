@@ -1,6 +1,10 @@
 #ifndef POWER_MANAGEMENT_TASK_H_
 #define POWER_MANAGEMENT_TASK_H_
 
+#include <stdint.h>
+
+#define MAX_ASIC_TEMPS 8
+
 typedef struct
 {
     float fan_perc;
@@ -8,6 +12,10 @@ typedef struct
     uint16_t fan2_rpm;
     float chip_temp_avg;
     float chip_temp2_avg;
+    float asic_temps[MAX_ASIC_TEMPS];
+    uint8_t asic_temp_count;
+    float asic_voltages[MAX_ASIC_TEMPS];
+    uint8_t asic_voltage_count;
     float vr_temp;
     float voltage;
     float frequency_value;

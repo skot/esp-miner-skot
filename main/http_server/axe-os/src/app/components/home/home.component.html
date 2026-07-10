@@ -284,14 +284,32 @@
                         </p-progressbar>
                     </div>
 
-                    <div>
-                        <h6 class="flex justify-content-between mb-1">
-                            Measured ASIC Voltage<span>{{info.coreVoltageActual}} V</span>
-                        </h6>
-                        <p-progressbar [value]="(info.coreVoltageActual / 1.8) * 100" [styleClass]="'p-progressbar--thin'">
-                            <ng-template pTemplate="content" let-value></ng-template>
-                        </p-progressbar>
-                    </div>
+                    <ng-container *ngIf="info.asicVoltages?.length; else legacyAsicVoltage">
+                        <div class="mb-3" *ngFor="let asicVoltage of info.asicVoltages; let i = index; trackBy: trackByIndex">
+                            <h6 class="flex justify-content-between mb-1">
+                                Measured ASIC Voltage {{ i + 1 }}
+                                <span>
+                                    <ng-container *ngIf="asicVoltage > 0; else noValue">
+                                        {{asicVoltage}} V
+                                    </ng-container>
+                                </span>
+                            </h6>
+                            <p-progressbar [value]="asicVoltage > 0 ? (asicVoltage / 1.8) * 100 : 0" [styleClass]="'p-progressbar--thin'">
+                                <ng-template pTemplate="content" let-value></ng-template>
+                            </p-progressbar>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #legacyAsicVoltage>
+                        <div>
+                            <h6 class="flex justify-content-between mb-1">
+                                Measured ASIC Voltage<span>{{info.coreVoltageActual}} V</span>
+                            </h6>
+                            <p-progressbar [value]="(info.coreVoltageActual / 1.8) * 100" [styleClass]="'p-progressbar--thin'">
+                                <ng-template pTemplate="content" let-value></ng-template>
+                            </p-progressbar>
+                        </div>
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -302,44 +320,66 @@
                 <div class="card">
                     <h4 class="text-center">Heat</h4>
 
-                    <div class="mb-3">
-                        <h6 class="flex justify-content-between mb-1">
-                            <ng-container *ngIf="info.temp2 > 0; else singleTemp">
-                                ASIC Temperature 1
-                            </ng-container>
-                            <ng-template #singleTemp>
-                                ASIC Temperature
-                            </ng-template>
-                            <span>
-                                <ng-container *ngIf="info.temp > 0; else noValue">
-                                    {{info.temp}} &deg;C
+                    <ng-container *ngIf="info.asicTemps?.length; else legacyAsicTemps">
+                        <div class="mb-3" *ngFor="let asicTemp of info.asicTemps; let i = index; trackBy: trackByIndex">
+                            <h6 class="flex justify-content-between mb-1">
+                                ASIC Temperature {{ i + 1 }}
+                                <span>
+                                    <ng-container *ngIf="asicTemp > 0; else noValue">
+                                        {{asicTemp}} &deg;C
+                                    </ng-container>
+                                </span>
+                            </h6>
+                            <p-progressbar [value]="(asicTemp / maxTemp) * 100" [styleClass]="'p-progressbar--thin'">
+                                <ng-template pTemplate="content" let-value></ng-template>
+                            </p-progressbar>
+
+                            <strong class="text-red-500" *ngIf="asicTemp >= 70">
+                                Danger: High Temperature
+                            </strong>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #legacyAsicTemps>
+                        <div class="mb-3">
+                            <h6 class="flex justify-content-between mb-1">
+                                <ng-container *ngIf="info.temp2 > 0; else singleTemp">
+                                    ASIC Temperature 1
                                 </ng-container>
-                            </span>
-                        </h6>
-                        <p-progressbar [value]="(info.temp / maxTemp) * 100" [styleClass]="'p-progressbar--thin'">
-                            <ng-template pTemplate="content" let-value></ng-template>
-                        </p-progressbar>
+                                <ng-template #singleTemp>
+                                    ASIC Temperature
+                                </ng-template>
+                                <span>
+                                    <ng-container *ngIf="info.temp > 0; else noValue">
+                                        {{info.temp}} &deg;C
+                                    </ng-container>
+                                </span>
+                            </h6>
+                            <p-progressbar [value]="(info.temp / maxTemp) * 100" [styleClass]="'p-progressbar--thin'">
+                                <ng-template pTemplate="content" let-value></ng-template>
+                            </p-progressbar>
 
-                        <strong class="text-red-500" *ngIf="info.temp >= 70">
-                            Danger: High Temperature
-                        </strong>
-                    </div>
+                            <strong class="text-red-500" *ngIf="info.temp >= 70">
+                                Danger: High Temperature
+                            </strong>
+                        </div>
 
-                    <div class="mb-3" *ngIf="info.temp2 > 0">
-                        <h6 class="flex justify-content-between mb-1">
-                            ASIC Temperature 2
-                            <span>
-                                {{info.temp2}} &deg;C
-                            </span>
-                        </h6>
-                        <p-progressbar [value]="(info.temp2 / maxTemp) * 100" [styleClass]="'p-progressbar--thin'">
-                            <ng-template pTemplate="content" let-value></ng-template>
-                        </p-progressbar>
+                        <div class="mb-3" *ngIf="info.temp2 > 0">
+                            <h6 class="flex justify-content-between mb-1">
+                                ASIC Temperature 2
+                                <span>
+                                    {{info.temp2}} &deg;C
+                                </span>
+                            </h6>
+                            <p-progressbar [value]="(info.temp2 / maxTemp) * 100" [styleClass]="'p-progressbar--thin'">
+                                <ng-template pTemplate="content" let-value></ng-template>
+                            </p-progressbar>
 
-                        <strong class="text-red-500" *ngIf="info.temp2 >= 70">
-                            Danger: High Temperature
-                        </strong>
-                    </div>
+                            <strong class="text-red-500" *ngIf="info.temp2 >= 70">
+                                Danger: High Temperature
+                            </strong>
+                        </div>
+                    </ng-template>
 
                     <div class="mb-3" *ngIf="info.vrTemp > 0">
                         <h6 class="flex justify-content-between mb-1">

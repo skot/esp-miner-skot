@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <pthread.h>
+#include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -25,6 +26,20 @@
 #define MC3_ULINK_READ_META_FIELDS 3
 #define MC3_ULINK_RESPONSE_DELAY_MS 2
 #define MC3_INIT_RESPONSE_BYTES 15
+
+#define MC3_THERMAL_SDIF_ENABLE 0x00051020
+#define MC3_THERMAL_CLOCK 0x00051010
+#define MC3_THERMAL_COMMAND 0x00051028
+#define MC3_THERMAL_STATUS 0x00051024
+#define MC3_THERMAL_DONE 0x00051238
+#define MC3_THERMAL_DOUT 0x00051240
+#define MC3_VOLTAGE_SDIF_ENABLE 0x00053020
+#define MC3_VOLTAGE_CLOCK 0x00053010
+#define MC3_VOLTAGE_COMMAND 0x00053028
+#define MC3_VOLTAGE_STATUS 0x00053024
+#define MC3_VOLTAGE_DONE 0x00053238
+#define MC3_VOLTAGE_DOUT_BASE 0x00053240
+#define MC3_VOLTAGE_CLOCK_DEFAULT 0x01010000
 
 #define MC3_GLOBAL_SPD 0x00011000
 #define MC3_SPDLOG_TIMER 0x00011004
@@ -53,6 +68,13 @@
 #define MC3_SPDLOG_XCLK_HZ 12500000.0
 #define MC3_SPDLOG_TIMER_COUNT 10
 #define MC3_SPDLOG_CORE_TARGET 0x00
+#define MC3_SPDLOG_POLL_INTERVAL_US 3000000
+#define MC3_THERMAL_RESOLUTION_BITS 12
+#define MC3_VOLTAGE_RESOLUTION_BITS 14
+#define MC3_VOLTAGE_VREF 0.5945f
+#define MC3_VOLTAGE_VDD_CHANNEL_A 13
+#define MC3_VOLTAGE_VDD_CHANNEL_B 14
+#define MC3_VOLTAGE_VDD_SCALE 2.0f
 
 #define MC3_V_WORK_INIT 0x00000200
 #define MC3_V_WORK_NTIME 0x00000204
@@ -82,6 +104,7 @@ static uint8_t mc3_job_id;
 static int64_t mc3_last_nonce_poll_us;
 static uint8_t mc3_next_nonce_chip;
 static bool mc3_spdlog_started;
+static int64_t mc3_spdlog_start_us;
 static task_result mc3_pending_results[MC3_PENDING_RESULTS_SIZE];
 static uint8_t mc3_pending_head;
 static uint8_t mc3_pending_count;
@@ -295,6 +318,29 @@ static uint32_t mc3_rolltime_for_frequency(uint16_t frequency_mhz)
     return (uint32_t)(((16777216.0 * 12.5) / frequency_mhz) + 0.5) - MC3_ROLLTIME_OFFSET;
 }
 
+static float mc3_temperature_from_dout(uint32_t raw)
+{
+#if MC3_THERMAL_RESOLUTION_BITS >= 11
+    float offset = 1.0f / (float)(1U << (MC3_THERMAL_RESOLUTION_BITS - 11));
+#else
+    float offset = (float)(1U << (11 - MC3_THERMAL_RESOLUTION_BITS));
+#endif
+
+    return 675.61f * (((float)raw - offset) / 4096.0f) - 288.82f;
+}
+
+static float mc3_voltage_from_dout(uint32_t raw)
+{
+    float scale = (7.0f * MC3_VOLTAGE_VREF) / 15.0f;
+    return scale * (((6.0f * (float)raw) / (float)(1U << 14))
+        - (3.0f / (float)(1U << MC3_VOLTAGE_RESOLUTION_BITS)) - 1.0f);
+}
+
+static uint32_t mc3_voltage_dout_register(uint8_t channel)
+{
+    return MC3_VOLTAGE_DOUT_BASE + ((uint32_t)channel * 4);
+}
+
 static uint32_t mc3_bswap32(uint32_t value)
 {
     return ((value & 0x000000FF) << 24)
@@ -400,6 +446,7 @@ static void mc3_start_spdlog(uint8_t start_chip_id, uint8_t chip_num)
     mc3_write_register(start_chip_id, MC3_SPDLOG_RST, 0x00000001, chip_num);
     mc3_write_register(start_chip_id, MC3_SPDLOG_TIMER, mc3_spdlog_timer_value(), chip_num);
     mc3_spdlog_started = true;
+    mc3_spdlog_start_us = esp_timer_get_time();
 }
 
 static void mc3_report_hashrate_result(GlobalState *GLOBAL_STATE, uint8_t chip_id, register_type_t register_type, double hashrate_hs)
@@ -409,7 +456,8 @@ static void mc3_report_hashrate_result(GlobalState *GLOBAL_STATE, uint8_t chip_i
     }
 }
 
-static void mc3_read_spdlog_chip(GlobalState *GLOBAL_STATE, uint8_t chip_id)
+static bool mc3_read_spdlog_chip(GlobalState *GLOBAL_STATE, uint8_t chip_id,
+    uint32_t *passed_out, uint32_t *failed_out, double *pass_hashrate_ghs_out)
 {
     uint32_t work_cfg = 0;
     uint32_t timer = 0;
@@ -421,18 +469,18 @@ static void mc3_read_spdlog_chip(GlobalState *GLOBAL_STATE, uint8_t chip_id)
         !mc3_read_register(chip_id, MC3_SPDLOG_PASS, &passed) ||
         !mc3_read_register(chip_id, MC3_SPDLOG_FAIL, &failed)) {
         ESP_LOGW(TAG, "Failed reading MC3 SPDLOG chip=%u", chip_id);
-        return;
+        return false;
     }
 
     double runtime_seconds = mc3_spdlog_runtime_seconds();
     double work_per_count = (double)(1ULL << mc3_spdlog_leading_zeros());
     double pass_hashrate_hs = work_per_count * (double)passed / runtime_seconds;
 
-    ESP_LOGI(TAG, "SPDLOG chip=%u work_cfg=0x%08" PRIX32 " timer=0x%08" PRIX32
-        " pass=%" PRIu32 " fail=%" PRIu32 " pass=%.2f GH/s",
-        chip_id, work_cfg, timer, passed, failed, pass_hashrate_hs / 1e9);
-
     mc3_report_hashrate_result(GLOBAL_STATE, chip_id, REGISTER_HASHRATE, pass_hashrate_hs);
+    *passed_out = passed;
+    *failed_out = failed;
+    *pass_hashrate_ghs_out = pass_hashrate_hs / 1e9;
+    return true;
 }
 
 static void mc3_write_version_bases(bm_job *next_bm_job, uint8_t chip_count)
@@ -526,6 +574,60 @@ static bool mc3_read_nonce_buffer(uint8_t chip_id, uint32_t words[MC3_NONCE_BUFF
     }
 
     return true;
+}
+
+static bool mc3_wait_register(uint8_t chip_id, uint32_t reg, uint32_t expected, uint16_t timeout_ms)
+{
+    uint32_t value = 0;
+    int iterations = timeout_ms / 10;
+    if (iterations <= 0) {
+        iterations = 1;
+    }
+
+    for (int i = 0; i < iterations; i++) {
+        if (mc3_read_register(chip_id, reg, &value) && value == expected) {
+            return true;
+        }
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+
+    ESP_LOGW(TAG, "Register 0x%08" PRIX32 " stayed 0x%08" PRIX32 ", expected 0x%08" PRIX32,
+        reg, value, expected);
+    return false;
+}
+
+static void mc3_setup_thermal_sensor(void)
+{
+    mc3_write_register(0, MC3_THERMAL_SDIF_ENABLE, 0x00000000, MC3_CHIP_NUM_ALL);
+    mc3_write_register(0, MC3_THERMAL_CLOCK, 0x01010000, MC3_CHIP_NUM_ALL);
+    mc3_write_register(0, MC3_THERMAL_COMMAND, 0x89000000, MC3_CHIP_NUM_ALL);
+    mc3_write_register(0, MC3_THERMAL_COMMAND, 0x8D000200, MC3_CHIP_NUM_ALL);
+    mc3_wait_register(0, MC3_THERMAL_STATUS, 0x00000000, 500);
+}
+
+static bool mc3_trigger_thermal_conversion(void)
+{
+    mc3_write_register(0, MC3_THERMAL_COMMAND, 0x88000105, MC3_CHIP_NUM_ALL);
+    return mc3_wait_register(0, MC3_THERMAL_DONE, 0x00000001, 500);
+}
+
+static void mc3_setup_vdd_voltage_sensor(void)
+{
+    uint32_t channel_mask = (1U << MC3_VOLTAGE_VDD_CHANNEL_A) | (1U << MC3_VOLTAGE_VDD_CHANNEL_B);
+
+    mc3_write_register(0, MC3_VOLTAGE_SDIF_ENABLE, 0x00000000, MC3_CHIP_NUM_ALL);
+    mc3_write_register(0, MC3_VOLTAGE_CLOCK, MC3_VOLTAGE_CLOCK_DEFAULT, MC3_CHIP_NUM_ALL);
+    mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x89000000, MC3_CHIP_NUM_ALL);
+    mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x8D000040, MC3_CHIP_NUM_ALL);
+    mc3_wait_register(0, MC3_VOLTAGE_STATUS, 0x00000000, 500);
+    mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x8C100000 | channel_mask, MC3_CHIP_NUM_ALL);
+    mc3_wait_register(0, MC3_VOLTAGE_STATUS, 0x00000000, 500);
+}
+
+static bool mc3_trigger_voltage_conversion(void)
+{
+    mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x88000505, MC3_CHIP_NUM_ALL);
+    return mc3_wait_register(0, MC3_VOLTAGE_DONE, 0x00000001, 500);
 }
 
 static bool mc3_get_active_job_fields(GlobalState *GLOBAL_STATE, uint8_t job_id, uint32_t *version, uint32_t *ntime)
@@ -795,6 +897,8 @@ uint8_t MC3_init(void * pvParameters)
 
     ESP_LOGI(TAG, "MC3 init response: next_chip_id=%u using_chip_count=%u", next_chip_id, mc3_chip_count);
     GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency = MC3_send_hash_frequency(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value);
+    mc3_setup_thermal_sensor();
+    mc3_setup_vdd_voltage_sensor();
 
     return mc3_chip_count;
 }
@@ -938,11 +1042,41 @@ void MC3_read_registers(void *pvParameters)
         return;
     }
 
-    if (mc3_spdlog_started) {
-        for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
-            mc3_read_spdlog_chip(GLOBAL_STATE, chip_id);
+    int64_t now_us = esp_timer_get_time();
+    if (!mc3_spdlog_started || now_us - mc3_spdlog_start_us < MC3_SPDLOG_POLL_INTERVAL_US) {
+        return;
+    }
+
+    char summary[512] = "SPDLOG:";
+    size_t summary_length = strlen(summary);
+    double total_hashrate_ghs = 0.0;
+
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        uint32_t passed = 0;
+        uint32_t failed = 0;
+        double pass_hashrate_ghs = 0.0;
+        int written;
+
+        if (mc3_read_spdlog_chip(GLOBAL_STATE, chip_id, &passed, &failed, &pass_hashrate_ghs)) {
+            total_hashrate_ghs += pass_hashrate_ghs;
+            written = snprintf(summary + summary_length, sizeof(summary) - summary_length,
+                " chip%u=%.2f GH/s pass/fail=%" PRIu32 "/%" PRIu32,
+                chip_id, pass_hashrate_ghs, passed, failed);
+        } else {
+            written = snprintf(summary + summary_length, sizeof(summary) - summary_length,
+                " chip%u=ERR", chip_id);
+        }
+
+        if (written > 0) {
+            size_t appended = (size_t)written;
+            size_t remaining = sizeof(summary) - summary_length;
+            summary_length += appended < remaining ? appended : remaining - 1;
         }
     }
+
+    snprintf(summary + summary_length, sizeof(summary) - summary_length,
+        " total=%.2f GH/s", total_hashrate_ghs);
+    ESP_LOGI(TAG, "%s", summary);
 
     mc3_start_spdlog(0, MC3_CHIP_NUM_ALL);
 }
@@ -953,4 +1087,63 @@ void MC3_set_nonce_space(double nonce_percent, float frequency, uint16_t asic_co
     (void)frequency;
     (void)asic_count;
     (void)cores;
+}
+
+uint8_t MC3_read_temperatures(float *temps, size_t max_temps)
+{
+    uint8_t chip_count = mc3_chip_count;
+
+    if (temps == NULL || max_temps == 0 || chip_count == 0) {
+        return 0;
+    }
+    if (chip_count > max_temps) {
+        chip_count = max_temps;
+    }
+
+    if (!mc3_trigger_thermal_conversion()) {
+        return 0;
+    }
+
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        uint32_t raw = 0;
+        if (mc3_read_register(chip_id, MC3_THERMAL_DOUT, &raw)) {
+            temps[chip_id] = mc3_temperature_from_dout(raw);
+        } else {
+            temps[chip_id] = -1.0f;
+        }
+    }
+
+    return chip_count;
+}
+
+uint8_t MC3_read_vdd_voltages(float *voltages_mv, size_t max_voltages)
+{
+    uint8_t chip_count = mc3_chip_count;
+
+    if (voltages_mv == NULL || max_voltages == 0 || chip_count == 0) {
+        return 0;
+    }
+    if (chip_count > max_voltages) {
+        chip_count = max_voltages;
+    }
+
+    if (!mc3_trigger_voltage_conversion()) {
+        return 0;
+    }
+
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        uint32_t raw_a = 0;
+        uint32_t raw_b = 0;
+        bool read_a = mc3_read_register(chip_id, mc3_voltage_dout_register(MC3_VOLTAGE_VDD_CHANNEL_A), &raw_a);
+        bool read_b = mc3_read_register(chip_id, mc3_voltage_dout_register(MC3_VOLTAGE_VDD_CHANNEL_B), &raw_b);
+
+        if (read_a && read_b) {
+            float sensor_voltage = (mc3_voltage_from_dout(raw_a) + mc3_voltage_from_dout(raw_b)) / 2.0f;
+            voltages_mv[chip_id] = sensor_voltage * MC3_VOLTAGE_VDD_SCALE * 1000.0f;
+        } else {
+            voltages_mv[chip_id] = -1.0f;
+        }
+    }
+
+    return chip_count;
 }

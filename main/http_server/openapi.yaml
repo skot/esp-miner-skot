@@ -199,6 +199,8 @@ components:
         - stratumTLS
         - stratumCert
         - stratumDecodeCoinbase
+        - asicTemps
+        - asicVoltages
         - temp
         - temp2
         - uptimeSeconds
@@ -246,6 +248,11 @@ components:
         coreVoltageActual:
           type: number
           description: Actual measured ASIC core voltage
+        asicVoltages:
+          type: array
+          description: Per-ASIC chip VDD voltages in millivolts
+          items:
+            type: number
         current:
           type: number
           description: Current draw in milliamps
@@ -474,6 +481,11 @@ components:
         temp:
           type: number
           description: Average chip temperature
+        asicTemps:
+          type: array
+          description: Per-ASIC chip temperatures
+          items:
+            type: number
         temp2:
           type: number
           description: Average chip temperature from second sensor

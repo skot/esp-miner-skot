@@ -7,10 +7,13 @@
 #include "thermal.h"
 #include "power.h"
 #include "asic.h"
+#include "mc3.h"
 #include "utils.h"
 #include "asic_init.h"
 #include "asic_reset.h"
 #include "driver/uart.h"
+
+#include <string.h>
 
 #define POLL_RATE 100
 #define MAX_TEMP 90.0
@@ -92,6 +95,66 @@ static float expected_hashrate(GlobalState * GLOBAL_STATE)
     return GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value * GLOBAL_STATE->DEVICE_CONFIG.family.asic.small_core_count * GLOBAL_STATE->DEVICE_CONFIG.family.asic_count / 1000.0;
 }
 
+static void update_asic_telemetry(GlobalState *GLOBAL_STATE)
+{
+    PowerManagementModule *power_management = &GLOBAL_STATE->POWER_MANAGEMENT_MODULE;
+
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3) {
+        float temperatures[MAX_ASIC_TEMPS] = {0};
+        uint8_t count = MC3_read_temperatures(temperatures, MAX_ASIC_TEMPS);
+        if (count > 0) {
+            for (uint8_t i = 0; i < count; i++) {
+                if (temperatures[i] > 0.0f) {
+                    power_management->asic_temps[i] = temperatures[i];
+                }
+            }
+            power_management->asic_temp_count = count;
+        }
+
+        float max_temp = -1.0f;
+        for (uint8_t i = 0; i < power_management->asic_temp_count; i++) {
+            if (power_management->asic_temps[i] > max_temp) {
+                max_temp = power_management->asic_temps[i];
+            }
+        }
+
+        power_management->chip_temp_avg = max_temp;
+        power_management->chip_temp2_avg = -1.0f;
+
+        float voltages[MAX_ASIC_TEMPS] = {0};
+        uint8_t voltage_count = MC3_read_vdd_voltages(voltages, MAX_ASIC_TEMPS);
+        if (voltage_count > 0) {
+            for (uint8_t i = 0; i < voltage_count; i++) {
+                if (voltages[i] > 0.0f) {
+                    power_management->asic_voltages[i] = voltages[i];
+                }
+            }
+            power_management->asic_voltage_count = voltage_count;
+        }
+
+        float voltage_total = 0.0f;
+        uint8_t valid_voltage_count = 0;
+        for (uint8_t i = 0; i < power_management->asic_voltage_count; i++) {
+            if (power_management->asic_voltages[i] > 0.0f) {
+                voltage_total += power_management->asic_voltages[i];
+                valid_voltage_count++;
+            }
+        }
+        if (valid_voltage_count > 0) {
+            power_management->core_voltage = voltage_total / valid_voltage_count;
+        }
+
+        return;
+    }
+
+    memset(power_management->asic_temps, 0, sizeof(power_management->asic_temps));
+    power_management->asic_temp_count = 0;
+    memset(power_management->asic_voltages, 0, sizeof(power_management->asic_voltages));
+    power_management->asic_voltage_count = 0;
+    power_management->chip_temp_avg = Thermal_get_chip_temp(GLOBAL_STATE);
+    power_management->chip_temp2_avg = Thermal_get_chip_temp2(GLOBAL_STATE);
+}
+
 void POWER_MANAGEMENT_init_frequency(void * pvParameters)
 {
     GlobalState * GLOBAL_STATE = (GlobalState *) pvParameters;
@@ -138,8 +201,7 @@ void POWER_MANAGEMENT_task(void * pvParameters)
         Power_get_output(GLOBAL_STATE, &power_management->power, &power_management->current);
         power_management->core_voltage = VCORE_get_voltage_mv(GLOBAL_STATE);
 
-        power_management->chip_temp_avg = Thermal_get_chip_temp(GLOBAL_STATE);
-        power_management->chip_temp2_avg = Thermal_get_chip_temp2(GLOBAL_STATE);
+        update_asic_telemetry(GLOBAL_STATE);
 
         power_management->vr_temp = Power_get_vreg_temp(GLOBAL_STATE);
         // User pause, hardware fault, or all pools unreachable
@@ -192,8 +254,7 @@ void POWER_MANAGEMENT_task(void * pvParameters)
                 
                 // Only check ASIC temps if they're valid (not using ASIC thermal diode)
                 if (asic_temp_valid) {
-                    power_management->chip_temp_avg = Thermal_get_chip_temp(GLOBAL_STATE);
-                    power_management->chip_temp2_avg = Thermal_get_chip_temp2(GLOBAL_STATE);
+                    update_asic_telemetry(GLOBAL_STATE);
                     ESP_LOGW(TAG, "Safe mode active (cycle %d) - VR: %.1f°C ASIC1: %.1f°C ASIC2: %.1f°C",
                              cooling_cycles, power_management->vr_temp, power_management->chip_temp_avg, power_management->chip_temp2_avg);
                     

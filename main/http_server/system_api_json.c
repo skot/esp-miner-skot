@@ -47,8 +47,22 @@ static void system_api_add_telemetry(cJSON *root, GlobalState *g) {
     cJSON_AddFloatToObject(root, "current", g->POWER_MANAGEMENT_MODULE.current);
     cJSON_AddFloatToObject(root, "temp", g->POWER_MANAGEMENT_MODULE.chip_temp_avg);
     cJSON_AddFloatToObject(root, "temp2", g->POWER_MANAGEMENT_MODULE.chip_temp2_avg);
+    cJSON *asic_temps = cJSON_CreateArray();
+    if (asic_temps) {
+        cJSON_AddItemToObject(root, "asicTemps", asic_temps);
+        for (uint8_t i = 0; i < g->POWER_MANAGEMENT_MODULE.asic_temp_count; i++) {
+            cJSON_AddItemToArray(asic_temps, cJSON_CreateNumber(g->POWER_MANAGEMENT_MODULE.asic_temps[i]));
+        }
+    }
     cJSON_AddFloatToObject(root, "vrTemp", g->POWER_MANAGEMENT_MODULE.vr_temp);
     cJSON_AddFloatToObject(root, "coreVoltageActual", g->POWER_MANAGEMENT_MODULE.core_voltage);
+    cJSON *asic_voltages = cJSON_CreateArray();
+    if (asic_voltages) {
+        cJSON_AddItemToObject(root, "asicVoltages", asic_voltages);
+        for (uint8_t i = 0; i < g->POWER_MANAGEMENT_MODULE.asic_voltage_count; i++) {
+            cJSON_AddItemToArray(asic_voltages, cJSON_CreateNumber(g->POWER_MANAGEMENT_MODULE.asic_voltages[i]));
+        }
+    }
     cJSON_AddFloatToObject(root, "actualFrequency", g->POWER_MANAGEMENT_MODULE.actual_frequency);
     cJSON_AddFloatToObject(root, "expectedHashrate", g->POWER_MANAGEMENT_MODULE.expected_hashrate);
     cJSON_AddNumberToObject(root, "fanspeed", g->POWER_MANAGEMENT_MODULE.fan_perc);
