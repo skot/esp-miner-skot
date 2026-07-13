@@ -67,6 +67,7 @@ typedef struct {
     bool EMC2101 : 1;
     bool EMC2103 : 1;
     bool EMC2302 : 1;
+    bool ESP32_FAN : 1;
     bool emc_internal_temp : 1;
     bool TMP1075 : 1;
     uint8_t emc_ideality_factor;
@@ -154,7 +155,7 @@ static const DeviceConfig default_configs[] = {
     { .board_version = "701",  .family = FAMILY_SUPRA_HEX,   .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "702",  .family = FAMILY_SUPRA_HEX,   .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "801",  .family = FAMILY_GAMMA_TURBO, .EMC2103 = true,                                          .temp_flip = true, .temp_offset = 0,   .TPS546 = true,                                                           .power_consumption_target = 36, },
-    { .board_version = "1102", .family = FAMILY_PROTO,       .EMC2103 = false,                                          .temp_flip = true, .temp_offset = 0,  .TPS546 = true,                                                           .power_consumption_target = 40, },
+    { .board_version = "1102", .family = FAMILY_PROTO,       .ESP32_FAN = true,                                         .temp_flip = true, .temp_offset = 0,  .TPS546 = true,                                                           .power_consumption_target = 40, },
 };
 
 esp_err_t device_config_init(void * pvParameters);

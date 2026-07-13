@@ -6,12 +6,16 @@
 #include "EMC2101.h"
 #include "EMC2103.h"
 #include "EMC2302.h"
+#include "ESP32Fan.h"
 #include "TMP1075.h"
 
 static const char * TAG = "thermal";
 
 esp_err_t Thermal_init(DeviceConfig * DEVICE_CONFIG)
 {
+    if (DEVICE_CONFIG->ESP32_FAN) {
+        ESP_RETURN_ON_ERROR(ESP32Fan_init(), TAG, "Failed to initialise ESP32 fan control");
+    }
     if (DEVICE_CONFIG->EMC2101) {
         ESP_RETURN_ON_ERROR(EMC2101_init(DEVICE_CONFIG->temp_offset), TAG, "Failed to initialise EMC2101");
         // TODO: Improve this check.
@@ -37,6 +41,9 @@ esp_err_t Thermal_init(DeviceConfig * DEVICE_CONFIG)
 //percent is a float between 0.0 and 1.0
 esp_err_t Thermal_set_fan_percent(DeviceConfig * DEVICE_CONFIG, float percent)
 {
+    if (DEVICE_CONFIG->ESP32_FAN) {
+        return ESP32Fan_set_speed(percent);
+    }
     if (DEVICE_CONFIG->EMC2101) {
         return EMC2101_set_fan_speed(percent);
     }
@@ -51,6 +58,9 @@ esp_err_t Thermal_set_fan_percent(DeviceConfig * DEVICE_CONFIG, float percent)
 
 uint16_t Thermal_get_fan_speed(DeviceConfig * DEVICE_CONFIG) 
 {
+    if (DEVICE_CONFIG->ESP32_FAN) {
+        return ESP32Fan_get_speed();
+    }
     if (DEVICE_CONFIG->EMC2101) {
         return EMC2101_get_fan_speed();
     }
