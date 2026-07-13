@@ -136,7 +136,7 @@ void ASIC_set_frequency(GlobalState * GLOBAL_STATE)
             do_frequency_transition(GLOBAL_STATE, BM1370_send_hash_frequency);
             return;
         case MC3:
-            GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency = MC3_send_hash_frequency(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value);
+            MC3_ramp_hash_frequency(GLOBAL_STATE);
             return;
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot set frequency", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);

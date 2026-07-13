@@ -24,6 +24,7 @@ typedef struct
     float power;
     float current;
     float core_voltage;
+    float regulator_voltage;
 } PowerManagementModule;
 
 void POWER_MANAGEMENT_init_frequency(void * pvParameters);

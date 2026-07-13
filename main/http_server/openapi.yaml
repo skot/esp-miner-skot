@@ -180,6 +180,7 @@ components:
         - poolDifficulty
         - power
         - resetReason
+        - regulatorVoltage
         - responseTime
         - runningPartition
         - sharesAccepted
@@ -248,6 +249,9 @@ components:
         coreVoltageActual:
           type: number
           description: Actual measured ASIC core voltage
+        regulatorVoltage:
+          type: number
+          description: Measured voltage regulator output in millivolts, or zero when unavailable
         asicVoltages:
           type: array
           description: Per-ASIC chip VDD voltages in millivolts

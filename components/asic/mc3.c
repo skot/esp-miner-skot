@@ -99,6 +99,11 @@
 #define MC3_DEFAULT_PLL0_ENABLE 0x00000003
 #define MC3_PLL_LOCK_BIT 0x00000004
 #define MC3_ROLLTIME_OFFSET 50
+#define MC3_FREQUENCY_RAMP_DELAY_MS 500
+#define MC3_FREQUENCY_HIGH_RAMP_DELAY_MS 1000
+#define MC3_FREQUENCY_HIGH_THRESHOLD_MHZ 500
+#define MC3_PLL_LOCK_TIMEOUT_MS 250
+#define MC3_PLL_LOCK_POLL_MS 10
 
 static const char *TAG = "mc3";
 
@@ -956,7 +961,11 @@ uint8_t MC3_init(void * pvParameters)
     }
 
     ESP_LOGI(TAG, "MC3 init response: next_chip_id=%u using_chip_count=%u", next_chip_id, mc3_chip_count);
-    GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency = MC3_send_hash_frequency(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value);
+    if (!MC3_ramp_hash_frequency(GLOBAL_STATE)) {
+        ESP_LOGE(TAG, "MC3 frequency ramp failed during initialization");
+        mc3_chip_count = 0;
+        return 0;
+    }
     mc3_setup_thermal_sensor();
     mc3_setup_vdd_voltage_sensor();
 
@@ -1026,45 +1035,101 @@ float MC3_send_hash_frequency(float frequency)
     const mc3_pll_config_t *config = mc3_get_pll_config(frequency);
     uint32_t pll_config = mc3_pll_config_value(config);
     uint32_t rolltime = mc3_rolltime_for_frequency(config->frequency_mhz);
-    uint32_t read_pll_cfg = 0;
-    uint32_t read_pll_en = 0;
-    uint32_t read_rolltime = 0;
+    uint8_t chip_count = mc3_chip_count;
 
     ESP_LOGI(TAG, "Setting Frequency to %u MHz", config->frequency_mhz);
-    ESP_LOGI(TAG, "Writing GLOBAL_SPD: 0x%08" PRIX32, (uint32_t)MC3_DEFAULT_GLOBAL_SPD_VALUE);
-    mc3_write_register(0, MC3_GLOBAL_SPD, MC3_DEFAULT_GLOBAL_SPD_VALUE, MC3_CHIP_NUM_ALL);
-
-    ESP_LOGI(TAG, "Writing PLL0_CFG: 0x%08" PRIX32, pll_config);
-    mc3_write_register(0, MC3_PLL0_CFG, pll_config, MC3_CHIP_NUM_ALL);
-
-    ESP_LOGI(TAG, "Writing PLL0_EN: 0x%08" PRIX32, (uint32_t)MC3_PLL0_ENABLE);
-    mc3_write_register(0, MC3_PLL0_EN, MC3_PLL0_ENABLE, MC3_CHIP_NUM_ALL);
-
-    ESP_LOGI(TAG, "Writing PLL0_EN: 0x%08" PRIX32, (uint32_t)MC3_DEFAULT_PLL0_ENABLE);
-    mc3_write_register(0, MC3_PLL0_EN, MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL);
-
-    ESP_LOGI(TAG, "Writing ROLLTIME: 0x%08" PRIX32, rolltime);
-    mc3_write_register(0, MC3_ROLLTIME, rolltime, MC3_CHIP_NUM_ALL);
-
-    if (mc3_read_register(0, MC3_PLL0_CFG, &read_pll_cfg)) {
-        ESP_LOGI(TAG, "PLL0_CFG: 0x%08" PRIX32, read_pll_cfg);
-    } else {
-        ESP_LOGW(TAG, "Failed to read back PLL0_CFG");
+    if (!mc3_write_register(0, MC3_GLOBAL_SPD, MC3_DEFAULT_GLOBAL_SPD_VALUE, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_PLL0_EN, 0x00000000, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_PLL0_CFG, pll_config, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_PLL0_EN, MC3_PLL0_ENABLE, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_PLL0_EN, MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_ROLLTIME, rolltime, MC3_CHIP_NUM_ALL)) {
+        ESP_LOGE(TAG, "Failed writing MC3 PLL configuration for %u MHz", config->frequency_mhz);
+        return 0.0f;
     }
 
-    if (mc3_read_register(0, MC3_PLL0_EN, &read_pll_en)) {
-        ESP_LOGI(TAG, "PLL0_EN: 0x%08" PRIX32 " locked=%d", read_pll_en, (read_pll_en & MC3_PLL_LOCK_BIT) ? 1 : 0);
-    } else {
-        ESP_LOGW(TAG, "Failed to read back PLL0_EN");
+    if (chip_count == 0) {
+        ESP_LOGE(TAG, "Cannot verify MC3 PLL lock without an enumerated chip count");
+        return 0.0f;
     }
 
-    if (mc3_read_register(0, MC3_ROLLTIME, &read_rolltime)) {
-        ESP_LOGI(TAG, "ROLLTIME: 0x%08" PRIX32, read_rolltime);
-    } else {
-        ESP_LOGW(TAG, "Failed to read back ROLLTIME");
+    int64_t deadline_us = esp_timer_get_time() + (MC3_PLL_LOCK_TIMEOUT_MS * 1000);
+    bool all_locked = false;
+    bool chip_locked[MC3_MAX_TRACKED_CHIPS] = {0};
+
+    do {
+        all_locked = true;
+        for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+            uint32_t pll_en = 0;
+            chip_locked[chip_id] = mc3_read_register(chip_id, MC3_PLL0_EN, &pll_en) &&
+                                   (pll_en & MC3_PLL_LOCK_BIT) != 0;
+            if (!chip_locked[chip_id]) {
+                all_locked = false;
+            }
+        }
+
+        if (!all_locked) {
+            vTaskDelay(pdMS_TO_TICKS(MC3_PLL_LOCK_POLL_MS));
+        }
+    } while (!all_locked && esp_timer_get_time() < deadline_us);
+
+    if (!all_locked) {
+        for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+            if (!chip_locked[chip_id]) {
+                ESP_LOGE(TAG, "PLL0 failed to lock at %u MHz on chip %u", config->frequency_mhz, chip_id);
+            }
+        }
+        return 0.0f;
     }
 
+    ESP_LOGI(TAG, "PLL0 locked at %u MHz on all %u chips", config->frequency_mhz, chip_count);
     return config->frequency_mhz;
+}
+
+bool MC3_ramp_hash_frequency(void * pvParameters)
+{
+    GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
+    PowerManagementModule *power_management = &GLOBAL_STATE->POWER_MANAGEMENT_MODULE;
+    const mc3_pll_config_t *target_config = mc3_get_pll_config(power_management->frequency_value);
+    int target_index = target_config - PLL_CONFIGS;
+    int current_index = -1;
+
+    for (int i = 0; i < sizeof(PLL_CONFIGS) / sizeof(PLL_CONFIGS[0]); i++) {
+        if (PLL_CONFIGS[i].frequency_mhz == (uint16_t)(power_management->actual_frequency + 0.5f)) {
+            current_index = i;
+            break;
+        }
+    }
+
+    if (current_index == target_index) {
+        return true;
+    }
+
+    ESP_LOGI(TAG, "Ramping frequency from %.0f MHz to %u MHz",
+        power_management->actual_frequency, target_config->frequency_mhz);
+
+    int direction = current_index < target_index ? 1 : -1;
+    int step_index = current_index < 0 ? 0 : current_index + direction;
+
+    while ((direction > 0 && step_index <= target_index) ||
+           (direction < 0 && step_index >= target_index)) {
+        float actual_frequency = MC3_send_hash_frequency(PLL_CONFIGS[step_index].frequency_mhz);
+        if (actual_frequency <= 0.0f) {
+            ESP_LOGE(TAG, "Frequency ramp stopped at %.0f MHz; target was %u MHz",
+                power_management->actual_frequency, target_config->frequency_mhz);
+            return false;
+        }
+
+        power_management->actual_frequency = actual_frequency;
+        uint32_t settle_delay_ms = actual_frequency > MC3_FREQUENCY_HIGH_THRESHOLD_MHZ
+            ? MC3_FREQUENCY_HIGH_RAMP_DELAY_MS
+            : MC3_FREQUENCY_RAMP_DELAY_MS;
+        vTaskDelay(pdMS_TO_TICKS(settle_delay_ms));
+        step_index += direction;
+    }
+
+    ESP_LOGI(TAG, "Successfully transitioned to %u MHz", target_config->frequency_mhz);
+    return true;
 }
 
 task_result * MC3_process_work(void * pvParameters)

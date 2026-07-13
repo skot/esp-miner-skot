@@ -199,7 +199,14 @@ void POWER_MANAGEMENT_task(void * pvParameters)
 
         power_management->voltage = Power_get_input_voltage(GLOBAL_STATE);
         Power_get_output(GLOBAL_STATE, &power_management->power, &power_management->current);
-        power_management->core_voltage = VCORE_get_voltage_mv(GLOBAL_STATE);
+        if (GLOBAL_STATE->DEVICE_CONFIG.TPS546) {
+            power_management->regulator_voltage = VCORE_get_regulator_voltage_mv(GLOBAL_STATE);
+            power_management->core_voltage = power_management->regulator_voltage /
+                GLOBAL_STATE->DEVICE_CONFIG.family.voltage_domains;
+        } else {
+            power_management->regulator_voltage = 0.0f;
+            power_management->core_voltage = VCORE_get_voltage_mv(GLOBAL_STATE);
+        }
 
         update_asic_telemetry(GLOBAL_STATE);
 

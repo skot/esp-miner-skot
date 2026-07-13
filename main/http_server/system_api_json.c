@@ -64,6 +64,7 @@ static void system_api_add_telemetry(cJSON *root, GlobalState *g) {
         }
     }
     cJSON_AddFloatToObject(root, "actualFrequency", g->POWER_MANAGEMENT_MODULE.actual_frequency);
+    cJSON_AddFloatToObject(root, "regulatorVoltage", g->POWER_MANAGEMENT_MODULE.regulator_voltage);
     cJSON_AddFloatToObject(root, "expectedHashrate", g->POWER_MANAGEMENT_MODULE.expected_hashrate);
     cJSON_AddNumberToObject(root, "fanspeed", g->POWER_MANAGEMENT_MODULE.fan_perc);
     cJSON_AddNumberToObject(root, "fanrpm", g->POWER_MANAGEMENT_MODULE.fan_rpm);

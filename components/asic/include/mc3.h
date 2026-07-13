@@ -1,6 +1,7 @@
 #ifndef MC3_H_
 #define MC3_H_
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
 
@@ -17,6 +18,7 @@ void MC3_set_version_mask(uint32_t version_mask);
 int MC3_set_max_baud(void);
 int MC3_set_default_baud(void);
 float MC3_send_hash_frequency(float frequency);
+bool MC3_ramp_hash_frequency(void * GLOBAL_STATE);
 task_result * MC3_process_work(void * GLOBAL_STATE);
 void MC3_read_registers(void * GLOBAL_STATE);
 void MC3_set_nonce_space(double nonce_percent, float frequency, uint16_t asic_count, uint16_t cores);

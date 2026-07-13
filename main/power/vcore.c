@@ -188,9 +188,17 @@ esp_err_t VCORE_set_voltage(GlobalState * GLOBAL_STATE, float core_voltage)
 int16_t VCORE_get_voltage_mv(GlobalState * GLOBAL_STATE)
 {
     if (GLOBAL_STATE->DEVICE_CONFIG.TPS546) {
-        return TPS546_get_vout() / GLOBAL_STATE->DEVICE_CONFIG.family.voltage_domains * 1000;
+        return VCORE_get_regulator_voltage_mv(GLOBAL_STATE) / GLOBAL_STATE->DEVICE_CONFIG.family.voltage_domains;
     }
     return ADC_get_vcore();
+}
+
+int16_t VCORE_get_regulator_voltage_mv(GlobalState * GLOBAL_STATE)
+{
+    if (GLOBAL_STATE->DEVICE_CONFIG.TPS546) {
+        return TPS546_get_vout() * 1000;
+    }
+    return 0;
 }
 
 esp_err_t VCORE_check_fault(GlobalState * GLOBAL_STATE)

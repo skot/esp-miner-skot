@@ -840,6 +840,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         processed.voltage = processed.voltage / 1000;
         processed.current = processed.current / 1000;
         processed.coreVoltageActual = processed.coreVoltageActual / 1000;
+        processed.regulatorVoltage = (processed.regulatorVoltage || 0) / 1000;
         processed.asicVoltages = (processed.asicVoltages || []).map(voltage => voltage / 1000);
         processed.coreVoltage = processed.coreVoltage / 1000;
         return processed;
@@ -939,6 +940,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         formatted.voltage = parseFloat(formatted.voltage.toFixed(1));
         formatted.current = parseFloat(formatted.current.toFixed(1));
         formatted.coreVoltageActual = parseFloat(formatted.coreVoltageActual.toFixed(2));
+        formatted.regulatorVoltage = parseFloat(formatted.regulatorVoltage.toFixed(2));
         formatted.asicVoltages = (formatted.asicVoltages || []).map(voltage => parseFloat(voltage.toFixed(2)));
         formatted.coreVoltage = parseFloat(formatted.coreVoltage.toFixed(2));
         formatted.temp = parseFloat(formatted.temp.toFixed(1));
