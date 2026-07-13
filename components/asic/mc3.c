@@ -91,6 +91,8 @@
 #define MC3_DEFAULT_WORK_TARGET_L 0xFFFFFFFF
 #define MC3_DEFAULT_WORK_TARGET_H 0xFFFFFFFF
 #define MC3_DEFAULT_VERSION_MASK_BITS 16
+#define MC3_V_CTRL_START_BIT_SHIFT 4
+#define MC3_V_CTRL_START_BIT_MASK (0x1FU << MC3_V_CTRL_START_BIT_SHIFT)
 #define MC3_PLL0_ENABLE 0x00000001
 #define MC3_DEFAULT_PLL0_ENABLE 0x00000003
 #define MC3_PLL_LOCK_BIT 0x00000004
@@ -365,6 +367,32 @@ static uint32_t mc3_bm_field_word(const uint8_t field[32], uint8_t word_index)
     return read_u32_be(field + word_index * 4);
 }
 
+static bool mc3_version_start_bit(uint32_t version_mask, uint8_t *start_bit)
+{
+    const uint32_t rolling_bits = (1U << MC3_DEFAULT_VERSION_MASK_BITS) - 1;
+
+    for (uint8_t bit = 0; bit <= 32 - MC3_DEFAULT_VERSION_MASK_BITS; bit++) {
+        uint32_t rolling_mask = rolling_bits << bit;
+        if ((version_mask & rolling_mask) == rolling_mask) {
+            *start_bit = bit;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static uint32_t mc3_version_rolling_mask(uint8_t start_bit)
+{
+    return ((1U << MC3_DEFAULT_VERSION_MASK_BITS) - 1) << start_bit;
+}
+
+static uint32_t mc3_v_ctrl(uint8_t start_bit)
+{
+    return (MC3_DEFAULT_V_CTRL_VERSION_ROLLING & ~MC3_V_CTRL_START_BIT_MASK)
+        | ((uint32_t)start_bit << MC3_V_CTRL_START_BIT_SHIFT);
+}
+
 static void mc3_store_active_job(GlobalState *GLOBAL_STATE, uint8_t job_id, bm_job *next_bm_job)
 {
     pthread_mutex_lock(&GLOBAL_STATE->valid_jobs_lock);
@@ -376,16 +404,27 @@ static void mc3_store_active_job(GlobalState *GLOBAL_STATE, uint8_t job_id, bm_j
     pthread_mutex_unlock(&GLOBAL_STATE->valid_jobs_lock);
 }
 
-static void mc3_write_mining_config(uint32_t rolltime)
+static bool mc3_write_mining_config(uint32_t rolltime, uint32_t version_mask)
 {
-    ESP_LOGI(TAG, "Writing MC3 mining config: rolltime=0x%08" PRIX32, rolltime);
+    uint8_t start_bit = 0;
+    if (!mc3_version_start_bit(version_mask, &start_bit)) {
+        ESP_LOGE(TAG, "MC3 requires %u contiguous version-mask bits; pool mask is 0x%08" PRIX32,
+            MC3_DEFAULT_VERSION_MASK_BITS, version_mask);
+        return false;
+    }
+
+    uint32_t v_ctrl = mc3_v_ctrl(start_bit);
+    ESP_LOGI(TAG, "Writing MC3 mining config: rolltime=0x%08" PRIX32
+        " version_mask=0x%08" PRIX32 " start_bit=%u V_CTRL=0x%08" PRIX32,
+        rolltime, version_mask, start_bit, v_ctrl);
 
     mc3_write_register(0, MC3_GLOBAL_SPD, MC3_DEFAULT_GLOBAL_SPD_VALUE, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_ROLLTIME, rolltime, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_WORK_CFG, MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_WORK_CFG, MC3_DEFAULT_WORK_CFG_MINING, MC3_CHIP_NUM_ALL);
-    mc3_write_register(0, MC3_V_CTRL, MC3_DEFAULT_V_CTRL_VERSION_ROLLING, MC3_CHIP_NUM_ALL);
+    mc3_write_register(0, MC3_V_CTRL, v_ctrl, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_PLL0_EN, MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL);
+    return true;
 }
 
 static uint64_t mc3_work_target_from_difficulty(double difficulty)
@@ -485,12 +524,19 @@ static bool mc3_read_spdlog_chip(GlobalState *GLOBAL_STATE, uint8_t chip_id,
 
 static void mc3_write_version_bases(bm_job *next_bm_job, uint8_t chip_count)
 {
+    uint8_t start_bit = 0;
+    if (!mc3_version_start_bit(next_bm_job->version_mask, &start_bit)) {
+        return;
+    }
+
     uint32_t version_base = next_bm_job->version;
     uint32_t version_space = 1U << MC3_DEFAULT_VERSION_MASK_BITS;
     uint32_t stride = version_space / chip_count;
+    uint32_t rolling_mask = mc3_version_rolling_mask(start_bit);
 
     for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
-        uint32_t chip_version_base = version_base + chip_id * stride;
+        uint32_t rolling_value = version_base + ((uint32_t)chip_id * stride << start_bit);
+        uint32_t chip_version_base = (version_base & ~rolling_mask) | (rolling_value & rolling_mask);
         ESP_LOGI(TAG, "Writing V_BASE chip=%u value=0x%08" PRIX32, chip_id, chip_version_base);
         mc3_write_register(chip_id, MC3_V_BASE, chip_version_base, 0);
     }
@@ -927,18 +973,28 @@ void MC3_send_work(void * pvParameters, bm_job * next_bm_job)
     pthread_mutex_unlock(&mc3_pending_lock);
     memset(mc3_seen_nonce_words, 0, sizeof(mc3_seen_nonce_words));
 
-    mc3_store_active_job(GLOBAL_STATE, mc3_job_id, next_bm_job);
-    mc3_write_mining_config(rolltime);
+    if (!mc3_write_mining_config(rolltime, next_bm_job->version_mask)) {
+        ESP_LOGE(TAG, "Cannot start MC3 work job_id=%u with version mask 0x%08" PRIX32,
+            mc3_job_id, next_bm_job->version_mask);
+        free_bm_job(next_bm_job);
+        return;
+    }
     mc3_write_work_target(next_bm_job->pool_diff);
     mc3_write_version_bases(next_bm_job, chip_count);
+    mc3_store_active_job(GLOBAL_STATE, mc3_job_id, next_bm_job);
     mc3_write_v_work(next_bm_job, mc3_job_id);
     mc3_start_spdlog(0, MC3_CHIP_NUM_ALL);
 }
 
 void MC3_set_version_mask(uint32_t version_mask)
 {
-    (void)version_mask;
-    ESP_LOGW(TAG, "MC3_set_version_mask is not implemented yet");
+    uint8_t start_bit = 0;
+    if (!mc3_version_start_bit(version_mask, &start_bit)) {
+        ESP_LOGE(TAG, "Unsupported MC3 version mask 0x%08" PRIX32, version_mask);
+        return;
+    }
+
+    ESP_LOGI(TAG, "MC3 version mask 0x%08" PRIX32 " uses start_bit=%u", version_mask, start_bit);
 }
 
 int MC3_set_default_baud(void)
