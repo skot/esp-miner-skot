@@ -61,6 +61,8 @@
 #define MC3_VERSION_ROLLING_NONCE_COUNT 5
 #define MC3_NONCE_BUFFER_WORDS (MC3_NONCE_BUFFER_NOTE_WORDS + MC3_VERSION_ROLLING_NONCE_COUNT * 3)
 #define MC3_NONCE_VALID_BIT 0x80000000
+#define MC3_NONCE_UPDATE_BIT 0x00000001
+#define MC3_NONCE_READY_BIT 0x00000002
 #define MC3_NONCE_POLL_INTERVAL_US 500000
 #define MC3_PENDING_RESULTS_SIZE 20
 #define MC3_MAX_TRACKED_CHIPS 256
@@ -752,8 +754,20 @@ static void mc3_enqueue_nonce_results(GlobalState *GLOBAL_STATE, uint8_t chip_id
 static void mc3_poll_nonce_chip(GlobalState *GLOBAL_STATE, uint8_t chip_id)
 {
     uint32_t words[MC3_NONCE_BUFFER_WORDS] = {0};
+    uint32_t nonce_update = 0;
 
-    mc3_write_register(0, MC3_NONCE_UPDATE, 0x00000001, MC3_CHIP_NUM_ALL);
+    if (!mc3_read_register(chip_id, MC3_NONCE_UPDATE, &nonce_update)) {
+        ESP_LOGW(TAG, "Failed reading MC3 nonce status chip=%u", chip_id);
+        return;
+    }
+    if ((nonce_update & MC3_NONCE_READY_BIT) == 0) {
+        return;
+    }
+
+    if (!mc3_write_register(chip_id, MC3_NONCE_UPDATE, MC3_NONCE_UPDATE_BIT, 0)) {
+        ESP_LOGW(TAG, "Failed updating MC3 nonce buffer chip=%u", chip_id);
+        return;
+    }
     vTaskDelay(pdMS_TO_TICKS(10));
 
     if (mc3_read_nonce_buffer(chip_id, words)) {
