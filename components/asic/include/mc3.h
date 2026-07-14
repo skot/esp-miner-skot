@@ -6,6 +6,7 @@
 #include <stddef.h>
 
 #include "asic_common.h"
+#include "asic_tuning.h"
 #include "mining.h"
 
 #define MC3_SERIALTX_DEBUG false
@@ -24,5 +25,8 @@ void MC3_read_registers(void * GLOBAL_STATE);
 void MC3_set_nonce_space(double nonce_percent, float frequency, uint16_t asic_count, uint16_t cores);
 uint8_t MC3_read_temperatures(float *temps, size_t max_temps);
 uint8_t MC3_read_vdd_voltages(float *voltages_mv, size_t max_voltages);
+bool MC3_start_core_scan(void);
+void MC3_get_core_scan_status(asic_tuning_status_t *status);
+bool MC3_get_core_scan_chip_result(uint8_t chip_id, asic_tuning_chip_result_t *result);
 
 #endif /* MC3_H_ */

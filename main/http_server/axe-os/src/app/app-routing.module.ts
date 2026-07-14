@@ -11,6 +11,7 @@ import { SwarmComponent } from './components/swarm/swarm.component';
 import { ScoreboardComponent } from './components/scoreboard/scoreboard.component';
 import { DesignComponent } from './components/design/design.component';
 import { PoolComponent } from './components/pool/pool.component';
+import { TuningComponent } from './components/tuning/tuning.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { ApModeGuard } from './guards/ap-mode.guard';
 
@@ -72,6 +73,11 @@ const routes: Routes = [
         path: 'scoreboard',
         component: ScoreboardComponent,
         title: `${TITLE_PREFIX} Scoreboard`,
+      },
+      {
+        path: 'tuning',
+        component: TuningComponent,
+        title: `${TITLE_PREFIX} Tuning`,
       },
       {
         path: 'design',

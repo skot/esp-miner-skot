@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 
 #include <esp_log.h>
 
@@ -217,5 +218,67 @@ void ASIC_read_registers(GlobalState * GLOBAL_STATE)
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot read registers", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);
             break;
+    }
+}
+
+bool ASIC_start_tuning(GlobalState * GLOBAL_STATE)
+{
+    if (!GLOBAL_STATE->ASIC_initalized) {
+        return false;
+    }
+
+    switch (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id) {
+        case MC3:
+            return MC3_start_core_scan();
+        default:
+            return false;
+    }
+}
+
+void ASIC_get_tuning_status(GlobalState * GLOBAL_STATE, asic_tuning_status_t *status)
+{
+    memset(status, 0, sizeof(*status));
+
+    switch (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id) {
+        case MC3:
+            MC3_get_core_scan_status(status);
+            return;
+        default:
+            status->state = ASIC_TUNING_UNSUPPORTED;
+            snprintf(status->message, sizeof(status->message), "Tuning is not supported for %s",
+                GLOBAL_STATE->DEVICE_CONFIG.family.asic.name);
+            return;
+    }
+}
+
+bool ASIC_get_tuning_chip_result(GlobalState * GLOBAL_STATE, uint8_t chip_id, asic_tuning_chip_result_t *result)
+{
+    switch (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id) {
+        case MC3:
+            return MC3_get_core_scan_chip_result(chip_id, result);
+        default:
+            return false;
+    }
+}
+
+const char *ASIC_tuning_state_name(asic_tuning_state_t state)
+{
+    switch (state) {
+        case ASIC_TUNING_UNSUPPORTED:
+            return "unsupported";
+        case ASIC_TUNING_IDLE:
+            return "idle";
+        case ASIC_TUNING_QUEUED:
+            return "queued";
+        case ASIC_TUNING_MEASURING:
+            return "measuring";
+        case ASIC_TUNING_READING:
+            return "reading";
+        case ASIC_TUNING_COMPLETE:
+            return "complete";
+        case ASIC_TUNING_ERROR:
+            return "error";
+        default:
+            return "unknown";
     }
 }

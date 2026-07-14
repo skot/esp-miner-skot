@@ -1,0 +1,112 @@
+<div class="tuning-page">
+  <section class="card tuning-control">
+    <div class="control-header">
+      <div>
+        <h2>Tuning</h2>
+        <div class="status-line" *ngIf="status">
+          <span class="status-dot" [ngClass]="status.state"></span>
+          <span>{{ statusLabel }}</span>
+          <span class="status-message" *ngIf="status.message">{{ status.message }}</span>
+        </div>
+      </div>
+
+      <button
+        pButton
+        type="button"
+        icon="pi pi-play"
+        label="Run Core Scan"
+        [loading]="isStarting"
+        [disabled]="!canStart"
+        (click)="startScan()">
+      </button>
+    </div>
+
+    <p-progressBar
+      *ngIf="status && (status.state === 'queued' || status.state === 'measuring' || status.state === 'reading')"
+      [value]="status.progress"
+      [showValue]="true">
+    </p-progressBar>
+
+    <div class="scan-meta" *ngIf="status?.supported">
+      <div><span>ASICs</span><strong>{{ status?.chipCount }}</strong></div>
+      <div><span>8:1 Cores</span><strong>{{ status?.coreCount }} / ASIC</strong></div>
+      <div><span>Window</span><strong>{{ status?.runtimeSeconds | number:'1.3-3' }} s</strong></div>
+      <div><span>Core Target</span><strong>{{ status?.leadingZeros }} bits</strong></div>
+    </div>
+
+    <div class="inline-message error" *ngIf="errorMessage">
+      <i class="pi pi-exclamation-triangle"></i>
+      <span>{{ errorMessage }}</span>
+    </div>
+    <div class="inline-message error" *ngIf="status?.state === 'error'">
+      <i class="pi pi-exclamation-triangle"></i>
+      <span>{{ status?.message }}</span>
+    </div>
+    <div class="inline-message warning" *ngIf="status?.state === 'complete' && !status?.validated">
+      <i class="pi pi-exclamation-circle"></i>
+      <span>Per-core PASS totals do not agree with global SPDLOG PASS.</span>
+    </div>
+    <div class="inline-message muted" *ngIf="status?.state === 'unsupported'">
+      <i class="pi pi-ban"></i>
+      <span>{{ status?.message }}</span>
+    </div>
+  </section>
+
+  <section class="card scan-results" *ngIf="status?.state === 'complete' && chipViews.length">
+    <div class="results-header">
+      <h3>Core Results</h3>
+      <span class="validation" [class.valid]="status?.validated">
+        <i class="pi" [ngClass]="status?.validated ? 'pi-check-circle' : 'pi-exclamation-circle'"></i>
+        {{ status?.validated ? 'Register map validated' : 'Validation mismatch' }}
+      </span>
+    </div>
+
+    <div class="chip-tabs" role="tablist" aria-label="ASIC core results">
+      <button
+        *ngFor="let chip of chipViews"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="selectedChipId === chip.result.chipId"
+        [class.active]="selectedChipId === chip.result.chipId"
+        (click)="selectChip(chip.result.chipId)">
+        ASIC {{ chip.result.chipId + 1 }}
+      </button>
+    </div>
+
+    <ng-container *ngIf="selectedChip as chip">
+      <div class="result-summary">
+        <div><span>Global SPDLOG</span><strong>{{ chip.result.globalHashrate | number:'1.2-2' }} GH/s</strong></div>
+        <div><span>Global PASS</span><strong>{{ chip.result.globalPass | number:'1.0-0' }}</strong></div>
+        <div><span>Core PASS Sum</span><strong>{{ chip.result.corePassSum | number:'1.0-0' }}</strong></div>
+        <div><span>Match</span><strong>{{ chip.result.matchPercent | number:'1.2-2' }}%</strong></div>
+        <div><span>Median Core</span><strong>{{ chip.medianHashrate | number:'1.2-2' }} GH/s</strong></div>
+      </div>
+
+      <div class="heatmap-heading">
+        <h4>8:1 Core Hashrate</h4>
+        <div class="legend" aria-label="Core performance legend">
+          <span><i class="healthy"></i>90%+</span>
+          <span><i class="watch"></i>75-90%</span>
+          <span><i class="weak"></i>&lt;75%</span>
+          <span><i class="silent"></i>Silent</span>
+        </div>
+      </div>
+
+      <div class="core-grid-scroll">
+        <div class="core-grid">
+          <div
+            *ngFor="let core of chip.cores; trackBy: trackCore"
+            class="core-cell"
+            [ngClass]="core.level"
+            [pTooltip]="'Core ' + core.coreId + ' | PASS ' + core.passCount + ' | ' + (core.hashrate | number:'1.3-3') + ' GH/s'"
+            tooltipPosition="top"
+            tabindex="0">
+            <span class="core-id">{{ core.coreId }}</span>
+            <strong>{{ core.hashrate | number:'1.2-2' }}</strong>
+            <small>GH/s</small>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </section>
+</div>

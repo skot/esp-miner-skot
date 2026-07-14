@@ -29,4 +29,27 @@ describe('SystemApiService', () => {
     request.flush({});
     httpTesting.verify();
   });
+
+  it('should GET ASIC tuning status from a device', () => {
+    const httpTesting = TestBed.inject(HttpTestingController);
+
+    service.getTuningStatus('http://miner.local').subscribe();
+
+    const request = httpTesting.expectOne('http://miner.local/api/system/tuning');
+    expect(request.request.method).toBe('GET');
+    request.flush({});
+    httpTesting.verify();
+  });
+
+  it('should POST to start an ASIC tuning scan', () => {
+    const httpTesting = TestBed.inject(HttpTestingController);
+
+    service.startTuning('http://miner.local').subscribe();
+
+    const request = httpTesting.expectOne('http://miner.local/api/system/tuning');
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual({});
+    request.flush({});
+    httpTesting.verify();
+  });
 });

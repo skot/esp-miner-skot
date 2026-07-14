@@ -34,6 +34,7 @@
 #include "statistics_task.h"
 #include "theme_api.h"
 #include "axe-os/api/system/asic_settings.h"
+#include "axe-os/api/system/tuning.h"
 #include "display.h"
 #include "mdns.h"
 #include "http_server.h"
@@ -1418,6 +1419,7 @@ esp_err_t start_rest_server(void * pvParameters)
     
     // Initialize the ASIC API with the global state
     asic_api_init(GLOBAL_STATE);
+    tuning_api_init(GLOBAL_STATE);
     const char * base_path = "";
 
     REST_CHECK(base_path, "wrong base path", err);
@@ -1492,6 +1494,22 @@ esp_err_t start_rest_server(void * pvParameters)
         .user_ctx = rest_context
     };
     httpd_register_uri_handler(server, &scoreboard_get_uri);
+
+    httpd_uri_t system_tuning_get_uri = {
+        .uri = "/api/system/tuning",
+        .method = HTTP_GET,
+        .handler = GET_system_tuning,
+        .user_ctx = rest_context
+    };
+    httpd_register_uri_handler(server, &system_tuning_get_uri);
+
+    httpd_uri_t system_tuning_post_uri = {
+        .uri = "/api/system/tuning",
+        .method = HTTP_POST,
+        .handler = POST_system_tuning,
+        .user_ctx = rest_context
+    };
+    httpd_register_uri_handler(server, &system_tuning_post_uri);
 
     /* URI handler for WiFi scan */
     httpd_uri_t wifi_scan_get_uri = {

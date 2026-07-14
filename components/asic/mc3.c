@@ -7,7 +7,9 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "esp_heap_caps.h"
 #include "esp_log.h"
+#include "esp_psram.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -71,6 +73,14 @@
 #define MC3_SPDLOG_TIMER_COUNT 10
 #define MC3_SPDLOG_CORE_TARGET 0x00
 #define MC3_SPDLOG_POLL_INTERVAL_US 3000000
+#define MC3_CORE_PASS_LOG_STRIDE 4
+#define MC3_CORE_PASS_READ_CHUNK 24
+#define MC3_CORE_PASS_SEARCH_START 0x00010000
+#define MC3_CORE_PASS_SEARCH_END 0x0001FFFC
+#define MC3_CORE_PASS_SEARCH_WORDS (((MC3_CORE_PASS_SEARCH_END - MC3_CORE_PASS_SEARCH_START) / 4) + 1)
+#define MC3_CORE_PASS_MIN_NONZERO ((ASIC_TUNING_MAX_CORES * 3) / 4)
+#define MC3_TUNING_SPDLOG_TIMER_COUNT 48
+#define MC3_TUNING_SETTLE_TIME_US 250000
 #define MC3_THERMAL_RESOLUTION_BITS 12
 #define MC3_VOLTAGE_RESOLUTION_BITS 14
 #define MC3_VOLTAGE_VREF 0.5945f
@@ -118,8 +128,19 @@ static task_result mc3_pending_results[MC3_PENDING_RESULTS_SIZE];
 static uint8_t mc3_pending_head;
 static uint8_t mc3_pending_count;
 static uint32_t mc3_seen_nonce_words[MC3_MAX_TRACKED_CHIPS][MC3_VERSION_ROLLING_NONCE_COUNT][3];
+static asic_tuning_status_t mc3_core_scan_status = {
+    .supported = true,
+    .state = ASIC_TUNING_IDLE,
+    .core_count = ASIC_TUNING_MAX_CORES,
+    .leading_zeros = 24,
+};
+static asic_tuning_chip_result_t mc3_core_scan_results[ASIC_TUNING_MAX_CHIPS];
+static int64_t mc3_core_scan_start_us;
+static uint32_t mc3_core_pass_log_base;
 static pthread_mutex_t mc3_serial_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_pending_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t mc3_core_scan_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t mc3_work_lock = PTHREAD_MUTEX_INITIALIZER;
 
 typedef struct {
     uint16_t frequency_mhz;
@@ -218,7 +239,9 @@ typedef struct {
 
 static bool mc3_write_register(uint8_t chip_id, uint32_t reg, uint32_t value, uint8_t chip_num);
 static bool mc3_read_register(uint8_t chip_id, uint32_t reg, uint32_t *value);
+static bool mc3_read_register_block(uint8_t chip_id, uint32_t reg, uint32_t *values, uint8_t value_count);
 static bool mc3_pending_push(const task_result *new_result);
+static asic_tuning_state_t mc3_get_core_scan_state(void);
 
 static uint8_t hex_nibble(char c)
 {
@@ -460,14 +483,14 @@ static void mc3_write_work_target(double difficulty)
     mc3_write_register(0, MC3_WORK_TARGET_H, target_h, MC3_CHIP_NUM_ALL);
 }
 
-static uint32_t mc3_spdlog_timer_value(void)
+static uint32_t mc3_spdlog_timer_value(uint16_t timer_count)
 {
-    return MC3_SPDLOG_TIMER_ENABLE | MC3_SPDLOG_TIMER_COUNT;
+    return MC3_SPDLOG_TIMER_ENABLE | timer_count;
 }
 
-static double mc3_spdlog_runtime_seconds(void)
+static double mc3_spdlog_runtime_seconds(uint16_t timer_count)
 {
-    return ((double)MC3_SPDLOG_TIMER_COUNT * 1048576.0) / MC3_SPDLOG_XCLK_HZ;
+    return ((double)timer_count * 1048576.0) / MC3_SPDLOG_XCLK_HZ;
 }
 
 static uint8_t mc3_spdlog_leading_zeros(void)
@@ -485,14 +508,29 @@ static uint8_t mc3_spdlog_leading_zeros(void)
     return leading_zeros;
 }
 
-static void mc3_start_spdlog(uint8_t start_chip_id, uint8_t chip_num)
+static void mc3_start_spdlog_window(uint8_t start_chip_id, uint8_t chip_num, uint16_t timer_count)
 {
     mc3_write_register(start_chip_id, MC3_GLOBAL_SPD, MC3_DEFAULT_GLOBAL_SPD_VALUE, chip_num);
     mc3_write_register(start_chip_id, MC3_WORK_CFG, MC3_DEFAULT_WORK_CFG_SPDLOG | MC3_SPDLOG_CORE_TARGET, chip_num);
     mc3_write_register(start_chip_id, MC3_SPDLOG_RST, 0x00000001, chip_num);
-    mc3_write_register(start_chip_id, MC3_SPDLOG_TIMER, mc3_spdlog_timer_value(), chip_num);
+    mc3_write_register(start_chip_id, MC3_SPDLOG_TIMER, mc3_spdlog_timer_value(timer_count), chip_num);
     mc3_spdlog_started = true;
     mc3_spdlog_start_us = esp_timer_get_time();
+
+    pthread_mutex_lock(&mc3_core_scan_lock);
+    if (mc3_core_scan_status.state == ASIC_TUNING_MEASURING) {
+        mc3_core_scan_start_us = mc3_spdlog_start_us;
+        mc3_core_scan_status.progress_percent = 5;
+    }
+    pthread_mutex_unlock(&mc3_core_scan_lock);
+}
+
+static void mc3_start_spdlog(uint8_t start_chip_id, uint8_t chip_num)
+{
+    uint16_t timer_count = mc3_get_core_scan_state() == ASIC_TUNING_MEASURING
+        ? MC3_TUNING_SPDLOG_TIMER_COUNT
+        : MC3_SPDLOG_TIMER_COUNT;
+    mc3_start_spdlog_window(start_chip_id, chip_num, timer_count);
 }
 
 static void mc3_report_hashrate_result(GlobalState *GLOBAL_STATE, uint8_t chip_id, register_type_t register_type, double hashrate_hs)
@@ -518,7 +556,12 @@ static bool mc3_read_spdlog_chip(GlobalState *GLOBAL_STATE, uint8_t chip_id,
         return false;
     }
 
-    double runtime_seconds = mc3_spdlog_runtime_seconds();
+    uint16_t timer_count = timer & 0xFFFF;
+    double runtime_seconds = mc3_spdlog_runtime_seconds(timer_count);
+    if (runtime_seconds <= 0.0) {
+        ESP_LOGW(TAG, "Invalid MC3 SPDLOG timer count chip=%u", chip_id);
+        return false;
+    }
     double work_per_count = (double)(1ULL << mc3_spdlog_leading_zeros());
     double pass_hashrate_hs = work_per_count * (double)passed / runtime_seconds;
 
@@ -526,6 +569,332 @@ static bool mc3_read_spdlog_chip(GlobalState *GLOBAL_STATE, uint8_t chip_id,
     *passed_out = passed;
     *failed_out = failed;
     *pass_hashrate_ghs_out = pass_hashrate_hs / 1e9;
+    return true;
+}
+
+static bool mc3_core_scan_is_active(asic_tuning_state_t state)
+{
+    return state == ASIC_TUNING_QUEUED ||
+        state == ASIC_TUNING_MEASURING ||
+        state == ASIC_TUNING_READING;
+}
+
+static asic_tuning_state_t mc3_get_core_scan_state(void)
+{
+    pthread_mutex_lock(&mc3_core_scan_lock);
+    asic_tuning_state_t state = mc3_core_scan_status.state;
+    pthread_mutex_unlock(&mc3_core_scan_lock);
+    return state;
+}
+
+static void mc3_set_core_scan_state(asic_tuning_state_t state, uint8_t progress, const char *message)
+{
+    pthread_mutex_lock(&mc3_core_scan_lock);
+    mc3_core_scan_status.state = state;
+    mc3_core_scan_status.progress_percent = progress;
+    snprintf(mc3_core_scan_status.message, sizeof(mc3_core_scan_status.message), "%s", message);
+    pthread_mutex_unlock(&mc3_core_scan_lock);
+}
+
+bool MC3_start_core_scan(void)
+{
+    pthread_mutex_lock(&mc3_core_scan_lock);
+
+    if (mc3_core_scan_is_active(mc3_core_scan_status.state)) {
+        pthread_mutex_unlock(&mc3_core_scan_lock);
+        return false;
+    }
+
+    if (mc3_chip_count == 0 || mc3_chip_count > ASIC_TUNING_MAX_CHIPS) {
+        mc3_core_scan_status.state = ASIC_TUNING_ERROR;
+        mc3_core_scan_status.progress_percent = 0;
+        snprintf(mc3_core_scan_status.message, sizeof(mc3_core_scan_status.message),
+            "Unsupported MC3 chip count: %u", mc3_chip_count);
+        pthread_mutex_unlock(&mc3_core_scan_lock);
+        return false;
+    }
+
+    memset(mc3_core_scan_results, 0, sizeof(mc3_core_scan_results));
+    mc3_core_scan_status.supported = true;
+    mc3_core_scan_status.validated = false;
+    mc3_core_scan_status.state = ASIC_TUNING_QUEUED;
+    mc3_core_scan_status.progress_percent = 0;
+    mc3_core_scan_status.chip_count = mc3_chip_count;
+    mc3_core_scan_status.core_count = ASIC_TUNING_MAX_CORES;
+    mc3_core_scan_status.leading_zeros = mc3_spdlog_leading_zeros();
+    mc3_core_scan_status.runtime_seconds = mc3_spdlog_runtime_seconds(MC3_TUNING_SPDLOG_TIMER_COUNT);
+    uint32_t scan_id = ++mc3_core_scan_status.scan_id;
+    snprintf(mc3_core_scan_status.message, sizeof(mc3_core_scan_status.message), "Waiting for active work");
+    mc3_core_scan_start_us = 0;
+
+    pthread_mutex_unlock(&mc3_core_scan_lock);
+    ESP_LOGI(TAG, "Queued MC3 per-core tuning scan %" PRIu32, scan_id);
+    return true;
+}
+
+void MC3_get_core_scan_status(asic_tuning_status_t *status)
+{
+    pthread_mutex_lock(&mc3_core_scan_lock);
+    *status = mc3_core_scan_status;
+
+    if (status->state == ASIC_TUNING_MEASURING && mc3_core_scan_start_us > 0) {
+        int64_t elapsed_us = esp_timer_get_time() - mc3_core_scan_start_us;
+        int64_t scan_time_us = (int64_t)(status->runtime_seconds * 1000000.0) + MC3_TUNING_SETTLE_TIME_US;
+        if (elapsed_us > 0 && scan_time_us > 0) {
+            int64_t measurement_progress = (elapsed_us * 65) / scan_time_us;
+            status->progress_percent = 5 + (uint8_t)(measurement_progress > 65 ? 65 : measurement_progress);
+        }
+    }
+
+    pthread_mutex_unlock(&mc3_core_scan_lock);
+}
+
+bool MC3_get_core_scan_chip_result(uint8_t chip_id, asic_tuning_chip_result_t *result)
+{
+    pthread_mutex_lock(&mc3_core_scan_lock);
+    bool available = chip_id < mc3_core_scan_status.chip_count &&
+        (mc3_core_scan_status.state == ASIC_TUNING_COMPLETE || mc3_core_scan_status.state == ASIC_TUNING_ERROR);
+    if (available) {
+        *result = mc3_core_scan_results[chip_id];
+    }
+    pthread_mutex_unlock(&mc3_core_scan_lock);
+    return available;
+}
+
+static void mc3_begin_core_scan(void)
+{
+    mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL, MC3_TUNING_SPDLOG_TIMER_COUNT);
+
+    pthread_mutex_lock(&mc3_core_scan_lock);
+    mc3_core_scan_start_us = mc3_spdlog_start_us;
+    mc3_core_scan_status.state = ASIC_TUNING_MEASURING;
+    mc3_core_scan_status.progress_percent = 5;
+    snprintf(mc3_core_scan_status.message, sizeof(mc3_core_scan_status.message), "Measuring core PASS counters");
+    pthread_mutex_unlock(&mc3_core_scan_lock);
+
+    if (mc3_core_pass_log_base != 0) {
+        ESP_LOGI(TAG, "Starting %.3f second MC3 per-core tuning scan using pass_log base 0x%08" PRIX32,
+            mc3_spdlog_runtime_seconds(MC3_TUNING_SPDLOG_TIMER_COUNT), mc3_core_pass_log_base);
+    } else {
+        ESP_LOGI(TAG, "Starting %.3f second MC3 per-core tuning scan; pass_log base will be discovered",
+            mc3_spdlog_runtime_seconds(MC3_TUNING_SPDLOG_TIMER_COUNT));
+    }
+}
+
+static bool mc3_read_core_pass_counts(uint8_t chip_id, uint32_t base, uint32_t *pass_counts)
+{
+    for (uint16_t offset = 0; offset < ASIC_TUNING_MAX_CORES; offset += MC3_CORE_PASS_READ_CHUNK) {
+        uint8_t remaining = ASIC_TUNING_MAX_CORES - offset;
+        uint8_t count = remaining < MC3_CORE_PASS_READ_CHUNK ? remaining : MC3_CORE_PASS_READ_CHUNK;
+        uint32_t reg = base + ((uint32_t)offset * MC3_CORE_PASS_LOG_STRIDE);
+        bool read_ok = false;
+
+        for (int attempt = 0; attempt < 2 && !read_ok; attempt++) {
+            read_ok = mc3_read_register_block(chip_id, reg, pass_counts + offset, count);
+        }
+
+        if (!read_ok) {
+            ESP_LOGW(TAG, "Failed reading core PASS counters chip=%u offset=%u", chip_id, offset);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+static uint64_t mc3_sum_core_pass_counts(const uint32_t *pass_counts)
+{
+    uint64_t sum = 0;
+    for (uint16_t core_id = 0; core_id < ASIC_TUNING_MAX_CORES; core_id++) {
+        sum += pass_counts[core_id];
+    }
+    return sum;
+}
+
+static bool mc3_core_pass_sum_matches(uint64_t core_pass_sum, uint32_t global_pass)
+{
+    if (global_pass == 0) {
+        return false;
+    }
+
+    uint64_t difference = core_pass_sum > global_pass
+        ? core_pass_sum - global_pass
+        : global_pass - core_pass_sum;
+    uint64_t tolerance = global_pass / 20;
+    if (tolerance < 4) {
+        tolerance = 4;
+    }
+    return difference <= tolerance;
+}
+
+static bool mc3_discover_core_pass_log_base(uint8_t chip_id, uint32_t global_pass,
+    uint32_t *pass_counts, uint32_t *base_out)
+{
+    if (mc3_core_pass_log_base != 0) {
+        if (mc3_read_core_pass_counts(chip_id, mc3_core_pass_log_base, pass_counts)) {
+            uint64_t sum = mc3_sum_core_pass_counts(pass_counts);
+            if (mc3_core_pass_sum_matches(sum, global_pass)) {
+                *base_out = mc3_core_pass_log_base;
+                return true;
+            }
+        }
+
+        ESP_LOGW(TAG, "Cached pass_log base 0x%08" PRIX32 " no longer validates", mc3_core_pass_log_base);
+        mc3_core_pass_log_base = 0;
+    }
+
+    if (!esp_psram_is_initialized()) {
+        ESP_LOGE(TAG, "Cannot search MC3 pass_log registers without PSRAM");
+        return false;
+    }
+
+    size_t register_bytes = MC3_CORE_PASS_SEARCH_WORDS * sizeof(uint32_t);
+    uint32_t *register_words = heap_caps_calloc(
+        MC3_CORE_PASS_SEARCH_WORDS, sizeof(uint32_t), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+    if (register_words == NULL) {
+        ESP_LOGE(TAG, "Could not allocate %u bytes for MC3 pass_log search", (unsigned)register_bytes);
+        return false;
+    }
+
+    ESP_LOGI(TAG, "Reading MC3 register map from 0x%08" PRIX32 " to 0x%08" PRIX32,
+        (uint32_t)MC3_CORE_PASS_SEARCH_START, (uint32_t)MC3_CORE_PASS_SEARCH_END);
+
+    uint16_t failed_blocks = 0;
+    for (uint32_t offset = 0; offset < MC3_CORE_PASS_SEARCH_WORDS; offset += MC3_CORE_PASS_READ_CHUNK) {
+        uint32_t remaining = MC3_CORE_PASS_SEARCH_WORDS - offset;
+        uint8_t count = remaining < MC3_CORE_PASS_READ_CHUNK ? remaining : MC3_CORE_PASS_READ_CHUNK;
+        uint32_t reg = MC3_CORE_PASS_SEARCH_START + (offset * MC3_CORE_PASS_LOG_STRIDE);
+        bool read_ok = false;
+        for (int attempt = 0; attempt < 2 && !read_ok; attempt++) {
+            read_ok = mc3_read_register_block(chip_id, reg, register_words + offset, count);
+        }
+        if (!read_ok) {
+            failed_blocks++;
+        }
+    }
+
+    uint32_t best_start = UINT32_MAX;
+    uint64_t best_sum = 0;
+    uint64_t best_difference = UINT64_MAX;
+    uint32_t last_start = MC3_CORE_PASS_SEARCH_WORDS - ASIC_TUNING_MAX_CORES;
+    for (uint32_t start = 0; start <= last_start; start++) {
+        uint16_t nonzero_count = 0;
+        uint64_t sum = 0;
+        bool plausible = true;
+
+        for (uint16_t core_id = 0; core_id < ASIC_TUNING_MAX_CORES; core_id++) {
+            uint32_t value = register_words[start + core_id];
+            if (value > global_pass) {
+                plausible = false;
+                break;
+            }
+            if (value > 0) {
+                nonzero_count++;
+            }
+            sum += value;
+        }
+
+        if (!plausible || nonzero_count < MC3_CORE_PASS_MIN_NONZERO) {
+            continue;
+        }
+
+        uint64_t difference = sum > global_pass ? sum - global_pass : global_pass - sum;
+        if (difference < best_difference) {
+            best_start = start;
+            best_sum = sum;
+            best_difference = difference;
+        }
+    }
+
+    bool found = best_start != UINT32_MAX && mc3_core_pass_sum_matches(best_sum, global_pass);
+    if (found) {
+        uint32_t base = MC3_CORE_PASS_SEARCH_START + (best_start * MC3_CORE_PASS_LOG_STRIDE);
+        memcpy(pass_counts, register_words + best_start, sizeof(uint32_t) * ASIC_TUNING_MAX_CORES);
+        mc3_core_pass_log_base = base;
+        *base_out = base;
+
+        double match_percent = ((double)best_sum * 100.0) / (double)global_pass;
+        ESP_LOGI(TAG, "Discovered MC3 per-core pass_log base 0x%08" PRIX32
+            " sum=%" PRIu64 " global=%" PRIu32 " match=%.2f%% failed_blocks=%u",
+            base, best_sum, global_pass, match_percent, failed_blocks);
+    } else if (best_start != UINT32_MAX) {
+        uint32_t best_base = MC3_CORE_PASS_SEARCH_START + (best_start * MC3_CORE_PASS_LOG_STRIDE);
+        double match_percent = ((double)best_sum * 100.0) / (double)global_pass;
+        ESP_LOGE(TAG, "Best MC3 pass_log window 0x%08" PRIX32
+            " sum=%" PRIu64 " global=%" PRIu32 " match=%.2f%% failed_blocks=%u",
+            best_base, best_sum, global_pass, match_percent, failed_blocks);
+    } else {
+        ESP_LOGE(TAG, "No plausible MC3 pass_log window found; failed_blocks=%u", failed_blocks);
+    }
+
+    heap_caps_free(register_words);
+    if (found) {
+        return true;
+    }
+
+    ESP_LOGE(TAG, "No per-core PASS bank matched global PASS=%" PRIu32, global_pass);
+    return false;
+}
+
+static bool mc3_collect_core_scan(GlobalState *GLOBAL_STATE)
+{
+    bool all_validated = true;
+    uint32_t pass_log_base = 0;
+    mc3_set_core_scan_state(ASIC_TUNING_READING, 75, "Reading per-core PASS counters");
+
+    for (uint8_t chip_id = 0; chip_id < mc3_chip_count; chip_id++) {
+        asic_tuning_chip_result_t chip_result = { .chip_id = chip_id };
+
+        if (!mc3_read_spdlog_chip(GLOBAL_STATE, chip_id, &chip_result.global_pass,
+                &chip_result.global_fail, &chip_result.global_hashrate_ghs)) {
+            mc3_set_core_scan_state(ASIC_TUNING_ERROR, 75, "Could not read global MC3 SPDLOG counters");
+            return false;
+        }
+
+        bool core_read_ok = chip_id == 0
+            ? mc3_discover_core_pass_log_base(chip_id, chip_result.global_pass,
+                chip_result.core_pass_counts, &pass_log_base)
+            : mc3_read_core_pass_counts(chip_id, pass_log_base, chip_result.core_pass_counts);
+        if (!core_read_ok) {
+            mc3_set_core_scan_state(ASIC_TUNING_ERROR, 75,
+                chip_id == 0 ? "No per-core PASS bank matched global SPDLOG"
+                             : "Could not read all MC3 core PASS counters");
+            return false;
+        }
+
+        chip_result.core_pass_sum = mc3_sum_core_pass_counts(chip_result.core_pass_counts);
+
+        if (chip_result.global_pass > 0 && chip_result.core_pass_sum == 0) {
+            char message[ASIC_TUNING_MESSAGE_LENGTH];
+            snprintf(message, sizeof(message), "ASIC %u per-core PASS bank returned all zeros", chip_id + 1);
+            ESP_LOGE(TAG, "%s while global PASS=%" PRIu32, message, chip_result.global_pass);
+            mc3_set_core_scan_state(ASIC_TUNING_ERROR, 75, message);
+            return false;
+        }
+
+        uint64_t global_pass = chip_result.global_pass;
+        chip_result.validated = mc3_core_pass_sum_matches(chip_result.core_pass_sum, chip_result.global_pass);
+        all_validated = all_validated && chip_result.validated;
+
+        pthread_mutex_lock(&mc3_core_scan_lock);
+        mc3_core_scan_results[chip_id] = chip_result;
+        mc3_core_scan_status.progress_percent = 75 + (((chip_id + 1) * 25) / mc3_chip_count);
+        pthread_mutex_unlock(&mc3_core_scan_lock);
+
+        double match_percent = global_pass > 0
+            ? ((double)chip_result.core_pass_sum * 100.0) / (double)global_pass
+            : 0.0;
+        ESP_LOGI(TAG, "Core scan chip=%u global=%" PRIu32 " core_sum=%" PRIu64 " match=%.2f%%",
+            chip_id, chip_result.global_pass, chip_result.core_pass_sum, match_percent);
+    }
+
+    pthread_mutex_lock(&mc3_core_scan_lock);
+    mc3_core_scan_status.validated = all_validated;
+    mc3_core_scan_status.state = ASIC_TUNING_COMPLETE;
+    mc3_core_scan_status.progress_percent = 100;
+    snprintf(mc3_core_scan_status.message, sizeof(mc3_core_scan_status.message), "%s",
+        all_validated ? "Core scan complete" : "Core PASS sum did not match global PASS");
+    pthread_mutex_unlock(&mc3_core_scan_lock);
     return true;
 }
 
@@ -931,6 +1300,26 @@ static bool mc3_read_register(uint8_t chip_id, uint32_t reg, uint32_t *value)
     return mc3_parse_read_response(response, received, chip_id, reg, 1, value);
 }
 
+static bool mc3_read_register_block(uint8_t chip_id, uint32_t reg, uint32_t *values, uint8_t value_count)
+{
+    if (value_count == 0 || value_count > MC3_CORE_PASS_READ_CHUNK) {
+        return false;
+    }
+
+    uint8_t packet[MC3_ULINK_FIELD_BYTES * 3] = {0};
+    uint8_t response[MC3_ULINK_FIELD_BYTES * (MC3_ULINK_READ_META_FIELDS + MC3_CORE_PASS_READ_CHUNK)] = {0};
+    uint8_t packet_len = mc3_build_read_packet(packet, chip_id, reg, value_count);
+    uint16_t response_len = MC3_ULINK_FIELD_BYTES * (MC3_ULINK_READ_META_FIELDS + value_count);
+
+    int16_t received = mc3_transact(packet, packet_len, response, response_len);
+    if (received <= 0) {
+        ESP_LOGW(TAG, "No response reading %u registers from 0x%08" PRIX32, value_count, reg);
+        return false;
+    }
+
+    return mc3_parse_read_response(response, received, chip_id, reg, value_count, values);
+}
+
 uint8_t MC3_init(void * pvParameters)
 {
     GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
@@ -960,6 +1349,21 @@ uint8_t MC3_init(void * pvParameters)
         mc3_chip_count = GLOBAL_STATE->DEVICE_CONFIG.family.asic_count;
     }
 
+    pthread_mutex_lock(&mc3_core_scan_lock);
+    if (mc3_core_scan_is_active(mc3_core_scan_status.state)) {
+        mc3_core_scan_status.state = ASIC_TUNING_ERROR;
+        mc3_core_scan_status.progress_percent = 0;
+        snprintf(mc3_core_scan_status.message, sizeof(mc3_core_scan_status.message),
+            "Core scan interrupted by ASIC reset");
+    }
+    mc3_core_scan_status.chip_count = mc3_chip_count;
+    mc3_core_scan_status.leading_zeros = mc3_spdlog_leading_zeros();
+    mc3_core_scan_status.runtime_seconds = mc3_spdlog_runtime_seconds(MC3_TUNING_SPDLOG_TIMER_COUNT);
+    if (mc3_core_scan_status.state == ASIC_TUNING_IDLE) {
+        snprintf(mc3_core_scan_status.message, sizeof(mc3_core_scan_status.message), "Ready");
+    }
+    pthread_mutex_unlock(&mc3_core_scan_lock);
+
     ESP_LOGI(TAG, "MC3 init response: next_chip_id=%u using_chip_count=%u", next_chip_id, mc3_chip_count);
     if (!MC3_ramp_hash_frequency(GLOBAL_STATE)) {
         ESP_LOGE(TAG, "MC3 frequency ramp failed during initialization");
@@ -987,6 +1391,8 @@ void MC3_send_work(void * pvParameters, bm_job * next_bm_job)
         return;
     }
 
+    pthread_mutex_lock(&mc3_work_lock);
+
     mc3_job_id = (mc3_job_id + 1) % 128;
     ESP_LOGI(TAG, "Writing MC3 work job_id=%u chips=%u", mc3_job_id, chip_count);
 
@@ -1000,6 +1406,7 @@ void MC3_send_work(void * pvParameters, bm_job * next_bm_job)
         ESP_LOGE(TAG, "Cannot start MC3 work job_id=%u with version mask 0x%08" PRIX32,
             mc3_job_id, next_bm_job->version_mask);
         free_bm_job(next_bm_job);
+        pthread_mutex_unlock(&mc3_work_lock);
         return;
     }
     mc3_write_work_target(next_bm_job->pool_diff);
@@ -1007,6 +1414,7 @@ void MC3_send_work(void * pvParameters, bm_job * next_bm_job)
     mc3_store_active_job(GLOBAL_STATE, mc3_job_id, next_bm_job);
     mc3_write_v_work(next_bm_job, mc3_job_id);
     mc3_start_spdlog(0, MC3_CHIP_NUM_ALL);
+    pthread_mutex_unlock(&mc3_work_lock);
 }
 
 void MC3_set_version_mask(uint32_t version_mask)
@@ -1177,8 +1585,46 @@ void MC3_read_registers(void *pvParameters)
         return;
     }
 
+    asic_tuning_state_t scan_state = mc3_get_core_scan_state();
+    if (scan_state == ASIC_TUNING_QUEUED) {
+        if (mc3_spdlog_started) {
+            pthread_mutex_lock(&mc3_work_lock);
+            if (mc3_get_core_scan_state() == ASIC_TUNING_QUEUED && mc3_spdlog_started) {
+                mc3_begin_core_scan();
+            }
+            pthread_mutex_unlock(&mc3_work_lock);
+        }
+        return;
+    }
+    if (scan_state == ASIC_TUNING_READING) {
+        return;
+    }
+
     int64_t now_us = esp_timer_get_time();
+    int64_t required_runtime_us = scan_state == ASIC_TUNING_MEASURING
+        ? (int64_t)(mc3_spdlog_runtime_seconds(MC3_TUNING_SPDLOG_TIMER_COUNT) * 1000000.0) + MC3_TUNING_SETTLE_TIME_US
+        : MC3_SPDLOG_POLL_INTERVAL_US;
+    if (!mc3_spdlog_started || now_us - mc3_spdlog_start_us < required_runtime_us) {
+        return;
+    }
+
+    if (scan_state == ASIC_TUNING_MEASURING) {
+        pthread_mutex_lock(&mc3_work_lock);
+        now_us = esp_timer_get_time();
+        if (now_us - mc3_spdlog_start_us < required_runtime_us) {
+            pthread_mutex_unlock(&mc3_work_lock);
+            return;
+        }
+        mc3_collect_core_scan(GLOBAL_STATE);
+        mc3_start_spdlog(0, MC3_CHIP_NUM_ALL);
+        pthread_mutex_unlock(&mc3_work_lock);
+        return;
+    }
+
+    pthread_mutex_lock(&mc3_work_lock);
+    now_us = esp_timer_get_time();
     if (!mc3_spdlog_started || now_us - mc3_spdlog_start_us < MC3_SPDLOG_POLL_INTERVAL_US) {
+        pthread_mutex_unlock(&mc3_work_lock);
         return;
     }
 
@@ -1214,6 +1660,7 @@ void MC3_read_registers(void *pvParameters)
     ESP_LOGI(TAG, "%s", summary);
 
     mc3_start_spdlog(0, MC3_CHIP_NUM_ALL);
+    pthread_mutex_unlock(&mc3_work_lock);
 }
 
 void MC3_set_nonce_space(double nonce_percent, float frequency, uint16_t asic_count, uint16_t cores)

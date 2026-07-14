@@ -9,6 +9,7 @@ import {
   SystemStatistics as ISystemStatistics,
   SystemAsic as ISystemASIC,
   SystemScoreboardEntry as ISystemScoreboardEntry,
+  AsicTuningStatus,
   Settings,
   GenericResponse
 } from '../generated/models';
@@ -24,6 +25,7 @@ const API_TIMEOUT = 15000;
   providedIn: 'root'
 })
 export class SystemApiService {
+  private mockTuningStartedAt: number | null = null;
 
   constructor(
     private httpClient: HttpClient,
@@ -272,6 +274,91 @@ export class SystemApiService {
         nonce: "00000001",
         version_bits: "20000000"
       }]).pipe(delay(1000));
+  }
+
+  public getTuningStatus(uri: string = ''): Observable<AsicTuningStatus> {
+    if (!environment.mock && this.api && !uri) {
+      return from(this.api.invoke(functions.getAsicTuningStatus, {})).pipe(timeout(API_TIMEOUT));
+    }
+
+    if (!environment.mock && uri) {
+      return this.httpClient.get<AsicTuningStatus>(`${uri}/api/system/tuning`).pipe(timeout(API_TIMEOUT));
+    }
+
+    return of(this.getMockTuningStatus()).pipe(delay(150));
+  }
+
+  public startTuning(uri: string = ''): Observable<AsicTuningStatus> {
+    if (!environment.mock && this.api && !uri) {
+      return from(this.api.invoke(functions.startAsicTuningScan, {})).pipe(timeout(API_TIMEOUT));
+    }
+
+    if (!environment.mock && uri) {
+      return this.httpClient.post<AsicTuningStatus>(`${uri}/api/system/tuning`, {}).pipe(timeout(API_TIMEOUT));
+    }
+
+    this.mockTuningStartedAt = Date.now();
+    return of(this.getMockTuningStatus()).pipe(delay(150));
+  }
+
+  private getMockTuningStatus(): AsicTuningStatus {
+    const base = {
+      supported: true,
+      validated: false,
+      scanId: this.mockTuningStartedAt === null ? 0 : 1,
+      chipCount: 4,
+      coreCount: 156,
+      leadingZeros: 24,
+      runtimeSeconds: 4.02653184,
+      chips: [],
+    };
+
+    if (this.mockTuningStartedAt === null) {
+      return { ...base, state: 'idle', progress: 0, message: 'Ready' };
+    }
+
+    const elapsed = Date.now() - this.mockTuningStartedAt;
+    if (elapsed < 4300) {
+      return {
+        ...base,
+        state: 'measuring',
+        progress: Math.min(70, 5 + Math.round(elapsed / 4300 * 65)),
+        message: 'Measuring core PASS counters'
+      };
+    }
+    if (elapsed < 5000) {
+      return { ...base, state: 'reading', progress: 82, message: 'Reading per-core PASS counters' };
+    }
+
+    const hashesPerPass = Math.pow(2, base.leadingZeros);
+    const chips = Array.from({ length: base.chipCount }, (_, chipId) => {
+      const corePassCounts = Array.from({ length: base.coreCount }, (_, coreId) => {
+        const variation = Math.sin((coreId + 1) * (chipId + 2)) * 24;
+        const weakCore = coreId === 37 + chipId * 7 ? -190 : 0;
+        return Math.max(0, Math.round(768 + variation + weakCore));
+      });
+      const corePassSum = corePassCounts.reduce((sum, count) => sum + count, 0);
+
+      return {
+        chipId,
+        validated: true,
+        globalPass: corePassSum,
+        globalFail: 450 + chipId * 37,
+        corePassSum,
+        globalHashrate: corePassSum * hashesPerPass / base.runtimeSeconds / 1e9,
+        matchPercent: 100,
+        corePassCounts
+      };
+    });
+
+    return {
+      ...base,
+      validated: true,
+      state: 'complete',
+      progress: 100,
+      message: 'Core scan complete',
+      chips
+    };
   }
 
   public restart(uri: string = ''): Observable<GenericResponse> {

@@ -698,6 +698,89 @@ components:
           type: string
           description: Version bits of the share
 
+    AsicTuningChipResult:
+      type: object
+      required:
+        - chipId
+        - validated
+        - globalPass
+        - globalFail
+        - corePassSum
+        - globalHashrate
+        - matchPercent
+        - corePassCounts
+      properties:
+        chipId:
+          type: integer
+          description: Zero-based ASIC identifier
+        validated:
+          type: boolean
+          description: Whether the per-core PASS sum agrees with global PASS
+        globalPass:
+          type: number
+          description: Whole-chip SPDLOG PASS count
+        globalFail:
+          type: number
+          description: Whole-chip SPDLOG FAIL count
+        corePassSum:
+          type: number
+          description: Sum of all per-core PASS counters
+        globalHashrate:
+          type: number
+          description: Whole-chip PASS hashrate in GH/s
+        matchPercent:
+          type: number
+          description: Per-core PASS sum as a percentage of global PASS
+        corePassCounts:
+          type: array
+          description: PASS counts for each 8:1 core, ordered by core identifier
+          items:
+            type: number
+
+    AsicTuningStatus:
+      type: object
+      required:
+        - supported
+        - validated
+        - state
+        - progress
+        - scanId
+        - chipCount
+        - coreCount
+        - leadingZeros
+        - runtimeSeconds
+        - message
+        - chips
+      properties:
+        supported:
+          type: boolean
+        validated:
+          type: boolean
+          description: Whether every chip's per-core PASS sum agrees with global PASS
+        state:
+          type: string
+          enum: [unsupported, idle, queued, measuring, reading, complete, error]
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        scanId:
+          type: number
+        chipCount:
+          type: integer
+        coreCount:
+          type: integer
+        leadingZeros:
+          type: integer
+        runtimeSeconds:
+          type: number
+        message:
+          type: string
+        chips:
+          type: array
+          items:
+            $ref: '#/components/schemas/AsicTuningChipResult'
+
     Settings:
       type: object
       properties:
@@ -1021,6 +1104,44 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SystemScoreboardEntry'
+
+  /api/system/tuning:
+    get:
+      summary: Get ASIC tuning scan status
+      description: Returns the current one-shot per-core tuning scan and its completed results
+      operationId: getAsicTuningStatus
+      tags:
+        - system
+      responses:
+        '200':
+          description: Current tuning scan status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsicTuningStatus'
+        '401':
+          description: Unauthorized - Client not in allowed network range
+        '500':
+          description: Internal server error
+    post:
+      summary: Start an ASIC tuning scan
+      description: Queues one per-core SPDLOG measurement without changing PLL assignments
+      operationId: startAsicTuningScan
+      tags:
+        - system
+      responses:
+        '200':
+          description: Tuning scan queued or already in progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsicTuningStatus'
+        '401':
+          description: Unauthorized - Client not in allowed network range
+        '409':
+          description: ASIC is not ready
+        '500':
+          description: Internal server error
 
   /api/system/pause:
     post:
