@@ -100,6 +100,10 @@ static void update_asic_telemetry(GlobalState *GLOBAL_STATE)
     PowerManagementModule *power_management = &GLOBAL_STATE->POWER_MANAGEMENT_MODULE;
 
     if (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3) {
+        if (!GLOBAL_STATE->ASIC_initalized) {
+            return;
+        }
+
         float temperatures[MAX_ASIC_TEMPS] = {0};
         uint8_t count = MC3_read_temperatures(temperatures, MAX_ASIC_TEMPS);
         if (count > 0) {

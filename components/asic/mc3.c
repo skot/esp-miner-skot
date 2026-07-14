@@ -102,6 +102,7 @@
 #define MC3_DEFAULT_V_CTRL_VERSION_ROLLING 0xFFFF0001
 #define MC3_DEFAULT_WORK_TARGET_L 0xFFFFFFFF
 #define MC3_DEFAULT_WORK_TARGET_H 0xFFFFFFFF
+#define MC3_PDIFF1_WORK_TARGET 0xFFFF000000000000ULL
 #define MC3_DEFAULT_VERSION_MASK_BITS 16
 #define MC3_V_CTRL_START_BIT_SHIFT 4
 #define MC3_V_CTRL_START_BIT_MASK (0x1FU << MC3_V_CTRL_START_BIT_SHIFT)
@@ -471,7 +472,16 @@ static uint64_t mc3_work_target_from_difficulty(double difficulty)
     return (uint64_t)target;
 }
 
-static void mc3_write_work_target(double difficulty)
+static double mc3_work_target_effective_difficulty(uint64_t target)
+{
+    if (target == 0) {
+        return 0.0;
+    }
+
+    return (double)MC3_PDIFF1_WORK_TARGET / (double)target;
+}
+
+static void mc3_write_work_target(double difficulty, uint8_t chip_count)
 {
     uint64_t target = mc3_work_target_from_difficulty(difficulty);
     uint32_t target_h = (uint32_t)(target >> 32);
@@ -479,8 +489,31 @@ static void mc3_write_work_target(double difficulty)
 
     ESP_LOGI(TAG, "Writing MC3 work target: H=0x%08" PRIX32 " L=0x%08" PRIX32 " diff=%.2f",
         target_h, target_l, difficulty);
-    mc3_write_register(0, MC3_WORK_TARGET_L, target_l, MC3_CHIP_NUM_ALL);
-    mc3_write_register(0, MC3_WORK_TARGET_H, target_h, MC3_CHIP_NUM_ALL);
+    if (!mc3_write_register(0, MC3_WORK_TARGET_L, target_l, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_WORK_TARGET_H, target_h, MC3_CHIP_NUM_ALL)) {
+        ESP_LOGE(TAG, "Failed broadcasting MC3 work target 0x%016" PRIX64, target);
+    }
+
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        uint32_t readback[2] = {0};
+        if (!mc3_read_register_block(chip_id, MC3_WORK_TARGET_L, readback, 2)) {
+            ESP_LOGE(TAG, "Failed reading WORK_TARGET from chip %u", chip_id);
+            continue;
+        }
+
+        uint64_t readback_target = ((uint64_t)readback[1] << 32) | readback[0];
+        double effective_difficulty = mc3_work_target_effective_difficulty(readback_target);
+        if (readback_target != target) {
+            ESP_LOGE(TAG, "WORK_TARGET chip=%u mismatch expected=0x%016" PRIX64
+                " readback=0x%016" PRIX64 " effective_diff=%.6f requested_diff=%.6f",
+                chip_id, target, readback_target, effective_difficulty, difficulty);
+            continue;
+        }
+
+        ESP_LOGI(TAG, "WORK_TARGET chip=%u readback=0x%016" PRIX64
+            " effective_diff=%.6f requested_diff=%.6f",
+            chip_id, readback_target, effective_difficulty, difficulty);
+    }
 }
 
 static uint32_t mc3_spdlog_timer_value(uint16_t timer_count)
@@ -1409,7 +1442,7 @@ void MC3_send_work(void * pvParameters, bm_job * next_bm_job)
         pthread_mutex_unlock(&mc3_work_lock);
         return;
     }
-    mc3_write_work_target(next_bm_job->pool_diff);
+    mc3_write_work_target(next_bm_job->pool_diff, chip_count);
     mc3_write_version_bases(next_bm_job, chip_count);
     mc3_store_active_job(GLOBAL_STATE, mc3_job_id, next_bm_job);
     mc3_write_v_work(next_bm_job, mc3_job_id);
