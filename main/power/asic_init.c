@@ -11,6 +11,7 @@
 #include "driver/gpio.h"
 
 #define GPIO_PROTO_VDDIO_5V_EN GPIO_NUM_21
+#define PROTO_VDDIO_STABILIZATION_MS 100
 
 static const char *TAG = "asic_init";
 
@@ -40,9 +41,9 @@ uint8_t asic_initialize(GlobalState *GLOBAL_STATE, asic_init_mode_t mode, uint32
     const char *mode_str = (mode == ASIC_INIT_COLD_BOOT) ? "cold boot" : "recovery";
     ESP_LOGI(TAG, "Starting ASIC initialization (%s mode)", mode_str);
 
-    if (asic_reset() != ESP_OK) {
-        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "ASIC reset failed";
-        ESP_LOGE(TAG, "ASIC reset failed!");
+    if (asic_hold_reset_low() != ESP_OK) {
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "ASIC reset hold failed";
+        ESP_LOGE(TAG, "Failed to hold ASIC reset low");
         return 0;
     }
 
@@ -71,6 +72,17 @@ uint8_t asic_initialize(GlobalState *GLOBAL_STATE, asic_init_mode_t mode, uint32
 
     if (enable_proto_vddio_5v(GLOBAL_STATE) != ESP_OK) {
         GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto VDDIO 5V enable failed";
+        return 0;
+    }
+
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id == PROTO) {
+        ESP_LOGI(TAG, "Waiting %u ms for Proto VDDIO 5V to stabilize", PROTO_VDDIO_STABILIZATION_MS);
+        vTaskDelay(pdMS_TO_TICKS(PROTO_VDDIO_STABILIZATION_MS));
+    }
+
+    if (asic_reset() != ESP_OK) {
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "ASIC reset failed";
+        ESP_LOGE(TAG, "ASIC reset failed!");
         return 0;
     }
 
