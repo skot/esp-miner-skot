@@ -7,9 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "esp_heap_caps.h"
 #include "esp_log.h"
-#include "esp_psram.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -73,12 +71,12 @@
 #define MC3_SPDLOG_TIMER_COUNT 10
 #define MC3_SPDLOG_CORE_TARGET 0x00
 #define MC3_SPDLOG_POLL_INTERVAL_US 3000000
-#define MC3_CORE_PASS_LOG_STRIDE 4
+#define MC3_CORE_SPDLOG_BANK0 0x00012000
+#define MC3_CORE_SPDLOG_BANK1 0x00012400
+#define MC3_CORE_SPDLOG_BANK_CORE_COUNT 78
+#define MC3_CORE_SPDLOG_REGISTER_STRIDE 4
+#define MC3_CORE_SPDLOG_PASS_MASK 0x0000FFFF
 #define MC3_CORE_PASS_READ_CHUNK 24
-#define MC3_CORE_PASS_SEARCH_START 0x00010000
-#define MC3_CORE_PASS_SEARCH_END 0x0001FFFC
-#define MC3_CORE_PASS_SEARCH_WORDS (((MC3_CORE_PASS_SEARCH_END - MC3_CORE_PASS_SEARCH_START) / 4) + 1)
-#define MC3_CORE_PASS_MIN_NONZERO ((ASIC_TUNING_MAX_CORES * 3) / 4)
 #define MC3_TUNING_SPDLOG_TIMER_COUNT 48
 #define MC3_TUNING_SETTLE_TIME_US 250000
 #define MC3_THERMAL_RESOLUTION_BITS 12
@@ -116,6 +114,9 @@
 #define MC3_PLL_LOCK_TIMEOUT_MS 250
 #define MC3_PLL_LOCK_POLL_MS 10
 
+_Static_assert(MC3_CORE_SPDLOG_BANK_CORE_COUNT * 2 == ASIC_TUNING_MAX_CORES,
+    "MC3 per-core SPDLOG banks must cover every tuning core");
+
 static const char *TAG = "mc3";
 
 static task_result result;
@@ -137,7 +138,6 @@ static asic_tuning_status_t mc3_core_scan_status = {
 };
 static asic_tuning_chip_result_t mc3_core_scan_results[ASIC_TUNING_MAX_CHIPS];
 static int64_t mc3_core_scan_start_us;
-static uint32_t mc3_core_pass_log_base;
 static pthread_mutex_t mc3_serial_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_pending_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_core_scan_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -705,34 +705,45 @@ static void mc3_begin_core_scan(void)
     snprintf(mc3_core_scan_status.message, sizeof(mc3_core_scan_status.message), "Measuring core PASS counters");
     pthread_mutex_unlock(&mc3_core_scan_lock);
 
-    if (mc3_core_pass_log_base != 0) {
-        ESP_LOGI(TAG, "Starting %.3f second MC3 per-core tuning scan using pass_log base 0x%08" PRIX32,
-            mc3_spdlog_runtime_seconds(MC3_TUNING_SPDLOG_TIMER_COUNT), mc3_core_pass_log_base);
-    } else {
-        ESP_LOGI(TAG, "Starting %.3f second MC3 per-core tuning scan; pass_log base will be discovered",
-            mc3_spdlog_runtime_seconds(MC3_TUNING_SPDLOG_TIMER_COUNT));
-    }
+    ESP_LOGI(TAG, "Starting %.3f second MC3 per-core tuning scan using SPDLOG banks 0x%08" PRIX32
+        "/0x%08" PRIX32,
+        mc3_spdlog_runtime_seconds(MC3_TUNING_SPDLOG_TIMER_COUNT),
+        (uint32_t)MC3_CORE_SPDLOG_BANK0, (uint32_t)MC3_CORE_SPDLOG_BANK1);
 }
 
-static bool mc3_read_core_pass_counts(uint8_t chip_id, uint32_t base, uint32_t *pass_counts)
+static bool mc3_read_core_spdlog_bank(uint8_t chip_id, uint32_t base, uint16_t logical_core_offset,
+    uint32_t *pass_counts)
 {
-    for (uint16_t offset = 0; offset < ASIC_TUNING_MAX_CORES; offset += MC3_CORE_PASS_READ_CHUNK) {
-        uint8_t remaining = ASIC_TUNING_MAX_CORES - offset;
+    for (uint16_t offset = 0; offset < MC3_CORE_SPDLOG_BANK_CORE_COUNT; offset += MC3_CORE_PASS_READ_CHUNK) {
+        uint16_t remaining = MC3_CORE_SPDLOG_BANK_CORE_COUNT - offset;
         uint8_t count = remaining < MC3_CORE_PASS_READ_CHUNK ? remaining : MC3_CORE_PASS_READ_CHUNK;
-        uint32_t reg = base + ((uint32_t)offset * MC3_CORE_PASS_LOG_STRIDE);
+        uint32_t reg = base + ((uint32_t)offset * MC3_CORE_SPDLOG_REGISTER_STRIDE);
+        uint32_t *packed_counters = pass_counts + logical_core_offset + offset;
         bool read_ok = false;
 
         for (int attempt = 0; attempt < 2 && !read_ok; attempt++) {
-            read_ok = mc3_read_register_block(chip_id, reg, pass_counts + offset, count);
+            read_ok = mc3_read_register_block(chip_id, reg, packed_counters, count);
         }
 
         if (!read_ok) {
-            ESP_LOGW(TAG, "Failed reading core PASS counters chip=%u offset=%u", chip_id, offset);
+            ESP_LOGW(TAG, "Failed reading per-core SPDLOG chip=%u base=0x%08" PRIX32 " core=%u",
+                chip_id, base, logical_core_offset + offset);
             return false;
+        }
+
+        for (uint8_t i = 0; i < count; i++) {
+            packed_counters[i] &= MC3_CORE_SPDLOG_PASS_MASK;
         }
     }
 
     return true;
+}
+
+static bool mc3_read_core_pass_counts(uint8_t chip_id, uint32_t *pass_counts)
+{
+    return mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK0, 0, pass_counts) &&
+        mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK1,
+            MC3_CORE_SPDLOG_BANK_CORE_COUNT, pass_counts);
 }
 
 static uint64_t mc3_sum_core_pass_counts(const uint32_t *pass_counts)
@@ -760,119 +771,9 @@ static bool mc3_core_pass_sum_matches(uint64_t core_pass_sum, uint32_t global_pa
     return difference <= tolerance;
 }
 
-static bool mc3_discover_core_pass_log_base(uint8_t chip_id, uint32_t global_pass,
-    uint32_t *pass_counts, uint32_t *base_out)
-{
-    if (mc3_core_pass_log_base != 0) {
-        if (mc3_read_core_pass_counts(chip_id, mc3_core_pass_log_base, pass_counts)) {
-            uint64_t sum = mc3_sum_core_pass_counts(pass_counts);
-            if (mc3_core_pass_sum_matches(sum, global_pass)) {
-                *base_out = mc3_core_pass_log_base;
-                return true;
-            }
-        }
-
-        ESP_LOGW(TAG, "Cached pass_log base 0x%08" PRIX32 " no longer validates", mc3_core_pass_log_base);
-        mc3_core_pass_log_base = 0;
-    }
-
-    if (!esp_psram_is_initialized()) {
-        ESP_LOGE(TAG, "Cannot search MC3 pass_log registers without PSRAM");
-        return false;
-    }
-
-    size_t register_bytes = MC3_CORE_PASS_SEARCH_WORDS * sizeof(uint32_t);
-    uint32_t *register_words = heap_caps_calloc(
-        MC3_CORE_PASS_SEARCH_WORDS, sizeof(uint32_t), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-    if (register_words == NULL) {
-        ESP_LOGE(TAG, "Could not allocate %u bytes for MC3 pass_log search", (unsigned)register_bytes);
-        return false;
-    }
-
-    ESP_LOGI(TAG, "Reading MC3 register map from 0x%08" PRIX32 " to 0x%08" PRIX32,
-        (uint32_t)MC3_CORE_PASS_SEARCH_START, (uint32_t)MC3_CORE_PASS_SEARCH_END);
-
-    uint16_t failed_blocks = 0;
-    for (uint32_t offset = 0; offset < MC3_CORE_PASS_SEARCH_WORDS; offset += MC3_CORE_PASS_READ_CHUNK) {
-        uint32_t remaining = MC3_CORE_PASS_SEARCH_WORDS - offset;
-        uint8_t count = remaining < MC3_CORE_PASS_READ_CHUNK ? remaining : MC3_CORE_PASS_READ_CHUNK;
-        uint32_t reg = MC3_CORE_PASS_SEARCH_START + (offset * MC3_CORE_PASS_LOG_STRIDE);
-        bool read_ok = false;
-        for (int attempt = 0; attempt < 2 && !read_ok; attempt++) {
-            read_ok = mc3_read_register_block(chip_id, reg, register_words + offset, count);
-        }
-        if (!read_ok) {
-            failed_blocks++;
-        }
-    }
-
-    uint32_t best_start = UINT32_MAX;
-    uint64_t best_sum = 0;
-    uint64_t best_difference = UINT64_MAX;
-    uint32_t last_start = MC3_CORE_PASS_SEARCH_WORDS - ASIC_TUNING_MAX_CORES;
-    for (uint32_t start = 0; start <= last_start; start++) {
-        uint16_t nonzero_count = 0;
-        uint64_t sum = 0;
-        bool plausible = true;
-
-        for (uint16_t core_id = 0; core_id < ASIC_TUNING_MAX_CORES; core_id++) {
-            uint32_t value = register_words[start + core_id];
-            if (value > global_pass) {
-                plausible = false;
-                break;
-            }
-            if (value > 0) {
-                nonzero_count++;
-            }
-            sum += value;
-        }
-
-        if (!plausible || nonzero_count < MC3_CORE_PASS_MIN_NONZERO) {
-            continue;
-        }
-
-        uint64_t difference = sum > global_pass ? sum - global_pass : global_pass - sum;
-        if (difference < best_difference) {
-            best_start = start;
-            best_sum = sum;
-            best_difference = difference;
-        }
-    }
-
-    bool found = best_start != UINT32_MAX && mc3_core_pass_sum_matches(best_sum, global_pass);
-    if (found) {
-        uint32_t base = MC3_CORE_PASS_SEARCH_START + (best_start * MC3_CORE_PASS_LOG_STRIDE);
-        memcpy(pass_counts, register_words + best_start, sizeof(uint32_t) * ASIC_TUNING_MAX_CORES);
-        mc3_core_pass_log_base = base;
-        *base_out = base;
-
-        double match_percent = ((double)best_sum * 100.0) / (double)global_pass;
-        ESP_LOGI(TAG, "Discovered MC3 per-core pass_log base 0x%08" PRIX32
-            " sum=%" PRIu64 " global=%" PRIu32 " match=%.2f%% failed_blocks=%u",
-            base, best_sum, global_pass, match_percent, failed_blocks);
-    } else if (best_start != UINT32_MAX) {
-        uint32_t best_base = MC3_CORE_PASS_SEARCH_START + (best_start * MC3_CORE_PASS_LOG_STRIDE);
-        double match_percent = ((double)best_sum * 100.0) / (double)global_pass;
-        ESP_LOGE(TAG, "Best MC3 pass_log window 0x%08" PRIX32
-            " sum=%" PRIu64 " global=%" PRIu32 " match=%.2f%% failed_blocks=%u",
-            best_base, best_sum, global_pass, match_percent, failed_blocks);
-    } else {
-        ESP_LOGE(TAG, "No plausible MC3 pass_log window found; failed_blocks=%u", failed_blocks);
-    }
-
-    heap_caps_free(register_words);
-    if (found) {
-        return true;
-    }
-
-    ESP_LOGE(TAG, "No per-core PASS bank matched global PASS=%" PRIu32, global_pass);
-    return false;
-}
-
 static bool mc3_collect_core_scan(GlobalState *GLOBAL_STATE)
 {
     bool all_validated = true;
-    uint32_t pass_log_base = 0;
     mc3_set_core_scan_state(ASIC_TUNING_READING, 75, "Reading per-core PASS counters");
 
     for (uint8_t chip_id = 0; chip_id < mc3_chip_count; chip_id++) {
@@ -884,14 +785,8 @@ static bool mc3_collect_core_scan(GlobalState *GLOBAL_STATE)
             return false;
         }
 
-        bool core_read_ok = chip_id == 0
-            ? mc3_discover_core_pass_log_base(chip_id, chip_result.global_pass,
-                chip_result.core_pass_counts, &pass_log_base)
-            : mc3_read_core_pass_counts(chip_id, pass_log_base, chip_result.core_pass_counts);
-        if (!core_read_ok) {
-            mc3_set_core_scan_state(ASIC_TUNING_ERROR, 75,
-                chip_id == 0 ? "No per-core PASS bank matched global SPDLOG"
-                             : "Could not read all MC3 core PASS counters");
+        if (!mc3_read_core_pass_counts(chip_id, chip_result.core_pass_counts)) {
+            mc3_set_core_scan_state(ASIC_TUNING_ERROR, 75, "Could not read MC3 per-core SPDLOG counters");
             return false;
         }
 

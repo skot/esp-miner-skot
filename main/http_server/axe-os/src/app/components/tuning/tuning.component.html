@@ -57,7 +57,7 @@
       <h3>Core Results</h3>
       <span class="validation" [class.valid]="status?.validated">
         <i class="pi" [ngClass]="status?.validated ? 'pi-check-circle' : 'pi-exclamation-circle'"></i>
-        {{ status?.validated ? 'Register map validated' : 'Validation mismatch' }}
+        {{ status?.validated ? 'Counter totals validated' : 'Validation mismatch' }}
       </span>
     </div>
 
@@ -79,16 +79,18 @@
         <div><span>Global PASS</span><strong>{{ chip.result.globalPass | number:'1.0-0' }}</strong></div>
         <div><span>Core PASS Sum</span><strong>{{ chip.result.corePassSum | number:'1.0-0' }}</strong></div>
         <div><span>Match</span><strong>{{ chip.result.matchPercent | number:'1.2-2' }}%</strong></div>
-        <div><span>Median Core</span><strong>{{ chip.medianHashrate | number:'1.2-2' }} GH/s</strong></div>
+        <div><span>Mean Core</span><strong>{{ chip.meanHashrate | number:'1.2-2' }} GH/s</strong></div>
       </div>
 
       <div class="heatmap-heading">
         <h4>8:1 Core Hashrate</h4>
-        <div class="legend" aria-label="Core performance legend">
-          <span><i class="healthy"></i>90%+</span>
-          <span><i class="watch"></i>75-90%</span>
-          <span><i class="weak"></i>&lt;75%</span>
-          <span><i class="silent"></i>Silent</span>
+        <div class="deviation-legend" aria-label="Hashrate deviation from the ASIC mean">
+          <div class="legend-labels">
+            <span>-10%</span>
+            <span>Mean</span>
+            <span>+10%</span>
+          </div>
+          <div class="legend-scale"></div>
         </div>
       </div>
 
@@ -98,7 +100,8 @@
             *ngFor="let core of chip.cores; trackBy: trackCore"
             class="core-cell"
             [ngClass]="core.level"
-            [pTooltip]="'Core ' + core.coreId + ' | PASS ' + core.passCount + ' | ' + (core.hashrate | number:'1.3-3') + ' GH/s'"
+            [style.background-color]="core.heatColor"
+            [pTooltip]="'Core ' + core.coreId + ' | PASS ' + core.passCount + ' | ' + (core.hashrate | number:'1.3-3') + ' GH/s | ' + core.deviationLabel + ' vs mean'"
             tooltipPosition="top"
             tabindex="0">
             <span class="core-id">{{ core.coreId }}</span>

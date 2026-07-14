@@ -69,11 +69,11 @@ describe('TuningComponent', () => {
       ...idleStatus,
       state: 'error',
       progress: 75,
-      message: 'No per-core PASS bank matched global SPDLOG'
+      message: 'Could not read MC3 per-core SPDLOG counters'
     });
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('No per-core PASS bank matched global SPDLOG');
+    expect(fixture.nativeElement.textContent).toContain('Could not read MC3 per-core SPDLOG counters');
   });
 
   it('renders all 156 core results for the selected ASIC', () => {
@@ -97,5 +97,36 @@ describe('TuningComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('.core-cell').length).toBe(156);
+  });
+
+  it('colors core results by deviation from the ASIC mean', () => {
+    const passCounts = Array.from({ length: 156 }, () => 200);
+    passCounts[0] = 100;
+    passCounts[1] = 300;
+    (component as any).setStatus({
+      ...idleStatus,
+      state: 'complete',
+      progress: 100,
+      validated: true,
+      chips: [{
+        chipId: 0,
+        validated: true,
+        globalPass: 31200,
+        globalFail: 500,
+        corePassSum: 31200,
+        globalHashrate: 130,
+        matchPercent: 100,
+        corePassCounts: passCounts
+      }]
+    });
+    fixture.detectChanges();
+
+    const cells = fixture.nativeElement.querySelectorAll('.core-cell');
+    expect(cells[0].classList).toContain('below-mean');
+    expect(cells[1].classList).toContain('above-mean');
+    expect(cells[2].classList).toContain('at-mean');
+    expect(cells[0].style.backgroundColor).toBe('rgba(239, 68, 68, 0.75)');
+    expect(cells[1].style.backgroundColor).toBe('rgba(34, 197, 94, 0.75)');
+    expect(fixture.nativeElement.textContent).toContain('Mean Core');
   });
 });
