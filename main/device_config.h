@@ -118,7 +118,7 @@ static const FamilyConfig FAMILY_GAMMA       = { .id = GAMMA,       .name = "Gam
 static const FamilyConfig FAMILY_GAMMA_DUO   = { .id = GAMMA_DUO,   .name = "GammaDuo",   .asic = ASIC_BM1370XP, .asic_count = 2, .max_power =  40, .power_offset = 5,  .nominal_voltage = 5,  .voltage_domains = 1, .swarm_color = "green",    };
 static const FamilyConfig FAMILY_SUPRA_HEX   = { .id = SUPRA_HEX,   .name = "SupraHex",   .asic = ASIC_BM1368,   .asic_count = 6, .max_power = 120, .power_offset = 25, .nominal_voltage = 12, .voltage_domains = 3, .swarm_color = "darkblue", };
 static const FamilyConfig FAMILY_GAMMA_TURBO = { .id = GAMMA_TURBO, .name = "GammaTurbo", .asic = ASIC_BM1370,   .asic_count = 2, .max_power =  60, .power_offset = 10, .nominal_voltage = 12, .voltage_domains = 1, .swarm_color = "cyan",     };
-static const FamilyConfig FAMILY_PROTO       = { .id = PROTO,       .name = "Proto",      .asic = ASIC_MC3,      .asic_count = 4, .max_power =  40, .power_offset = 5,  .nominal_voltage = 12, .voltage_domains = 2, .swarm_color = "yellow",   };
+static const FamilyConfig FAMILY_PROTO       = { .id = PROTO,       .name = "Proto",      .asic = ASIC_MC3,      .asic_count = 4, .max_power =  40, .power_offset = 0,  .nominal_voltage = 12, .voltage_domains = 2, .swarm_color = "yellow",   };
 
 static const FamilyConfig default_families[] = {
     FAMILY_MAX,

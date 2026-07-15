@@ -243,7 +243,7 @@
 
                     <div class="mb-3">
                         <h6 class="flex justify-content-between mb-1">
-                            Power<span>{{info.power}} W</span>
+                            {{ info.ASICModel === 'MC3' ? 'TPS546 Output Power' : 'Power' }}<span>{{info.power}} W</span>
                         </h6>
                         <p-progressbar [value]="(info.power / info.maxPower) * 100" [styleClass]="'p-progressbar--thin'">
                             <ng-template pTemplate="content" let-value></ng-template>
