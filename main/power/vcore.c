@@ -69,8 +69,9 @@ static TPS546_CONFIG get_tps546_config(const FamilyConfig * family)
         config.TPS546_INIT_TELEMETRY_CONFIG[5] = 0x00;
         config.TPS546_INIT_VOUT_TRIM = 0x0000;
         config.TPS546_INIT_VOUT_TRANSITION_RATE = 0xE010;
-        config.TPS546_INIT_IOUT_CAL_GAIN = 0xC880;
-        config.TPS546_INIT_IOUT_CAL_OFFSET = 0xE000;
+        // Calibrated from a thermally soaked bitaxeProto 0-35 A up/down sweep.
+        config.TPS546_INIT_IOUT_CAL_GAIN = 0xC881;   // Linear11: 1.0078125
+        config.TPS546_INIT_IOUT_CAL_OFFSET = 0xE008; // Linear11: +0.5 A
         config.TPS546_INIT_SCALE_LOOP = 0.125;
         config.TPS546_INIT_VOUT_MIN = 1.92;
         config.TPS546_INIT_VOUT_MAX = 2.4;
