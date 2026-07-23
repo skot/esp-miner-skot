@@ -223,6 +223,10 @@ static void system_api_add_config(cJSON *root, GlobalState *g) {
     char *disp_name = nvs_config_get_string(NVS_CONFIG_DISPLAY);
     cJSON_AddStringToObject(root, "display", disp_name ? disp_name : "");
     free(disp_name);
+    cJSON_AddStringToObject(root, "displayBackend",
+                            g->DEVICE_CONFIG.display_backend == DISPLAY_BACKEND_BONANZA_I2C
+                                ? "bonanza-i2c"
+                                : "lvgl");
     cJSON_AddNumberToObject(root, "rotation", nvs_config_get_u16(NVS_CONFIG_ROTATION));
     cJSON_AddNumberToObject(root, "invertscreen", nvs_config_get_bool(NVS_CONFIG_INVERT_SCREEN) ? 1 : 0);
     cJSON_AddNumberToObject(root, "displayTimeout", nvs_config_get_i32(NVS_CONFIG_DISPLAY_TIMEOUT));

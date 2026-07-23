@@ -18,6 +18,7 @@
 #include "driver/i2c_types.h"
 #include "esp_lcd_panel_ssd1306.h"
 #include "esp_lcd_sh1107.h"
+#include "bonanza_display.h"
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
@@ -88,6 +89,18 @@ static void my_log_cb(lv_log_level_t level, const char * buf)
 esp_err_t display_init(void * pvParameters)
 {
     GlobalState * GLOBAL_STATE = (GlobalState *) pvParameters;
+
+    if (GLOBAL_STATE->DEVICE_CONFIG.display_backend == DISPLAY_BACKEND_BONANZA_I2C) {
+        GLOBAL_STATE->SYSTEM_MODULE.is_screen_active = false;
+        ESP_LOGI(TAG, "Use external bonanzaDisplay backend; LVGL will not be initialized");
+
+        esp_err_t error = bonanza_display_init(GLOBAL_STATE);
+        if (error != ESP_OK) {
+            ESP_LOGW(TAG, "bonanzaDisplay backend failed to start: %s; mining will continue",
+                     esp_err_to_name(error));
+        }
+        return ESP_OK;
+    }
 
     ESP_RETURN_ON_ERROR(read_display_config(GLOBAL_STATE), TAG, "Failed to read display config");
 

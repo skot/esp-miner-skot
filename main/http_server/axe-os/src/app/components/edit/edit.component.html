@@ -102,7 +102,13 @@
 
     <h3 class="mt-5">Display</h3>
 
-    <div class="card">
+    <div *ngIf="externalDisplay" class="card">
+        <p-message severity="info" icon="pi pi-desktop" styleClass="w-full">
+            This board uses an external bonanzaDisplay. Its layout, rotation, colors, and sleep behavior are controlled by the display firmware.
+        </p-message>
+    </div>
+
+    <div *ngIf="!externalDisplay" class="card">
         <div class="field grid p-fluid">
             <label (click)="displaySelect.show()" class="col-12 md:col-2 md:m-0 hover-next-input">Type</label>
             <div class="col-12 md:col-10">

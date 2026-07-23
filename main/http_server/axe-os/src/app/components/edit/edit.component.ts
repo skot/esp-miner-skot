@@ -51,6 +51,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
 
   public savedChanges: boolean = false;
   public settingsUnlocked: boolean = false;
+  public externalDisplay: boolean = false;
 
   @Input() uri = '';
 
@@ -168,6 +169,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
       this.defaultVoltage = asic.defaultVoltage;
       this.voltageOptions = asic.voltageOptions;
       this.statsLimit = info.statsLimit || 720;
+      this.externalDisplay = info.displayBackend === 'bonanza-i2c';
 
       // Check if overclock is enabled in NVS
       if (info.overclockEnabled) {

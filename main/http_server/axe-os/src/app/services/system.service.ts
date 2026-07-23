@@ -135,6 +135,7 @@ export class SystemApiService {
         resetReason: "Power-on reset",
         boardVersion: "602",
         display: "SSD1306 (128x32)",
+        displayBackend: "lvgl" as const,
         rotation: 0,
         invertscreen: 0,
         displayTimeout: -1,

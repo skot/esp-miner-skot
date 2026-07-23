@@ -8,11 +8,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
-#include "driver/gpio.h"
 #include "esp_log.h"
 #include "esp_check.h"
 
-#include "driver/gpio.h"
 #include "esp_app_desc.h"
 #include "esp_timer.h"
 #include "esp_wifi.h"
@@ -192,22 +190,16 @@ void SYSTEM_init_versions(GlobalState * GLOBAL_STATE) {
 }
 
 esp_err_t SYSTEM_init_peripherals(GlobalState * GLOBAL_STATE) {
-    esp_err_t ret = gpio_install_isr_service(0);
-    if (ret != ESP_OK) {
-        self_test_show_message(GLOBAL_STATE, "ISR:FAIL");
-        ESP_LOGE(TAG, "Error installing ISR service");
-        return ret;
-    }
-
-    ret = display_init(GLOBAL_STATE);
+    esp_err_t ret = display_init(GLOBAL_STATE);
     if (ret != ESP_OK) {
         self_test_show_message(GLOBAL_STATE, "DISPLAY:FAIL");
         ESP_LOGE(TAG, "Display init failed");
         return ret;
     }
 
+    bool local_lvgl_display = GLOBAL_STATE->DEVICE_CONFIG.display_backend == DISPLAY_BACKEND_LVGL;
     if (!GLOBAL_STATE->SELF_TEST_MODULE.is_active) {
-        ret = input_init(screen_button_press, toggle_wifi_softap);
+        ret = input_init(local_lvgl_display ? screen_button_press : NULL, toggle_wifi_softap);
     } else {
         ret = input_init(NULL, self_test_reset);
     }
@@ -217,11 +209,13 @@ esp_err_t SYSTEM_init_peripherals(GlobalState * GLOBAL_STATE) {
         return ret;
     }
 
-    ret = screen_start(GLOBAL_STATE);
-    if (ret != ESP_OK) {
-        self_test_show_message(GLOBAL_STATE, "SCREEN:FAIL");
-        ESP_LOGE(TAG, "Screen start failed");
-        return ret;
+    if (local_lvgl_display) {
+        ret = screen_start(GLOBAL_STATE);
+        if (ret != ESP_OK) {
+            self_test_show_message(GLOBAL_STATE, "SCREEN:FAIL");
+            ESP_LOGE(TAG, "Screen start failed");
+            return ret;
+        }
     }
 
     ret = ensure_overheat_mode_config();

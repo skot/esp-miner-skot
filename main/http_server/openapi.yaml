@@ -137,6 +137,7 @@ components:
         - coreVoltageActual
         - current
         - display
+        - displayBackend
         - fallbackStratumExtranonceSubscribe
         - fallbackStratumPort
         - fallbackStratumSuggestedDifficulty
@@ -263,6 +264,10 @@ components:
         display:
           type: string
           description: The configured display
+        displayBackend:
+          type: string
+          enum: [lvgl, bonanza-i2c]
+          description: Runtime display backend selected by the hardware configuration
         fallbackStratumExtranonceSubscribe:
           type: boolean
           description: Enable fallback pool extranonce subscription

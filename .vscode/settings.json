@@ -70,5 +70,6 @@
     "--query-driver=**",
     "--compile-commands-dir=${workspaceFolder}/build"
   ],
-  "idf.currentSetup": "/Users/skot/esp/v5.5.1/esp-idf"
+  "idf.currentSetup": "/Users/skot/esp/v5.5.1/esp-idf",
+  "idf.port": "/dev/tty.usbmodem11434401"
 }

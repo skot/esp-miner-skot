@@ -59,9 +59,16 @@ typedef struct {
     const char * swarm_color;
 } FamilyConfig;
 
+typedef enum
+{
+    DISPLAY_BACKEND_LVGL,
+    DISPLAY_BACKEND_BONANZA_I2C,
+} DisplayBackend;
+
 typedef struct {
     const char * board_version;
     FamilyConfig family;
+    DisplayBackend display_backend;
     bool plug_sense;
     bool asic_enable;
     bool EMC2101 : 1;
@@ -155,7 +162,7 @@ static const DeviceConfig default_configs[] = {
     { .board_version = "701",  .family = FAMILY_SUPRA_HEX,   .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "702",  .family = FAMILY_SUPRA_HEX,   .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "801",  .family = FAMILY_GAMMA_TURBO, .EMC2103 = true,                                          .temp_flip = true, .temp_offset = 0,   .TPS546 = true,                                                           .power_consumption_target = 36, },
-    { .board_version = "1102", .family = FAMILY_PROTO,       .ESP32_FAN = true,                                         .temp_flip = true, .temp_offset = 0,  .TPS546 = true,                                                           .power_consumption_target = 40, },
+    { .board_version = "1102", .family = FAMILY_PROTO,       .display_backend = DISPLAY_BACKEND_BONANZA_I2C, .ESP32_FAN = true,                     .temp_flip = true, .temp_offset = 0,  .TPS546 = true,                                                           .power_consumption_target = 40, },
 };
 
 esp_err_t device_config_init(void * pvParameters);
