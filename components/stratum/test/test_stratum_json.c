@@ -256,6 +256,33 @@ TEST_CASE("Parse stratum invalid json or malformed parameters", "[stratum]")
     TEST_ASSERT_FALSE(STRATUM_V1_parse(&stratum_api_v1_message2, json_string2));
 }
 
+TEST_CASE("Reject malformed mining.notify fields", "[mining.notify]")
+{
+    const char *invalid_notifications[] = {
+        // clean_jobs is missing
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],\"version\",\"nbits\",\"ntime\"]}",
+        // Each fixed string field must actually be a string
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[null,\"prev\",\"cb1\",\"cb2\",[],\"version\",\"nbits\",\"ntime\",false]}",
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",null,\"cb1\",\"cb2\",[],\"version\",\"nbits\",\"ntime\",false]}",
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",1,\"cb2\",[],\"version\",\"nbits\",\"ntime\",false]}",
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",null,[],\"version\",\"nbits\",\"ntime\",false]}",
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],1,\"nbits\",\"ntime\",false]}",
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],\"version\",null,\"ntime\",false]}",
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],\"version\",\"nbits\",false,false]}",
+        // Merkle path must be an array containing only strings
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",null,\"version\",\"nbits\",\"ntime\",false]}",
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[null],\"version\",\"nbits\",\"ntime\",false]}",
+        // clean_jobs must be a boolean
+        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],\"version\",\"nbits\",\"ntime\",\"false\"]}",
+    };
+
+    for (size_t i = 0; i < sizeof(invalid_notifications) / sizeof(invalid_notifications[0]); i++) {
+        StratumApiV1Message message = {};
+        TEST_ASSERT_FALSE(STRATUM_V1_parse(&message, invalid_notifications[i]));
+        TEST_ASSERT_NULL(message.mining_notification);
+    }
+}
+
 TEST_CASE("Parse stratum mining.set_extranonce params", "[stratum]")
 {
     StratumApiV1Message stratum_api_v1_message = {};
