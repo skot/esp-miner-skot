@@ -115,6 +115,15 @@ TEST_CASE("Parse stratum mining.subscribe result malformed", "[mining.subscribe]
     TEST_ASSERT_FALSE(STRATUM_V1_parse(&stratum_api_v1_message, json_string));
 }
 
+TEST_CASE("Reject negative mining.subscribe extranonce2 length", "[mining.subscribe]")
+{
+    StratumApiV1Message stratum_api_v1_message = {};
+    const char *json_string = "{\"result\":[[[\"mining.notify\",\"695482c0\"]],\"4de05269\",-1],\"id\":2,\"error\":null}";
+
+    TEST_ASSERT_FALSE(STRATUM_V1_parse(&stratum_api_v1_message, json_string));
+    TEST_ASSERT_NULL(stratum_api_v1_message.extranonce_str);
+}
+
 TEST_CASE("Parse stratum mining.set_version_mask params", "[stratum]")
 {
     StratumApiV1Message stratum_api_v1_message = {};
@@ -262,6 +271,15 @@ TEST_CASE("Parse stratum mining.set_extranonce invalid params", "[stratum]")
     StratumApiV1Message stratum_api_v1_message = {};
     const char *json_string = "{\"id\":1,\"method\":\"mining.set_extranonce\",\"params\":[]}";
     TEST_ASSERT_FALSE(STRATUM_V1_parse(&stratum_api_v1_message, json_string));
+}
+
+TEST_CASE("Reject negative mining.set_extranonce length", "[stratum]")
+{
+    StratumApiV1Message stratum_api_v1_message = {};
+    const char *json_string = "{\"id\":1,\"method\":\"mining.set_extranonce\",\"params\":[\"deadbeef\",-1]}";
+
+    TEST_ASSERT_FALSE(STRATUM_V1_parse(&stratum_api_v1_message, json_string));
+    TEST_ASSERT_NULL(stratum_api_v1_message.extranonce_str);
 }
 
 TEST_CASE("Parse stratum client.show_message", "[stratum]")

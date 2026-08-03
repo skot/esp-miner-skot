@@ -382,10 +382,16 @@ static bool parse_set_extranonce(cJSON *json, StratumApiV1Message *message)
         ESP_LOGE(TAG, "Invalid extranonce data in set_extranonce");
         return false;
     }
+
+    int extranonce_2_len = extranonce2_size->valueint;
+    if (extranonce_2_len < 0) {
+        ESP_LOGE(TAG, "Invalid negative extranonce_2_len: %d", extranonce_2_len);
+        return false;
+    }
+
     if (message->extranonce_str) free(message->extranonce_str);
     message->extranonce_str = strdup(extranonce1->valuestring);
-    
-    int extranonce_2_len = extranonce2_size->valueint;
+
     if (extranonce_2_len > MAX_EXTRANONCE_2_LEN) {
         ESP_LOGW(TAG, "Extranonce_2_len %d exceeds maximum %d, clamping to maximum",
                  extranonce_2_len, MAX_EXTRANONCE_2_LEN);
@@ -441,10 +447,15 @@ static bool parse_subscribe_result(cJSON *json, StratumApiV1Message *message)
         return false;
     }
 
+    int extranonce_2_len = extranonce2_len->valueint;
+    if (extranonce_2_len < 0) {
+        ESP_LOGE(TAG, "Invalid negative extranonce_2_len: %d", extranonce_2_len);
+        return false;
+    }
+
     if (message->extranonce_str) free(message->extranonce_str);
     message->extranonce_str = strdup(extranonce->valuestring);
-    
-    int extranonce_2_len = extranonce2_len->valueint;
+
     if (extranonce_2_len > MAX_EXTRANONCE_2_LEN) {
         ESP_LOGW(TAG, "Extranonce_2_len %d exceeds maximum %d, clamping to maximum", 
                  extranonce_2_len, MAX_EXTRANONCE_2_LEN);
