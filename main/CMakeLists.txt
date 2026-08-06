@@ -19,6 +19,7 @@ SRCS
     "./bap/bap_handlers.c"
     "./bap/bap_subscription.c"
     "device_config.c"
+    "setup_ble.c"
     "task_monitor.c"
     "./http_server/http_server.c"
     "./http_server/websocket.c"
@@ -90,6 +91,7 @@ PRIV_REQUIRES
     "esp_driver_uart"
     "tcp_transport"
     "esp_mm"
+    "bt"
 
 EMBED_FILES "http_server/recovery_page.html"
 )
