@@ -78,6 +78,40 @@ TEST_CASE("SV1 receive buffer handles fragmented and batched lines", "[stratum][
     esp_transport_destroy(transport);
 }
 
+TEST_CASE("SV1 receive buffer discards a previous session tail", "[stratum][receive]")
+{
+    const char *first_input = "first\nstale\n";
+    mock_transport_data_t first_mock = {
+        .data = first_input,
+        .length = strlen(first_input),
+    };
+    esp_transport_handle_t first_transport = create_mock_transport(&first_mock);
+    TEST_ASSERT_NOT_NULL(first_transport);
+    TEST_ASSERT_TRUE(STRATUM_V1_initialize_buffer());
+
+    char *line = STRATUM_V1_receive_jsonrpc_line(first_transport);
+    TEST_ASSERT_EQUAL_STRING("first", line);
+    free(line);
+
+    STRATUM_V1_reset_buffer();
+
+    const char *second_input = "fresh\n";
+    mock_transport_data_t second_mock = {
+        .data = second_input,
+        .length = strlen(second_input),
+    };
+    esp_transport_handle_t second_transport = create_mock_transport(&second_mock);
+    TEST_ASSERT_NOT_NULL(second_transport);
+
+    line = STRATUM_V1_receive_jsonrpc_line(second_transport);
+    TEST_ASSERT_EQUAL_STRING("fresh", line);
+    free(line);
+
+    STRATUM_V1_cleanup_buffer();
+    esp_transport_destroy(first_transport);
+    esp_transport_destroy(second_transport);
+}
+
 TEST_CASE("SV1 receive buffer accepts the maximum line size", "[stratum][receive]")
 {
     char * input = malloc(STRATUM_V1_MAX_JSON_LINE_SIZE + 2);

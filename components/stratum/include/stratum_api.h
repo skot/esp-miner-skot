@@ -82,9 +82,13 @@ typedef struct RequestTiming
 
 esp_transport_handle_t STRATUM_V1_transport_init(tls_mode tls, char * cert);
 
+bool STRATUM_V1_initialize(void);
+
 bool STRATUM_V1_initialize_buffer(void);
 
 void STRATUM_V1_cleanup_buffer(void);
+
+void STRATUM_V1_reset_buffer(void);
 
 char *STRATUM_V1_receive_jsonrpc_line(esp_transport_handle_t transport);
 

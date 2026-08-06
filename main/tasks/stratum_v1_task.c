@@ -74,6 +74,7 @@ void stratum_v1_close_connection(GlobalState *GLOBAL_STATE)
     if (transport != NULL) {
         esp_transport_close(transport);
     }
+    STRATUM_V1_reset_buffer();
     SYSTEM_clean_jobs_queue(GLOBAL_STATE);
     vTaskDelay(1000 / portTICK_PERIOD_MS);
 }
@@ -179,7 +180,7 @@ void stratum_v1_task(void *pvParameters)
     // Set V1-specific free function for the work queue
     GLOBAL_STATE->stratum_queue.free_fn = (void (*)(void *))STRATUM_V1_free_mining_notify;
 
-    if (!STRATUM_V1_initialize_buffer()) {
+    if (!STRATUM_V1_initialize()) {
         ESP_LOGE(TAG, "Failed to initialize Stratum V1 receive state, notifying coordinator");
         protocol_coordinator_notify_failure();
         vTaskDelete(NULL);

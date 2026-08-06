@@ -1,6 +1,27 @@
 #include "unity.h"
 #include "stratum_api.h"
 
+#include <stdlib.h>
+#include <string.h>
+
+#define TEST_ZERO_HASH "0000000000000000000000000000000000000000000000000000000000000000"
+
+typedef struct {
+    const char *description;
+    const char *json;
+} invalid_notify_case_t;
+
+static bool fail_next_api_strdup;
+
+char *stratum_api_strdup(const char *source)
+{
+    if (fail_next_api_strdup) {
+        fail_next_api_strdup = false;
+        return NULL;
+    }
+    return strdup(source);
+}
+
 TEST_CASE("Parse stratum method", "[stratum]")
 {
     StratumApiV1Message stratum_api_v1_message = {};
@@ -122,6 +143,18 @@ TEST_CASE("Reject negative mining.subscribe extranonce2 length", "[mining.subscr
 
     TEST_ASSERT_FALSE(STRATUM_V1_parse(&stratum_api_v1_message, json_string));
     TEST_ASSERT_NULL(stratum_api_v1_message.extranonce_str);
+}
+
+TEST_CASE("Reject mining.subscribe when extranonce allocation fails", "[mining.subscribe]")
+{
+    StratumApiV1Message message = {};
+    const char *json = "{\"result\":[[[\"mining.notify\",\"695482c0\"]],\"4de05269\",8],\"id\":2,\"error\":null}";
+    fail_next_api_strdup = true;
+
+    TEST_ASSERT_FALSE(STRATUM_V1_parse(&message, json));
+    TEST_ASSERT_FALSE(fail_next_api_strdup);
+    TEST_ASSERT_NULL(message.extranonce_str);
+    TEST_ASSERT_FALSE(message.response_success);
 }
 
 TEST_CASE("Parse stratum mining.set_version_mask params", "[stratum]")
@@ -258,28 +291,142 @@ TEST_CASE("Parse stratum invalid json or malformed parameters", "[stratum]")
 
 TEST_CASE("Reject malformed mining.notify fields", "[mining.notify]")
 {
-    const char *invalid_notifications[] = {
-        // clean_jobs is missing
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],\"version\",\"nbits\",\"ntime\"]}",
-        // Each fixed string field must actually be a string
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[null,\"prev\",\"cb1\",\"cb2\",[],\"version\",\"nbits\",\"ntime\",false]}",
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",null,\"cb1\",\"cb2\",[],\"version\",\"nbits\",\"ntime\",false]}",
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",1,\"cb2\",[],\"version\",\"nbits\",\"ntime\",false]}",
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",null,[],\"version\",\"nbits\",\"ntime\",false]}",
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],1,\"nbits\",\"ntime\",false]}",
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],\"version\",null,\"ntime\",false]}",
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],\"version\",\"nbits\",false,false]}",
-        // Merkle path must be an array containing only strings
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",null,\"version\",\"nbits\",\"ntime\",false]}",
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[null],\"version\",\"nbits\",\"ntime\",false]}",
-        // clean_jobs must be a boolean
-        "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"job\",\"prev\",\"cb1\",\"cb2\",[],\"version\",\"nbits\",\"ntime\",\"false\"]}",
+    static const invalid_notify_case_t cases[] = {
+        {
+            "missing clean_jobs",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[],"
+            "\"20000000\",\"1d00ffff\",\"65000000\"]}",
+        },
+        {
+            "null previous block hash",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",null,\"00\",\"00\",[],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "numeric coinbase prefix",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",0,\"00\",[],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "null coinbase suffix",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",null,[],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "non-array Merkle branches",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",null,"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "non-string Merkle branch",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[null],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "numeric version",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[],"
+            "1,\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "null target",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[],"
+            "\"20000000\",null,\"65000000\",true]}",
+        },
+        {
+            "boolean ntime",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[],"
+            "\"20000000\",\"1d00ffff\",false,true]}",
+        },
+        {
+            "string clean_jobs",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",\"true\"]}",
+        },
     };
 
-    for (size_t i = 0; i < sizeof(invalid_notifications) / sizeof(invalid_notifications[0]); i++) {
+    for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
         StratumApiV1Message message = {};
-        TEST_ASSERT_FALSE(STRATUM_V1_parse(&message, invalid_notifications[i]));
-        TEST_ASSERT_NULL(message.mining_notification);
+        TEST_ASSERT_FALSE_MESSAGE(STRATUM_V1_parse(&message, cases[i].json), cases[i].description);
+        TEST_ASSERT_NULL_MESSAGE(message.mining_notification, cases[i].description);
+        STRATUM_V1_reset_message(&message);
+    }
+}
+
+TEST_CASE("Reject mining.notify fields with malformed hex", "[mining.notify]")
+{
+    static const invalid_notify_case_t cases[] = {
+        {
+            "short previous block hash",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"00\",\"00\",\"00\",[],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "non-hex previous block hash",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"g000000000000000000000000000000000000000000000000000000000000000\","
+            "\"00\",\"00\",[],\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "odd-length coinbase prefix",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"0\",\"00\",[],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "non-hex coinbase suffix",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"zz\",[],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "short Merkle branch",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[\"00\"],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "non-hex Merkle branch",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\","
+            "[\"g111111111111111111111111111111111111111111111111111111111111111\"],"
+            "\"20000000\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "short version",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[],"
+            "\"20\",\"1d00ffff\",\"65000000\",true]}",
+        },
+        {
+            "non-hex target",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[],"
+            "\"20000000\",\"1d00fffz\",\"65000000\",true]}",
+        },
+        {
+            "long ntime",
+            "{\"id\":null,\"method\":\"mining.notify\",\"params\":["
+            "\"job\",\"" TEST_ZERO_HASH "\",\"00\",\"00\",[],"
+            "\"20000000\",\"1d00ffff\",\"650000000\",true]}",
+        },
+    };
+
+    for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+        StratumApiV1Message message = {};
+        TEST_ASSERT_FALSE_MESSAGE(STRATUM_V1_parse(&message, cases[i].json), cases[i].description);
+        TEST_ASSERT_NULL_MESSAGE(message.mining_notification, cases[i].description);
+        STRATUM_V1_reset_message(&message);
     }
 }
 
@@ -307,6 +454,17 @@ TEST_CASE("Reject negative mining.set_extranonce length", "[stratum]")
 
     TEST_ASSERT_FALSE(STRATUM_V1_parse(&stratum_api_v1_message, json_string));
     TEST_ASSERT_NULL(stratum_api_v1_message.extranonce_str);
+}
+
+TEST_CASE("Reject mining.set_extranonce when allocation fails", "[mining.set_extranonce]")
+{
+    StratumApiV1Message message = {};
+    const char *json = "{\"id\":1,\"method\":\"mining.set_extranonce\",\"params\":[\"deadbeef\",8]}";
+    fail_next_api_strdup = true;
+
+    TEST_ASSERT_FALSE(STRATUM_V1_parse(&message, json));
+    TEST_ASSERT_FALSE(fail_next_api_strdup);
+    TEST_ASSERT_NULL(message.extranonce_str);
 }
 
 TEST_CASE("Parse stratum client.show_message", "[stratum]")

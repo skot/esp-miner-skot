@@ -32,6 +32,11 @@ static size_t json_rpc_buffer_used = 0;
 
 static RequestTiming *request_timings = NULL;
 
+__attribute__((weak)) char *stratum_api_strdup(const char *source)
+{
+    return strdup(source);
+}
+
 static RequestTiming* get_request_timing(int request_id) {
     if (request_id < 0 || request_timings == NULL) return NULL;
     int index = request_id % MAX_REQUEST_IDS;
@@ -102,7 +107,6 @@ void STRATUM_V1_cleanup_buffer(void)
 
 bool STRATUM_V1_initialize_buffer(void)
 {
-    // Release state left by a previous V1 task before starting a new session.
     STRATUM_V1_cleanup_buffer();
 
     json_rpc_buffer = malloc(BUFFER_SIZE);
@@ -113,6 +117,16 @@ bool STRATUM_V1_initialize_buffer(void)
     json_rpc_buffer_size = BUFFER_SIZE;
     json_rpc_buffer_used = 0;
     json_rpc_buffer[0] = '\0';
+
+    return true;
+}
+
+bool STRATUM_V1_initialize(void)
+{
+    // Release state left by a previous V1 task before starting a new session.
+    if (!STRATUM_V1_initialize_buffer()) {
+        return false;
+    }
 
     if (request_timings == NULL) {
         request_timings = heap_caps_malloc(sizeof(RequestTiming) * MAX_REQUEST_IDS, MALLOC_CAP_SPIRAM);
@@ -131,7 +145,7 @@ bool STRATUM_V1_initialize_buffer(void)
     return true;
 }
 
-static void reset_json_buffer(void)
+void STRATUM_V1_reset_buffer(void)
 {
     json_rpc_buffer_used = 0;
     if (json_rpc_buffer != NULL) {
@@ -196,7 +210,7 @@ char *STRATUM_V1_receive_jsonrpc_line(esp_transport_handle_t transport)
                     break;
             }
             ESP_LOGE(TAG, "Error: transport read failed: %s (code: %d)", err_str, nbytes);
-            reset_json_buffer();
+            STRATUM_V1_reset_buffer();
             return NULL;
         }
 
@@ -209,14 +223,14 @@ char *STRATUM_V1_receive_jsonrpc_line(esp_transport_handle_t transport)
             if (json_rpc_buffer_used > STRATUM_V1_MAX_JSON_LINE_SIZE ||
                 bytes_before_newline > STRATUM_V1_MAX_JSON_LINE_SIZE - json_rpc_buffer_used) {
                 ESP_LOGE(TAG, "JSON-RPC line exceeds %d-byte limit", STRATUM_V1_MAX_JSON_LINE_SIZE);
-                reset_json_buffer();
+                STRATUM_V1_reset_buffer();
                 return NULL;
             }
 
             size_t append_offset = json_rpc_buffer_used;
             size_t required_size = append_offset + (size_t)nbytes + 1;
             if (!ensure_json_buffer_capacity(required_size)) {
-                reset_json_buffer();
+                STRATUM_V1_reset_buffer();
                 return NULL;
             }
 
@@ -233,7 +247,7 @@ char *STRATUM_V1_receive_jsonrpc_line(esp_transport_handle_t transport)
     char *line = malloc(line_len + 1);
     if (line == NULL) {
         ESP_LOGE(TAG, "Failed to allocate %zu-byte JSON-RPC line", line_len + 1);
-        reset_json_buffer();
+        STRATUM_V1_reset_buffer();
         return NULL;
     }
 
@@ -303,6 +317,62 @@ static stratum_method parse_method(const cJSON *method_json)
     return METHOD_UNKNOWN;
 }
 
+static int hex_digit_value(char digit)
+{
+    if (digit >= '0' && digit <= '9') return digit - '0';
+    if (digit >= 'a' && digit <= 'f') return digit - 'a' + 10;
+    if (digit >= 'A' && digit <= 'F') return digit - 'A' + 10;
+    return -1;
+}
+
+static bool is_hex_string(const cJSON *item, size_t expected_length)
+{
+    if (!item || !cJSON_IsString(item) || item->valuestring == NULL ||
+        strlen(item->valuestring) != expected_length) {
+        return false;
+    }
+
+    for (size_t i = 0; i < expected_length; i++) {
+        if (hex_digit_value(item->valuestring[i]) < 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static bool is_even_length_hex_string(const cJSON *item)
+{
+    if (!item || !cJSON_IsString(item) || item->valuestring == NULL) {
+        return false;
+    }
+
+    size_t length = strlen(item->valuestring);
+    if ((length & 1U) != 0) {
+        return false;
+    }
+
+    for (size_t i = 0; i < length; i++) {
+        if (hex_digit_value(item->valuestring[i]) < 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static bool parse_hex_u32(const cJSON *item, uint32_t *result)
+{
+    if (result == NULL || !is_hex_string(item, 8)) {
+        return false;
+    }
+
+    uint32_t value = 0;
+    for (size_t i = 0; i < 8; i++) {
+        value = (value << 4) | (uint32_t)hex_digit_value(item->valuestring[i]);
+    }
+    *result = value;
+    return true;
+}
+
 static bool parse_mining_notify(cJSON *json, StratumApiV1Message *message)
 {
     cJSON *params = cJSON_GetObjectItem(json, "params");
@@ -327,16 +397,23 @@ static bool parse_mining_notify(cJSON *json, StratumApiV1Message *message)
     cJSON *ntime_item = cJSON_GetArrayItem(params, 7);
     cJSON *clean_jobs_item = cJSON_GetArrayItem(params, params_count - 1);
 
-    if (!cJSON_IsString(job_id_item) ||
-        !cJSON_IsString(prev_block_hash_item) ||
-        !cJSON_IsString(coinbase_1_item) ||
-        !cJSON_IsString(coinbase_2_item) ||
-        !cJSON_IsArray(merkle_branch) ||
-        !cJSON_IsString(version_item) ||
-        !cJSON_IsString(target_item) ||
-        !cJSON_IsString(ntime_item) ||
-        !cJSON_IsBool(clean_jobs_item)) {
-        ESP_LOGE(TAG, "Invalid field type in mining.notify");
+    if (!job_id_item || !cJSON_IsString(job_id_item) || job_id_item->valuestring == NULL ||
+        !is_hex_string(prev_block_hash_item, HASH_SIZE * 2) ||
+        !is_even_length_hex_string(coinbase_1_item) ||
+        !is_even_length_hex_string(coinbase_2_item) ||
+        !merkle_branch || !cJSON_IsArray(merkle_branch) ||
+        !clean_jobs_item || !cJSON_IsBool(clean_jobs_item)) {
+        ESP_LOGE(TAG, "Invalid field type or encoding in mining.notify");
+        return false;
+    }
+
+    uint32_t version;
+    uint32_t target;
+    uint32_t ntime;
+    if (!parse_hex_u32(version_item, &version) ||
+        !parse_hex_u32(target_item, &target) ||
+        !parse_hex_u32(ntime_item, &ntime)) {
+        ESP_LOGE(TAG, "Invalid version, target, or ntime in mining.notify");
         return false;
     }
 
@@ -347,7 +424,7 @@ static bool parse_mining_notify(cJSON *json, StratumApiV1Message *message)
     }
 
     for (int i = 0; i < merkle_branch_count; i++) {
-        if (!cJSON_IsString(cJSON_GetArrayItem(merkle_branch, i))) {
+        if (!is_hex_string(cJSON_GetArrayItem(merkle_branch, i), HASH_SIZE * 2)) {
             ESP_LOGE(TAG, "Invalid Merkle branch at index %d", i);
             return false;
         }
@@ -381,15 +458,20 @@ static bool parse_mining_notify(cJSON *json, StratumApiV1Message *message)
 
         for (size_t i = 0; i < new_work->n_merkle_branches; i++) {
             cJSON *branch = cJSON_GetArrayItem(merkle_branch, i);
-            hex2bin(branch->valuestring,
-                    new_work->merkle_branches + HASH_SIZE * i,
-                    HASH_SIZE);
+            size_t decoded = hex2bin(branch->valuestring,
+                                     new_work->merkle_branches + HASH_SIZE * i,
+                                     HASH_SIZE);
+            if (decoded != HASH_SIZE) {
+                ESP_LOGE(TAG, "Failed to decode Merkle branch at index %zu", i);
+                STRATUM_V1_free_mining_notify(new_work);
+                return false;
+            }
         }
     }
 
-    new_work->version = strtoul(version_item->valuestring, NULL, 16);
-    new_work->target = strtoul(target_item->valuestring, NULL, 16);
-    new_work->ntime = strtoul(ntime_item->valuestring, NULL, 16);
+    new_work->version = version;
+    new_work->target = target;
+    new_work->ntime = ntime;
 
     // Some pools append extension fields; clean_jobs remains the final parameter.
     new_work->clean_jobs = cJSON_IsTrue(clean_jobs_item);
@@ -453,8 +535,13 @@ static bool parse_set_extranonce(cJSON *json, StratumApiV1Message *message)
         return false;
     }
 
-    if (message->extranonce_str) free(message->extranonce_str);
-    message->extranonce_str = strdup(extranonce1->valuestring);
+    char *new_extranonce = stratum_api_strdup(extranonce1->valuestring);
+    if (new_extranonce == NULL) {
+        ESP_LOGE(TAG, "Memory allocation failed for extranonce1");
+        return false;
+    }
+    free(message->extranonce_str);
+    message->extranonce_str = new_extranonce;
 
     if (extranonce_2_len > MAX_EXTRANONCE_2_LEN) {
         ESP_LOGW(TAG, "Extranonce_2_len %d exceeds maximum %d, clamping to maximum",
@@ -517,8 +604,13 @@ static bool parse_subscribe_result(cJSON *json, StratumApiV1Message *message)
         return false;
     }
 
-    if (message->extranonce_str) free(message->extranonce_str);
-    message->extranonce_str = strdup(extranonce->valuestring);
+    char *new_extranonce = stratum_api_strdup(extranonce->valuestring);
+    if (new_extranonce == NULL) {
+        ESP_LOGE(TAG, "Memory allocation failed for subscribe extranonce1");
+        return false;
+    }
+    free(message->extranonce_str);
+    message->extranonce_str = new_extranonce;
 
     if (extranonce_2_len > MAX_EXTRANONCE_2_LEN) {
         ESP_LOGW(TAG, "Extranonce_2_len %d exceeds maximum %d, clamping to maximum", 

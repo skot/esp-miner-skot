@@ -199,7 +199,12 @@ static void generate_work(GlobalState *GLOBAL_STATE, mining_notify *notification
     extranonce_2_generate(extranonce_2, GLOBAL_STATE->extranonce_2_len, extranonce_2_str);
 
     uint8_t coinbase_tx_hash[32];
-    calculate_coinbase_tx_hash(notification->coinbase_1, notification->coinbase_2, GLOBAL_STATE->extranonce_str, extranonce_2_str, coinbase_tx_hash);
+    if (!calculate_coinbase_tx_hash(notification->coinbase_1, notification->coinbase_2,
+                                    GLOBAL_STATE->extranonce_str, extranonce_2_str,
+                                    coinbase_tx_hash)) {
+        ESP_LOGE(TAG, "Invalid or oversized coinbase transaction, skipping job");
+        return;
+    }
 
     uint8_t merkle_root[32];
     calculate_merkle_root_hash(coinbase_tx_hash, (uint8_t(*)[32])notification->merkle_branches, notification->n_merkle_branches, merkle_root);
