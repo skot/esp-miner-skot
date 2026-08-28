@@ -10,6 +10,14 @@ typedef enum {
 } asic_init_mode_t;
 
 /**
+ * Put the ASIC power controls in a safe state before regulator setup.
+ *
+ * Holds ASIC reset low on every board. Proto additionally forces VDDIO off so
+ * VDDIO and Vcore can later be enabled in a deterministic order.
+ */
+esp_err_t asic_prepare_power(const GlobalState *GLOBAL_STATE);
+
+/**
  * Initialize or reinitialize ASIC chip(s)
  * 
  * Handles both cold boot initialization and live recovery scenarios.

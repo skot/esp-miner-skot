@@ -1293,13 +1293,28 @@ uint8_t MC3_init(void * pvParameters)
     pthread_mutex_unlock(&mc3_core_scan_lock);
 
     ESP_LOGI(TAG, "MC3 init response: next_chip_id=%u using_chip_count=%u", next_chip_id, mc3_chip_count);
-    if (!MC3_ramp_hash_frequency(GLOBAL_STATE)) {
-        ESP_LOGE(TAG, "MC3 frequency ramp failed during initialization");
+
+    float startup_frequency = MC3_send_hash_frequency(MC3_STARTUP_FREQUENCY_MHZ);
+    if (startup_frequency <= 0.0f) {
+        ESP_LOGE(TAG, "Failed to start MC3 PLLs at %u MHz", MC3_STARTUP_FREQUENCY_MHZ);
         mc3_chip_count = 0;
         return 0;
     }
-    mc3_setup_thermal_sensor();
+    GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency = startup_frequency;
+
     mc3_setup_vdd_voltage_sensor();
+
+    float startup_voltages_mv[ASIC_TUNING_MAX_CHIPS] = {0};
+    uint8_t voltage_count = MC3_read_vdd_voltages(startup_voltages_mv, ASIC_TUNING_MAX_CHIPS);
+    if (voltage_count == 0) {
+        ESP_LOGW(TAG, "No MC3 VDD measurements available before frequency ramp");
+    } else {
+        for (uint8_t chip_id = 0; chip_id < voltage_count; chip_id++) {
+            ESP_LOGI(TAG, "Pre-ramp VDD: chip %u %.1f mV", chip_id, startup_voltages_mv[chip_id]);
+        }
+    }
+
+    mc3_setup_thermal_sensor();
 
     return mc3_chip_count;
 }
@@ -1441,6 +1456,10 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
         return true;
     }
 
+    // Keep work programming and SPDLOG reads from interleaving with the
+    // multi-register PLL transition when frequency changes while mining.
+    pthread_mutex_lock(&mc3_work_lock);
+
     ESP_LOGI(TAG, "Ramping frequency from %.0f MHz to %u MHz",
         power_management->actual_frequency, target_config->frequency_mhz);
 
@@ -1453,6 +1472,7 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
         if (actual_frequency <= 0.0f) {
             ESP_LOGE(TAG, "Frequency ramp stopped at %.0f MHz; target was %u MHz",
                 power_management->actual_frequency, target_config->frequency_mhz);
+            pthread_mutex_unlock(&mc3_work_lock);
             return false;
         }
 
@@ -1465,6 +1485,7 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
     }
 
     ESP_LOGI(TAG, "Successfully transitioned to %u MHz", target_config->frequency_mhz);
+    pthread_mutex_unlock(&mc3_work_lock);
     return true;
 }
 

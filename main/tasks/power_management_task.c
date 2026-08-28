@@ -12,7 +12,9 @@
 #include "asic_init.h"
 #include "asic_reset.h"
 #include "driver/uart.h"
+#include "esp_timer.h"
 
+#include <stdio.h>
 #include <string.h>
 
 #define POLL_RATE 100
@@ -28,6 +30,10 @@
 #define TPS546_MAX_TEMP 145.0
 
 #define ASIC_REDUCTION 100.0
+
+#define PROTO_WARMUP_DURATION_MS 60000
+#define PROTO_WARMUP_LOG_INTERVAL_MS 10000
+#define PROTO_WARMUP_MIN_HASHRATE_GHS 1.0f
 
 static const char * TAG = "power_management";
 
@@ -65,12 +71,14 @@ static uint8_t mining_start(GlobalState * GLOBAL_STATE)
 {
     ESP_LOGI(TAG, "Starting mining");
 
-    // Restore voltage from NVS
-    uint16_t voltage = nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE);
-    VCORE_set_voltage(GLOBAL_STATE, (double) voltage / 1000.0);
+    // Proto ASIC initialization owns its reset -> VDDIO -> Vcore sequence.
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id != PROTO) {
+        uint16_t voltage = nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE);
+        VCORE_set_voltage(GLOBAL_STATE, (double) voltage / 1000.0);
 
-    // Wait for voltage to stabilize before touching the ASIC
-    vTaskDelay(500 / portTICK_PERIOD_MS);
+        // Wait for voltage to stabilize before touching the ASIC
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+    }
 
     // Clear any accumulated UART garbage before init
     uart_flush(UART_NUM_1);
@@ -93,6 +101,30 @@ static uint8_t mining_start(GlobalState * GLOBAL_STATE)
 static float expected_hashrate(GlobalState * GLOBAL_STATE)
 {
     return GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value * GLOBAL_STATE->DEVICE_CONFIG.family.asic.small_core_count * GLOBAL_STATE->DEVICE_CONFIG.family.asic_count / 1000.0;
+}
+
+static void log_proto_warmup_vdd(const char *phase, const PowerManagementModule *power_management)
+{
+    if (power_management->asic_voltage_count == 0) {
+        ESP_LOGW(TAG, "Proto %s VDD measurement unavailable", phase);
+        return;
+    }
+
+    char readings[128] = {0};
+    size_t used = 0;
+    for (uint8_t chip_id = 0;
+         chip_id < power_management->asic_voltage_count && used < sizeof(readings);
+         chip_id++) {
+        int written = snprintf(readings + used, sizeof(readings) - used,
+            "%s%u:%.1f", chip_id == 0 ? "" : " ", chip_id,
+            power_management->asic_voltages[chip_id]);
+        if (written < 0 || (size_t)written >= sizeof(readings) - used) {
+            break;
+        }
+        used += written;
+    }
+
+    ESP_LOGI(TAG, "Proto %s MC3 VDD mV [%s]", phase, readings);
 }
 
 static void update_asic_telemetry(GlobalState *GLOBAL_STATE)
@@ -193,6 +225,15 @@ void POWER_MANAGEMENT_task(void * pvParameters)
     uint16_t last_known_asic_voltage = 0;
     float last_known_asic_frequency = 0.0;
     bool is_paused = false;
+    bool proto_loaded_warmup =
+        GLOBAL_STATE->DEVICE_CONFIG.family.id == PROTO &&
+        GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3 &&
+        !GLOBAL_STATE->SELF_TEST_MODULE.is_active;
+    bool proto_warmup_started = false;
+    bool proto_warmup_ramp_complete = !proto_loaded_warmup;
+    bool proto_warmup_wait_logged = false;
+    int64_t proto_warmup_start_us = 0;
+    int64_t proto_warmup_last_log_us = 0;
 
     while (1) {
         if (GLOBAL_STATE->SELF_TEST_MODULE.is_finished) {
@@ -306,22 +347,105 @@ void POWER_MANAGEMENT_task(void * pvParameters)
                                  ? GLOBAL_STATE-> DEVICE_CONFIG.family.asic.default_frequency_mhz
                                  : nvs_config_get_float(NVS_CONFIG_ASIC_FREQUENCY);
 
-        if (core_voltage != last_core_voltage) {
+        if (proto_loaded_warmup && !GLOBAL_STATE->ASIC_initalized) {
+            proto_warmup_started = false;
+            proto_warmup_ramp_complete = false;
+            proto_warmup_wait_logged = false;
+            proto_warmup_start_us = 0;
+            proto_warmup_last_log_us = 0;
+        }
+
+        bool proto_power_sequence_active =
+            GLOBAL_STATE->DEVICE_CONFIG.family.id == PROTO && !GLOBAL_STATE->ASIC_initalized;
+        if (core_voltage != last_core_voltage && !proto_power_sequence_active) {
             ESP_LOGI(TAG, "setting new vcore voltage to %umV", core_voltage);
             VCORE_set_voltage(GLOBAL_STATE, (double) core_voltage / 1000.0);
             last_core_voltage = core_voltage;
         }
 
-        if (asic_frequency != last_asic_frequency) {
+        bool frequency_changed = asic_frequency != last_asic_frequency;
+        if (frequency_changed) {
             ESP_LOGI(TAG, "New ASIC frequency requested: %g MHz (current: %g MHz)", asic_frequency, last_asic_frequency);
             
             power_management->frequency_value = asic_frequency;
             power_management->expected_hashrate = expected_hashrate(GLOBAL_STATE);
+            last_asic_frequency = asic_frequency;
+        }
 
+        if (proto_loaded_warmup &&
+            GLOBAL_STATE->ASIC_initalized &&
+            asic_frequency <= MC3_STARTUP_FREQUENCY_MHZ + 0.5f) {
+            proto_warmup_started = false;
+            proto_warmup_ramp_complete = true;
+            proto_warmup_wait_logged = false;
+        } else if (proto_loaded_warmup &&
+                   GLOBAL_STATE->ASIC_initalized &&
+                   asic_frequency > MC3_STARTUP_FREQUENCY_MHZ + 0.5f &&
+                   power_management->actual_frequency <= MC3_STARTUP_FREQUENCY_MHZ + 0.5f) {
+            proto_warmup_ramp_complete = false;
+        }
+
+        bool proto_frequency_deferred =
+            proto_loaded_warmup &&
+            GLOBAL_STATE->ASIC_initalized &&
+            !proto_warmup_ramp_complete &&
+            asic_frequency > MC3_STARTUP_FREQUENCY_MHZ + 0.5f;
+
+        if (proto_frequency_deferred) {
+            int64_t now_us = esp_timer_get_time();
+            if (!proto_warmup_started &&
+                sys_module->current_hashrate >= PROTO_WARMUP_MIN_HASHRATE_GHS) {
+                proto_warmup_started = true;
+                proto_warmup_start_us = now_us;
+                proto_warmup_last_log_us = now_us;
+                ESP_LOGI(TAG,
+                    "Proto loaded warm-up started: %u seconds at %.0f MHz (hashrate %.2f GH/s)",
+                    PROTO_WARMUP_DURATION_MS / 1000,
+                    power_management->actual_frequency,
+                    sys_module->current_hashrate);
+            } else if (!proto_warmup_started && !proto_warmup_wait_logged) {
+                ESP_LOGI(TAG,
+                    "Proto warm-up waiting for real mining work at %.0f MHz before ramping to %.0f MHz",
+                    power_management->actual_frequency,
+                    asic_frequency);
+                proto_warmup_wait_logged = true;
+            }
+
+            if (proto_warmup_started) {
+                int64_t elapsed_us = now_us - proto_warmup_start_us;
+                if (now_us - proto_warmup_last_log_us >=
+                    (int64_t)PROTO_WARMUP_LOG_INTERVAL_MS * 1000) {
+                    ESP_LOGI(TAG,
+                        "Proto loaded warm-up: %lu/%u seconds, %.2f GH/s, max ASIC temp %.1f C",
+                        (unsigned long)(elapsed_us / 1000000),
+                        PROTO_WARMUP_DURATION_MS / 1000,
+                        sys_module->current_hashrate,
+                        power_management->chip_temp_avg);
+                    proto_warmup_last_log_us = now_us;
+                }
+
+                if (elapsed_us >= (int64_t)PROTO_WARMUP_DURATION_MS * 1000) {
+                    ESP_LOGI(TAG,
+                        "Proto loaded warm-up complete; ramping from %.0f MHz to %.0f MHz without resetting ASIC power",
+                        power_management->actual_frequency,
+                        asic_frequency);
+                    log_proto_warmup_vdd("pre-frequency-ramp", power_management);
+                    if (MC3_ramp_hash_frequency(GLOBAL_STATE)) {
+                        ASIC_set_nonce_space(GLOBAL_STATE);
+                        update_asic_telemetry(GLOBAL_STATE);
+                        log_proto_warmup_vdd("post-frequency-ramp", power_management);
+                        proto_warmup_ramp_complete = true;
+                        ESP_LOGI(TAG, "Proto post-warm-up frequency ramp complete");
+                    } else {
+                        ESP_LOGE(TAG, "Proto post-warm-up frequency ramp failed");
+                        proto_warmup_started = false;
+                        proto_warmup_wait_logged = false;
+                    }
+                }
+            }
+        } else if (frequency_changed && GLOBAL_STATE->ASIC_initalized) {
             ASIC_set_frequency(GLOBAL_STATE);
             ASIC_set_nonce_space(GLOBAL_STATE);
-            
-            last_asic_frequency = asic_frequency;
         }
 
         // Check for changing of overheat mode

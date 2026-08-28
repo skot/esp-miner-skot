@@ -1,8 +1,8 @@
 key,type,encoding,value
 main,namespace,,
 hostname,data,string,bitaxe
-wifissid,data,string,myssid
-wifipass,data,string,password
+wifissid,data,string,low
+wifipass,data,string,8letters
 stratumurl,data,string,public-pool.io
 stratumport,data,u16,3333
 stratumtls,data,u16,0
@@ -19,11 +19,11 @@ fbstratumuser,data,string,bc1qnp980s5fpp8l94p5cvttmtdqy8rvrq74qly2yrfmzkdsntqzlc
 fbstratumpass,data,string,x
 fbstratumdiff,data,u16,1000
 fbstratumxnsum,data,u16,0
-asicfrequency,data,u16,300
+asicfrequency,data,u16,100
 asicvoltage,data,u16,1100
 asicmodel,data,string,MC3
 devicemodel,data,string,proto
-boardversion,data,string,1102
+boardversion,data,string,1103
 rotation,data,u16,0
 autofanspeed,data,u16,1
 fanspeed,data,u16,100

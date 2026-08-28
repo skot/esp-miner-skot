@@ -12,6 +12,7 @@
 #define MC3_SERIALTX_DEBUG false
 #define MC3_SERIALRX_DEBUG false
 #define MC3_DEBUG_WORK false
+#define MC3_STARTUP_FREQUENCY_MHZ 100
 
 uint8_t MC3_init(void * GLOBAL_STATE);
 void MC3_send_work(void * GLOBAL_STATE, bm_job * next_bm_job);

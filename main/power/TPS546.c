@@ -430,8 +430,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     temp = slinear11_2_int(u16_value);
     ESP_LOGI(TAG, "read TON_DELAY: %dms", temp);
     smb_read_word(PMBUS_TON_RISE, &u16_value);
-    temp = slinear11_2_int(u16_value);
-    ESP_LOGI(TAG, "read TON_RISE: %dms", temp);
+    ESP_LOGI(TAG, "read TON_RISE: %.2fms", slinear11_2_float(u16_value));
     smb_read_word(PMBUS_TON_MAX_FAULT_LIMIT, &u16_value);
     temp = slinear11_2_int(u16_value);
     ESP_LOGI(TAG, "read TON_MAX_FAULT_LIMIT: %dms", temp);
@@ -705,8 +704,11 @@ void TPS546_write_entire_config(void)
     ESP_LOGI(TAG, "----- TIMING");
     ESP_LOGI(TAG, "Setting TON_DELAY: %dms", TPS546_INIT_TON_DELAY);
     smb_write_word(PMBUS_TON_DELAY, int_2_slinear11(TPS546_INIT_TON_DELAY));
-    ESP_LOGI(TAG, "Setting TON_RISE: %dms", TPS546_INIT_TON_RISE);
-    smb_write_word(PMBUS_TON_RISE, int_2_slinear11(TPS546_INIT_TON_RISE));
+    float ton_rise_ms = tps546_config.TPS546_INIT_TON_RISE_MS > 0.0f
+        ? tps546_config.TPS546_INIT_TON_RISE_MS
+        : TPS546_INIT_TON_RISE;
+    ESP_LOGI(TAG, "Setting TON_RISE: %.2fms", ton_rise_ms);
+    smb_write_word(PMBUS_TON_RISE, float_2_slinear11(ton_rise_ms));
     ESP_LOGI(TAG, "Setting TON_MAX_FAULT_LIMIT: %dms", TPS546_INIT_TON_MAX_FAULT_LIMIT);
     smb_write_word(PMBUS_TON_MAX_FAULT_LIMIT, int_2_slinear11(TPS546_INIT_TON_MAX_FAULT_LIMIT));
     ESP_LOGI(TAG, "Setting TON_MAX_FAULT_RESPONSE: %02x", TPS546_INIT_TON_MAX_FAULT_RESPONSE);

@@ -118,6 +118,11 @@ void app_main(void)
         return;
     }
 
+    if (asic_prepare_power(&GLOBAL_STATE) != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to prepare ASIC power controls");
+        return;
+    }
+
     if (self_test_init(&GLOBAL_STATE) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to init self test");
         return;
