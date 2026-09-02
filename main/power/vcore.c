@@ -79,15 +79,15 @@ static TPS546_CONFIG get_tps546_config(const FamilyConfig * family)
         config.TPS546_INIT_VOUT_COMMAND = 2.2;
         config.TPS546_INIT_IOUT_OC_WARN_LIMIT = 35.00;
         config.TPS546_INIT_IOUT_OC_FAULT_LIMIT = 40.00;
-        config.TPS546_INIT_FREQUENCY = 1300;
+        config.TPS546_INIT_FREQUENCY = 550; //kHz
         // single phase configuration for 1 TPS module
         config.TPS546_INIT_STACK_CONFIG = 0x0000; // 1 module
         config.TPS546_INIT_SYNC_CONFIG = 0x00; // Enable Auto Detect SYNC
-        config.TPS546_INIT_COMPENSATION_CONFIG[0] = 0x13;
-        config.TPS546_INIT_COMPENSATION_CONFIG[1] = 0x20;
-        config.TPS546_INIT_COMPENSATION_CONFIG[2] = 0xC6;
-        config.TPS546_INIT_COMPENSATION_CONFIG[3] = 0x19;
-        config.TPS546_INIT_COMPENSATION_CONFIG[4] = 0xC6;
+        config.TPS546_INIT_COMPENSATION_CONFIG[0] = 0x13;  //0x13 11 8C 11 86
+        config.TPS546_INIT_COMPENSATION_CONFIG[1] = 0x11;
+        config.TPS546_INIT_COMPENSATION_CONFIG[2] = 0x8C;
+        config.TPS546_INIT_COMPENSATION_CONFIG[3] = 0x11;
+        config.TPS546_INIT_COMPENSATION_CONFIG[4] = 0x86;
         break;
     case HEX:
     case SUPRA_HEX:
