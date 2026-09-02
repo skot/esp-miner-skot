@@ -63,6 +63,14 @@ static void system_api_add_telemetry(cJSON *root, GlobalState *g) {
             cJSON_AddItemToArray(asic_voltages, cJSON_CreateNumber(g->POWER_MANAGEMENT_MODULE.asic_voltages[i]));
         }
     }
+    cJSON *domain_voltages = cJSON_CreateArray();
+    if (domain_voltages) {
+        cJSON_AddItemToObject(root, "domainVoltages", domain_voltages);
+        for (uint8_t i = 0; i < g->POWER_MANAGEMENT_MODULE.domain_voltage_count; i++) {
+            cJSON_AddItemToArray(domain_voltages,
+                cJSON_CreateNumber(g->POWER_MANAGEMENT_MODULE.domain_voltages[i]));
+        }
+    }
     cJSON_AddFloatToObject(root, "actualFrequency", g->POWER_MANAGEMENT_MODULE.actual_frequency);
     cJSON_AddFloatToObject(root, "regulatorVoltage", g->POWER_MANAGEMENT_MODULE.regulator_voltage);
     cJSON_AddFloatToObject(root, "expectedHashrate", g->POWER_MANAGEMENT_MODULE.expected_hashrate);

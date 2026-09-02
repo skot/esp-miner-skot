@@ -5,6 +5,7 @@
 
 #define ADC_ATTEN   ADC_ATTEN_DB_12
 #define ADC_CHANNEL ADC_CHANNEL_1
+#define ADC_SAMPLE_COUNT 16
 
 static const char * TAG = "adc";
 
@@ -64,7 +65,7 @@ static bool adc_calibration_init(adc_unit_t unit, adc_channel_t channel, adc_att
     return calibrated;
 }
 
-// Sets up the ADC to read Vcore. Run this before ADC_get_vcore()
+// Sets up GPIO2/ADC1_CH1 for board voltage sensing.
 void ADC_init(void)
 {
     // adc1_config_channel_atten(ADC1_CHANNEL_1, ADC_ATTEN_DB_12);
@@ -87,22 +88,48 @@ void ADC_init(void)
     //-------------ADC1 Calibration Init---------------//
     adc_calibration_init(ADC_UNIT_1, ADC_CHANNEL, ADC_ATTEN, &adc1_cali_chan1_handle);
 
+    ESP_LOGI(TAG, "GPIO2/ADC1_CH1 configured for voltage sensing");
+
 }
 
-// returns the ADC voltage in mV
+esp_err_t ADC_get_domain_midpoint_mv(uint16_t *voltage_mv)
+{
+    if (voltage_mv == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    if (adc1_handle == NULL || adc1_cali_chan1_handle == NULL) {
+        return ESP_ERR_INVALID_STATE;
+    }
+
+    uint32_t raw_total = 0;
+    for (uint8_t sample = 0; sample < ADC_SAMPLE_COUNT; sample++) {
+        int adc_raw = 0;
+        esp_err_t err = adc_oneshot_read(adc1_handle, ADC_CHANNEL, &adc_raw);
+        if (err != ESP_OK) {
+            return err;
+        }
+        raw_total += (uint32_t)adc_raw;
+    }
+
+    int average_raw = (int)((raw_total + ADC_SAMPLE_COUNT / 2) / ADC_SAMPLE_COUNT);
+    int calibrated_mv = 0;
+    esp_err_t err = adc_cali_raw_to_voltage(
+        adc1_cali_chan1_handle, average_raw, &calibrated_mv);
+    if (err != ESP_OK) {
+        return err;
+    }
+
+    *voltage_mv = (uint16_t)calibrated_mv;
+    return ESP_OK;
+}
+
+// Returns the legacy ADC Vcore reading in mV.
 uint16_t ADC_get_vcore(void)
 {
-    int adc_raw = 0;
-    int voltage = 0;
-
-    if (adc_oneshot_read(adc1_handle, ADC_CHANNEL, &adc_raw) != ESP_OK) {
-        ESP_LOGE(TAG, "ADC read failed");
+    uint16_t voltage_mv = 0;
+    if (ADC_get_domain_midpoint_mv(&voltage_mv) != ESP_OK) {
+        ESP_LOGE(TAG, "ADC voltage read failed");
         return 0;
     }
-    if (adc_cali_raw_to_voltage(adc1_cali_chan1_handle, adc_raw, &voltage) != ESP_OK) {
-        ESP_LOGE(TAG, "ADC calibration failed");
-        return 0;
-    }
-
-    return voltage;
+    return voltage_mv;
 }

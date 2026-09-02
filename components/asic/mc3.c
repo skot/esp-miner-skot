@@ -113,6 +113,13 @@
 #define MC3_FREQUENCY_HIGH_THRESHOLD_MHZ 500
 #define MC3_PLL_LOCK_TIMEOUT_MS 250
 #define MC3_PLL_LOCK_POLL_MS 10
+#define MC3_QUALIFICATION_SPDLOG_TIMER_COUNT 48
+#define MC3_QUALIFICATION_SETTLE_TIME_MS 250
+#define MC3_QUALIFICATION_VERSION_MASK 0xFFFF0000
+#define MC3_QUALIFICATION_VERSION 0x20000000
+#define MC3_QUALIFICATION_NTIME 0x65000000
+#define MC3_QUALIFICATION_NBITS 0x1D00FFFF
+#define MC3_QUALIFICATION_POOL_DIFFICULTY 1000000.0
 
 _Static_assert(MC3_CORE_SPDLOG_BANK_CORE_COUNT * 2 == ASIC_TUNING_MAX_CORES,
     "MC3 per-core SPDLOG banks must cover every tuning core");
@@ -126,6 +133,7 @@ static int64_t mc3_last_nonce_poll_us;
 static uint8_t mc3_next_nonce_chip;
 static bool mc3_spdlog_started;
 static int64_t mc3_spdlog_start_us;
+static mc3_frequency_step_callback_t mc3_frequency_step_callback;
 static task_result mc3_pending_results[MC3_PENDING_RESULTS_SIZE];
 static uint8_t mc3_pending_head;
 static uint8_t mc3_pending_count;
@@ -568,7 +576,8 @@ static void mc3_start_spdlog(uint8_t start_chip_id, uint8_t chip_num)
 
 static void mc3_report_hashrate_result(GlobalState *GLOBAL_STATE, uint8_t chip_id, register_type_t register_type, double hashrate_hs)
 {
-    if (register_type == REGISTER_HASHRATE) {
+    if (register_type == REGISTER_HASHRATE &&
+        GLOBAL_STATE->HASHRATE_MONITOR_MODULE.is_initialized) {
         hashrate_monitor_set_hashrate(GLOBAL_STATE, chip_id, (float)(hashrate_hs / 1e9), esp_timer_get_time());
     }
 }
@@ -864,6 +873,35 @@ static void mc3_write_v_work(bm_job *next_bm_job, uint8_t job_id)
     mc3_write_register(0, MC3_V_WORK_NOTE + 4, 0x00000000, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_V_WORK_NOTE + 8, 0x00000000, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_V_WORK_NOTE + 12, 0x00000000, MC3_CHIP_NUM_ALL);
+}
+
+static bool mc3_program_qualification_work(float frequency_mhz)
+{
+    uint8_t chip_count = mc3_chip_count;
+    if (chip_count == 0 || chip_count > MC3_QUALIFICATION_MAX_CHIPS) {
+        ESP_LOGE(TAG, "Cannot start MC3 qualification with %u chip(s)", chip_count);
+        return false;
+    }
+
+    bm_job qualification_job = {
+        .version = MC3_QUALIFICATION_VERSION,
+        .version_mask = MC3_QUALIFICATION_VERSION_MASK,
+        .ntime = MC3_QUALIFICATION_NTIME,
+        .target = MC3_QUALIFICATION_NBITS,
+        .pool_diff = MC3_QUALIFICATION_POOL_DIFFICULTY,
+    };
+
+    const mc3_pll_config_t *config = mc3_get_pll_config(frequency_mhz);
+    if (!mc3_write_mining_config(
+            mc3_rolltime_for_frequency(config->frequency_mhz),
+            qualification_job.version_mask)) {
+        return false;
+    }
+
+    mc3_write_work_target(qualification_job.pool_diff, chip_count);
+    mc3_write_version_bases(&qualification_job, chip_count);
+    mc3_write_v_work(&qualification_job, 0);
+    return true;
 }
 
 static bool mc3_pending_push(const task_result *new_result)
@@ -1437,6 +1475,11 @@ float MC3_send_hash_frequency(float frequency)
     return config->frequency_mhz;
 }
 
+void MC3_set_frequency_step_callback(mc3_frequency_step_callback_t callback)
+{
+    mc3_frequency_step_callback = callback;
+}
+
 bool MC3_ramp_hash_frequency(void * pvParameters)
 {
     GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
@@ -1481,12 +1524,94 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
             ? MC3_FREQUENCY_HIGH_RAMP_DELAY_MS
             : MC3_FREQUENCY_RAMP_DELAY_MS;
         vTaskDelay(pdMS_TO_TICKS(settle_delay_ms));
+        if (mc3_frequency_step_callback != NULL) {
+            mc3_frequency_step_callback(GLOBAL_STATE, actual_frequency);
+        }
         step_index += direction;
     }
 
     ESP_LOGI(TAG, "Successfully transitioned to %u MHz", target_config->frequency_mhz);
     pthread_mutex_unlock(&mc3_work_lock);
     return true;
+}
+
+bool MC3_start_qualification_work(void *pvParameters)
+{
+    GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
+    float frequency_mhz = GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency;
+
+    pthread_mutex_lock(&mc3_work_lock);
+    bool started = mc3_program_qualification_work(frequency_mhz);
+    pthread_mutex_unlock(&mc3_work_lock);
+
+    if (started) {
+        ESP_LOGI(TAG, "Started broadcast qualification work at %.0f MHz", frequency_mhz);
+    } else {
+        ESP_LOGE(TAG, "Failed to start broadcast qualification work at %.0f MHz", frequency_mhz);
+    }
+    return started;
+}
+
+bool MC3_qualify_frequency(void *pvParameters, float frequency,
+    mc3_qualification_result_t *result_out)
+{
+    GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
+    mc3_qualification_result_t result = {0};
+    bool success = false;
+
+    if (result_out == NULL || mc3_chip_count == 0 ||
+        mc3_chip_count > MC3_QUALIFICATION_MAX_CHIPS) {
+        return false;
+    }
+
+    pthread_mutex_lock(&mc3_work_lock);
+
+    // Stop the current search before touching the PLL. Re-applying mining
+    // configuration below resets every core and starts identical broadcast
+    // work on the whole chain at the new frequency.
+    if (!mc3_write_register(0, MC3_WORK_CFG,
+            MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET, MC3_CHIP_NUM_ALL)) {
+        ESP_LOGE(TAG, "Failed to quiesce MC3 cores before %.0f MHz qualification", frequency);
+        goto done;
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));
+
+    result.frequency_mhz = MC3_send_hash_frequency(frequency);
+    if (result.frequency_mhz <= 0.0f) {
+        goto done;
+    }
+    GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency = result.frequency_mhz;
+
+    if (!mc3_program_qualification_work(result.frequency_mhz)) {
+        goto done;
+    }
+
+    mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL,
+        MC3_QUALIFICATION_SPDLOG_TIMER_COUNT);
+    uint32_t measurement_ms = (uint32_t)(
+        mc3_spdlog_runtime_seconds(MC3_QUALIFICATION_SPDLOG_TIMER_COUNT) * 1000.0) +
+        MC3_QUALIFICATION_SETTLE_TIME_MS;
+    ESP_LOGI(TAG, "Qualifying %.0f MHz for %.3f seconds on %u chips",
+        result.frequency_mhz, (double)measurement_ms / 1000.0, mc3_chip_count);
+    vTaskDelay(pdMS_TO_TICKS(measurement_ms));
+
+    result.chip_count = mc3_chip_count;
+    for (uint8_t chip_id = 0; chip_id < result.chip_count; chip_id++) {
+        double hashrate_ghs = 0.0;
+        if (!mc3_read_spdlog_chip(GLOBAL_STATE, chip_id,
+                &result.passed[chip_id], &result.failed[chip_id], &hashrate_ghs)) {
+            goto done;
+        }
+        result.hashrate_ghs[chip_id] = (float)hashrate_ghs;
+        result.total_hashrate_ghs += result.hashrate_ghs[chip_id];
+    }
+
+    success = true;
+
+done:
+    *result_out = result;
+    pthread_mutex_unlock(&mc3_work_lock);
+    return success;
 }
 
 task_result * MC3_process_work(void * pvParameters)

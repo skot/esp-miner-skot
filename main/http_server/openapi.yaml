@@ -203,6 +203,7 @@ components:
         - stratumDecodeCoinbase
         - asicTemps
         - asicVoltages
+        - domainVoltages
         - temp
         - temp2
         - uptimeSeconds
@@ -256,6 +257,11 @@ components:
         asicVoltages:
           type: array
           description: Per-ASIC chip VDD voltages in millivolts
+          items:
+            type: number
+        domainVoltages:
+          type: array
+          description: Board-level series voltage domains in millivolts, ordered from ground to regulator output
           items:
             type: number
         current:

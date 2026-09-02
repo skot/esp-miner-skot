@@ -82,6 +82,7 @@ export class SystemApiService {
         coreVoltageActual: 1200,
         regulatorVoltage: 2200,
         asicVoltages: [1101, 1098, 1104, 1100],
+        domainVoltages: [1100, 1100],
         hostname: "Bitaxe",
         macAddr: "2C:54:91:88:C9:E3",
         ssid: "default",

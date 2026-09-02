@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #define MAX_ASIC_TEMPS 8
+#define MAX_VOLTAGE_DOMAINS 4
 
 typedef struct
 {
@@ -16,6 +17,8 @@ typedef struct
     uint8_t asic_temp_count;
     float asic_voltages[MAX_ASIC_TEMPS];
     uint8_t asic_voltage_count;
+    float domain_voltages[MAX_VOLTAGE_DOMAINS];
+    uint8_t domain_voltage_count;
     float vr_temp;
     float voltage;
     float frequency_value;

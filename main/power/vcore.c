@@ -198,9 +198,40 @@ int16_t VCORE_get_voltage_mv(GlobalState * GLOBAL_STATE)
 int16_t VCORE_get_regulator_voltage_mv(GlobalState * GLOBAL_STATE)
 {
     if (GLOBAL_STATE->DEVICE_CONFIG.TPS546) {
-        return TPS546_get_vout() * 1000;
+        int32_t voltage_mv = (int32_t)(TPS546_get_vout() * 1000.0f) +
+            GLOBAL_STATE->DEVICE_CONFIG.regulator_voltage_offset_mv;
+        return voltage_mv > 0 ? (int16_t)voltage_mv : 0;
     }
     return 0;
+}
+
+esp_err_t VCORE_get_domain_voltages_mv(GlobalState * GLOBAL_STATE,
+                                       uint16_t regulator_voltage_mv,
+                                       uint16_t *lower_domain_mv,
+                                       uint16_t *upper_domain_mv)
+{
+    ESP_RETURN_ON_FALSE(GLOBAL_STATE != NULL, ESP_ERR_INVALID_ARG, TAG, "GLOBAL_STATE is required");
+    ESP_RETURN_ON_FALSE(lower_domain_mv != NULL && upper_domain_mv != NULL,
+        ESP_ERR_INVALID_ARG, TAG, "domain voltage outputs are required");
+    ESP_RETURN_ON_FALSE(GLOBAL_STATE->DEVICE_CONFIG.domain_voltage_sense,
+        ESP_ERR_NOT_SUPPORTED, TAG, "domain voltage sensing is unavailable");
+    ESP_RETURN_ON_FALSE(GLOBAL_STATE->DEVICE_CONFIG.TPS546,
+        ESP_ERR_NOT_SUPPORTED, TAG, "domain voltage sensing requires TPS546 telemetry");
+    ESP_RETURN_ON_FALSE(GLOBAL_STATE->DEVICE_CONFIG.family.voltage_domains == 2,
+        ESP_ERR_NOT_SUPPORTED, TAG, "domain voltage sensing currently supports two domains");
+
+    uint16_t raw_midpoint_mv = 0;
+    ESP_RETURN_ON_ERROR(ADC_get_domain_midpoint_mv(&raw_midpoint_mv), TAG,
+        "failed reading domain midpoint voltage");
+    int32_t midpoint_mv = (int32_t)raw_midpoint_mv +
+        GLOBAL_STATE->DEVICE_CONFIG.domain_midpoint_offset_mv;
+    ESP_RETURN_ON_FALSE(regulator_voltage_mv > 0 && midpoint_mv > 0 &&
+        midpoint_mv < regulator_voltage_mv,
+        ESP_ERR_INVALID_STATE, TAG, "invalid domain midpoint voltage");
+
+    *lower_domain_mv = (uint16_t)midpoint_mv;
+    *upper_domain_mv = regulator_voltage_mv - (uint16_t)midpoint_mv;
+    return ESP_OK;
 }
 
 esp_err_t VCORE_check_fault(GlobalState * GLOBAL_STATE)

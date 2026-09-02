@@ -12,6 +12,7 @@
 #include "device_config.h"
 #include "nvs_config.h"
 #include "vcore.h"
+#include "TPS546.h"
 #include "driver/gpio.h"
 
 #define GPIO_PROTO_VDDIO_5V_EN GPIO_NUM_21
@@ -23,6 +24,10 @@
 #define PROTO_VCORE_RAMP_STEP_MV 10
 #define PROTO_VCORE_RAMP_SETTLE_MS 100
 #define PROTO_MAX_VDD_READINGS 8
+#define PROTO_FREQUENCY_STEP_MHZ 25
+#define PROTO_MAX_DOMAIN_DELTA_MV 50
+#define PROTO_MIN_PASS_RATE_PERCENT 97.0f
+#define PROTO_MIN_THROUGHPUT_PERCENT 97.0f
 
 static const char *TAG = "asic_init";
 
@@ -75,20 +80,23 @@ static esp_err_t enable_proto_power(GlobalState *GLOBAL_STATE, uint16_t startup_
         return ESP_OK;
     }
 
-    ESP_RETURN_ON_ERROR(set_proto_vddio_5v(GLOBAL_STATE, true), TAG, "Failed to enable Proto VDDIO 5V");
-    ESP_LOGI(TAG, "Waiting %u ms for Proto VDDIO 5V to stabilize", PROTO_VDDIO_STABILIZATION_MS);
-    vTaskDelay(pdMS_TO_TICKS(PROTO_VDDIO_STABILIZATION_MS));
-
+    // MC3's stacked VDD domains must be established before the 1.2 V/0.8 V
+    // auxiliary rails (and the oscillators they power) are enabled.
     ESP_LOGI(TAG, "Starting Proto Vcore at %u mV/domain", startup_core_voltage_mv);
     ESP_RETURN_ON_ERROR(set_proto_core_voltage(GLOBAL_STATE, startup_core_voltage_mv), TAG,
         "Failed to enable Proto startup Vcore");
     ESP_LOGI(TAG, "Waiting %u ms for Proto Vcore to stabilize", PROTO_VCORE_STABILIZATION_MS);
     vTaskDelay(pdMS_TO_TICKS(PROTO_VCORE_STABILIZATION_MS));
 
+    ESP_RETURN_ON_ERROR(set_proto_vddio_5v(GLOBAL_STATE, true), TAG, "Failed to enable Proto VDDIO 5V");
+    ESP_LOGI(TAG, "Waiting %u ms for Proto VDDIO/clock rails to stabilize", PROTO_VDDIO_STABILIZATION_MS);
+    vTaskDelay(pdMS_TO_TICKS(PROTO_VDDIO_STABILIZATION_MS));
+
     return ESP_OK;
 }
 
-static void log_proto_vdd_measurements(uint16_t commanded_core_voltage_mv)
+static void log_proto_vdd_measurements(GlobalState *GLOBAL_STATE,
+                                       uint16_t commanded_core_voltage_mv)
 {
     float voltages_mv[PROTO_MAX_VDD_READINGS] = {0};
     uint8_t count = MC3_read_vdd_voltages(voltages_mv, PROTO_MAX_VDD_READINGS);
@@ -96,22 +104,36 @@ static void log_proto_vdd_measurements(uint16_t commanded_core_voltage_mv)
     if (count == 0) {
         ESP_LOGW(TAG, "Vcore ramp command=%u mV/domain; MC3 VDD measurement unavailable",
             commanded_core_voltage_mv);
-        return;
-    }
-
-    char readings[128] = {0};
-    size_t used = 0;
-    for (uint8_t chip_id = 0; chip_id < count && used < sizeof(readings); chip_id++) {
-        int written = snprintf(readings + used, sizeof(readings) - used,
-            "%s%u:%.1f", chip_id == 0 ? "" : " ", chip_id, voltages_mv[chip_id]);
-        if (written < 0 || (size_t)written >= sizeof(readings) - used) {
-            break;
+    } else {
+        char readings[128] = {0};
+        size_t used = 0;
+        for (uint8_t chip_id = 0; chip_id < count && used < sizeof(readings); chip_id++) {
+            int written = snprintf(readings + used, sizeof(readings) - used,
+                "%s%u:%.1f", chip_id == 0 ? "" : " ", chip_id, voltages_mv[chip_id]);
+            if (written < 0 || (size_t)written >= sizeof(readings) - used) {
+                break;
+            }
+            used += written;
         }
-        used += written;
+
+        ESP_LOGI(TAG, "Vcore ramp command=%u mV/domain; MC3 VDD mV [%s]",
+            commanded_core_voltage_mv, readings);
     }
 
-    ESP_LOGI(TAG, "Vcore ramp command=%u mV/domain; MC3 VDD mV [%s]",
-        commanded_core_voltage_mv, readings);
+    int16_t regulator_voltage_mv = VCORE_get_regulator_voltage_mv(GLOBAL_STATE);
+    uint16_t lower_domain_mv = 0;
+    uint16_t upper_domain_mv = 0;
+    if (regulator_voltage_mv > 0 &&
+        VCORE_get_domain_voltages_mv(GLOBAL_STATE, (uint16_t)regulator_voltage_mv,
+            &lower_domain_mv, &upper_domain_mv) == ESP_OK) {
+        ESP_LOGI(TAG,
+            "Vcore ramp command=%u mV/domain; PCB domains lower=%u upper=%u delta=%+d mV total=%d mV",
+            commanded_core_voltage_mv,
+            lower_domain_mv,
+            upper_domain_mv,
+            (int)upper_domain_mv - (int)lower_domain_mv,
+            regulator_voltage_mv);
+    }
 }
 
 static esp_err_t ramp_proto_core_voltage(GlobalState *GLOBAL_STATE,
@@ -136,11 +158,137 @@ static esp_err_t ramp_proto_core_voltage(GlobalState *GLOBAL_STATE,
         ESP_RETURN_ON_ERROR(set_proto_core_voltage(GLOBAL_STATE, core_voltage_mv), TAG,
             "Failed during Proto Vcore ramp");
         vTaskDelay(pdMS_TO_TICKS(PROTO_VCORE_RAMP_SETTLE_MS));
-        log_proto_vdd_measurements(core_voltage_mv);
+        log_proto_vdd_measurements(GLOBAL_STATE, core_voltage_mv);
     }
 
     ESP_LOGI(TAG, "Proto Vcore ramp reached %u mV/domain", target_core_voltage_mv);
     return ESP_OK;
+}
+
+static bool qualify_proto_frequency_step(GlobalState *GLOBAL_STATE, float frequency_mhz,
+                                         mc3_qualification_result_t *result)
+{
+    if (!MC3_qualify_frequency(GLOBAL_STATE, frequency_mhz, result)) {
+        ESP_LOGE(TAG, "Proto qualification communication failed at %.0f MHz", frequency_mhz);
+        return false;
+    }
+
+    float min_pass_rate_percent = 100.0f;
+    bool counters_valid = result->chip_count > 0;
+    for (uint8_t chip_id = 0; chip_id < result->chip_count; chip_id++) {
+        uint64_t total = (uint64_t)result->passed[chip_id] + result->failed[chip_id];
+        float pass_rate_percent = total > 0
+            ? ((float)result->passed[chip_id] * 100.0f) / (float)total
+            : 0.0f;
+        if (pass_rate_percent < min_pass_rate_percent) {
+            min_pass_rate_percent = pass_rate_percent;
+        }
+        counters_valid = counters_valid && total > 0;
+        ESP_LOGI(TAG,
+            "Proto qualification %.0f MHz chip%u: %.2f GH/s pass/fail=%lu/%lu pass_rate=%.2f%%",
+            result->frequency_mhz, chip_id, result->hashrate_ghs[chip_id],
+            (unsigned long)result->passed[chip_id],
+            (unsigned long)result->failed[chip_id], pass_rate_percent);
+    }
+
+    float expected_hashrate_ghs = result->frequency_mhz *
+        GLOBAL_STATE->DEVICE_CONFIG.family.asic.small_core_count * result->chip_count / 1000.0f;
+    float throughput_percent = expected_hashrate_ghs > 0.0f
+        ? result->total_hashrate_ghs * 100.0f / expected_hashrate_ghs
+        : 0.0f;
+
+    int16_t regulator_voltage_mv = VCORE_get_regulator_voltage_mv(GLOBAL_STATE);
+    float regulator_current_a = TPS546_get_iout();
+    uint16_t lower_domain_mv = 0;
+    uint16_t upper_domain_mv = 0;
+    bool domains_valid = !GLOBAL_STATE->DEVICE_CONFIG.domain_voltage_sense;
+    int domain_delta_mv = 0;
+    if (GLOBAL_STATE->DEVICE_CONFIG.domain_voltage_sense && regulator_voltage_mv > 0 &&
+        VCORE_get_domain_voltages_mv(GLOBAL_STATE, (uint16_t)regulator_voltage_mv,
+            &lower_domain_mv, &upper_domain_mv) == ESP_OK) {
+        domains_valid = true;
+        domain_delta_mv = (int)upper_domain_mv - (int)lower_domain_mv;
+    }
+    int absolute_domain_delta_mv = domain_delta_mv < 0 ? -domain_delta_mv : domain_delta_mv;
+
+    if (domains_valid && GLOBAL_STATE->DEVICE_CONFIG.domain_voltage_sense) {
+        ESP_LOGI(TAG,
+            "Proto qualification %.0f MHz domains: lower=%u upper=%u delta=%+d mV total=%d mV TPS current=%.2f A",
+            result->frequency_mhz, lower_domain_mv, upper_domain_mv,
+            domain_delta_mv, regulator_voltage_mv, regulator_current_a);
+    } else if (!domains_valid) {
+        ESP_LOGE(TAG,
+            "Proto qualification %.0f MHz: domain measurement unavailable; TPS current=%.2f A",
+            result->frequency_mhz, regulator_current_a);
+    }
+
+    bool accepted = counters_valid && domains_valid &&
+        min_pass_rate_percent >= PROTO_MIN_PASS_RATE_PERCENT &&
+        throughput_percent >= PROTO_MIN_THROUGHPUT_PERCENT &&
+        absolute_domain_delta_mv <= PROTO_MAX_DOMAIN_DELTA_MV;
+    ESP_LOGI(TAG,
+        "Proto qualification %.0f MHz: total=%.2f/%.2f GH/s throughput=%.2f%% min_pass=%.2f%% balance=%d mV => %s",
+        result->frequency_mhz, result->total_hashrate_ghs, expected_hashrate_ghs,
+        throughput_percent, min_pass_rate_percent, absolute_domain_delta_mv,
+        accepted ? "PASS" : "REJECT");
+    return accepted;
+}
+
+static bool qualify_proto_frequency_ramp(GlobalState *GLOBAL_STATE)
+{
+    float requested_frequency_mhz = GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value;
+    uint16_t target_frequency_mhz = (uint16_t)(requested_frequency_mhz + 12.5f);
+    target_frequency_mhz = (target_frequency_mhz / PROTO_FREQUENCY_STEP_MHZ) *
+        PROTO_FREQUENCY_STEP_MHZ;
+    if (target_frequency_mhz < MC3_STARTUP_FREQUENCY_MHZ) {
+        target_frequency_mhz = MC3_STARTUP_FREQUENCY_MHZ;
+    } else if (target_frequency_mhz > 1000) {
+        target_frequency_mhz = 1000;
+    }
+
+    ESP_LOGI(TAG,
+        "Starting Proto qualification ramp from %u to %u MHz in %u MHz steps",
+        MC3_STARTUP_FREQUENCY_MHZ, target_frequency_mhz, PROTO_FREQUENCY_STEP_MHZ);
+
+    uint16_t last_good_frequency_mhz = 0;
+    for (uint16_t frequency_mhz = MC3_STARTUP_FREQUENCY_MHZ;
+         frequency_mhz <= target_frequency_mhz;
+         frequency_mhz += PROTO_FREQUENCY_STEP_MHZ) {
+        mc3_qualification_result_t result = {0};
+        if (!qualify_proto_frequency_step(GLOBAL_STATE, frequency_mhz, &result)) {
+            if (last_good_frequency_mhz == 0) {
+                ESP_LOGE(TAG, "Proto failed its baseline %u MHz qualification",
+                    MC3_STARTUP_FREQUENCY_MHZ);
+                return false;
+            }
+
+            ESP_LOGW(TAG,
+                "Proto rejected %u MHz; rolling back to last-qualified %u MHz",
+                frequency_mhz, last_good_frequency_mhz);
+            mc3_qualification_result_t rollback_result = {0};
+            if (!qualify_proto_frequency_step(
+                    GLOBAL_STATE, last_good_frequency_mhz, &rollback_result)) {
+                ESP_LOGE(TAG, "Proto rollback qualification failed at %u MHz",
+                    last_good_frequency_mhz);
+                return false;
+            }
+
+            GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value = last_good_frequency_mhz;
+            GLOBAL_STATE->POWER_MANAGEMENT_MODULE.expected_hashrate =
+                last_good_frequency_mhz *
+                GLOBAL_STATE->DEVICE_CONFIG.family.asic.small_core_count *
+                GLOBAL_STATE->DEVICE_CONFIG.family.asic_count / 1000.0f;
+            nvs_config_set_float(NVS_CONFIG_ASIC_FREQUENCY, last_good_frequency_mhz);
+            ESP_LOGW(TAG,
+                "Persisted safe Proto frequency %u MHz instead of requested %.0f MHz",
+                last_good_frequency_mhz, requested_frequency_mhz);
+            return true;
+        }
+        last_good_frequency_mhz = (uint16_t)(result.frequency_mhz + 0.5f);
+    }
+
+    ESP_LOGI(TAG, "Proto qualified through %u MHz", last_good_frequency_mhz);
+    return true;
 }
 
 uint8_t asic_initialize(GlobalState *GLOBAL_STATE, asic_init_mode_t mode, uint32_t stabilization_delay_ms)
@@ -249,6 +397,10 @@ uint8_t asic_initialize(GlobalState *GLOBAL_STATE, asic_init_mode_t mode, uint32
     }
 
     if (is_proto_mc3) {
+        if (!MC3_start_qualification_work(GLOBAL_STATE)) {
+            GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto qualification work failed";
+            return 0;
+        }
         if (ramp_proto_core_voltage(
                 GLOBAL_STATE, init_core_voltage_mv, target_core_voltage_mv) != ESP_OK) {
             GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto Vcore ramp failed";
@@ -256,19 +408,18 @@ uint8_t asic_initialize(GlobalState *GLOBAL_STATE, asic_init_mode_t mode, uint32
         }
     }
 
-    bool defer_proto_frequency_ramp =
-        is_proto_mc3 && !GLOBAL_STATE->SELF_TEST_MODULE.is_active;
-    if (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3 &&
-        !defer_proto_frequency_ramp) {
+    if (is_proto_mc3 && !GLOBAL_STATE->SELF_TEST_MODULE.is_active) {
+        if (!qualify_proto_frequency_ramp(GLOBAL_STATE)) {
+            GLOBAL_STATE->SYSTEM_MODULE.asic_status = "MC3 startup qualification failed";
+            ESP_LOGE(TAG, "MC3 startup qualification failed");
+            return 0;
+        }
+    } else if (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3) {
         if (!MC3_ramp_hash_frequency(GLOBAL_STATE)) {
             GLOBAL_STATE->SYSTEM_MODULE.asic_status = "MC3 frequency ramp failed";
             ESP_LOGE(TAG, "MC3 frequency ramp failed after initialization voltage ramp");
             return 0;
         }
-    } else if (defer_proto_frequency_ramp) {
-        ESP_LOGI(TAG,
-            "Leaving Proto at %u MHz for loaded warm-up before the configured frequency ramp",
-            MC3_STARTUP_FREQUENCY_MHZ);
     }
 
     ESP_LOGI(TAG, "Setting max baud rate and clearing buffers");

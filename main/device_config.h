@@ -84,6 +84,9 @@ typedef struct {
     bool DS4432U : 1;
     bool INA260  : 1;
     bool TPS546  : 1;
+    bool domain_voltage_sense : 1;
+    int16_t domain_midpoint_offset_mv;
+    int16_t regulator_voltage_offset_mv;
     // test values
     uint16_t power_consumption_target;
 } DeviceConfig;
@@ -162,7 +165,7 @@ static const DeviceConfig default_configs[] = {
     { .board_version = "701",  .family = FAMILY_SUPRA_HEX,   .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "702",  .family = FAMILY_SUPRA_HEX,   .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "801",  .family = FAMILY_GAMMA_TURBO, .EMC2103 = true,                                          .temp_flip = true, .temp_offset = 0,   .TPS546 = true,                                                           .power_consumption_target = 36, },
-    { .board_version = "1103", .family = FAMILY_PROTO,       .display_backend = DISPLAY_BACKEND_BONANZA_I2C, .ESP32_FAN = true,                     .temp_flip = true, .temp_offset = 0,  .TPS546 = true,                                                           .power_consumption_target = 40, },
+    { .board_version = "1103", .family = FAMILY_PROTO,       .display_backend = DISPLAY_BACKEND_BONANZA_I2C, .ESP32_FAN = true,                     .temp_flip = true, .temp_offset = 0,  .TPS546 = true, .domain_voltage_sense = true, .domain_midpoint_offset_mv = 21, .regulator_voltage_offset_mv = 13, .power_consumption_target = 40, },
 };
 
 esp_err_t device_config_init(void * pvParameters);

@@ -19,7 +19,7 @@ fbstratumuser,data,string,bc1qnp980s5fpp8l94p5cvttmtdqy8rvrq74qly2yrfmzkdsntqzlc
 fbstratumpass,data,string,x
 fbstratumdiff,data,u16,1000
 fbstratumxnsum,data,u16,0
-asicfrequency,data,u16,100
+asicfrequency,data,u16,300
 asicvoltage,data,u16,1100
 asicmodel,data,string,MC3
 devicemodel,data,string,proto
