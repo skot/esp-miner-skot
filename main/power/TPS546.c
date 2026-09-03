@@ -43,6 +43,7 @@ static int last_temp = 0;
 
 
 static esp_err_t TPS546_parse_status(uint16_t);
+static esp_err_t TPS546_verify_control_loop_config(void);
 
 /**
  * @brief SMBus read byte
@@ -331,6 +332,63 @@ static uint16_t float_2_ulinear16(float value)
     return result;
 }
 
+static esp_err_t TPS546_verify_control_loop_config(void)
+{
+    const uint8_t expected_on_off_config = ON_OFF_CONFIG_DELAY |
+        ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD |
+        ON_OFF_CONFIG_PU;
+    uint8_t on_off_config = 0;
+    uint16_t scale_raw = 0;
+    uint16_t frequency_raw = 0;
+    uint8_t compensation[5] = {0};
+
+    ESP_RETURN_ON_ERROR(
+        smb_read_byte(PMBUS_ON_OFF_CONFIG, &on_off_config), TAG,
+        "Failed to read back ON_OFF_CONFIG");
+    ESP_RETURN_ON_ERROR(
+        smb_read_word(PMBUS_VOUT_SCALE_LOOP, &scale_raw), TAG,
+        "Failed to read back VOUT_SCALE_LOOP");
+    ESP_RETURN_ON_ERROR(
+        smb_read_word(PMBUS_FREQUENCY_SWITCH, &frequency_raw), TAG,
+        "Failed to read back FREQUENCY_SWITCH");
+    ESP_RETURN_ON_ERROR(
+        smb_read_block(PMBUS_COMPENSATION_CONFIG, compensation,
+            sizeof(compensation)), TAG,
+        "Failed to read back COMPENSATION_CONFIG");
+
+    float scale = slinear11_2_float(scale_raw);
+    int frequency_khz = slinear11_2_int(frequency_raw);
+    ESP_LOGI(TAG,
+        "Post-config ON_OFF_CONFIG readback: 0x%02X expected=0x%02X",
+        on_off_config, expected_on_off_config);
+    ESP_LOGI(TAG,
+        "Post-config VOUT_SCALE_LOOP readback: %.5f raw=0x%04X expected=%.5f",
+        scale, scale_raw, tps546_config.TPS546_INIT_SCALE_LOOP);
+    ESP_LOGI(TAG,
+        "Post-config FREQUENCY_SWITCH readback: %d kHz raw=0x%04X expected=%d kHz",
+        frequency_khz, frequency_raw, tps546_config.TPS546_INIT_FREQUENCY);
+    ESP_LOGI(TAG,
+        "Post-config COMPENSATION_CONFIG readback: %02X %02X %02X %02X %02X",
+        compensation[0], compensation[1], compensation[2],
+        compensation[3], compensation[4]);
+
+    bool scale_matches = fabsf(scale -
+        tps546_config.TPS546_INIT_SCALE_LOOP) < 0.00001f;
+    bool frequency_matches = frequency_khz ==
+        tps546_config.TPS546_INIT_FREQUENCY;
+    bool compensation_matches =
+        !tps546_config.TPS546_INIT_HAS_EXTENDED_CONFIG ||
+        memcmp(compensation,
+            tps546_config.TPS546_INIT_COMPENSATION_CONFIG,
+            sizeof(compensation)) == 0;
+    ESP_RETURN_ON_FALSE(on_off_config == expected_on_off_config &&
+        scale_matches && frequency_matches &&
+        compensation_matches, ESP_FAIL, TAG,
+        "TPS546 configuration readback mismatch");
+
+    return ESP_OK;
+}
+
 /*--- Public TPS546 functions ---*/
 
 /**
@@ -342,7 +400,6 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     uint16_t u16_value = 0;
     uint8_t read_mfr_revision[4];
     int temp;
-    uint8_t comp_config[5];
     uint8_t voutmode;
 
     tps546_config = config;
@@ -383,12 +440,14 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     //write operation register to turn off power
     u8_value = OPERATION_OFF;
     ESP_LOGI(TAG, "Power config-OPERATION: %02X", u8_value);
-    smb_write_byte(PMBUS_OPERATION, u8_value);
+    ESP_RETURN_ON_ERROR(smb_write_byte(PMBUS_OPERATION, u8_value), TAG,
+        "Failed to command Vout off during initialization");
 
     /* Make sure power is turned off until commanded */
     u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
     ESP_LOGI(TAG, "Power config-ON_OFF_CONFIG: %02X", u8_value);
-    smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value);
+    ESP_RETURN_ON_ERROR(smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value), TAG,
+        "Failed to configure TPS546 CONTROL input");
 
     /* Read version number and see if it matches */
     TPS546_read_mfr_info(read_mfr_revision);
@@ -401,6 +460,8 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
     ESP_LOGI(TAG, "VOUT_MODE: %02x", voutmode);
     TPS546_write_entire_config();
+    ESP_RETURN_ON_ERROR(TPS546_verify_control_loop_config(), TAG,
+        "TPS546 control-loop configuration verification failed");
     //}
 
     // /* Show temperature */
@@ -458,19 +519,6 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     ESP_LOGI(TAG, "read OPERATION: %02x", u8_value);
     smb_read_byte(PMBUS_ON_OFF_CONFIG, &u8_value);
     ESP_LOGI(TAG, "read ON_OFF_CONFIG: %02x", u8_value);
-
-
-
-    // Read the compensation config registers
-    if (smb_read_block(PMBUS_COMPENSATION_CONFIG, comp_config, 5) != ESP_OK) {
-        ESP_LOGE(TAG, "Failed to read COMPENSATION CONFIG");
-        return ESP_FAIL;
-    }
-    ESP_LOGI(TAG, "read COMPENSATION CONFIG");
-    ESP_LOGI(TAG, "%02x %02x %02x %02x %02x", comp_config[0], comp_config[1],
-        comp_config[2], comp_config[3], comp_config[4]);
-
-
     ESP_LOGI(TAG, "Clearing faults");
     TPS546_clear_faults();
 
@@ -529,8 +577,8 @@ void TPS546_write_entire_config(void)
     ESP_LOGI(TAG, "---Writing new config values to TPS546---");
 
         // ON_OFF_CONFIG
-    //u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
-    uint8_t u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
+    uint8_t u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY |
+        ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
     ESP_LOGI(TAG, "Setting ON_OFF_CONFIG: %02X", u8_value);
     smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value);
 

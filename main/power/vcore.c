@@ -130,9 +130,46 @@ static TPS546_CONFIG get_tps546_config(const FamilyConfig * family)
     return config;
 }
 
+static esp_err_t set_asic_enable(const DeviceConfig *device_config, bool enabled)
+{
+    int level = enabled == device_config->asic_enable_active_high ? 1 : 0;
+    return gpio_set_level(GPIO_ASIC_ENABLE, level);
+}
+
+esp_err_t VCORE_prepare_asic_enable(const GlobalState *GLOBAL_STATE)
+{
+    const DeviceConfig *device_config = &GLOBAL_STATE->DEVICE_CONFIG;
+
+    // The Proto TPS546 EN/UVLO input is active high. Drive it low as soon as
+    // the board configuration is known, before any PMBus regulator setup.
+    if (!device_config->asic_enable ||
+        !device_config->asic_enable_active_high) {
+        return ESP_OK;
+    }
+
+    gpio_config_t enable_conf = {
+        .pin_bit_mask = (1ULL << GPIO_ASIC_ENABLE),
+        .mode = GPIO_MODE_OUTPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_ENABLE,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
+    ESP_RETURN_ON_ERROR(gpio_config(&enable_conf), TAG,
+        "Failed to configure active-high ASIC enable GPIO");
+    ESP_RETURN_ON_ERROR(set_asic_enable(device_config, false), TAG,
+        "Failed to hold active-high ASIC enable low");
+    ESP_LOGI(TAG, "Holding active-high ASIC power enable low on GPIO%d",
+        GPIO_ASIC_ENABLE);
+
+    return ESP_OK;
+}
+
 esp_err_t VCORE_init(GlobalState * GLOBAL_STATE)
 {
     ESP_RETURN_ON_FALSE(GLOBAL_STATE->DEVICE_CONFIG.family.voltage_domains != 0, ESP_FAIL, TAG, "voltage_domains not defined");
+
+    ESP_RETURN_ON_ERROR(VCORE_prepare_asic_enable(GLOBAL_STATE), TAG,
+        "Failed to prepare ASIC power enable");
 
     if (GLOBAL_STATE->DEVICE_CONFIG.DS4432U) {
         ESP_RETURN_ON_ERROR(DS4432U_init(), TAG, "DS4432 init failed!");
@@ -169,21 +206,44 @@ esp_err_t VCORE_set_voltage(GlobalState * GLOBAL_STATE, float core_voltage)
 {
     ESP_LOGI(TAG, "Set ASIC voltage = %.3fV", core_voltage);
 
-    // Enable/disable the ASIC power enable GPIO before touching the regulator
-    if (GLOBAL_STATE->DEVICE_CONFIG.asic_enable) {
-        gpio_set_level(GPIO_ASIC_ENABLE, core_voltage == 0.0f ? 1 : 0);
+    const DeviceConfig *device_config = &GLOBAL_STATE->DEVICE_CONFIG;
+    bool enabled = core_voltage != 0.0f;
+
+    // Legacy ASIC-enable circuits are active low and retain their established
+    // sequencing. Proto 1103's TPS546 EN/UVLO input is active high; OPERATION
+    // is kept OFF until this pin is deliberately raised.
+    if (device_config->asic_enable &&
+        (!device_config->asic_enable_active_high || enabled)) {
+        ESP_RETURN_ON_ERROR(set_asic_enable(device_config, enabled), TAG,
+            "Failed to set ASIC power enable GPIO");
     }
 
-    if (GLOBAL_STATE->DEVICE_CONFIG.DS4432U) {
-        if (core_voltage != 0.0f) {
-            ESP_RETURN_ON_ERROR(DS4432U_set_voltage(core_voltage), TAG, "DS4432U set voltage failed!");
+    esp_err_t regulator_err = ESP_OK;
+    if (device_config->DS4432U) {
+        if (enabled) {
+            regulator_err = DS4432U_set_voltage(core_voltage);
         }
     }
-    if (GLOBAL_STATE->DEVICE_CONFIG.TPS546) {
-        uint16_t voltage_domains = GLOBAL_STATE->DEVICE_CONFIG.family.voltage_domains;
-        ESP_RETURN_ON_ERROR(TPS546_set_vout(core_voltage * voltage_domains), TAG, "TPS546 set voltage failed!");
+    if (regulator_err == ESP_OK && device_config->TPS546) {
+        uint16_t voltage_domains = device_config->family.voltage_domains;
+        regulator_err = TPS546_set_vout(core_voltage * voltage_domains);
     }
 
+    // On an active-high enable, always fail closed. During a normal shutdown,
+    // command OPERATION OFF first and then provide the independent hardware
+    // disable. If regulator communication failed, the low pin still shuts the
+    // rail down.
+    if (device_config->asic_enable &&
+        device_config->asic_enable_active_high &&
+        (!enabled || regulator_err != ESP_OK)) {
+        esp_err_t disable_err = set_asic_enable(device_config, false);
+        if (disable_err != ESP_OK) {
+            ESP_LOGE(TAG, "Failed to force active-high ASIC power enable low");
+            return disable_err;
+        }
+    }
+
+    ESP_RETURN_ON_ERROR(regulator_err, TAG, "Core voltage regulator update failed");
     return ESP_OK;
 }
 

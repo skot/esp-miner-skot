@@ -71,6 +71,7 @@ typedef struct {
     DisplayBackend display_backend;
     bool plug_sense;
     bool asic_enable;
+    bool asic_enable_active_high : 1;
     bool EMC2101 : 1;
     bool EMC2103 : 1;
     bool EMC2302 : 1;
@@ -165,7 +166,7 @@ static const DeviceConfig default_configs[] = {
     { .board_version = "701",  .family = FAMILY_SUPRA_HEX,   .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "702",  .family = FAMILY_SUPRA_HEX,   .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "801",  .family = FAMILY_GAMMA_TURBO, .EMC2103 = true,                                          .temp_flip = true, .temp_offset = 0,   .TPS546 = true,                                                           .power_consumption_target = 36, },
-    { .board_version = "1103", .family = FAMILY_PROTO,       .display_backend = DISPLAY_BACKEND_BONANZA_I2C, .ESP32_FAN = true,                     .temp_flip = true, .temp_offset = 0,  .TPS546 = true, .domain_voltage_sense = true, .domain_midpoint_offset_mv = 21, .regulator_voltage_offset_mv = 13, .power_consumption_target = 40, },
+    { .board_version = "1103", .family = FAMILY_PROTO,       .display_backend = DISPLAY_BACKEND_BONANZA_I2C, .asic_enable = true, .asic_enable_active_high = true, .ESP32_FAN = true, .temp_flip = true, .temp_offset = 0, .TPS546 = true, .domain_voltage_sense = true, .domain_midpoint_offset_mv = 21, .regulator_voltage_offset_mv = 13, .power_consumption_target = 40, },
 };
 
 esp_err_t device_config_init(void * pvParameters);

@@ -56,6 +56,8 @@ static esp_err_t set_proto_vddio_5v(const GlobalState *GLOBAL_STATE, bool enable
 esp_err_t asic_prepare_power(const GlobalState *GLOBAL_STATE)
 {
     ESP_RETURN_ON_ERROR(asic_hold_reset_low(), TAG, "Failed to hold ASIC reset low");
+    ESP_RETURN_ON_ERROR(VCORE_prepare_asic_enable(GLOBAL_STATE), TAG,
+        "Failed to disable Proto Vcore enable");
     ESP_RETURN_ON_ERROR(set_proto_vddio_5v(GLOBAL_STATE, false), TAG, "Failed to disable Proto VDDIO 5V");
     return ESP_OK;
 }
