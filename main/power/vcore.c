@@ -1,6 +1,7 @@
 #include "esp_log.h"
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "DS4432U.h"
 #include "INA260.h"
@@ -14,8 +15,9 @@
 
 static const char *TAG = "vcore";
 
-static TPS546_CONFIG get_tps546_config(const FamilyConfig * family)
+static TPS546_CONFIG get_tps546_config(const DeviceConfig *device_config)
 {
+    const FamilyConfig *family = &device_config->family;
     TPS546_CONFIG config = {0};
 
     // Set family-specific parameters
@@ -73,7 +75,11 @@ static TPS546_CONFIG get_tps546_config(const FamilyConfig * family)
         config.TPS546_INIT_IOUT_CAL_GAIN = 0xC881;   // Linear11: 1.0078125
         config.TPS546_INIT_IOUT_CAL_OFFSET = 0xE008; // Linear11: +0.5 A
         config.TPS546_INIT_TON_RISE_MS = 31.75f;
-        config.TPS546_INIT_SCALE_LOOP = 0.125;
+        config.TPS546_INIT_SCALE_LOOP =
+            device_config->board_version != NULL &&
+                strcmp(device_config->board_version, "1103") == 0
+            ? 0.25
+            : 0.125;
         config.TPS546_INIT_VOUT_MIN = 1.6;
         config.TPS546_INIT_VOUT_MAX = 2.4;
         config.TPS546_INIT_VOUT_COMMAND = 2.2;
@@ -178,7 +184,7 @@ esp_err_t VCORE_init(GlobalState * GLOBAL_STATE)
         ESP_RETURN_ON_ERROR(INA260_init(), TAG, "INA260 init failed!");
     }
     if (GLOBAL_STATE->DEVICE_CONFIG.TPS546) {
-        TPS546_CONFIG tps_config = get_tps546_config(&GLOBAL_STATE->DEVICE_CONFIG.family);
+        TPS546_CONFIG tps_config = get_tps546_config(&GLOBAL_STATE->DEVICE_CONFIG);
         ESP_RETURN_ON_ERROR(TPS546_init(tps_config), TAG, "TPS546 init failed!");
     }
 

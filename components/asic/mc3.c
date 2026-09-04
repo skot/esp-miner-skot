@@ -42,12 +42,19 @@
 #define MC3_VOLTAGE_CLOCK_DEFAULT 0x01010000
 
 #define MC3_GLOBAL_SPD 0x00011000
+#define MC3_SPD_TOP_BANK0 0x00010000
+#define MC3_SPD_TOP_BANK1 0x00010200
+#define MC3_SPD_TOP_BANK_CORE_COUNT 78
+#define MC3_SPD_TOP_REGISTER_STRIDE 4
+#define MC3_SPD_TOP_REGISTERS_PER_BANK (MC3_SPD_TOP_BANK_CORE_COUNT / 2)
 #define MC3_SPDLOG_TIMER 0x00011004
 #define MC3_SPDLOG_RST 0x00011008
 #define MC3_SPDLOG_PASS 0x0001100C
 #define MC3_SPDLOG_FAIL 0x00011010
 #define MC3_PLL0_CFG 0x00040000
 #define MC3_PLL0_EN 0x00040004
+#define MC3_PLL_REGISTER_STRIDE 0x00000008
+#define MC3_PING_PONG_PLL_ID 1
 #define MC3_WORK_CFG 0x00000400
 #define MC3_WORK_TARGET_L 0x00000404
 #define MC3_WORK_TARGET_H 0x00000408
@@ -85,6 +92,11 @@
 #define MC3_VOLTAGE_VDD_CHANNEL_A 13
 #define MC3_VOLTAGE_VDD_CHANNEL_B 14
 #define MC3_VOLTAGE_VDD_SCALE 2.0f
+#define MC3_VOLTAGE_STACK_CHANNEL_FIRST 4
+#define MC3_VOLTAGE_STACK_CHANNEL_LAST 15
+#define MC3_VOLTAGE_STACK_CHANNEL_COUNT \
+    (MC3_VOLTAGE_STACK_CHANNEL_LAST - MC3_VOLTAGE_STACK_CHANNEL_FIRST + 1)
+#define MC3_VOLTAGE_STACK_CHANNEL_MASK 0x0000FFF0U
 
 #define MC3_V_WORK_INIT 0x00000200
 #define MC3_V_WORK_NTIME 0x00000204
@@ -94,9 +106,14 @@
 #define MC3_V_WORK_NOTE 0x0000024C
 
 #define MC3_DEFAULT_GLOBAL_SPD_VALUE 0x80000570
+#define MC3_GLOBAL_SPD_SET (1U << 31)
+#define MC3_GLOBAL_SPD_PLL_SELECT_MASK 0x00000003
+#define MC3_DEFAULT_CORE_SPD_VALUE 0x0570
 #define MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET 0x8800D2FF
 #define MC3_DEFAULT_WORK_CFG_MINING 0x880058FF
 #define MC3_DEFAULT_WORK_CFG_SPDLOG 0x8C00DA00
+#define MC3_WORK_CFG_RST_FIFO (1U << 11)
+#define MC3_WORK_CFG_SPD_GO (1U << 15)
 #define MC3_DEFAULT_V_CTRL_VERSION_ROLLING 0xFFFF0001
 #define MC3_DEFAULT_WORK_TARGET_L 0xFFFFFFFF
 #define MC3_DEFAULT_WORK_TARGET_H 0xFFFFFFFF
@@ -105,6 +122,7 @@
 #define MC3_V_CTRL_START_BIT_SHIFT 4
 #define MC3_V_CTRL_START_BIT_MASK (0x1FU << MC3_V_CTRL_START_BIT_SHIFT)
 #define MC3_PLL0_ENABLE 0x00000001
+#define MC3_PLL_CLOCK_ON (1U << 1)
 #define MC3_DEFAULT_PLL0_ENABLE 0x00000003
 #define MC3_PLL_LOCK_BIT 0x00000004
 #define MC3_ROLLTIME_OFFSET 50
@@ -113,6 +131,7 @@
 #define MC3_FREQUENCY_HIGH_THRESHOLD_MHZ 500
 #define MC3_PLL_LOCK_TIMEOUT_MS 250
 #define MC3_PLL_LOCK_POLL_MS 10
+#define MC3_PLL_SWITCH_SETTLE_MS 10
 #define MC3_QUALIFICATION_SPDLOG_TIMER_COUNT 48
 #define MC3_QUALIFICATION_SETTLE_TIME_MS 250
 #define MC3_QUALIFICATION_VERSION_MASK 0xFFFF0000
@@ -123,6 +142,10 @@
 
 _Static_assert(MC3_CORE_SPDLOG_BANK_CORE_COUNT * 2 == ASIC_TUNING_MAX_CORES,
     "MC3 per-core SPDLOG banks must cover every tuning core");
+_Static_assert(MC3_SLICE_COUNT * MC3_CORES_PER_SLICE == ASIC_TUNING_MAX_CORES,
+    "MC3 slice layout must cover every tuning core");
+_Static_assert(MC3_INTERNAL_VOLTAGE_DOMAIN_COUNT * 3 == MC3_SLICE_COUNT,
+    "MC3 internal voltage domains must cover three slices each");
 
 static const char *TAG = "mc3";
 
@@ -133,6 +156,7 @@ static int64_t mc3_last_nonce_poll_us;
 static uint8_t mc3_next_nonce_chip;
 static bool mc3_spdlog_started;
 static int64_t mc3_spdlog_start_us;
+static uint8_t mc3_qualification_refresh_job_id;
 static mc3_frequency_step_callback_t mc3_frequency_step_callback;
 static task_result mc3_pending_results[MC3_PENDING_RESULTS_SIZE];
 static uint8_t mc3_pending_head;
@@ -150,9 +174,18 @@ static pthread_mutex_t mc3_serial_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_pending_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_core_scan_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_work_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t mc3_voltage_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
+static float mc3_active_chip_frequency_mhz[MC3_QUALIFICATION_MAX_CHIPS];
+static uint8_t mc3_active_frequency_count;
+static bool mc3_active_frequency_profile_mixed;
+static uint8_t mc3_active_uniform_pll_id;
+static bool mc3_ping_pong_pll_experiment_enabled;
+
+static uint32_t mc3_pll_en_register(uint8_t pll_id);
+static uint32_t mc3_global_spd_for_pll(uint8_t pll_id);
 
 typedef struct {
-    uint16_t frequency_mhz;
+    float frequency_mhz;
     uint8_t refdiv;
     uint16_t fbdiv;
     uint8_t postdiv1;
@@ -173,14 +206,63 @@ static const mc3_pll_config_t PLL_CONFIGS[] = {
     {350, 1, 140, 4, 1},
     {375, 1, 150, 4, 1},
     {400, 1, 160, 4, 1},
+    {402.7778f, 1, 145, 2, 2},
+    {405.5556f, 1, 146, 2, 2},
+    {408.3333f, 1, 147, 2, 2},
+    {411.1111f, 1, 148, 2, 2},
+    {413.8889f, 1, 149, 2, 2},
+    {416.6667f, 1, 150, 2, 2},
+    {419.4445f, 1, 151, 2, 2},
+    {422.2222f, 1, 152, 2, 2},
     {425, 1, 153, 2, 2},
-    {450, 1, 144, 7, 0},
-    {475, 1, 152, 7, 0},
-    {500, 1, 160, 7, 0},
-    {525, 1, 147, 6, 0},
-    {550, 1, 154, 6, 0},
-    {575, 1, 138, 5, 0},
-    {600, 1, 144, 5, 0},
+    {428.1250f, 1, 137, 3, 1},
+    {431.2500f, 1, 138, 3, 1},
+    {434.3750f, 1, 139, 3, 1},
+    {437.5000f, 1, 140, 3, 1},
+    {440.6250f, 1, 141, 3, 1},
+    {443.7500f, 1, 142, 3, 1},
+    {446.8750f, 1, 143, 3, 1},
+    {450, 1, 144, 3, 1},
+    {453.1250f, 1, 145, 3, 1},
+    {456.2500f, 1, 146, 3, 1},
+    {459.3750f, 1, 147, 3, 1},
+    {462.5000f, 1, 148, 3, 1},
+    {465.6250f, 1, 149, 3, 1},
+    {468.7500f, 1, 150, 3, 1},
+    {471.8750f, 1, 151, 3, 1},
+    {475, 1, 152, 3, 1},
+    {478.1250f, 1, 153, 3, 1},
+    {481.2500f, 1, 154, 3, 1},
+    {484.3750f, 1, 155, 3, 1},
+    {487.5000f, 1, 156, 3, 1},
+    {490.6250f, 1, 157, 3, 1},
+    {493.7500f, 1, 158, 3, 1},
+    {496.8750f, 1, 159, 3, 1},
+    {500, 1, 160, 3, 1},
+    {504.1667f, 1, 121, 2, 1},
+    {508.3333f, 1, 122, 2, 1},
+    {512.5000f, 1, 123, 2, 1},
+    {516.6667f, 1, 124, 2, 1},
+    {520.8333f, 1, 125, 2, 1},
+    {525, 1, 126, 2, 1},
+    {529.1667f, 1, 127, 2, 1},
+    {533.3333f, 1, 128, 2, 1},
+    {537.5000f, 1, 129, 2, 1},
+    {541.6667f, 1, 130, 2, 1},
+    {545.8333f, 1, 131, 2, 1},
+    {550, 1, 132, 2, 1},
+    {554.1667f, 1, 133, 2, 1},
+    {558.3333f, 1, 134, 2, 1},
+    {562.5000f, 1, 135, 2, 1},
+    {566.6667f, 1, 136, 2, 1},
+    {570.8333f, 1, 137, 2, 1},
+    {575, 1, 138, 2, 1},
+    {579.1667f, 1, 139, 2, 1},
+    {583.3333f, 1, 140, 2, 1},
+    {587.5000f, 1, 141, 2, 1},
+    {591.6667f, 1, 142, 2, 1},
+    {595.8333f, 1, 143, 2, 1},
+    {600, 1, 144, 2, 1},
     {625, 1, 150, 5, 0},
     {650, 1, 156, 5, 0},
     {675, 1, 135, 4, 0},
@@ -247,6 +329,8 @@ typedef struct {
 } mc3_field_t;
 
 static bool mc3_write_register(uint8_t chip_id, uint32_t reg, uint32_t value, uint8_t chip_num);
+static bool mc3_write_register_pair(uint8_t chip_id, uint32_t reg,
+    uint32_t first_value, uint32_t second_value, uint8_t chip_num);
 static bool mc3_read_register(uint8_t chip_id, uint32_t reg, uint32_t *value);
 static bool mc3_read_register_block(uint8_t chip_id, uint32_t reg, uint32_t *values, uint8_t value_count);
 static bool mc3_pending_push(const task_result *new_result);
@@ -325,23 +409,26 @@ static uint32_t mc3_build_header(uint8_t chip_id, uint8_t chip_num, uint8_t mode
 
 static const mc3_pll_config_t *mc3_get_pll_config(float frequency_mhz)
 {
-    uint16_t requested = (uint16_t)(frequency_mhz + 0.5f);
     const mc3_pll_config_t *best = &PLL_CONFIGS[0];
 
     for (int i = 0; i < sizeof(PLL_CONFIGS) / sizeof(PLL_CONFIGS[0]); i++) {
-        if (PLL_CONFIGS[i].frequency_mhz == requested) {
+        float candidate_delta = PLL_CONFIGS[i].frequency_mhz > frequency_mhz
+            ? PLL_CONFIGS[i].frequency_mhz - frequency_mhz
+            : frequency_mhz - PLL_CONFIGS[i].frequency_mhz;
+        if (candidate_delta < 0.001f) {
             return &PLL_CONFIGS[i];
         }
-        uint16_t best_delta = best->frequency_mhz > requested ? best->frequency_mhz - requested : requested - best->frequency_mhz;
-        uint16_t candidate_delta = PLL_CONFIGS[i].frequency_mhz > requested
-            ? PLL_CONFIGS[i].frequency_mhz - requested
-            : requested - PLL_CONFIGS[i].frequency_mhz;
+        float best_delta = best->frequency_mhz > frequency_mhz
+            ? best->frequency_mhz - frequency_mhz
+            : frequency_mhz - best->frequency_mhz;
         if (candidate_delta < best_delta) {
             best = &PLL_CONFIGS[i];
         }
     }
 
-    ESP_LOGW(TAG, "Unsupported MC3 frequency %.2f MHz, using nearest supported %u MHz", frequency_mhz, best->frequency_mhz);
+    ESP_LOGW(TAG,
+        "Unsupported MC3 frequency %.3f MHz, using nearest supported %.3f MHz",
+        frequency_mhz, best->frequency_mhz);
     return best;
 }
 
@@ -354,9 +441,61 @@ static uint32_t mc3_pll_config_value(const mc3_pll_config_t *config)
         | ((uint32_t)config->postdiv2 << 25);
 }
 
-static uint32_t mc3_rolltime_for_frequency(uint16_t frequency_mhz)
+static uint32_t mc3_rolltime_for_frequency(float frequency_mhz)
 {
     return (uint32_t)(((16777216.0 * 12.5) / frequency_mhz) + 0.5) - MC3_ROLLTIME_OFFSET;
+}
+
+static void mc3_set_active_uniform_frequency(float frequency_mhz)
+{
+    mc3_active_frequency_count = mc3_chip_count;
+    mc3_active_frequency_profile_mixed = false;
+    for (uint8_t chip_id = 0;
+         chip_id < mc3_active_frequency_count &&
+             chip_id < MC3_QUALIFICATION_MAX_CHIPS;
+         chip_id++) {
+        mc3_active_chip_frequency_mhz[chip_id] = frequency_mhz;
+    }
+}
+
+static void mc3_set_active_frequency_profile(
+    const mc3_pll_config_t *const *configs, uint8_t chip_count)
+{
+    mc3_active_uniform_pll_id = 0;
+    mc3_active_frequency_count = chip_count;
+    mc3_active_frequency_profile_mixed = false;
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        mc3_active_chip_frequency_mhz[chip_id] = configs[chip_id]->frequency_mhz;
+        if (chip_id > 0 &&
+            configs[chip_id]->frequency_mhz != configs[0]->frequency_mhz) {
+            mc3_active_frequency_profile_mixed = true;
+        }
+    }
+}
+
+static bool mc3_write_active_rolltimes(void)
+{
+    if (!mc3_active_frequency_profile_mixed) {
+        return true;
+    }
+    if (mc3_active_frequency_count == 0 ||
+        mc3_active_frequency_count != mc3_chip_count) {
+        ESP_LOGE(TAG, "Cannot apply stale MC3 mixed-frequency ROLLTIME profile");
+        return false;
+    }
+
+    ESP_LOGI(TAG, "Applying addressed ROLLTIME values for active mixed-frequency profile");
+    for (uint8_t chip_id = 0; chip_id < mc3_active_frequency_count; chip_id++) {
+        if (!mc3_write_register(chip_id, MC3_ROLLTIME,
+                mc3_rolltime_for_frequency(
+                    mc3_active_chip_frequency_mhz[chip_id]), 0)) {
+            ESP_LOGE(TAG,
+                "Failed applying mixed-frequency ROLLTIME for chip %u at %.3f MHz",
+                chip_id, mc3_active_chip_frequency_mhz[chip_id]);
+            return false;
+        }
+    }
+    return true;
 }
 
 static float mc3_temperature_from_dout(uint32_t raw)
@@ -392,6 +531,14 @@ static uint32_t mc3_bswap32(uint32_t value)
 
 static uint32_t mc3_current_rolltime(GlobalState *GLOBAL_STATE)
 {
+    if (mc3_active_frequency_profile_mixed &&
+        mc3_active_frequency_count == mc3_chip_count &&
+        mc3_active_frequency_count > 0) {
+        // The broadcast value is only a staging value for a mixed profile;
+        // mc3_write_active_rolltimes() replaces it on every chip before mining.
+        return mc3_rolltime_for_frequency(mc3_active_chip_frequency_mhz[0]);
+    }
+
     float frequency = GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency;
     if (frequency <= 0) {
         frequency = GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value;
@@ -457,12 +604,22 @@ static bool mc3_write_mining_config(uint32_t rolltime, uint32_t version_mask)
         " version_mask=0x%08" PRIX32 " start_bit=%u V_CTRL=0x%08" PRIX32,
         rolltime, version_mask, start_bit, v_ctrl);
 
-    mc3_write_register(0, MC3_GLOBAL_SPD, MC3_DEFAULT_GLOBAL_SPD_VALUE, MC3_CHIP_NUM_ALL);
-    mc3_write_register(0, MC3_ROLLTIME, rolltime, MC3_CHIP_NUM_ALL);
-    mc3_write_register(0, MC3_WORK_CFG, MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET, MC3_CHIP_NUM_ALL);
-    mc3_write_register(0, MC3_WORK_CFG, MC3_DEFAULT_WORK_CFG_MINING, MC3_CHIP_NUM_ALL);
-    mc3_write_register(0, MC3_V_CTRL, v_ctrl, MC3_CHIP_NUM_ALL);
-    mc3_write_register(0, MC3_PLL0_EN, MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL);
+    uint8_t active_pll_id = mc3_active_frequency_profile_mixed
+        ? 0
+        : mc3_active_uniform_pll_id;
+    if (!mc3_write_register(0, MC3_GLOBAL_SPD,
+            mc3_global_spd_for_pll(active_pll_id), MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_ROLLTIME, rolltime, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_WORK_CFG,
+            MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_active_rolltimes() ||
+        !mc3_write_register(0, MC3_WORK_CFG,
+            MC3_DEFAULT_WORK_CFG_MINING, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_V_CTRL, v_ctrl, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, mc3_pll_en_register(active_pll_id),
+            MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL)) {
+        return false;
+    }
     return true;
 }
 
@@ -549,12 +706,26 @@ static uint8_t mc3_spdlog_leading_zeros(void)
     return leading_zeros;
 }
 
-static void mc3_start_spdlog_window(uint8_t start_chip_id, uint8_t chip_num, uint16_t timer_count)
+static bool mc3_start_spdlog_window(uint8_t start_chip_id, uint8_t chip_num,
+    uint16_t timer_count)
 {
-    mc3_write_register(start_chip_id, MC3_GLOBAL_SPD, MC3_DEFAULT_GLOBAL_SPD_VALUE, chip_num);
-    mc3_write_register(start_chip_id, MC3_WORK_CFG, MC3_DEFAULT_WORK_CFG_SPDLOG | MC3_SPDLOG_CORE_TARGET, chip_num);
-    mc3_write_register(start_chip_id, MC3_SPDLOG_RST, 0x00000001, chip_num);
-    mc3_write_register(start_chip_id, MC3_SPDLOG_TIMER, mc3_spdlog_timer_value(timer_count), chip_num);
+    uint8_t active_pll_id = mc3_active_frequency_profile_mixed
+        ? 0
+        : mc3_active_uniform_pll_id;
+    if (!mc3_write_register(start_chip_id, MC3_GLOBAL_SPD,
+            mc3_global_spd_for_pll(active_pll_id), chip_num) ||
+        !mc3_write_register(start_chip_id, MC3_WORK_CFG,
+            MC3_DEFAULT_WORK_CFG_SPDLOG | MC3_SPDLOG_CORE_TARGET, chip_num) ||
+        !mc3_write_register(start_chip_id, MC3_SPDLOG_RST,
+            0x00000001, chip_num) ||
+        !mc3_write_register(start_chip_id, MC3_SPDLOG_TIMER,
+            mc3_spdlog_timer_value(timer_count), chip_num)) {
+        mc3_spdlog_started = false;
+        ESP_LOGE(TAG,
+            "Failed starting MC3 SPDLOG window on chip %u count=%u",
+            start_chip_id, timer_count);
+        return false;
+    }
     mc3_spdlog_started = true;
     mc3_spdlog_start_us = esp_timer_get_time();
 
@@ -564,6 +735,7 @@ static void mc3_start_spdlog_window(uint8_t start_chip_id, uint8_t chip_num, uin
         mc3_core_scan_status.progress_percent = 5;
     }
     pthread_mutex_unlock(&mc3_core_scan_lock);
+    return true;
 }
 
 static void mc3_start_spdlog(uint8_t start_chip_id, uint8_t chip_num)
@@ -755,6 +927,47 @@ static bool mc3_read_core_pass_counts(uint8_t chip_id, uint32_t *pass_counts)
             MC3_CORE_SPDLOG_BANK_CORE_COUNT, pass_counts);
 }
 
+bool MC3_read_core_domain_summary(uint8_t chip_id,
+    mc3_core_domain_summary_t *summary)
+{
+    if (summary == NULL || chip_id >= mc3_chip_count) {
+        return false;
+    }
+
+    uint32_t core_pass_counts[ASIC_TUNING_MAX_CORES] = {0};
+    pthread_mutex_lock(&mc3_work_lock);
+    bool read_ok = mc3_read_core_pass_counts(chip_id, core_pass_counts);
+    pthread_mutex_unlock(&mc3_work_lock);
+    if (!read_ok) {
+        return false;
+    }
+
+    *summary = (mc3_core_domain_summary_t) {
+        .chip_id = chip_id,
+        .minimum_core_id = 0,
+        .minimum_core_pass = UINT32_MAX,
+    };
+
+    for (uint16_t core_id = 0; core_id < ASIC_TUNING_MAX_CORES; core_id++) {
+        uint8_t slice_id = core_id / MC3_CORES_PER_SLICE;
+        uint8_t domain_id = slice_id / 3;
+        uint32_t pass_count = core_pass_counts[core_id];
+
+        summary->core_pass_sum += pass_count;
+        summary->slice_pass[slice_id] += pass_count;
+        summary->domain_pass[domain_id] += pass_count;
+        if (pass_count == 0) {
+            summary->domain_zero_cores[domain_id]++;
+        }
+        if (pass_count < summary->minimum_core_pass) {
+            summary->minimum_core_pass = pass_count;
+            summary->minimum_core_id = core_id;
+        }
+    }
+
+    return true;
+}
+
 static uint64_t mc3_sum_core_pass_counts(const uint32_t *pass_counts)
 {
     uint64_t sum = 0;
@@ -904,6 +1117,50 @@ static bool mc3_program_qualification_work(float frequency_mhz)
     return true;
 }
 
+static bool mc3_program_mixed_qualification_work(
+    const mc3_pll_config_t *const *configs, uint8_t chip_count)
+{
+    bm_job qualification_job = {
+        .version = MC3_QUALIFICATION_VERSION,
+        .version_mask = MC3_QUALIFICATION_VERSION_MASK,
+        .ntime = MC3_QUALIFICATION_NTIME,
+        .target = MC3_QUALIFICATION_NBITS,
+        .pool_diff = MC3_QUALIFICATION_POOL_DIFFICULTY,
+    };
+    uint8_t start_bit = 0;
+    if (!mc3_version_start_bit(qualification_job.version_mask, &start_bit)) {
+        return false;
+    }
+
+    uint32_t v_ctrl = mc3_v_ctrl(start_bit);
+    if (!mc3_write_register(0, MC3_GLOBAL_SPD,
+            MC3_DEFAULT_GLOBAL_SPD_VALUE, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_WORK_CFG,
+            MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET, MC3_CHIP_NUM_ALL)) {
+        return false;
+    }
+
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        if (!mc3_write_register(chip_id, MC3_ROLLTIME,
+                mc3_rolltime_for_frequency(configs[chip_id]->frequency_mhz), 0)) {
+            return false;
+        }
+    }
+
+    if (!mc3_write_register(0, MC3_WORK_CFG,
+            MC3_DEFAULT_WORK_CFG_MINING, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_V_CTRL, v_ctrl, MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, MC3_PLL0_EN,
+            MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL)) {
+        return false;
+    }
+
+    mc3_write_work_target(qualification_job.pool_diff, chip_count);
+    mc3_write_version_bases(&qualification_job, chip_count);
+    mc3_write_v_work(&qualification_job, 0);
+    return true;
+}
+
 static bool mc3_pending_push(const task_result *new_result)
 {
     pthread_mutex_lock(&mc3_pending_lock);
@@ -1001,14 +1258,13 @@ static bool mc3_trigger_thermal_conversion(void)
 
 static void mc3_setup_vdd_voltage_sensor(void)
 {
-    uint32_t channel_mask = (1U << MC3_VOLTAGE_VDD_CHANNEL_A) | (1U << MC3_VOLTAGE_VDD_CHANNEL_B);
-
     mc3_write_register(0, MC3_VOLTAGE_SDIF_ENABLE, 0x00000000, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_VOLTAGE_CLOCK, MC3_VOLTAGE_CLOCK_DEFAULT, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x89000000, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x8D000040, MC3_CHIP_NUM_ALL);
     mc3_wait_register(0, MC3_VOLTAGE_STATUS, 0x00000000, 500);
-    mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x8C100000 | channel_mask, MC3_CHIP_NUM_ALL);
+    mc3_write_register(0, MC3_VOLTAGE_COMMAND,
+        0x8C100000 | MC3_VOLTAGE_STACK_CHANNEL_MASK, MC3_CHIP_NUM_ALL);
     mc3_wait_register(0, MC3_VOLTAGE_STATUS, 0x00000000, 500);
 }
 
@@ -1016,6 +1272,43 @@ static bool mc3_trigger_voltage_conversion(void)
 {
     mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x88000505, MC3_CHIP_NUM_ALL);
     return mc3_wait_register(0, MC3_VOLTAGE_DONE, 0x00000001, 500);
+}
+
+static bool mc3_run_complete_voltage_sensor_sweep(uint8_t chip_count)
+{
+    /*
+     * A run_once command produces one sample. With channels 4..15 selected,
+     * the voltage sensor advances through those channels round-robin. Trigger
+     * exactly one complete cycle so every DOUT tap belongs to this snapshot.
+     * Reading a DOUT register between triggers also clears the latched DONE
+     * indication before the next conversion.
+     */
+    for (uint8_t sample = 0; sample < MC3_VOLTAGE_STACK_CHANNEL_COUNT;
+         sample++) {
+        if (!mc3_trigger_voltage_conversion()) {
+            return false;
+        }
+
+        if (sample + 1 == MC3_VOLTAGE_STACK_CHANNEL_COUNT) {
+            continue;
+        }
+
+        for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+            uint32_t discarded = 0;
+            if (!mc3_read_register(chip_id,
+                    mc3_voltage_dout_register(
+                        MC3_VOLTAGE_STACK_CHANNEL_FIRST),
+                    &discarded)) {
+                ESP_LOGW(TAG,
+                    "Failed clearing voltage-sensor DONE for chip %u during sample %u/%u",
+                    chip_id, sample + 1,
+                    MC3_VOLTAGE_STACK_CHANNEL_COUNT);
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 static bool mc3_get_active_job_fields(GlobalState *GLOBAL_STATE, uint8_t job_id, uint32_t *version, uint32_t *ntime)
@@ -1251,6 +1544,26 @@ static bool mc3_write_register(uint8_t chip_id, uint32_t reg, uint32_t value, ui
     return true;
 }
 
+static bool mc3_write_register_pair(uint8_t chip_id, uint32_t reg,
+    uint32_t first_value, uint32_t second_value, uint8_t chip_num)
+{
+    uint32_t values[2] = {first_value, second_value};
+    uint8_t packet[MC3_ULINK_FIELD_BYTES * 4] = {0};
+    uint8_t response[MC3_ULINK_FIELD_BYTES * 4] = {0};
+    uint8_t packet_len = mc3_build_write_packet(packet, chip_id, reg,
+        values, 2, chip_num);
+
+    int16_t received = mc3_transact(packet, packet_len, response,
+        sizeof(response));
+    if (received < 0) {
+        ESP_LOGW(TAG,
+            "Failed burst writing registers 0x%08" PRIX32 "-0x%08" PRIX32,
+            reg, reg + sizeof(uint32_t));
+        return false;
+    }
+    return true;
+}
+
 static bool mc3_read_register(uint8_t chip_id, uint32_t reg, uint32_t *value)
 {
     uint8_t packet[MC3_ULINK_FIELD_BYTES * 3] = {0};
@@ -1294,6 +1607,10 @@ uint8_t MC3_init(void * pvParameters)
     uint8_t next_chip_id = 0;
 
     ESP_LOGI(TAG, "Initializing MC3 chain");
+    mc3_active_frequency_count = 0;
+    mc3_active_frequency_profile_mixed = false;
+    mc3_active_uniform_pll_id = 0;
+    mc3_qualification_refresh_job_id = 0;
 
     uint8_t packet_len = mc3_build_init_packet(packet, 0);
     int16_t received = mc3_transact(packet, packet_len, response, sizeof(response));
@@ -1419,6 +1736,244 @@ int MC3_set_max_baud(void)
     return MC3_set_default_baud();
 }
 
+static uint32_t mc3_pll_cfg_register(uint8_t pll_id)
+{
+    return MC3_PLL0_CFG + ((uint32_t)pll_id * MC3_PLL_REGISTER_STRIDE);
+}
+
+static uint32_t mc3_pll_en_register(uint8_t pll_id)
+{
+    return MC3_PLL0_EN + ((uint32_t)pll_id * MC3_PLL_REGISTER_STRIDE);
+}
+
+static uint32_t mc3_global_spd_for_pll(uint8_t pll_id)
+{
+    return (MC3_DEFAULT_GLOBAL_SPD_VALUE &
+        ~MC3_GLOBAL_SPD_PLL_SELECT_MASK) |
+        (pll_id & MC3_GLOBAL_SPD_PLL_SELECT_MASK);
+}
+
+static bool mc3_wait_for_all_pll_locks(uint8_t pll_id, float frequency_mhz)
+{
+    if (mc3_chip_count == 0) {
+        ESP_LOGE(TAG, "Cannot verify PLL%u lock without an enumerated chip count",
+            pll_id);
+        return false;
+    }
+
+    uint32_t pll_en_register = mc3_pll_en_register(pll_id);
+    bool chip_locked[MC3_MAX_TRACKED_CHIPS] = {0};
+    int64_t deadline_us = esp_timer_get_time() +
+        (MC3_PLL_LOCK_TIMEOUT_MS * 1000);
+    bool all_locked = false;
+
+    do {
+        all_locked = true;
+        for (uint8_t chip_id = 0; chip_id < mc3_chip_count; chip_id++) {
+            uint32_t pll_en = 0;
+            chip_locked[chip_id] =
+                mc3_read_register(chip_id, pll_en_register, &pll_en) &&
+                (pll_en & MC3_PLL_LOCK_BIT) != 0;
+            if (!chip_locked[chip_id]) {
+                all_locked = false;
+            }
+        }
+
+        if (!all_locked) {
+            vTaskDelay(pdMS_TO_TICKS(MC3_PLL_LOCK_POLL_MS));
+        }
+    } while (!all_locked && esp_timer_get_time() < deadline_us);
+
+    if (!all_locked) {
+        for (uint8_t chip_id = 0; chip_id < mc3_chip_count; chip_id++) {
+            if (!chip_locked[chip_id]) {
+                ESP_LOGE(TAG,
+                    "PING_PONG PLL%u failed to lock at %.3f MHz on chip %u",
+                    pll_id, frequency_mhz, chip_id);
+            }
+        }
+        return false;
+    }
+
+    ESP_LOGI(TAG, "PING_PONG PLL%u locked at %.3f MHz on all %u chips",
+        pll_id, frequency_mhz, mc3_chip_count);
+    return true;
+}
+
+static bool mc3_configure_inactive_pll(uint8_t pll_id,
+    const mc3_pll_config_t *config)
+{
+    uint32_t pll_cfg_register = mc3_pll_cfg_register(pll_id);
+    uint32_t pll_en_register = mc3_pll_en_register(pll_id);
+    uint32_t pll_config = mc3_pll_config_value(config);
+
+    ESP_LOGI(TAG,
+        "PING_PONG preparing inactive PLL%u for %.3f MHz config=0x%08" PRIX32,
+        pll_id, config->frequency_mhz, pll_config);
+    if (!mc3_write_register(0, pll_en_register, 0x00000000,
+            MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, pll_cfg_register, pll_config,
+            MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, pll_en_register, MC3_PLL0_ENABLE,
+            MC3_CHIP_NUM_ALL) ||
+        !mc3_write_register(0, pll_en_register, MC3_DEFAULT_PLL0_ENABLE,
+            MC3_CHIP_NUM_ALL)) {
+        ESP_LOGE(TAG, "PING_PONG failed configuring PLL%u for %.3f MHz",
+            pll_id, config->frequency_mhz);
+        return false;
+    }
+
+    return mc3_wait_for_all_pll_locks(pll_id, config->frequency_mhz);
+}
+
+static bool mc3_select_pll_for_all_cores(uint8_t pll_id,
+    float frequency_mhz)
+{
+    uint32_t global_spd = mc3_global_spd_for_pll(pll_id);
+    uint16_t core_spd = (MC3_DEFAULT_CORE_SPD_VALUE &
+        ~MC3_GLOBAL_SPD_PLL_SELECT_MASK) |
+        (pll_id & MC3_GLOBAL_SPD_PLL_SELECT_MASK);
+    uint32_t spd_pair = ((uint32_t)core_spd << 16) | core_spd;
+    const uint32_t spd_bank_bases[] = {
+        MC3_SPD_TOP_BANK0,
+        MC3_SPD_TOP_BANK1,
+    };
+    uint32_t work_cfg = 0;
+
+    // The MC3 errata requires explicit writes to both per-core SPD_TOP banks
+    // before WORK_CFG.spd_go applies the staged settings.  Keep the previous
+    // PLL alive so qualification can distinguish a successful live handoff
+    // from cores that continue running from the previous PLL.
+    if (!mc3_read_register(0, MC3_WORK_CFG, &work_cfg)) {
+        ESP_LOGE(TAG,
+            "PING_PONG failed reading WORK_CFG before selecting PLL%u",
+            pll_id);
+        return false;
+    }
+    work_cfg &= ~MC3_WORK_CFG_RST_FIFO;
+    work_cfg |= MC3_WORK_CFG_SPD_GO;
+
+    ESP_LOGI(TAG,
+        "PING_PONG staging PLL%u at %.3f MHz GLOBAL_SPD=0x%08" PRIX32
+        " SPD pair=0x%08" PRIX32,
+        pll_id, frequency_mhz, global_spd, spd_pair);
+    if (!mc3_write_register(0, MC3_GLOBAL_SPD, global_spd,
+            MC3_CHIP_NUM_ALL)) {
+        ESP_LOGE(TAG, "PING_PONG failed writing PLL%u GLOBAL_SPD",
+            pll_id);
+        return false;
+    }
+
+    for (size_t bank = 0;
+         bank < sizeof(spd_bank_bases) / sizeof(spd_bank_bases[0]);
+         bank++) {
+        for (uint8_t pair = 0;
+             pair < MC3_SPD_TOP_REGISTERS_PER_BANK;
+             pair++) {
+            uint32_t address = spd_bank_bases[bank] +
+                ((uint32_t)pair * MC3_SPD_TOP_REGISTER_STRIDE);
+            if (!mc3_write_register(0, address, spd_pair,
+                    MC3_CHIP_NUM_ALL)) {
+                ESP_LOGE(TAG,
+                    "PING_PONG failed writing PLL%u SPD bank %u pair %u at 0x%08" PRIX32,
+                    pll_id, (unsigned)bank, pair, address);
+                return false;
+            }
+        }
+    }
+
+    if (!mc3_write_register(0, MC3_WORK_CFG, work_cfg,
+            MC3_CHIP_NUM_ALL)) {
+        ESP_LOGE(TAG, "PING_PONG failed applying PLL%u SPD settings",
+            pll_id);
+        return false;
+    }
+
+    for (uint8_t chip_id = 0; chip_id < mc3_chip_count; chip_id++) {
+        uint32_t read_global_spd = 0;
+        if (!mc3_read_register(chip_id, MC3_GLOBAL_SPD,
+                &read_global_spd)) {
+            ESP_LOGE(TAG,
+                "PING_PONG failed reading PLL selector back from chip %u",
+                chip_id);
+            return false;
+        }
+        if ((read_global_spd & MC3_GLOBAL_SPD_PLL_SELECT_MASK) != pll_id) {
+            ESP_LOGE(TAG,
+                "PING_PONG chip %u PLL selector mismatch: requested=%u read=0x%08" PRIX32,
+                chip_id, pll_id, read_global_spd);
+            return false;
+        }
+
+        for (size_t bank = 0;
+             bank < sizeof(spd_bank_bases) / sizeof(spd_bank_bases[0]);
+             bank++) {
+            for (uint8_t pair = 0;
+                 pair < MC3_SPD_TOP_REGISTERS_PER_BANK;
+                 pair++) {
+                uint32_t address = spd_bank_bases[bank] +
+                    ((uint32_t)pair * MC3_SPD_TOP_REGISTER_STRIDE);
+                uint32_t read_spd_pair = 0;
+                if (!mc3_read_register(chip_id, address,
+                        &read_spd_pair)) {
+                    ESP_LOGE(TAG,
+                        "PING_PONG failed reading chip %u SPD bank %u pair %u",
+                        chip_id, (unsigned)bank, pair);
+                    return false;
+                }
+                if (read_spd_pair != spd_pair) {
+                    ESP_LOGE(TAG,
+                        "PING_PONG chip %u SPD bank %u pair %u mismatch: expected=0x%08" PRIX32 " read=0x%08" PRIX32,
+                        chip_id, (unsigned)bank, pair, spd_pair,
+                        read_spd_pair);
+                    return false;
+                }
+            }
+        }
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(MC3_PLL_SWITCH_SETTLE_MS));
+    ESP_LOGI(TAG,
+        "PING_PONG verified all %u per-core SPD pairs for PLL%u and issued WORK_CFG.spd_go",
+        (unsigned)(MC3_SPD_TOP_REGISTERS_PER_BANK * 2), pll_id);
+    return true;
+}
+
+static float mc3_send_hash_frequency_ping_pong(
+    const mc3_pll_config_t *config)
+{
+    uint32_t rolltime = mc3_rolltime_for_frequency(config->frequency_mhz);
+    uint8_t previous_pll_id = mc3_active_uniform_pll_id;
+    uint8_t next_pll_id = previous_pll_id == 0
+        ? MC3_PING_PONG_PLL_ID
+        : 0;
+
+    ESP_LOGW(TAG,
+        "PING_PONG attempting live PLL%u -> PLL%u transition at %.3f MHz",
+        previous_pll_id, next_pll_id, config->frequency_mhz);
+
+    // Prepare and lock the inactive PLL while every core continues to run
+    // from the previous PLL, then make one clock-source transfer.
+    if (!mc3_configure_inactive_pll(next_pll_id, config) ||
+        !mc3_write_register(0, MC3_ROLLTIME, rolltime,
+            MC3_CHIP_NUM_ALL) ||
+        !mc3_select_pll_for_all_cores(next_pll_id,
+            config->frequency_mhz)) {
+        ESP_LOGE(TAG,
+            "PING_PONG could not request PLL%u -> PLL%u transfer at %.3f MHz; leaving both PLLs enabled",
+            previous_pll_id, next_pll_id, config->frequency_mhz);
+        return 0.0f;
+    }
+
+    mc3_active_uniform_pll_id = next_pll_id;
+    ESP_LOGW(TAG,
+        "PING_PONG requested PLL%u at %.3f MHz; PLL%u remains enabled while throughput qualifies the handoff",
+        next_pll_id,
+        config->frequency_mhz, previous_pll_id);
+    mc3_set_active_uniform_frequency(config->frequency_mhz);
+    return config->frequency_mhz;
+}
+
 float MC3_send_hash_frequency(float frequency)
 {
     const mc3_pll_config_t *config = mc3_get_pll_config(frequency);
@@ -1426,14 +1981,18 @@ float MC3_send_hash_frequency(float frequency)
     uint32_t rolltime = mc3_rolltime_for_frequency(config->frequency_mhz);
     uint8_t chip_count = mc3_chip_count;
 
-    ESP_LOGI(TAG, "Setting Frequency to %u MHz", config->frequency_mhz);
+    ESP_LOGI(TAG, "Setting Frequency to %.3f MHz", config->frequency_mhz);
     if (!mc3_write_register(0, MC3_GLOBAL_SPD, MC3_DEFAULT_GLOBAL_SPD_VALUE, MC3_CHIP_NUM_ALL) ||
         !mc3_write_register(0, MC3_PLL0_EN, 0x00000000, MC3_CHIP_NUM_ALL) ||
-        !mc3_write_register(0, MC3_PLL0_CFG, pll_config, MC3_CHIP_NUM_ALL) ||
-        !mc3_write_register(0, MC3_PLL0_EN, MC3_PLL0_ENABLE, MC3_CHIP_NUM_ALL) ||
+        // ULINK burst-writes consecutive registers. PLL0_CFG is immediately
+        // followed by PLL0_EN, so configure and re-enable in one packet to
+        // avoid a second command/response interval while PLL0 is stopped.
+        !mc3_write_register_pair(0, MC3_PLL0_CFG, pll_config,
+            MC3_PLL0_ENABLE, MC3_CHIP_NUM_ALL) ||
         !mc3_write_register(0, MC3_PLL0_EN, MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL) ||
         !mc3_write_register(0, MC3_ROLLTIME, rolltime, MC3_CHIP_NUM_ALL)) {
-        ESP_LOGE(TAG, "Failed writing MC3 PLL configuration for %u MHz", config->frequency_mhz);
+        ESP_LOGE(TAG, "Failed writing MC3 PLL configuration for %.3f MHz",
+            config->frequency_mhz);
         return 0.0f;
     }
 
@@ -1465,19 +2024,108 @@ float MC3_send_hash_frequency(float frequency)
     if (!all_locked) {
         for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
             if (!chip_locked[chip_id]) {
-                ESP_LOGE(TAG, "PLL0 failed to lock at %u MHz on chip %u", config->frequency_mhz, chip_id);
+                ESP_LOGE(TAG, "PLL0 failed to lock at %.3f MHz on chip %u",
+                    config->frequency_mhz, chip_id);
             }
         }
         return 0.0f;
     }
 
-    ESP_LOGI(TAG, "PLL0 locked at %u MHz on all %u chips", config->frequency_mhz, chip_count);
+    ESP_LOGI(TAG, "PLL0 locked at %.3f MHz on all %u chips",
+        config->frequency_mhz, chip_count);
+    mc3_active_uniform_pll_id = 0;
+    mc3_set_active_uniform_frequency(config->frequency_mhz);
     return config->frequency_mhz;
+}
+
+static bool mc3_send_chip_hash_frequency(uint8_t chip_id,
+    const mc3_pll_config_t *config)
+{
+    uint32_t pll_config = mc3_pll_config_value(config);
+    uint32_t rolltime = mc3_rolltime_for_frequency(config->frequency_mhz);
+
+    ESP_LOGI(TAG, "Setting chip %u frequency to %.3f MHz", chip_id,
+        config->frequency_mhz);
+    if (!mc3_write_register(chip_id, MC3_GLOBAL_SPD,
+            MC3_DEFAULT_GLOBAL_SPD_VALUE, 0) ||
+        !mc3_write_register(chip_id, MC3_PLL0_EN, 0x00000000, 0) ||
+        !mc3_write_register(chip_id, MC3_PLL0_CFG, pll_config, 0) ||
+        !mc3_write_register(chip_id, MC3_PLL0_EN, MC3_PLL0_ENABLE, 0) ||
+        !mc3_write_register(chip_id, MC3_PLL0_EN,
+            MC3_DEFAULT_PLL0_ENABLE, 0) ||
+        !mc3_write_register(chip_id, MC3_ROLLTIME, rolltime, 0)) {
+        ESP_LOGE(TAG, "Failed writing MC3 PLL configuration for chip %u at %.3f MHz",
+            chip_id, config->frequency_mhz);
+        return false;
+    }
+
+    int64_t deadline_us = esp_timer_get_time() + (MC3_PLL_LOCK_TIMEOUT_MS * 1000);
+    do {
+        uint32_t pll_en = 0;
+        if (mc3_read_register(chip_id, MC3_PLL0_EN, &pll_en) &&
+            (pll_en & MC3_PLL_LOCK_BIT) != 0) {
+            ESP_LOGI(TAG, "PLL0 locked on chip %u at %.3f MHz", chip_id,
+                config->frequency_mhz);
+            return true;
+        }
+        vTaskDelay(pdMS_TO_TICKS(MC3_PLL_LOCK_POLL_MS));
+    } while (esp_timer_get_time() < deadline_us);
+
+    ESP_LOGE(TAG, "PLL0 failed to lock on chip %u at %.3f MHz", chip_id,
+        config->frequency_mhz);
+    return false;
+}
+
+bool MC3_set_chip_hash_frequency_live(void *pvParameters, uint8_t chip_id,
+    float frequency_mhz, float *actual_frequency_mhz)
+{
+    GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
+    if (chip_id >= mc3_chip_count ||
+        mc3_chip_count > MC3_QUALIFICATION_MAX_CHIPS) {
+        return false;
+    }
+
+    const mc3_pll_config_t *config = mc3_get_pll_config(frequency_mhz);
+    pthread_mutex_lock(&mc3_work_lock);
+    bool success = mc3_send_chip_hash_frequency(chip_id, config);
+    if (success) {
+        if (mc3_active_frequency_count != mc3_chip_count) {
+            mc3_active_frequency_count = mc3_chip_count;
+            for (uint8_t id = 0; id < mc3_chip_count; id++) {
+                mc3_active_chip_frequency_mhz[id] =
+                    GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency;
+            }
+        }
+        mc3_active_chip_frequency_mhz[chip_id] = config->frequency_mhz;
+        mc3_active_frequency_profile_mixed = false;
+        float frequency_sum_mhz = 0.0f;
+        for (uint8_t id = 0; id < mc3_chip_count; id++) {
+            frequency_sum_mhz += mc3_active_chip_frequency_mhz[id];
+            if (id > 0 && mc3_active_chip_frequency_mhz[id] !=
+                    mc3_active_chip_frequency_mhz[0]) {
+                mc3_active_frequency_profile_mixed = true;
+            }
+        }
+        GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency =
+            frequency_sum_mhz / mc3_chip_count;
+        if (actual_frequency_mhz != NULL) {
+            *actual_frequency_mhz = config->frequency_mhz;
+        }
+    }
+    pthread_mutex_unlock(&mc3_work_lock);
+    return success;
 }
 
 void MC3_set_frequency_step_callback(mc3_frequency_step_callback_t callback)
 {
     mc3_frequency_step_callback = callback;
+}
+
+void MC3_set_ping_pong_pll_experiment_enabled(bool enabled)
+{
+    mc3_ping_pong_pll_experiment_enabled = enabled;
+    ESP_LOGW(TAG, "Experimental ping-pong PLL ramp %s",
+        enabled ? "enabled" : "disabled");
 }
 
 bool MC3_ramp_hash_frequency(void * pvParameters)
@@ -1489,7 +2137,10 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
     int current_index = -1;
 
     for (int i = 0; i < sizeof(PLL_CONFIGS) / sizeof(PLL_CONFIGS[0]); i++) {
-        if (PLL_CONFIGS[i].frequency_mhz == (uint16_t)(power_management->actual_frequency + 0.5f)) {
+        float delta = PLL_CONFIGS[i].frequency_mhz > power_management->actual_frequency
+            ? PLL_CONFIGS[i].frequency_mhz - power_management->actual_frequency
+            : power_management->actual_frequency - PLL_CONFIGS[i].frequency_mhz;
+        if (delta < 0.001f) {
             current_index = i;
             break;
         }
@@ -1503,7 +2154,7 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
     // multi-register PLL transition when frequency changes while mining.
     pthread_mutex_lock(&mc3_work_lock);
 
-    ESP_LOGI(TAG, "Ramping frequency from %.0f MHz to %u MHz",
+    ESP_LOGI(TAG, "Ramping frequency from %.3f MHz to %.3f MHz",
         power_management->actual_frequency, target_config->frequency_mhz);
 
     int direction = current_index < target_index ? 1 : -1;
@@ -1511,9 +2162,13 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
 
     while ((direction > 0 && step_index <= target_index) ||
            (direction < 0 && step_index >= target_index)) {
-        float actual_frequency = MC3_send_hash_frequency(PLL_CONFIGS[step_index].frequency_mhz);
+        float actual_frequency = mc3_ping_pong_pll_experiment_enabled &&
+                mc3_active_frequency_count == mc3_chip_count &&
+                !mc3_active_frequency_profile_mixed
+            ? mc3_send_hash_frequency_ping_pong(&PLL_CONFIGS[step_index])
+            : MC3_send_hash_frequency(PLL_CONFIGS[step_index].frequency_mhz);
         if (actual_frequency <= 0.0f) {
-            ESP_LOGE(TAG, "Frequency ramp stopped at %.0f MHz; target was %u MHz",
+            ESP_LOGE(TAG, "Frequency ramp stopped at %.3f MHz; target was %.3f MHz",
                 power_management->actual_frequency, target_config->frequency_mhz);
             pthread_mutex_unlock(&mc3_work_lock);
             return false;
@@ -1530,7 +2185,8 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
         step_index += direction;
     }
 
-    ESP_LOGI(TAG, "Successfully transitioned to %u MHz", target_config->frequency_mhz);
+    ESP_LOGI(TAG, "Successfully transitioned to %.3f MHz",
+        target_config->frequency_mhz);
     pthread_mutex_unlock(&mc3_work_lock);
     return true;
 }
@@ -1545,11 +2201,195 @@ bool MC3_start_qualification_work(void *pvParameters)
     pthread_mutex_unlock(&mc3_work_lock);
 
     if (started) {
-        ESP_LOGI(TAG, "Started broadcast qualification work at %.0f MHz", frequency_mhz);
+        ESP_LOGI(TAG, "Started broadcast qualification work at %.3f MHz", frequency_mhz);
     } else {
-        ESP_LOGE(TAG, "Failed to start broadcast qualification work at %.0f MHz", frequency_mhz);
+        ESP_LOGE(TAG, "Failed to start broadcast qualification work at %.3f MHz", frequency_mhz);
     }
     return started;
+}
+
+bool MC3_refresh_qualification_work(void *pvParameters)
+{
+    (void)pvParameters;
+    uint8_t chip_count = mc3_chip_count;
+    if (chip_count == 0 || chip_count > MC3_QUALIFICATION_MAX_CHIPS) {
+        ESP_LOGE(TAG,
+            "Cannot refresh MC3 qualification work with %u chip(s)",
+            chip_count);
+        return false;
+    }
+
+    bm_job qualification_job = {
+        .version = MC3_QUALIFICATION_VERSION,
+        .version_mask = MC3_QUALIFICATION_VERSION_MASK,
+        .ntime = MC3_QUALIFICATION_NTIME,
+        .target = MC3_QUALIFICATION_NBITS,
+        .pool_diff = MC3_QUALIFICATION_POOL_DIFFICULTY,
+    };
+
+    pthread_mutex_lock(&mc3_work_lock);
+    mc3_qualification_refresh_job_id =
+        (mc3_qualification_refresh_job_id + 1) % 128;
+    mc3_write_work_target(qualification_job.pool_diff, chip_count);
+    mc3_write_version_bases(&qualification_job, chip_count);
+    mc3_write_v_work(&qualification_job,
+        mc3_qualification_refresh_job_id);
+    pthread_mutex_unlock(&mc3_work_lock);
+
+    ESP_LOGI(TAG,
+        "Refreshed qualification work job_id=%u without changing the active PLL profile",
+        mc3_qualification_refresh_job_id);
+    return true;
+}
+
+bool MC3_reapply_active_qualification_work(void)
+{
+    const mc3_pll_config_t *configs[MC3_QUALIFICATION_MAX_CHIPS] = {0};
+    uint8_t chip_count = mc3_chip_count;
+    if (chip_count == 0 || chip_count > MC3_QUALIFICATION_MAX_CHIPS ||
+        mc3_active_frequency_count != chip_count) {
+        ESP_LOGE(TAG,
+            "Cannot reapply MC3 qualification work for active profile: chips=%u tracked=%u",
+            chip_count, mc3_active_frequency_count);
+        return false;
+    }
+
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        configs[chip_id] = mc3_get_pll_config(
+            mc3_active_chip_frequency_mhz[chip_id]);
+    }
+
+    pthread_mutex_lock(&mc3_work_lock);
+    bool started = mc3_program_mixed_qualification_work(configs, chip_count);
+    pthread_mutex_unlock(&mc3_work_lock);
+
+    if (started && chip_count == 4) {
+        ESP_LOGW(TAG,
+            "Reapplied identical qualification work with WORK_CFG reset at active profile %.3f/%.3f/%.3f/%.3f MHz; PLL dividers unchanged",
+            configs[0]->frequency_mhz, configs[1]->frequency_mhz,
+            configs[2]->frequency_mhz, configs[3]->frequency_mhz);
+    } else if (started) {
+        ESP_LOGW(TAG,
+            "Reapplied identical qualification work with WORK_CFG reset on %u chip(s); PLL dividers unchanged",
+            chip_count);
+    } else {
+        ESP_LOGE(TAG,
+            "Failed to reapply qualification work at the active PLL profile");
+    }
+    return started;
+}
+
+bool MC3_set_active_pll_running_preserve_config(void *pvParameters,
+    bool running)
+{
+    (void)pvParameters;
+    if (mc3_chip_count == 0 ||
+        mc3_chip_count > MC3_QUALIFICATION_MAX_CHIPS) {
+        ESP_LOGE(TAG,
+            "Cannot %s MC3 PLL with %u chip(s)",
+            running ? "start" : "stop",
+            mc3_chip_count);
+        return false;
+    }
+    if (mc3_active_frequency_profile_mixed) {
+        ESP_LOGE(TAG,
+            "Cannot broadcast a hash-clock output change for a mixed PLL profile");
+        return false;
+    }
+
+    const char *action = running ? "start" : "stop";
+    uint8_t pll_id = mc3_active_uniform_pll_id;
+    uint32_t pll_cfg_register = mc3_pll_cfg_register(pll_id);
+    uint32_t pll_en_register = mc3_pll_en_register(pll_id);
+    uint32_t pll_cfg_before[MC3_QUALIFICATION_MAX_CHIPS] = {0};
+    uint32_t pll_en_before[MC3_QUALIFICATION_MAX_CHIPS] = {0};
+    bool success = true;
+
+    pthread_mutex_lock(&mc3_work_lock);
+    for (uint8_t chip_id = 0; chip_id < mc3_chip_count; chip_id++) {
+        success = mc3_read_register(chip_id, pll_cfg_register,
+                      &pll_cfg_before[chip_id]) &&
+            mc3_read_register(chip_id, pll_en_register,
+                &pll_en_before[chip_id]) && success;
+        if (!running &&
+            (pll_en_before[chip_id] & MC3_PLL0_ENABLE) == 0) {
+            ESP_LOGE(TAG,
+                "LOAD RELEASE: PLL%u is not enabled on chip%u before %s (EN=0x%08" PRIX32 ")",
+                pll_id, chip_id, action, pll_en_before[chip_id]);
+            success = false;
+        }
+    }
+
+    if (success) {
+        // Stopping writes only PLLx_EN=0; PLLx_CFG is never touched. Restart
+        // uses the documented 1 -> 3 sequence on that unchanged config.
+        if (running) {
+            ESP_LOGW(TAG,
+                "LOAD RELEASE: restarting PLL%u with unchanged CFG using EN=1 then EN=3",
+                pll_id);
+            success = mc3_write_register(0, pll_en_register,
+                          MC3_PLL0_ENABLE, MC3_CHIP_NUM_ALL) &&
+                mc3_write_register(0, pll_en_register,
+                    MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL) &&
+                mc3_wait_for_all_pll_locks(pll_id,
+                    mc3_active_chip_frequency_mhz[0]);
+        } else {
+            ESP_LOGW(TAG,
+                "LOAD RELEASE: stopping PLL%u with EN=0 and leaving CFG untouched",
+                pll_id);
+            success = mc3_write_register(0, pll_en_register, 0,
+                MC3_CHIP_NUM_ALL);
+        }
+        vTaskDelay(pdMS_TO_TICKS(1));
+    }
+
+    for (uint8_t chip_id = 0; success && chip_id < mc3_chip_count;
+         chip_id++) {
+        uint32_t pll_cfg_after = 0;
+        uint32_t pll_en_after = 0;
+        bool read_ok = mc3_read_register(chip_id, pll_cfg_register,
+                           &pll_cfg_after) &&
+            mc3_read_register(chip_id, pll_en_register, &pll_en_after);
+        bool cfg_unchanged = read_ok &&
+            pll_cfg_after == pll_cfg_before[chip_id];
+        bool vco_state_applied = read_ok &&
+            ((pll_en_after & MC3_PLL0_ENABLE) != 0) == running;
+        bool clock_state_applied = read_ok &&
+            ((pll_en_after & MC3_PLL_CLOCK_ON) != 0) == running;
+        bool lock_ok = !running ||
+            (pll_en_after & MC3_PLL_LOCK_BIT) != 0;
+        ESP_LOGW(TAG,
+            "LOAD RELEASE PLL-%s chip%u CFG unchanged=%s VCO state=%s clock state=%s lock=%s CFG=0x%08" PRIX32
+            " EN 0x%08" PRIX32 "->0x%08" PRIX32,
+            action, chip_id, cfg_unchanged ? "yes" : "NO",
+            vco_state_applied ? "applied" : "FAILED",
+            clock_state_applied ? "applied" : "FAILED",
+            lock_ok ? "yes" : "NO", pll_cfg_after,
+            pll_en_before[chip_id], pll_en_after);
+        success = cfg_unchanged && vco_state_applied &&
+            clock_state_applied && lock_ok;
+    }
+
+    if (!success && !running) {
+        // A partial stop is not useful for this experiment. Best-effort
+        // restart before returning to the qualification rollback.
+        mc3_write_register(0, pll_en_register,
+            MC3_PLL0_ENABLE, MC3_CHIP_NUM_ALL);
+        mc3_write_register(0, pll_en_register,
+            MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL);
+    }
+    pthread_mutex_unlock(&mc3_work_lock);
+
+    if (success) {
+        ESP_LOGW(TAG,
+            "LOAD RELEASE: PLL%u %s with divider config preserved",
+            pll_id, running ? "running" : "stopped");
+    } else {
+        ESP_LOGE(TAG,
+            "LOAD RELEASE: failed to %s PLL%u cleanly",
+            action, pll_id);
+    }
+    return success;
 }
 
 bool MC3_qualify_frequency(void *pvParameters, float frequency,
@@ -1566,24 +2406,48 @@ bool MC3_qualify_frequency(void *pvParameters, float frequency,
 
     pthread_mutex_lock(&mc3_work_lock);
 
-    // Stop the current search before touching the PLL. Re-applying mining
-    // configuration below resets every core and starts identical broadcast
-    // work on the whole chain at the new frequency.
-    if (!mc3_write_register(0, MC3_WORK_CFG,
-            MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET, MC3_CHIP_NUM_ALL)) {
-        ESP_LOGE(TAG, "Failed to quiesce MC3 cores before %.0f MHz qualification", frequency);
-        goto done;
-    }
-    vTaskDelay(pdMS_TO_TICKS(10));
+    const mc3_pll_config_t *config = mc3_get_pll_config(frequency);
+    bool can_transition_live = mc3_ping_pong_pll_experiment_enabled &&
+        mc3_active_frequency_count == mc3_chip_count &&
+        !mc3_active_frequency_profile_mixed;
+    if (can_transition_live) {
+        float current_frequency_mhz = mc3_active_chip_frequency_mhz[0];
+        float frequency_delta_mhz = current_frequency_mhz >
+                config->frequency_mhz
+            ? current_frequency_mhz - config->frequency_mhz
+            : config->frequency_mhz - current_frequency_mhz;
+        result.frequency_mhz = frequency_delta_mhz < 0.001f
+            ? config->frequency_mhz
+            : mc3_send_hash_frequency_ping_pong(config);
+        if (result.frequency_mhz <= 0.0f) {
+            goto done;
+        }
+        GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency =
+            result.frequency_mhz;
+    } else {
+        // Mixed/unknown profiles cannot use one global PLL selector safely.
+        // Fall back to the documented stop/reprogram/start sequence and
+        // restart identical qualification work on the complete chain.
+        if (!mc3_write_register(0, MC3_WORK_CFG,
+                MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET,
+                MC3_CHIP_NUM_ALL)) {
+            ESP_LOGE(TAG,
+                "Failed to quiesce MC3 cores before %.3f MHz qualification",
+                frequency);
+            goto done;
+        }
+        vTaskDelay(pdMS_TO_TICKS(10));
 
-    result.frequency_mhz = MC3_send_hash_frequency(frequency);
-    if (result.frequency_mhz <= 0.0f) {
-        goto done;
-    }
-    GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency = result.frequency_mhz;
+        result.frequency_mhz = MC3_send_hash_frequency(frequency);
+        if (result.frequency_mhz <= 0.0f) {
+            goto done;
+        }
+        GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency =
+            result.frequency_mhz;
 
-    if (!mc3_program_qualification_work(result.frequency_mhz)) {
-        goto done;
+        if (!mc3_program_qualification_work(result.frequency_mhz)) {
+            goto done;
+        }
     }
 
     mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL,
@@ -1591,8 +2455,80 @@ bool MC3_qualify_frequency(void *pvParameters, float frequency,
     uint32_t measurement_ms = (uint32_t)(
         mc3_spdlog_runtime_seconds(MC3_QUALIFICATION_SPDLOG_TIMER_COUNT) * 1000.0) +
         MC3_QUALIFICATION_SETTLE_TIME_MS;
-    ESP_LOGI(TAG, "Qualifying %.0f MHz for %.3f seconds on %u chips",
+    ESP_LOGI(TAG, "Qualifying %.3f MHz for %.3f seconds on %u chips",
         result.frequency_mhz, (double)measurement_ms / 1000.0, mc3_chip_count);
+    vTaskDelay(pdMS_TO_TICKS(measurement_ms));
+
+    result.chip_count = mc3_chip_count;
+    for (uint8_t chip_id = 0; chip_id < result.chip_count; chip_id++) {
+        result.chip_frequency_mhz[chip_id] = result.frequency_mhz;
+        double hashrate_ghs = 0.0;
+        if (!mc3_read_spdlog_chip(GLOBAL_STATE, chip_id,
+                &result.passed[chip_id], &result.failed[chip_id], &hashrate_ghs)) {
+            goto done;
+        }
+        result.hashrate_ghs[chip_id] = (float)hashrate_ghs;
+        result.total_hashrate_ghs += result.hashrate_ghs[chip_id];
+    }
+
+    success = true;
+
+done:
+    *result_out = result;
+    pthread_mutex_unlock(&mc3_work_lock);
+    return success;
+}
+
+bool MC3_qualify_chip_frequencies(void *pvParameters,
+    const float *frequencies_mhz, uint8_t frequency_count,
+    mc3_qualification_result_t *result_out)
+{
+    GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
+    mc3_qualification_result_t result = {0};
+    const mc3_pll_config_t *configs[MC3_QUALIFICATION_MAX_CHIPS] = {0};
+    bool success = false;
+
+    if (result_out == NULL || frequencies_mhz == NULL ||
+        mc3_chip_count == 0 || frequency_count != mc3_chip_count ||
+        frequency_count > MC3_QUALIFICATION_MAX_CHIPS) {
+        return false;
+    }
+
+    for (uint8_t chip_id = 0; chip_id < frequency_count; chip_id++) {
+        configs[chip_id] = mc3_get_pll_config(frequencies_mhz[chip_id]);
+        result.chip_frequency_mhz[chip_id] = configs[chip_id]->frequency_mhz;
+        result.frequency_mhz += configs[chip_id]->frequency_mhz;
+    }
+    result.frequency_mhz /= frequency_count;
+
+    pthread_mutex_lock(&mc3_work_lock);
+
+    if (!mc3_write_register(0, MC3_WORK_CFG,
+            MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET, MC3_CHIP_NUM_ALL)) {
+        ESP_LOGE(TAG, "Failed to quiesce MC3 cores before mixed-frequency qualification");
+        goto done;
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));
+
+    for (uint8_t chip_id = 0; chip_id < frequency_count; chip_id++) {
+        if (!mc3_send_chip_hash_frequency(chip_id, configs[chip_id])) {
+            goto done;
+        }
+    }
+
+    if (!mc3_program_mixed_qualification_work(configs, frequency_count)) {
+        goto done;
+    }
+    mc3_set_active_frequency_profile(configs, frequency_count);
+    GLOBAL_STATE->POWER_MANAGEMENT_MODULE.actual_frequency = result.frequency_mhz;
+
+    mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL,
+        MC3_QUALIFICATION_SPDLOG_TIMER_COUNT);
+    uint32_t measurement_ms = (uint32_t)(
+        mc3_spdlog_runtime_seconds(MC3_QUALIFICATION_SPDLOG_TIMER_COUNT) * 1000.0) +
+        MC3_QUALIFICATION_SETTLE_TIME_MS;
+    ESP_LOGI(TAG, "Qualifying mixed frequencies for %.3f seconds on %u chips",
+        (double)measurement_ms / 1000.0, mc3_chip_count);
     vTaskDelay(pdMS_TO_TICKS(measurement_ms));
 
     result.chip_count = mc3_chip_count;
@@ -1612,6 +2548,92 @@ done:
     *result_out = result;
     pthread_mutex_unlock(&mc3_work_lock);
     return success;
+}
+
+bool MC3_measure_active_frequency_profile(void *pvParameters,
+    mc3_qualification_result_t *result_out)
+{
+    GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
+    mc3_qualification_result_t result = {0};
+    bool success = false;
+
+    if (result_out == NULL || mc3_chip_count == 0 ||
+        mc3_chip_count > MC3_QUALIFICATION_MAX_CHIPS ||
+        mc3_active_frequency_count != mc3_chip_count) {
+        return false;
+    }
+
+    pthread_mutex_lock(&mc3_work_lock);
+    result.chip_count = mc3_chip_count;
+    for (uint8_t chip_id = 0; chip_id < result.chip_count; chip_id++) {
+        result.chip_frequency_mhz[chip_id] =
+            mc3_active_chip_frequency_mhz[chip_id];
+        result.frequency_mhz += result.chip_frequency_mhz[chip_id];
+    }
+    result.frequency_mhz /= result.chip_count;
+
+    // Measure the work already in flight. Unlike the qualification helpers,
+    // this does not reset work or touch a PLL, so it preserves the staggered
+    // electrical transition that led to the active profile.
+    mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL,
+        MC3_QUALIFICATION_SPDLOG_TIMER_COUNT);
+    uint32_t measurement_ms = (uint32_t)(
+        mc3_spdlog_runtime_seconds(MC3_QUALIFICATION_SPDLOG_TIMER_COUNT) *
+            1000.0) +
+        MC3_QUALIFICATION_SETTLE_TIME_MS;
+    ESP_LOGI(TAG,
+        "Measuring active %.3f MHz average profile for %.3f seconds on %u chips without resetting work",
+        result.frequency_mhz, (double)measurement_ms / 1000.0,
+        result.chip_count);
+    vTaskDelay(pdMS_TO_TICKS(measurement_ms));
+
+    for (uint8_t chip_id = 0; chip_id < result.chip_count; chip_id++) {
+        double hashrate_ghs = 0.0;
+        if (!mc3_read_spdlog_chip(GLOBAL_STATE, chip_id,
+                &result.passed[chip_id], &result.failed[chip_id],
+                &hashrate_ghs)) {
+            goto done;
+        }
+        result.hashrate_ghs[chip_id] = (float)hashrate_ghs;
+        result.total_hashrate_ghs += result.hashrate_ghs[chip_id];
+    }
+    success = true;
+
+done:
+    *result_out = result;
+    pthread_mutex_unlock(&mc3_work_lock);
+    return success;
+}
+
+bool MC3_start_active_spdlog_observation(uint32_t duration_ms)
+{
+    if (duration_ms == 0 || mc3_chip_count == 0 ||
+        mc3_chip_count > MC3_QUALIFICATION_MAX_CHIPS ||
+        mc3_active_frequency_count != mc3_chip_count) {
+        return false;
+    }
+
+    const uint64_t timer_quantum = 1048576ULL * 1000ULL;
+    uint64_t timer_count =
+        ((uint64_t)duration_ms * 12500000ULL + timer_quantum - 1) /
+        timer_quantum;
+    if (timer_count == 0 || timer_count > UINT16_MAX) {
+        ESP_LOGE(TAG,
+            "MC3 SPDLOG observation duration %" PRIu32 " ms is out of range",
+            duration_ms);
+        return false;
+    }
+
+    pthread_mutex_lock(&mc3_work_lock);
+    bool started = mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL,
+        (uint16_t)timer_count);
+    pthread_mutex_unlock(&mc3_work_lock);
+    if (started) {
+        ESP_LOGW(TAG,
+            "Started active-profile SPDLOG observation count=%" PRIu64 " runtime=%.3f seconds; no further work or PLL writes are required",
+            timer_count, mc3_spdlog_runtime_seconds((uint16_t)timer_count));
+    }
+    return started;
 }
 
 task_result * MC3_process_work(void * pvParameters)
@@ -1783,7 +2805,9 @@ uint8_t MC3_read_vdd_voltages(float *voltages_mv, size_t max_voltages)
         chip_count = max_voltages;
     }
 
-    if (!mc3_trigger_voltage_conversion()) {
+    pthread_mutex_lock(&mc3_voltage_sensor_lock);
+    if (!mc3_run_complete_voltage_sensor_sweep(chip_count)) {
+        pthread_mutex_unlock(&mc3_voltage_sensor_lock);
         return 0;
     }
 
@@ -1801,5 +2825,48 @@ uint8_t MC3_read_vdd_voltages(float *voltages_mv, size_t max_voltages)
         }
     }
 
+    pthread_mutex_unlock(&mc3_voltage_sensor_lock);
+    return chip_count;
+}
+
+uint8_t MC3_read_pvt_voltages(mc3_pvt_voltage_reading_t *readings,
+    size_t max_readings)
+{
+    uint8_t chip_count = mc3_chip_count;
+
+    if (readings == NULL || max_readings == 0 || chip_count == 0) {
+        return 0;
+    }
+    if (chip_count > max_readings) {
+        chip_count = max_readings;
+    }
+
+    pthread_mutex_lock(&mc3_voltage_sensor_lock);
+    if (!mc3_run_complete_voltage_sensor_sweep(chip_count)) {
+        pthread_mutex_unlock(&mc3_voltage_sensor_lock);
+        return 0;
+    }
+
+    memset(readings, 0, sizeof(*readings) * chip_count);
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        for (uint8_t channel = MC3_VOLTAGE_STACK_CHANNEL_FIRST;
+             channel <= MC3_VOLTAGE_STACK_CHANNEL_LAST; channel++) {
+            uint32_t raw = 0;
+            if (!mc3_read_register(chip_id,
+                    mc3_voltage_dout_register(channel), &raw)) {
+                continue;
+            }
+
+            float scale = (channel == MC3_VOLTAGE_VDD_CHANNEL_A ||
+                channel == MC3_VOLTAGE_VDD_CHANNEL_B)
+                ? MC3_VOLTAGE_VDD_SCALE
+                : 1.0f;
+            readings[chip_id].channel_mv[channel] =
+                mc3_voltage_from_dout(raw) * scale * 1000.0f;
+            readings[chip_id].valid_channel_mask |= (1U << channel);
+        }
+    }
+
+    pthread_mutex_unlock(&mc3_voltage_sensor_lock);
     return chip_count;
 }
