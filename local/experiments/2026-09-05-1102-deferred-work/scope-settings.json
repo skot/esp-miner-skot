@@ -1,0 +1,14 @@
+{
+  ":CHAN1:IMP?": "FIFT",
+  ":CHAN2:IMP?": "OMEG",
+  ":CHAN1:COUP?": "DC",
+  ":CHAN2:COUP?": "DC",
+  ":CHAN1:PROB?": "1",
+  ":CHAN2:PROB?": "1",
+  ":ACQ:MDEP?": "700000",
+  ":ACQ:SRAT?": "2.00000e+04",
+  ":TIM:SCAL?": "2.000000e+00",
+  ":TIM:OFFS?": "1.200000e+01",
+  ":CHAN1:BWLimit?": "20M",
+  ":CHAN2:BWLimit?": "20M"
+}

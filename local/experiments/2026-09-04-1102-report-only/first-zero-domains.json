@@ -1,0 +1,56 @@
+{
+  "A1D1": {
+    "boot_ms": 465751,
+    "phase": "warm475",
+    "frequency_mhz": 475.0,
+    "passed": 0,
+    "failed": 113,
+    "d2_mv": 290.01,
+    "temperature_c": 58.3
+  },
+  "A2D2": {
+    "boot_ms": 465846,
+    "phase": "warm475",
+    "frequency_mhz": 475.0,
+    "passed": 0,
+    "failed": 958,
+    "d2_mv": 235.51,
+    "temperature_c": 57.15
+  },
+  "A1D2": {
+    "boot_ms": 504716,
+    "phase": "warm525",
+    "frequency_mhz": 525.0,
+    "passed": 0,
+    "failed": 385,
+    "d2_mv": 241.25,
+    "temperature_c": 58.3
+  },
+  "A2D1": {
+    "boot_ms": 504810,
+    "phase": "warm525",
+    "frequency_mhz": 525.0,
+    "passed": 0,
+    "failed": 213,
+    "d2_mv": 241.65,
+    "temperature_c": 57.15
+  },
+  "A1D3": {
+    "boot_ms": 543714,
+    "phase": "warm575",
+    "frequency_mhz": 575.0,
+    "passed": 0,
+    "failed": 145,
+    "d2_mv": 247.09,
+    "temperature_c": 59.46
+  },
+  "A2D3": {
+    "boot_ms": 543808,
+    "phase": "warm575",
+    "frequency_mhz": 575.0,
+    "passed": 0,
+    "failed": 487,
+    "d2_mv": 247.65,
+    "temperature_c": 58.14
+  }
+}

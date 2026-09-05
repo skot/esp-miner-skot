@@ -8,6 +8,8 @@ esp_err_t VCORE_prepare_asic_enable(const GlobalState * GLOBAL_STATE);
 esp_err_t VCORE_set_voltage(GlobalState * GLOBAL_STATE, float core_voltage);
 int16_t VCORE_get_voltage_mv(GlobalState * GLOBAL_STATE);
 int16_t VCORE_get_regulator_voltage_mv(GlobalState * GLOBAL_STATE);
+// Returns -1 on a failed fresh measurement; never substitutes cached Vout.
+int16_t VCORE_get_regulator_voltage_mv_fresh(GlobalState *global);
 esp_err_t VCORE_get_domain_voltages_mv(GlobalState * GLOBAL_STATE,
                                        uint16_t regulator_voltage_mv,
                                        uint16_t *lower_domain_mv,

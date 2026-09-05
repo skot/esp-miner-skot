@@ -1,0 +1,47 @@
+I (1690) TPS546: Power config-ON_OFF_CONFIG: 1F
+I (1725) TPS546: Setting ON_OFF_CONFIG: 1F
+I (2024) TPS546: Setting TON_RISE: 31.75ms
+I (2191) TPS546: read TON_RISE: 31.75ms
+I (2251) TPS546: read ON_OFF_CONFIG: 1f
+I (13786) mc3: PLL0 locked at 100.000 MHz on all 4 chips
+I (14171) mc3: Writing MC3 mining config: rolltime=0x001FFFCE version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (14307) mc3: Started broadcast qualification work at 100.000 MHz
+I (29845) asic_init: Proto Vcore ramp reached 1140 mV/domain
+I (29947) mc3: PLL0 locked at 100.000 MHz on all 4 chips
+I (29947) mc3: Writing MC3 mining config: rolltime=0x001FFFCE version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (34517) mc3: PLL0 locked at 125.000 MHz on all 4 chips
+I (34518) mc3: Writing MC3 mining config: rolltime=0x00199968 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (39081) mc3: PLL0 locked at 150.000 MHz on all 4 chips
+I (39082) mc3: Writing MC3 mining config: rolltime=0x00155523 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (43646) mc3: PLL0 locked at 175.000 MHz on all 4 chips
+I (43647) mc3: Writing MC3 mining config: rolltime=0x001248F3 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (48211) mc3: PLL0 locked at 200.000 MHz on all 4 chips
+I (48212) mc3: Writing MC3 mining config: rolltime=0x000FFFCE version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (52776) mc3: PLL0 locked at 225.000 MHz on all 4 chips
+I (52777) mc3: Writing MC3 mining config: rolltime=0x000E38B2 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (57340) mc3: PLL0 locked at 250.000 MHz on all 4 chips
+I (57341) mc3: Writing MC3 mining config: rolltime=0x000CCC9B version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (61904) mc3: PLL0 locked at 275.000 MHz on all 4 chips
+I (61905) mc3: Writing MC3 mining config: rolltime=0x000BA2B7 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (66467) mc3: PLL0 locked at 300.000 MHz on all 4 chips
+I (66468) mc3: Writing MC3 mining config: rolltime=0x000AAA79 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (456800) mc3: PLL0 locked at 325.000 MHz on all 4 chips
+I (456801) mc3: Writing MC3 mining config: rolltime=0x0009D86C version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (475783) mc3: PLL0 locked at 350.000 MHz on all 4 chips
+I (475784) mc3: Writing MC3 mining config: rolltime=0x00092460 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (495762) mc3: PLL0 locked at 375.000 MHz on all 4 chips
+I (495762) mc3: Writing MC3 mining config: rolltime=0x00088857 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (515722) mc3: PLL0 locked at 400.000 MHz on all 4 chips
+I (515724) mc3: Writing MC3 mining config: rolltime=0x0007FFCE version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (535692) mc3: PLL0 locked at 425.000 MHz on all 4 chips
+I (535693) mc3: Writing MC3 mining config: rolltime=0x00078756 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (554691) mc3: PLL0 locked at 450.000 MHz on all 4 chips
+I (554692) mc3: Writing MC3 mining config: rolltime=0x00071C40 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+I (573700) mc3: PLL0 locked at 475.000 MHz on all 4 chips
+I (573701) mc3: Writing MC3 mining config: rolltime=0x0006BC70 version_mask=0xFFFF0000 start_bit=16 V_CTRL=0xFFFF0101
+W (574724) asic_init: WARM ZERO DETECTED target=475 mask=0x0042 hold_seconds=120; no further PLL/work/counter rearm
+W (582458) asic_init: WARM ZERO HOLD freq=475 mask=0x0042; fixed PLL/work/voltage, counters not rearmed
+W (695350) asic_init: WARM ZERO HOLD WHOLE_WINDOW
+W (695497) asic_init: WARM ZERO HOLD LAST_10_SECONDS
+W (695653) asic_init: WARM ZERO HOLD END elapsed_seconds=120.930 recovered_all=0 initial_mask=0x0042; powering off
+W (695679) asic_init: WARM END result=COMPLETE frequency=475 max_PCB=unavailable PCB_sense=0 max_total=2275 mV ASIC_power=OFF

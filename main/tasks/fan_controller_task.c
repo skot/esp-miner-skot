@@ -1,5 +1,6 @@
 #include <string.h>
 #include <math.h>
+#include <stdatomic.h>
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -19,6 +20,20 @@
 
 static const char * TAG = "fan_controller";
 static const char * prev_context = "";
+static atomic_int bench_percent = ATOMIC_VAR_INIT(-1);
+static atomic_uint bench_deadline = ATOMIC_VAR_INIT(0);
+
+void FAN_CONTROLLER_set_bench_percent(int percent)
+{
+    if (percent < 0) {
+        atomic_store(&bench_percent, -1);
+        return;
+    }
+    if (percent < 10) percent = 10;
+    if (percent > 100) percent = 100;
+    atomic_store(&bench_deadline, xTaskGetTickCount() + pdMS_TO_TICKS(5000));
+    atomic_store(&bench_percent, percent);
+}
 
 static void update_fan_speed(GlobalState * GLOBAL_STATE, float target_perc, const char * context)
 {
@@ -68,8 +83,13 @@ void FAN_CONTROLLER_task(void * pvParameters)
     TickType_t taskWakeTime = xTaskGetTickCount();
 
     while (1) {
+        int leased_percent = atomic_load(&bench_percent);
+        bool lease_valid = leased_percent >= 0 &&
+            (int32_t)(atomic_load(&bench_deadline) - xTaskGetTickCount()) > 0;
         if (nvs_config_get_bool(NVS_CONFIG_OVERHEAT_MODE)) {
             update_fan_speed(GLOBAL_STATE, 100.0f, "Overheat");
+        } else if (lease_valid) {
+            update_fan_speed(GLOBAL_STATE, leased_percent, "Bench warmup");
         } else if (GLOBAL_STATE->SYSTEM_MODULE.mining_paused) {
             update_fan_speed(GLOBAL_STATE, 30.0f, "Paused");
         } else if (GLOBAL_STATE->SYSTEM_MODULE.pools_unavailable) {

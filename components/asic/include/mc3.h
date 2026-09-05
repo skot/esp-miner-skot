@@ -33,6 +33,7 @@ typedef struct {
     uint8_t chip_id;
     uint64_t core_pass_sum;
     uint32_t domain_pass[MC3_INTERNAL_VOLTAGE_DOMAIN_COUNT];
+    uint32_t domain_fail[MC3_INTERNAL_VOLTAGE_DOMAIN_COUNT];
     uint8_t domain_zero_cores[MC3_INTERNAL_VOLTAGE_DOMAIN_COUNT];
     uint32_t slice_pass[MC3_SLICE_COUNT];
     uint16_t minimum_core_id;
@@ -58,6 +59,17 @@ bool MC3_refresh_qualification_work(void * GLOBAL_STATE);
 bool MC3_reapply_active_qualification_work(void);
 bool MC3_set_active_pll_running_preserve_config(void * GLOBAL_STATE,
     bool running);
+// Bench-only 100 -> 125 MHz clock-delivery probe. The caller must independently
+// guard the rail and power off on return, including errors; no rollback occurs.
+bool MC3_probe_clock_delivery(void *global_state,
+    bool (*abort_requested)(void *), void *abort_context);
+// Bench-only broadcast +25 MHz launch to 375/400/425 with one long SPDLOG arm. Caller
+// supplies independent rail protection and powers off on any failure.
+bool MC3_start_broadcast_recovery_probe(void *global_state, float baseline_mhz, float test_mhz,
+    bool (*abort_requested)(void *), void *abort_context);
+// Fixed-PLL recovery actions: 1=FIFO reset, 2=SPD apply, 3=full identical work.
+// None reset/rearm SPDLOG; full work restores the logger's core-target setting.
+bool MC3_broadcast_recovery_action(unsigned action);
 bool MC3_qualify_frequency(void * GLOBAL_STATE, float frequency,
     mc3_qualification_result_t *result);
 bool MC3_qualify_chip_frequencies(void * GLOBAL_STATE,
@@ -65,6 +77,8 @@ bool MC3_qualify_chip_frequencies(void * GLOBAL_STATE,
     mc3_qualification_result_t *result);
 bool MC3_set_chip_hash_frequency_live(void * GLOBAL_STATE, uint8_t chip_id,
     float frequency_mhz, float *actual_frequency_mhz);
+// These counter-arm helpers apply SPD settings and reset the check FIFO via
+// WORK_CFG. They preserve PLL dividers/payload, but are not passive observation.
 bool MC3_measure_active_frequency_profile(void * GLOBAL_STATE,
     mc3_qualification_result_t *result);
 bool MC3_start_active_spdlog_observation(uint32_t duration_ms);

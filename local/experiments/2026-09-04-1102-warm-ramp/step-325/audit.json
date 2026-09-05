@@ -1,0 +1,23 @@
+{
+  "lower_max_v": 1.6440000000000001,
+  "upper_max_v": 1.4160002799999998,
+  "total_max_v": 2.4240003029999997,
+  "clipped_samples": 0,
+  "record_end_s": 0.27499950999999995,
+  "download_s": 7.068402167000045,
+  "launch_duration_s": 0.192,
+  "raw_limit_v": 1.25,
+  "mean_limit_v": 1.22,
+  "mean_window_samples": 40,
+  "sample_interval_s": 5e-07,
+  "lower_max_moving_mean_v": 1.5769999999996798,
+  "upper_max_moving_mean_v": 1.313900276626373,
+  "reasons": [
+    "lower: raw voltage limit",
+    "lower: moving-mean voltage limit",
+    "upper: raw voltage limit",
+    "upper: moving-mean voltage limit"
+  ],
+  "voltage_accepted": false,
+  "accepted": false
+}

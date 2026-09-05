@@ -1,0 +1,15 @@
+W (29310) asic_init: BCAST BEGIN fixed_PLL=350 baseline_voltage=1120 test_voltage=1100; guard=1200; NVS unchanged
+I (33830) asic_init: Proto qualification 100.000MHz chip0@100.000MHz: 121.15/124.80 GH/s throughput=97.07% pass/fail=29075/708 pass_rate=97.62%
+I (33833) asic_init: Proto qualification 100.000MHz chip1@100.000MHz: 121.70/124.80 GH/s throughput=97.51% pass/fail=29207/771 pass_rate=97.43%
+I (33847) asic_init: Proto qualification 100.000MHz chip2@100.000MHz: 123.72/124.80 GH/s throughput=99.13% pass/fail=29692/329 pass_rate=98.90%
+I (33860) asic_init: Proto qualification 100.000MHz chip3@100.000MHz: 121.25/124.80 GH/s throughput=97.16% pass/fail=29100/477 pass_rate=98.39%
+I (33875) asic_init: Proto qualification 100.000MHz domains: lower=1116 upper=1123 delta=+7 mV total=2239 mV TPS current=3.50 A
+I (33886) asic_init: Proto qualification 100.000MHz: total=487.81/499.20 GH/s throughput=97.72% min_chip=97.07% min_pass=97.43% balance=7 mV => REJECT
+W (33900) asic_init: BCAST bench-only initial 100MHz exception: all ASIC throughput/pass >=97%; later qualification unchanged
+I (38422) asic_init: Proto qualification 125.000MHz chip0@125.000MHz: 152.32/156.00 GH/s throughput=97.64% pass/fail=36557/831 pass_rate=97.78%
+I (38425) asic_init: Proto qualification 125.000MHz chip1@125.000MHz: 151.79/156.00 GH/s throughput=97.30% pass/fail=36429/933 pass_rate=97.50%
+I (38439) asic_init: Proto qualification 125.000MHz chip2@125.000MHz: 154.52/156.00 GH/s throughput=99.05% pass/fail=37086/399 pass_rate=98.94%
+I (38452) asic_init: Proto qualification 125.000MHz chip3@125.000MHz: 152.32/156.00 GH/s throughput=97.64% pass/fail=36556/553 pass_rate=98.51%
+I (38468) asic_init: Proto qualification 125.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=4.18 A
+I (38478) asic_init: Proto qualification 125.000MHz: total=610.95/624.00 GH/s throughput=97.91% min_chip=97.30% min_pass=97.50% balance=9 mV => REJECT
+W (38512) asic_init: BCAST END result=ERROR healthy_streak=0 max_PCB=1136/1125 mV ASIC_power=OFF

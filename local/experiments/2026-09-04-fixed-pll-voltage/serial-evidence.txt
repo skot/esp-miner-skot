@@ -1,0 +1,415 @@
+W (29324) asic_init: BCAST BEGIN fixed_PLL=350 baseline_voltage=1120 test_voltage=1100; guard=1200; NVS unchanged
+I (33847) asic_init: Proto qualification 100.000MHz chip0@100.000MHz: 121.18/124.80 GH/s throughput=97.10% pass/fail=29084/712 pass_rate=97.61%
+I (33850) asic_init: Proto qualification 100.000MHz chip1@100.000MHz: 121.67/124.80 GH/s throughput=97.49% pass/fail=29200/775 pass_rate=97.41%
+I (33864) asic_init: Proto qualification 100.000MHz chip2@100.000MHz: 123.50/124.80 GH/s throughput=98.96% pass/fail=29641/367 pass_rate=98.78%
+I (33877) asic_init: Proto qualification 100.000MHz chip3@100.000MHz: 121.24/124.80 GH/s throughput=97.15% pass/fail=29098/464 pass_rate=98.43%
+I (33897) asic_init: Proto qualification 100.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=3.50 A
+I (33903) asic_init: Proto qualification 100.000MHz: total=487.60/499.20 GH/s throughput=97.68% min_chip=97.10% min_pass=97.41% balance=9 mV => REJECT
+W (33917) asic_init: BCAST HOLD frequency=100; rejected baseline; capture frozen counters then one new arm, observe 90s
+W (34498) asic_init: BCAST SAMPLE phase=rejected_frozen A1 counter_us=33460095 dt_us=0 pass=7381,7083,7247,7373 rate=-1.00,-1.00,-1.00,-1.00 zero=1,0,0,0 D2_mV=279.50 fail=275,160,163,113 temp_C=28.94
+W (34593) asic_init: BCAST SAMPLE phase=rejected_frozen A2 counter_us=33555058 dt_us=0 pass=7309,7213,7424,7254 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=279.30 fail=179,305,139,149 temp_C=28.78
+W (34688) asic_init: BCAST SAMPLE phase=rejected_frozen A3 counter_us=33649992 dt_us=0 pass=7372,7414,7436,7419 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=281.94 fail=126,130,55,53 temp_C=28.45
+W (34782) asic_init: BCAST SAMPLE phase=rejected_frozen A4 counter_us=33744693 dt_us=0 pass=7407,7228,7158,7305 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=281.38 fail=107,177,107,69 temp_C=30.43
+W (34792) asic_init: BCAST RAIL phase=rejected_frozen PCB=1116/1123 mV TPS=3.496A
+W (34808) mc3: Started active-profile SPDLOG observation count=2146 runtime=180.020 seconds; arm reapplied SPD/reset check FIFO; subsequent counter reads need no work or PLL writes
+W (35369) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=34331559 dt_us=0 pass=853,909,955,1039 rate=-1.00,-1.00,-1.00,-1.00 zero=1,0,0,0 D2_mV=279.45 fail=24,31,23,15 temp_C=29.11
+W (35465) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=34426603 dt_us=0 pass=1069,1070,1181,1193 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=279.30 fail=23,33,22,30 temp_C=28.94
+W (35560) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=34521945 dt_us=0 pass=1266,1311,1300,1344 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=281.99 fail=21,25,7,11 temp_C=28.45
+W (35654) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=34616485 dt_us=0 pass=1425,1504,1583,1527 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=281.48 fail=21,34,21,11 temp_C=30.43
+W (35664) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.465A
+W (36485) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=35444752 dt_us=1113193 pass=2801,2947,3021,3122 rate=94.10,98.45,99.80,100.62 zero=1,0,0,0 D2_mV=279.40 fail=110,75,68,48 temp_C=29.11
+W (36581) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=35542982 dt_us=1116379 pass=3106,3083,3190,3277 rate=98.12,96.96,96.77,100.38 zero=0,0,0,0 D2_mV=279.25 fail=51,134,62,77 temp_C=28.94
+W (36679) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=35640759 dt_us=1118814 pass=3294,3314,3345,3377 rate=97.47,96.27,98.29,97.71 zero=0,0,0,0 D2_mV=281.89 fail=49,59,15,24 temp_C=28.61
+W (36775) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=35737398 dt_us=1120913 pass=3580,3537,3522,3594 rate=103.38,97.53,93.02,99.16 zero=0,0,0,0 D2_mV=281.48 fail=49,95,47,29 temp_C=30.43
+W (36786) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.465A
+W (37608) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=36569908 dt_us=1125156 pass=4874,4993,5086,5159 rate=99.07,97.78,98.69,97.35 zero=1,0,0,0 D2_mV=279.40 fail=166,118,122,75 temp_C=29.27
+W (37703) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=36665295 dt_us=1122313 pass=5110,5049,5228,5290 rate=96.02,94.20,97.65,96.45 zero=0,0,0,0 D2_mV=279.25 fail=86,220,96,120 temp_C=28.94
+W (37799) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=36760653 dt_us=1119894 pass=5353,5322,5468,5477 rate=98.87,96.42,101.94,100.83 zero=0,0,0,0 D2_mV=281.89 fail=89,96,34,44 temp_C=28.45
+W (37895) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=36856315 dt_us=1118917 pass=5707,5525,5580,5642 rate=102.22,95.54,98.90,98.42 zero=0,0,0,0 D2_mV=281.43 fail=80,137,77,40 temp_C=30.76
+W (37905) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (38727) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=37689164 dt_us=1119256 pass=6879,6991,7169,7202 rate=96.33,95.99,100.07,98.15 zero=1,0,0,0 D2_mV=279.40 fail=246,166,167,105 temp_C=29.44
+W (38825) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=37786905 dt_us=1121610 pass=7113,7124,7246,7386 rate=96.03,99.48,96.75,100.49 zero=0,0,0,0 D2_mV=279.19 fail=119,313,131,178 temp_C=28.94
+W (38922) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=37883633 dt_us=1122980 pass=7372,7411,7510,7508 rate=96.68,100.03,97.78,97.25 zero=0,0,0,0 D2_mV=281.94 fail=134,130,42,57 temp_C=28.61
+W (39017) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=37979227 dt_us=1122912 pass=7799,7554,7613,7592 rate=100.18,97.16,97.35,93.38 zero=0,0,0,0 D2_mV=281.43 fail=111,187,104,59 temp_C=30.76
+W (39027) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.434A
+W (39835) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=38797623 dt_us=1108459 pass=8814,8990,9175,9203 rate=93.87,96.97,97.31,97.07 zero=0,0,0,0 D2_mV=279.45 fail=307,218,211,140 temp_C=29.44
+W (39931) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=38892850 dt_us=1105945 pass=9099,9118,9317,9448 rate=96.56,96.95,100.70,100.26 zero=0,0,0,0 D2_mV=279.19 fail=162,414,169,229 temp_C=29.11
+W (40027) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=38988893 dt_us=1105260 pass=9369,9388,9488,9580 rate=97.16,96.19,96.23,100.81 zero=0,0,0,0 D2_mV=281.94 fail=171,153,62,66 temp_C=28.78
+W (40123) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=39084819 dt_us=1105592 pass=9850,9557,9563,9602 rate=99.76,97.42,94.84,97.76 zero=0,0,0,0 D2_mV=281.53 fail=125,247,135,75 temp_C=30.59
+W (40133) asic_init: BCAST RAIL phase=rejected_hold PCB=1117/1122 mV TPS=3.465A
+W (40960) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=39922072 dt_us=1124449 pass=10802,11095,11323,11338 rate=95.07,100.66,102.72,102.10 zero=0,0,0,0 D2_mV=279.30 fail=387,258,247,178 temp_C=29.27
+W (41063) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=40025078 dt_us=1132228 pass=11139,11097,11340,11482 rate=96.89,93.99,96.08,96.60 zero=0,0,0,0 D2_mV=279.25 fail=202,488,200,272 temp_C=29.11
+W (41159) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=40120822 dt_us=1131929 pass=11340,11452,11560,11643 rate=93.63,98.05,98.43,98.00 zero=0,0,0,0 D2_mV=281.94 fail=204,181,75,78 temp_C=28.78
+W (41255) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=40216826 dt_us=1132007 pass=11920,11633,11610,11704 rate=98.33,98.62,97.24,99.85 zero=0,0,0,0 D2_mV=281.43 fail=147,324,157,86 temp_C=30.76
+W (41267) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1121 mV TPS=3.531A
+W (42086) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=41048662 dt_us=1126590 pass=12757,13131,13383,13431 rate=93.31,97.18,98.33,99.90 zero=0,0,0,0 D2_mV=279.40 fail=463,297,287,217 temp_C=29.44
+W (42183) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=41144981 dt_us=1119903 pass=13212,13119,13316,13427 rate=99.54,97.09,94.88,93.39 zero=0,0,0,0 D2_mV=279.19 fail=244,570,237,331 temp_C=28.94
+W (42279) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=41241324 dt_us=1120502 pass=13351,13544,13582,13666 rate=96.51,100.40,97.04,97.08 zero=0,0,0,0 D2_mV=281.94 fail=233,209,89,99 temp_C=28.78
+W (42375) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=41337161 dt_us=1120335 pass=13969,13645,13652,13804 rate=98.35,96.57,98.01,100.79 zero=0,0,0,0 D2_mV=281.38 fail=174,387,182,99 temp_C=30.92
+W (42386) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.496A
+W (43211) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=42173319 dt_us=1124657 pass=14752,15163,15428,15496 rate=95.39,97.16,97.78,98.73 zero=0,0,0,0 D2_mV=279.40 fail=536,344,323,256 temp_C=29.44
+W (43307) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=42269362 dt_us=1124381 pass=15303,15136,15322,15495 rate=100.00,96.46,95.94,98.90 zero=0,0,0,0 D2_mV=279.19 fail=280,653,289,379 temp_C=29.27
+W (43404) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=42365496 dt_us=1124172 pass=15434,15639,15662,15712 rate=99.64,100.21,99.49,97.87 zero=0,0,0,0 D2_mV=281.89 fail=263,237,106,123 temp_C=28.78
+W (43500) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=42461852 dt_us=1124691 pass=16002,15639,15707,15778 rate=97.20,95.34,98.25,94.38 zero=0,0,0,0 D2_mV=281.38 fail=198,448,225,115 temp_C=30.92
+W (43516) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1124 mV TPS=3.465A
+W (44342) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=43303801 dt_us=1130482 pass=16804,17247,17518,17533 rate=97.61,99.13,99.41,96.89 zero=0,0,0,0 D2_mV=279.40 fail=603,387,367,286 temp_C=29.60
+W (44438) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=43400061 dt_us=1130699 pass=17395,17221,17400,17541 rate=99.49,99.16,98.82,97.30 zero=0,0,0,0 D2_mV=279.09 fail=323,748,334,429 temp_C=29.27
+W (44534) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=43496072 dt_us=1130576 pass=17502,17715,17736,17756 rate=98.36,98.74,98.64,97.22 zero=0,0,0,0 D2_mV=281.94 fail=292,267,120,135 temp_C=28.94
+W (44630) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=43592047 dt_us=1130195 pass=18060,17654,17759,17939 rate=97.92,95.87,97.63,102.82 zero=0,0,0,0 D2_mV=281.58 fail=224,507,265,142 temp_C=30.92
+W (44642) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1124 mV TPS=3.465A
+W (45465) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=44426639 dt_us=1122838 pass=18803,19391,19586,19692 rate=95.73,102.68,99.04,103.40 zero=0,0,0,0 D2_mV=279.40 fail=677,442,397,316 temp_C=29.60
+W (45562) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=44522875 dt_us=1122814 pass=19454,19205,19388,19615 rate=98.61,95.02,95.21,99.33 zero=0,0,0,0 D2_mV=279.30 fail=353,829,371,465 temp_C=29.27
+W (45659) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=44620741 dt_us=1124669 pass=19637,19755,19782,19750 rate=102.08,97.54,97.82,95.34 zero=0,0,0,0 D2_mV=281.84 fail=324,294,134,153 temp_C=28.94
+W (45756) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=44717336 dt_us=1125289 pass=20180,19666,19809,20029 rate=101.31,96.15,97.96,99.87 zero=0,0,0,0 D2_mV=281.63 fail=247,557,292,155 temp_C=30.92
+W (45771) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.496A
+W (46586) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=45547360 dt_us=1120721 pass=20880,21420,21633,21749 rate=99.66,97.35,98.22,98.70 zero=0,0,0,0 D2_mV=279.40 fail=758,477,442,341 temp_C=29.77
+W (46683) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=45645487 dt_us=1122612 pass=21443,21225,21379,21619 rate=95.27,96.76,95.37,95.99 zero=0,0,0,0 D2_mV=279.19 fail=400,923,411,511 temp_C=29.27
+W (46780) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=45742596 dt_us=1121855 pass=21714,21805,21878,21917 rate=99.56,98.26,100.47,103.87 zero=0,0,0,0 D2_mV=282.04 fail=359,330,153,165 temp_C=28.94
+W (46876) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=45838418 dt_us=1121082 pass=22262,21773,21836,22132 rate=99.86,101.06,97.23,100.87 zero=0,0,0,0 D2_mV=281.58 fail=270,625,315,168 temp_C=30.92
+W (46887) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (47711) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=46673016 dt_us=1125656 pass=22928,23507,23647,23806 rate=97.83,99.70,96.21,98.26 zero=0,0,0,0 D2_mV=279.35 fail=833,523,485,371 temp_C=29.60
+W (47808) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=46769834 dt_us=1124347 pass=23431,23123,23396,23662 rate=95.08,90.77,96.47,97.71 zero=0,0,0,0 D2_mV=279.19 fail=444,1036,452,567 temp_C=29.44
+W (47905) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=46866615 dt_us=1124019 pass=23814,23922,23972,24014 rate=100.46,101.28,100.18,100.32 zero=0,0,0,0 D2_mV=281.99 fail=385,358,163,175 temp_C=28.94
+W (48002) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=46963316 dt_us=1124898 pass=24365,23831,23889,24242 rate=100.53,98.38,98.14,100.86 zero=0,0,0,0 D2_mV=281.43 fail=301,678,347,181 temp_C=31.09
+W (48013) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1124 mV TPS=3.496A
+W (48828) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=47790404 dt_us=1117388 pass=24921,25597,25602,25892 rate=95.91,100.58,94.08,100.39 zero=0,0,0,0 D2_mV=279.35 fail=915,568,534,395 temp_C=29.60
+W (48925) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=47886777 dt_us=1116943 pass=25527,25087,25508,25694 rate=100.91,94.55,101.68,97.83 zero=0,0,0,0 D2_mV=279.25 fail=491,1122,487,610 temp_C=29.44
+W (49023) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=47984687 dt_us=1118072 pass=25857,25931,26015,26003 rate=98.26,96.62,98.26,95.66 zero=0,0,0,0 D2_mV=281.99 fail=413,389,176,195 temp_C=28.94
+W (49119) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=48081527 dt_us=1118211 pass=26411,25849,25981,26272 rate=98.39,97.04,100.60,97.62 zero=0,0,0,0 D2_mV=281.48 fail=317,729,385,193 temp_C=31.25
+W (49130) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.496A
+W (49949) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=48910794 dt_us=1120390 pass=26862,27646,27728,27970 rate=93.16,98.34,102.04,99.73 zero=0,0,0,0 D2_mV=279.35 fail=990,615,574,426 temp_C=29.77
+W (50046) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=49007401 dt_us=1120624 pass=27593,27035,27580,27754 rate=99.14,93.47,99.42,98.85 zero=0,0,0,0 D2_mV=279.19 fail=533,1197,523,667 temp_C=29.44
+W (50143) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=49104515 dt_us=1119828 pass=27902,27955,28062,28061 rate=98.20,97.19,98.30,98.82 zero=0,0,0,0 D2_mV=281.94 fail=441,419,182,213 temp_C=28.94
+W (50239) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=49201131 dt_us=1119604 pass=28498,27872,28071,28348 rate=100.24,97.16,100.38,99.71 zero=0,0,0,0 D2_mV=281.53 fail=340,774,411,209 temp_C=30.92
+W (50250) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.465A
+W (51072) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=50034421 dt_us=1123627 pass=28903,29658,29762,30132 rate=97.68,96.29,97.34,103.47 zero=0,0,0,0 D2_mV=279.25 fail=1062,653,611,450 temp_C=29.60
+W (51169) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=50130591 dt_us=1123190 pass=29582,28998,29542,29821 rate=95.22,93.98,93.93,98.96 zero=0,0,0,0 D2_mV=279.09 fail=567,1286,564,712 temp_C=29.60
+W (51265) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=50227172 dt_us=1122657 pass=30008,29994,30219,30140 rate=100.87,97.66,103.32,99.58 zero=0,0,0,0 D2_mV=281.89 fail=474,451,194,224 temp_C=29.27
+W (51363) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=50325027 dt_us=1123896 pass=30576,29934,30163,30414 rate=99.42,98.66,100.09,98.85 zero=0,0,0,0 D2_mV=281.48 fail=360,825,444,227 temp_C=31.09
+W (51374) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.496A
+W (52196) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=51157803 dt_us=1123382 pass=30951,31640,31808,32241 rate=98.03,94.87,97.94,100.95 zero=0,0,0,0 D2_mV=279.30 fail=1143,698,651,484 temp_C=29.77
+W (52292) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=51253789 dt_us=1123198 pass=31573,31009,31565,31906 rate=95.32,96.28,96.85,99.82 zero=0,0,0,0 D2_mV=279.19 fail=604,1368,594,747 temp_C=29.60
+W (52388) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=51350131 dt_us=1122959 pass=32062,32108,32281,32221 rate=98.36,101.23,98.74,99.65 zero=0,0,0,0 D2_mV=281.94 fail=510,471,210,240 temp_C=29.27
+W (52485) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=51446886 dt_us=1121859 pass=32679,31977,32263,32622 rate=100.80,97.93,100.66,105.83 zero=0,0,0,0 D2_mV=281.48 fail=387,877,470,235 temp_C=31.09
+W (52496) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (53320) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=52281891 dt_us=1124088 pass=33063,33665,33910,34311 rate=101.03,96.87,100.55,99.02 zero=0,0,0,0 D2_mV=279.40 fail=1217,733,689,510 temp_C=29.93
+W (53416) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=52378141 dt_us=1124352 pass=33658,32946,33703,34005 rate=99.72,92.64,102.25,100.39 zero=0,0,0,0 D2_mV=279.04 fail=649,1446,641,795 temp_C=29.60
+W (53514) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=52475977 dt_us=1125846 pass=34186,34149,34361,34327 rate=101.45,97.48,99.35,100.59 zero=0,0,0,0 D2_mV=281.94 fail=554,499,227,254 temp_C=29.11
+W (53610) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=52572405 dt_us=1125519 pass=34735,34010,34367,34703 rate=98.23,97.13,100.52,99.42 zero=0,0,0,0 D2_mV=281.53 fail=411,933,498,257 temp_C=31.09
+W (53622) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.465A
+W (54445) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=53407677 dt_us=1125786 pass=35110,35740,35978,36371 rate=97.77,99.11,98.78,98.40 zero=0,0,0,0 D2_mV=279.35 fail=1288,757,731,535 temp_C=29.93
+W (54541) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=53503492 dt_us=1125351 pass=35673,34938,35761,36023 rate=96.28,95.18,98.34,96.43 zero=0,0,0,0 D2_mV=279.14 fail=694,1533,675,851 temp_C=29.60
+W (54640) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=53600059 dt_us=1124082 pass=36143,36151,36458,36435 rate=93.62,95.77,100.31,100.84 zero=0,0,0,0 D2_mV=281.94 fail=602,524,243,262 temp_C=29.44
+W (54737) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=53698850 dt_us=1126445 pass=36866,35956,36419,36702 rate=101.73,92.90,97.96,95.43 zero=0,0,0,0 D2_mV=281.53 fail=434,989,519,274 temp_C=31.25
+W (54747) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.500A
+W (55571) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=54533486 dt_us=1125809 pass=37125,37728,38011,38452 rate=96.24,94.95,97.10,99.40 zero=0,0,0,0 D2_mV=279.30 fail=1358,798,765,565 temp_C=29.93
+W (55673) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=54632365 dt_us=1128873 pass=37727,36907,37843,38011 rate=97.84,93.79,99.17,94.70 zero=0,0,0,0 D2_mV=279.09 fail=733,1627,713,893 temp_C=29.60
+W (55769) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=54731142 dt_us=1131083 pass=38216,38216,38503,38545 rate=98.55,98.17,97.22,100.31 zero=0,0,0,0 D2_mV=281.99 fail=635,547,254,278 temp_C=29.44
+W (55865) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=54827240 dt_us=1128390 pass=38961,38030,38511,38759 rate=99.84,98.84,99.69,98.03 zero=0,0,0,0 D2_mV=281.53 fail=455,1040,546,293 temp_C=31.25
+W (55876) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (56704) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=55661269 dt_us=1127783 pass=39091,39768,40084,40571 rate=93.74,97.27,98.84,101.03 zero=0,0,0,0 D2_mV=279.19 fail=1429,849,815,593 temp_C=29.93
+W (56801) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=55762404 dt_us=1130039 pass=39821,38897,39959,40048 rate=99.64,94.69,100.69,96.93 zero=0,0,0,0 D2_mV=279.09 fail=769,1724,743,948 temp_C=29.60
+W (56899) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=55859859 dt_us=1128717 pass=40336,40231,40540,40597 rate=101.00,96.00,97.04,97.76 zero=0,0,0,0 D2_mV=282.04 fail=667,593,271,291 temp_C=29.27
+W (56995) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=55956829 dt_us=1129589 pass=40950,40065,40596,40926 rate=94.68,96.87,99.25,103.16 zero=0,0,0,0 D2_mV=281.53 fail=487,1087,573,309 temp_C=31.25
+W (57005) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.500A
+W (57829) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=56790797 dt_us=1129528 pass=41135,41933,42087,42605 rate=97.31,103.07,95.36,96.83 zero=0,0,0,0 D2_mV=279.25 fail=1497,881,867,622 temp_C=29.93
+W (57926) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=56887546 dt_us=1125142 pass=41940,40780,42079,42077 rate=101.27,89.99,101.32,96.97 zero=0,0,0,0 D2_mV=279.09 fail=811,1809,774,1000 temp_C=29.60
+W (58023) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=56984508 dt_us=1124649 pass=42358,42223,42642,42616 rate=96.68,95.24,100.50,96.53 zero=0,0,0,0 D2_mV=281.99 fail=698,629,284,298 temp_C=29.27
+W (58119) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=57081170 dt_us=1124341 pass=42999,42148,42625,43032 rate=98.00,99.62,97.04,100.72 zero=0,0,0,0 D2_mV=281.48 fail=514,1139,603,324 temp_C=31.25
+W (58131) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (58949) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=57910386 dt_us=1119589 pass=43112,43965,44162,44645 rate=94.95,97.60,99.66,97.98 zero=0,0,0,0 D2_mV=279.14 fail=1581,923,902,661 temp_C=29.93
+W (59046) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=58007551 dt_us=1120005 pass=43971,42697,44119,44122 rate=97.51,92.04,97.94,98.18 zero=0,0,0,0 D2_mV=279.04 fail=854,1894,809,1035 temp_C=29.77
+W (59142) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=58104428 dt_us=1119920 pass=44379,44186,44771,44623 rate=97.04,94.25,102.22,96.37 zero=0,0,0,0 D2_mV=281.94 fail=731,658,293,314 temp_C=29.27
+W (59239) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=58200667 dt_us=1119497 pass=45082,44102,44640,45127 rate=100.05,93.86,96.79,100.63 zero=0,0,0,0 D2_mV=281.58 fail=551,1192,630,332 temp_C=31.25
+W (59250) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1121 mV TPS=3.531A
+W (60070) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=59032135 dt_us=1121749 pass=45109,45983,46188,46711 rate=95.73,96.74,97.12,99.04 zero=0,0,0,0 D2_mV=279.30 fail=1644,974,933,689 temp_C=30.10
+W (60167) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=59129243 dt_us=1121692 pass=46107,44674,46119,46109 rate=102.40,94.78,95.88,95.26 zero=0,0,0,0 D2_mV=279.14 fail=892,1965,845,1074 temp_C=29.77
+W (60263) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=59225390 dt_us=1120962 pass=46388,46233,46842,46774 rate=96.37,98.20,99.35,103.18 zero=0,0,0,0 D2_mV=281.99 fail=759,700,306,328 temp_C=29.44
+W (60361) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=59322146 dt_us=1121479 pass=47170,46051,46723,47154 rate=100.12,93.45,99.88,97.19 zero=0,0,0,0 D2_mV=281.53 fail=577,1252,656,340 temp_C=31.42
+W (60372) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (61196) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=60158024 dt_us=1125889 pass=47111,48038,48198,48764 rate=95.62,98.15,96.00,98.05 zero=0,0,0,0 D2_mV=279.25 fail=1721,1018,965,720 temp_C=30.10
+W (61295) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=60256824 dt_us=1127581 pass=48140,46686,48200,48138 rate=96.95,95.95,99.24,96.76 zero=0,0,0,0 D2_mV=279.09 fail=920,2051,883,1115 temp_C=29.77
+W (61391) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=60352960 dt_us=1127570 pass=48412,48362,48955,48859 rate=96.52,101.53,100.77,99.43 zero=0,0,0,0 D2_mV=282.09 fail=797,737,318,349 temp_C=29.44
+W (61487) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=60449024 dt_us=1126878 pass=49306,48032,48671,49261 rate=101.93,94.53,92.96,100.54 zero=0,0,0,0 D2_mV=281.58 fail=600,1297,679,355 temp_C=31.58
+W (61498) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (62320) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=61281575 dt_us=1123551 pass=49098,50132,50199,50840 rate=95.10,100.22,95.77,99.36 zero=0,0,0,0 D2_mV=279.35 fail=1797,1050,1006,748 temp_C=30.10
+W (62416) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=61378356 dt_us=1121532 pass=50139,48704,50246,50181 rate=95.84,96.76,98.10,97.95 zero=0,0,0,0 D2_mV=279.09 fail=960,2154,919,1163 temp_C=29.93
+W (62513) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=61474630 dt_us=1121670 pass=50504,50408,51104,50980 rate=100.29,98.09,103.02,101.68 zero=0,0,0,0 D2_mV=282.09 fail=827,770,329,358 temp_C=29.44
+W (62609) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=61571357 dt_us=1122333 pass=51396,50072,50763,51338 rate=100.14,97.74,100.23,99.51 zero=0,0,0,0 D2_mV=281.53 fail=626,1347,699,366 temp_C=31.42
+W (62622) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (63443) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=62405226 dt_us=1123651 pass=51145,52193,52285,52908 rate=97.96,98.63,99.83,98.97 zero=0,0,0,0 D2_mV=279.25 fail=1873,1091,1041,777 temp_C=30.10
+W (63540) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=62502367 dt_us=1124011 pass=52147,50722,52375,52248 rate=96.06,96.54,101.85,98.89 zero=0,0,0,0 D2_mV=279.14 fail=1006,2244,957,1208 temp_C=29.93
+W (63636) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=62598378 dt_us=1123748 pass=52644,52498,53154,52985 rate=102.40,100.01,98.10,95.94 zero=0,0,0,0 D2_mV=281.94 fail=851,802,339,372 temp_C=29.60
+W (63734) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=62695038 dt_us=1123681 pass=53477,52089,52784,53479 rate=99.59,96.52,96.71,102.46 zero=0,0,0,0 D2_mV=281.48 fail=652,1407,724,381 temp_C=31.58
+W (63745) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (64559) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=63521623 dt_us=1116397 pass=53138,54251,54373,54950 rate=96.00,99.13,100.57,98.36 zero=0,0,0,0 D2_mV=279.25 fail=1953,1135,1083,801 temp_C=30.10
+W (64655) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=63617631 dt_us=1115264 pass=54262,52704,54380,54296 rate=101.98,95.56,96.67,98.75 zero=0,0,0,0 D2_mV=279.09 fail=1050,2323,997,1251 temp_C=29.93
+W (64752) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=63714042 dt_us=1115664 pass=54647,54526,55238,55059 rate=96.54,97.75,100.45,99.96 zero=0,0,0,0 D2_mV=282.09 fail=893,828,355,387 temp_C=29.60
+W (64848) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=63810353 dt_us=1115315 pass=55553,54134,54846,55606 rate=100.09,98.60,99.42,102.55 zero=0,0,0,0 D2_mV=281.48 fail=675,1456,751,403 temp_C=31.58
+W (64859) asic_init: BCAST RAIL phase=rejected_hold PCB=1117/1122 mV TPS=3.562A
+W (65683) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=64644993 dt_us=1123370 pass=55136,56371,56429,57067 rate=95.64,101.48,98.42,101.34 zero=0,0,0,0 D2_mV=279.30 fail=2028,1177,1125,829 temp_C=30.10
+W (65781) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=64743212 dt_us=1125581 pass=56354,54688,56409,56224 rate=99.94,94.78,96.93,92.11 zero=0,0,0,0 D2_mV=279.04 fail=1092,2424,1029,1284 temp_C=29.77
+W (65877) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=64839491 dt_us=1125449 pass=56679,56599,57346,57158 rate=97.09,99.05,100.72,100.29 zero=0,0,0,0 D2_mV=281.94 fail=920,865,363,398 temp_C=29.60
+W (65973) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=64935430 dt_us=1125077 pass=57617,56244,56919,57766 rate=98.65,100.85,99.08,103.24 zero=0,0,0,0 D2_mV=281.58 fail=696,1510,782,423 temp_C=31.42
+W (65984) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (66820) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=65781700 dt_us=1136707 pass=57114,58432,58493,59111 rate=93.57,97.50,97.64,96.69 zero=0,0,0,0 D2_mV=279.30 fail=2102,1215,1166,861 temp_C=30.10
+W (66916) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=65878568 dt_us=1135356 pass=58453,56706,58388,58291 rate=99.41,95.58,93.73,97.90 zero=0,0,0,0 D2_mV=279.14 fail=1132,2505,1066,1335 temp_C=29.93
+W (67013) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=65974759 dt_us=1135268 pass=58767,58601,59370,59264 rate=98.90,94.83,95.87,99.75 zero=0,0,0,0 D2_mV=282.04 fail=958,892,371,407 temp_C=29.60
+W (67109) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=66070672 dt_us=1135242 pass=59678,58224,59017,59931 rate=97.62,93.79,99.38,102.55 zero=0,0,0,0 D2_mV=281.53 fail=716,1567,815,439 temp_C=31.58
+W (67119) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.500A
+W (67941) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=66902984 dt_us=1121284 pass=59059,60462,60562,61209 rate=93.28,97.35,99.22,100.61 zero=0,0,0,0 D2_mV=279.25 fail=2169,1253,1208,895 temp_C=30.10
+W (68037) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=66999149 dt_us=1120581 pass=60471,58738,60443,60382 rate=96.84,97.51,98.61,100.34 zero=0,0,0,0 D2_mV=279.04 fail=1164,2601,1097,1372 temp_C=29.93
+W (68135) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=67097053 dt_us=1122294 pass=60940,60622,61453,61314 rate=104.12,96.83,99.80,98.22 zero=0,0,0,0 D2_mV=282.04 fail=984,929,383,419 temp_C=29.77
+W (68231) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=67193394 dt_us=1122722 pass=61776,60245,61088,61976 rate=100.48,96.80,99.19,97.95 zero=0,0,0,0 D2_mV=281.48 fail=736,1615,840,458 temp_C=31.75
+W (68242) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (69053) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=68015543 dt_us=1112559 pass=61021,62530,62576,63290 rate=94.83,99.95,97.34,100.58 zero=0,0,0,0 D2_mV=279.35 fail=2226,1295,1262,921 temp_C=30.26
+W (69149) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=68111578 dt_us=1112429 pass=62449,60791,62453,62312 rate=95.61,99.24,97.16,93.29 zero=0,0,0,0 D2_mV=279.09 fail=1201,2680,1125,1422 temp_C=30.10
+W (69245) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=68207585 dt_us=1110532 pass=62943,62674,63437,63385 rate=96.99,99.36,96.07,100.28 zero=0,0,0,0 D2_mV=282.04 fail=1009,960,400,441 temp_C=29.60
+W (69346) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=68306082 dt_us=1112688 pass=63790,62381,63093,64015 rate=97.33,103.23,96.90,98.54 zero=0,0,0,0 D2_mV=281.53 fail=753,1671,877,477 temp_C=31.75
+W (69359) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1121 mV TPS=3.531A
+W (70180) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=69141586 dt_us=1126043 pass=63028,64630,64754,65381 rate=95.84,100.28,104.01,99.85 zero=0,0,0,0 D2_mV=279.25 fail=2312,1328,1304,951 temp_C=30.26
+W (70277) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=69238498 dt_us=1126920 pass=64460,62860,64509,64397 rate=95.96,98.73,98.11,99.49 zero=0,0,0,0 D2_mV=279.09 fail=1236,2758,1161,1461 temp_C=30.10
+W (70374) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=69335449 dt_us=1127864 pass=65125,64754,65512,65474 rate=104.03,99.17,98.93,99.60 zero=0,0,0,0 D2_mV=282.04 fail=1041,991,416,454 temp_C=29.77
+W (70471) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=69432263 dt_us=1126181 pass=65823,64405,65104,66082 rate=97.07,96.64,96.02,98.70 zero=0,0,0,0 D2_mV=281.48 fail=783,1734,917,489 temp_C=31.58
+W (70482) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (71305) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=70266921 dt_us=1125335 pass=65100,66678,66772,67482 rate=99.01,97.86,96.43,100.39 zero=0,0,0,0 D2_mV=279.35 fail=2401,1366,1334,985 temp_C=30.43
+W (71407) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=70368827 dt_us=1130329 pass=66482,64788,66577,66467 rate=96.19,91.72,98.38,98.48 zero=0,0,0,0 D2_mV=279.04 fail=1282,2822,1189,1521 temp_C=30.10
+W (71503) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=70465018 dt_us=1129569 pass=67175,66844,67541,67554 rate=97.59,99.49,96.59,99.02 zero=0,0,0,0 D2_mV=282.04 fail=1079,1011,436,464 temp_C=29.77
+W (71600) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=70561427 dt_us=1129164 pass=67976,66398,67143,68215 rate=102.53,94.91,97.10,101.58 zero=0,0,0,0 D2_mV=281.48 fail=812,1778,949,512 temp_C=31.58
+W (71611) asic_init: BCAST RAIL phase=rejected_hold PCB=1117/1122 mV TPS=3.562A
+W (72434) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=71396637 dt_us=1129716 pass=67190,68707,68784,69569 rate=99.48,96.58,95.77,99.34 zero=0,0,0,0 D2_mV=279.25 fail=2466,1407,1375,1009 temp_C=30.26
+W (72531) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=71492992 dt_us=1124165 pass=68573,66781,68614,68464 rate=100.02,95.33,97.44,95.52 zero=0,0,0,0 D2_mV=278.99 fail=1321,2913,1232,1566 temp_C=30.10
+W (72627) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=71589597 dt_us=1124579 pass=69293,68931,69584,69665 rate=101.27,99.79,97.69,100.94 zero=0,0,0,0 D2_mV=282.04 fail=1110,1034,454,476 temp_C=29.60
+W (72723) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=71685665 dt_us=1124238 pass=70057,68332,69186,70310 rate=99.54,92.50,97.72,100.21 zero=0,0,0,0 D2_mV=281.58 fail=835,1835,989,523 temp_C=31.75
+W (72735) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (73561) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=72523157 dt_us=1126520 pass=69156,70822,70877,71591 rate=93.84,100.96,99.91,96.52 zero=0,0,0,0 D2_mV=279.19 fail=2537,1446,1406,1039 temp_C=30.43
+W (73659) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=72621139 dt_us=1128147 pass=70622,68819,70689,70488 rate=97.67,97.14,98.90,96.47 zero=0,0,0,0 D2_mV=279.09 fail=1360,2993,1282,1607 temp_C=30.10
+W (73755) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=72717384 dt_us=1127787 pass=71360,70958,71705,71743 rate=98.56,96.65,101.13,99.08 zero=0,0,0,0 D2_mV=281.99 fail=1142,1061,467,487 temp_C=29.77
+W (73855) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=72815142 dt_us=1129477 pass=72125,70374,71333,72447 rate=98.46,97.22,102.22,101.74 zero=0,0,0,0 D2_mV=281.53 fail=857,1895,1015,539 temp_C=31.75
+W (73869) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (74677) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=73639069 dt_us=1115912 pass=71100,72804,72906,73653 rate=93.68,95.51,97.77,99.36 zero=0,0,0,0 D2_mV=279.19 fail=2612,1485,1460,1071 temp_C=30.59
+W (74774) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=73735676 dt_us=1114537 pass=72671,70884,72780,72497 rate=98.86,99.63,100.88,96.93 zero=0,0,0,0 D2_mV=279.04 fail=1392,3088,1321,1652 temp_C=30.26
+W (74871) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=73832668 dt_us=1115284 pass=73351,72968,73799,73822 rate=96.00,96.91,100.96,100.24 zero=0,0,0,0 D2_mV=282.04 fail=1171,1093,479,503 temp_C=29.77
+W (74967) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=73929605 dt_us=1114463 pass=74195,72361,73335,74449 rate=99.88,95.87,96.60,96.60 zero=0,0,0,0 D2_mV=281.58 fail=886,1941,1040,552 temp_C=31.75
+W (74978) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (75801) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=74763016 dt_us=1123947 pass=73092,74802,74980,75682 rate=95.30,95.59,99.23,97.07 zero=0,0,0,0 D2_mV=279.25 fail=2691,1522,1514,1095 temp_C=30.43
+W (75900) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=74860825 dt_us=1125149 pass=74760,72959,74803,74529 rate=99.84,99.17,96.68,97.11 zero=0,0,0,0 D2_mV=279.09 fail=1435,3179,1350,1699 temp_C=30.10
+W (75997) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=74958908 dt_us=1126240 pass=75411,75025,75861,75906 rate=98.36,98.21,98.45,99.50 zero=0,0,0,0 D2_mV=281.99 fail=1200,1117,488,519 temp_C=29.77
+W (76094) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=75055423 dt_us=1125818 pass=76278,74408,75467,76549 rate=99.49,97.77,101.83,100.30 zero=0,0,0,0 D2_mV=281.58 fail=912,1994,1068,566 temp_C=31.75
+W (76105) asic_init: BCAST RAIL phase=rejected_hold PCB=1117/1122 mV TPS=3.531A
+W (76933) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=75893463 dt_us=1130447 pass=75129,76863,77016,77748 rate=96.90,98.04,96.85,98.28 zero=0,0,0,0 D2_mV=279.25 fail=2761,1559,1558,1136 temp_C=30.59
+W (77030) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=75991860 dt_us=1131035 pass=76896,74910,76854,76479 rate=101.55,92.76,97.51,92.71 zero=0,0,0,0 D2_mV=279.09 fail=1465,3262,1392,1751 temp_C=30.26
+W (77127) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=76088720 dt_us=1129812 pass=77524,77036,78006,77961 rate=100.57,95.71,102.09,97.81 zero=0,0,0,0 D2_mV=281.99 fail=1230,1144,503,533 temp_C=29.93
+W (77223) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=76184804 dt_us=1129381 pass=78340,76525,77524,78630 rate=98.18,100.80,97.94,99.08 zero=0,0,0,0 D2_mV=281.58 fail=937,2048,1099,586 temp_C=31.91
+W (77233) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (78057) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=77019193 dt_us=1125730 pass=77190,78862,79094,79739 rate=98.45,95.49,99.26,95.10 zero=0,0,0,0 D2_mV=279.09 fail=2835,1590,1590,1168 temp_C=30.43
+W (78154) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=77115914 dt_us=1124054 pass=78873,76976,78889,78518 rate=94.58,98.83,97.35,97.54 zero=0,0,0,0 D2_mV=279.04 fail=1499,3341,1417,1796 temp_C=30.26
+W (78251) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=77212638 dt_us=1123918 pass=79586,79060,80100,80078 rate=98.66,96.84,100.19,101.29 zero=0,0,0,0 D2_mV=281.99 fail=1259,1171,519,541 temp_C=29.77
+W (78348) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=77309434 dt_us=1124630 pass=80421,78551,79591,80784 rate=99.50,96.87,98.83,102.99 zero=0,0,0,0 D2_mV=281.58 fail=958,2086,1129,600 temp_C=31.75
+W (78359) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (79181) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=78142767 dt_us=1123574 pass=79106,80900,81173,81844 rate=91.70,97.54,99.50,100.74 zero=0,0,0,0 D2_mV=279.30 fail=2906,1634,1635,1187 temp_C=30.43
+W (79277) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=78239125 dt_us=1123211 pass=80909,78868,80962,80598 rate=97.47,90.58,99.24,99.58 zero=0,0,0,0 D2_mV=279.04 fail=1532,3415,1452,1846 temp_C=30.26
+W (79374) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=78335894 dt_us=1123256 pass=81561,81169,82103,82122 rate=94.55,100.96,95.89,97.85 zero=0,0,0,0 D2_mV=282.04 fail=1289,1202,534,553 temp_C=29.93
+W (79475) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=78434842 dt_us=1125408 pass=82454,80562,81570,82771 rate=97.14,96.09,94.56,94.94 zero=0,0,0,0 D2_mV=281.58 fail=985,2142,1154,618 temp_C=31.91
+W (79486) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1121 mV TPS=3.562A
+W (80295) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=79256912 dt_us=1114145 pass=81151,82954,83143,83931 rate=98.70,99.13,95.08,100.73 zero=0,0,0,0 D2_mV=279.14 fail=2978,1671,1680,1219 temp_C=30.43
+W (80391) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=79353349 dt_us=1114224 pass=82966,80787,82947,82522 rate=99.27,92.61,95.80,92.85 zero=0,0,0,0 D2_mV=279.04 fail=1567,3495,1481,1891 temp_C=30.26
+W (80487) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=79449526 dt_us=1113632 pass=83532,83227,84158,84233 rate=95.17,99.37,99.23,101.93 zero=0,0,0,0 D2_mV=282.09 fail=1317,1241,547,572 temp_C=29.93
+W (80585) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=79546581 dt_us=1111739 pass=84428,82704,83588,84808 rate=95.48,103.61,97.61,98.53 zero=0,0,0,0 D2_mV=281.53 fail=1011,2194,1184,630 temp_C=31.91
+W (80596) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (81418) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=80379850 dt_us=1122938 pass=83236,84989,85056,85985 rate=99.84,97.45,91.61,98.36 zero=0,0,0,0 D2_mV=279.25 fail=3038,1705,1719,1247 temp_C=30.59
+W (81515) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=80476533 dt_us=1123184 pass=84980,82828,85005,84572 rate=96.42,97.71,98.53,98.15 zero=0,0,0,0 D2_mV=279.04 fail=1608,3580,1515,1936 temp_C=30.43
+W (81612) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=80573530 dt_us=1124004 pass=85600,85210,86327,86293 rate=98.93,94.87,103.77,98.55 zero=0,0,0,0 D2_mV=282.04 fail=1349,1259,554,584 temp_C=29.93
+W (81709) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=80671416 dt_us=1124835 pass=86538,84721,85584,86785 rate=100.87,96.42,95.42,94.51 zero=0,0,0,0 D2_mV=281.58 fail=1034,2234,1216,645 temp_C=31.91
+W (81733) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (82565) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=81526826 dt_us=1146976 pass=85266,87089,87093,88063 rate=95.17,98.45,95.50,97.42 zero=0,0,0,0 D2_mV=279.25 fail=3113,1740,1768,1275 temp_C=30.59
+W (82662) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=81623373 dt_us=1146840 pass=87076,84918,87125,86726 rate=98.28,98.00,99.40,101.00 zero=0,0,0,0 D2_mV=279.09 fail=1649,3684,1550,1973 temp_C=30.43
+W (82758) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=81719918 dt_us=1146388 pass=87702,87265,88448,88420 rate=98.60,96.39,99.49,99.77 zero=0,0,0,0 D2_mV=281.99 fail=1383,1287,574,599 temp_C=29.93
+W (82856) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=81818057 dt_us=1146641 pass=88638,86814,87775,88878 rate=98.48,98.15,102.75,98.15 zero=0,0,0,0 D2_mV=281.53 fail=1051,2283,1244,659 temp_C=31.91
+W (82867) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (83690) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=82652251 dt_us=1125425 pass=87303,89121,89109,90108 rate=97.33,97.09,96.33,97.71 zero=0,0,0,0 D2_mV=279.19 fail=3171,1780,1804,1302 temp_C=30.59
+W (83788) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=82749071 dt_us=1125698 pass=89032,86901,89216,88728 rate=93.44,94.73,99.88,95.63 zero=0,0,0,0 D2_mV=279.04 fail=1688,3756,1588,2014 temp_C=30.43
+W (83884) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=82845948 dt_us=1126030 pass=89736,89328,90657,90513 rate=97.13,98.52,105.49,99.95 zero=0,0,0,0 D2_mV=282.04 fail=1420,1312,581,612 temp_C=29.93
+W (83981) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=82943421 dt_us=1125364 pass=90742,88873,89788,90962 rate=100.54,98.38,96.19,99.58 zero=0,0,0,0 D2_mV=281.63 fail=1079,2333,1263,675 temp_C=31.91
+W (83995) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (84818) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=83779261 dt_us=1127010 pass=89276,91168,91198,92150 rate=94.14,97.67,99.67,97.43 zero=0,0,0,0 D2_mV=279.30 fail=3249,1814,1839,1321 temp_C=30.59
+W (84915) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=83876688 dt_us=1127617 pass=91119,88943,91326,90762 rate=99.52,97.38,100.62,97.00 zero=0,0,0,0 D2_mV=279.09 fail=1714,3845,1618,2057 temp_C=30.26
+W (85018) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=83978692 dt_us=1132744 pass=91808,91430,92641,92670 rate=98.36,99.79,94.18,102.40 zero=0,0,0,0 D2_mV=282.09 fail=1459,1341,595,625 temp_C=29.93
+W (85116) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=84078538 dt_us=1135117 pass=92813,90884,91829,93099 rate=98.11,95.27,96.69,101.23 zero=0,0,0,0 D2_mV=281.63 fail=1110,2382,1287,687 temp_C=31.91
+W (85127) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1124 mV TPS=3.562A
+W (85948) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=84910016 dt_us=1130755 pass=91391,93195,93208,94228 rate=100.58,96.39,95.59,98.82 zero=0,0,0,0 D2_mV=279.19 fail=3321,1854,1882,1348 temp_C=30.59
+W (86049) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=85008657 dt_us=1131969 pass=93193,90943,93382,92795 rate=98.52,95.01,97.67,96.58 zero=0,0,0,0 D2_mV=279.14 fail=1749,3935,1660,2101 temp_C=30.43
+W (86145) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=85107169 dt_us=1128477 pass=93922,93579,94718,94845 rate=100.73,102.40,98.97,103.64 zero=0,0,0,0 D2_mV=281.99 fail=1501,1375,604,639 temp_C=30.10
+W (86242) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=85203800 dt_us=1125262 pass=94911,92985,93927,95173 rate=100.26,100.40,100.26,99.11 zero=0,0,0,0 D2_mV=281.63 fail=1131,2433,1314,700 temp_C=32.08
+W (86256) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.531A
+W (87072) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=86033665 dt_us=1123649 pass=93409,95270,95223,96267 rate=96.57,99.30,96.43,97.58 zero=0,0,0,0 D2_mV=279.25 fail=3384,1896,1916,1378 temp_C=30.59
+W (87168) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=86130013 dt_us=1121356 pass=95328,92848,95360,94893 rate=102.38,91.35,94.85,100.61 zero=0,0,0,0 D2_mV=279.09 fail=1783,4016,1691,2138 temp_C=30.59
+W (87264) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=86226429 dt_us=1119260 pass=95930,95599,96791,96849 rate=96.47,97.05,99.59,96.28 zero=0,0,0,0 D2_mV=282.09 fail=1540,1416,620,656 temp_C=30.10
+W (87361) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=86322792 dt_us=1118992 pass=97007,95040,95997,97198 rate=100.72,98.75,99.47,97.31 zero=0,0,0,0 D2_mV=281.63 fail=1156,2473,1339,709 temp_C=32.08
+W (87374) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (88193) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=87155035 dt_us=1121370 pass=95432,97330,97210,98334 rate=97.01,98.78,95.28,99.12 zero=0,0,0,0 D2_mV=279.19 fail=3454,1930,1964,1405 temp_C=30.76
+W (88289) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=87251147 dt_us=1121134 pass=97402,94784,97421,96979 rate=99.48,92.86,98.85,100.05 zero=0,0,0,0 D2_mV=279.04 fail=1821,4102,1734,2172 temp_C=30.43
+W (88387) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=87348973 dt_us=1122544 pass=97957,97769,98888,98919 rate=97.10,103.95,100.45,99.16 zero=0,0,0,0 D2_mV=282.14 fail=1578,1454,634,665 temp_C=30.10
+W (88483) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=87445469 dt_us=1122677 pass=99087,97050,98107,99226 rate=99.63,96.27,101.06,97.14 zero=0,0,0,0 D2_mV=281.63 fail=1188,2519,1358,719 temp_C=31.91
+W (88495) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (89313) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=88275441 dt_us=1120406 pass=97518,99492,99216,100375 rate=100.12,103.76,96.28,97.96 zero=0,0,0,0 D2_mV=279.09 fail=3524,1955,2006,1428 temp_C=30.59
+W (89410) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=88372457 dt_us=1121310 pass=99404,96872,99488,99105 rate=96.01,100.13,99.12,101.95 zero=0,0,0,0 D2_mV=278.94 fail=1853,4191,1772,2212 temp_C=30.59
+W (89507) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=88468815 dt_us=1119842 pass=100061,99843,100892,100996 rate=101.03,99.59,96.23,99.73 zero=0,0,0,0 D2_mV=281.99 fail=1608,1487,645,680 temp_C=30.10
+W (89603) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=88565252 dt_us=1119783 pass=101103,99074,100137,101295 rate=96.81,97.19,97.48,99.36 zero=0,0,0,0 D2_mV=281.53 fail=1216,2581,1395,735 temp_C=32.08
+W (89615) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.562A
+W (90437) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=89398976 dt_us=1123535 pass=99548,101534,101264,102468 rate=97.16,97.73,98.02,100.17 zero=0,0,0,0 D2_mV=279.25 fail=3600,1989,2046,1456 temp_C=30.92
+W (90537) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=89498469 dt_us=1126012 pass=101402,98878,101491,101203 rate=95.42,95.80,95.65,100.19 zero=0,0,0,0 D2_mV=279.09 fail=1888,4271,1810,2251 temp_C=30.59
+W (90635) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=89597008 dt_us=1128193 pass=102097,101833,102976,103089 rate=97.04,94.85,99.33,99.76 zero=0,0,0,0 D2_mV=281.94 fail=1645,1523,660,692 temp_C=30.10
+W (90732) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=89694036 dt_us=1128784 pass=103171,101166,102276,103368 rate=98.52,99.66,101.90,98.75 zero=0,0,0,0 D2_mV=281.58 fail=1236,2630,1411,743 temp_C=32.08
+W (90745) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (91562) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=90523265 dt_us=1124289 pass=101535,103558,103365,104556 rate=95.04,96.81,100.49,99.87 zero=0,0,0,0 D2_mV=279.25 fail=3665,2030,2098,1477 temp_C=30.76
+W (91660) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=90621467 dt_us=1122998 pass=103452,100875,103580,103249 rate=98.16,95.62,100.03,97.97 zero=0,0,0,0 D2_mV=278.94 fail=1924,4354,1844,2296 temp_C=30.59
+W (91757) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=90718879 dt_us=1121871 pass=104141,103932,105072,105108 rate=97.97,100.61,100.46,96.77 zero=0,0,0,0 D2_mV=281.99 fail=1677,1548,672,701 temp_C=30.43
+W (91855) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=90817071 dt_us=1123035 pass=105210,103148,104295,105442 rate=97.63,94.90,96.67,99.31 zero=0,0,0,0 D2_mV=281.58 fail=1253,2677,1447,753 temp_C=32.08
+W (91866) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (92689) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=91651321 dt_us=1128056 pass=103545,105631,105461,106678 rate=95.81,98.82,99.91,101.15 zero=0,0,0,0 D2_mV=279.14 fail=3734,2061,2139,1501 temp_C=30.92
+W (92786) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=91748159 dt_us=1126692 pass=105606,102882,105632,105287 rate=102.80,95.79,97.93,97.27 zero=0,0,0,0 D2_mV=279.09 fail=1951,4445,1879,2343 temp_C=30.59
+W (92883) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=91845167 dt_us=1126288 pass=106162,105970,107200,107111 rate=96.49,97.30,101.60,95.63 zero=0,0,0,0 D2_mV=282.14 fail=1723,1575,683,712 temp_C=30.26
+W (92980) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=91941810 dt_us=1124739 pass=107366,105188,106393,107474 rate=103.08,97.53,100.30,97.15 zero=0,0,0,0 D2_mV=281.53 fail=1274,2731,1480,770 temp_C=32.24
+W (92993) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1121 mV TPS=3.598A
+W (93811) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=92772936 dt_us=1121615 pass=105512,107747,107502,108795 rate=94.30,101.45,97.85,101.49 zero=0,0,0,0 D2_mV=279.25 fail=3819,2101,2169,1529 temp_C=30.92
+W (93909) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=92871610 dt_us=1123451 pass=107674,104956,107607,107362 rate=98.98,99.27,94.53,99.32 zero=0,0,0,0 D2_mV=278.99 fail=1987,4533,1906,2394 temp_C=30.59
+W (94008) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=92969454 dt_us=1124287 pass=108225,108068,109363,109195 rate=98.67,100.34,103.45,99.67 zero=0,0,0,0 D2_mV=282.09 fail=1765,1599,695,723 temp_C=30.26
+W (94109) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=93069206 dt_us=1127396 pass=109435,107217,108490,109577 rate=98.68,96.78,100.02,100.31 zero=0,0,0,0 D2_mV=281.58 fail=1295,2781,1500,784 temp_C=32.08
+W (94121) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (94946) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=93907490 dt_us=1134554 pass=107542,109862,109632,110915 rate=96.21,100.24,100.95,100.48 zero=0,0,0,0 D2_mV=279.25 fail=3896,2136,2205,1553 temp_C=30.76
+W (95042) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=94004426 dt_us=1132816 pass=109746,106986,109768,109472 rate=98.35,96.36,102.58,100.16 zero=0,0,0,0 D2_mV=279.04 fail=2031,4616,1932,2438 temp_C=30.59
+W (95143) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=94103028 dt_us=1133574 pass=110323,110206,111430,111261 rate=99.52,101.42,98.05,98.00 zero=0,0,0,0 D2_mV=282.09 fail=1795,1624,704,737 temp_C=30.26
+W (95239) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=94201403 dt_us=1132197 pass=111530,109254,110559,111625 rate=99.50,96.75,98.27,97.27 zero=0,0,0,0 D2_mV=281.63 fail=1317,2832,1523,808 temp_C=32.24
+W (95250) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (96072) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=95033890 dt_us=1126400 pass=109477,111923,111657,113031 rate=92.37,98.39,96.67,101.02 zero=0,0,0,0 D2_mV=279.09 fail=3958,2179,2247,1579 temp_C=30.92
+W (96169) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=95130722 dt_us=1126296 pass=111785,108983,111822,111466 rate=97.35,95.34,98.06,95.20 zero=0,0,0,0 D2_mV=279.04 fail=2066,4703,1961,2483 temp_C=30.59
+W (96265) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=95227484 dt_us=1124456 pass=112321,112289,113538,113395 rate=95.55,99.61,100.81,102.05 zero=0,0,0,0 D2_mV=281.99 fail=1823,1651,714,751 temp_C=30.10
+W (96362) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=95324236 dt_us=1122833 pass=113497,111353,112604,113654 rate=94.20,100.52,97.94,97.17 zero=0,0,0,0 D2_mV=281.53 fail=1343,2878,1552,825 temp_C=32.24
+W (96374) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (97206) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=96167855 dt_us=1133965 pass=111526,113948,113714,115038 rate=97.16,96.03,97.54,95.17 zero=0,0,0,0 D2_mV=279.25 fail=4028,2217,2282,1609 temp_C=30.92
+W (97304) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=96266173 dt_us=1135451 pass=113930,110971,113896,113530 rate=101.58,94.15,98.22,97.75 zero=0,0,0,0 D2_mV=279.04 fail=2095,4789,1994,2513 temp_C=30.59
+W (97400) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=96362675 dt_us=1135191 pass=114324,114342,115609,115487 rate=94.88,97.25,98.10,99.10 zero=0,0,0,0 D2_mV=281.99 fail=1849,1676,724,760 temp_C=30.26
+W (97497) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=96458962 dt_us=1134726 pass=115629,113507,114724,115706 rate=101.03,102.08,100.46,97.24 zero=0,0,0,0 D2_mV=281.58 fail=1370,2925,1579,840 temp_C=32.41
+W (97508) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (98334) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=97295327 dt_us=1127472 pass=113500,116005,115728,117143 rate=94.15,98.11,96.05,100.39 zero=0,0,0,0 D2_mV=279.19 fail=4094,2244,2323,1643 temp_C=30.92
+W (98430) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=97392489 dt_us=1126316 pass=115968,112967,115965,115595 rate=97.30,95.29,98.78,98.59 zero=0,0,0,0 D2_mV=279.04 fail=2130,4885,2025,2563 temp_C=30.76
+W (98527) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=97488988 dt_us=1126313 pass=116443,116451,117670,117471 rate=101.17,100.69,98.40,94.72 zero=0,0,0,0 D2_mV=282.09 fail=1881,1708,733,773 temp_C=30.26
+W (98629) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=97588126 dt_us=1129164 pass=117672,115505,116814,117766 rate=97.29,95.15,99.53,98.10 zero=0,0,0,0 D2_mV=281.58 fail=1387,2983,1601,852 temp_C=32.41
+W (98641) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.629A
+W (99456) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=98418433 dt_us=1123106 pass=115383,118000,117748,119152 rate=90.16,95.52,96.72,96.19 zero=0,0,0,0 D2_mV=279.14 fail=4162,2285,2364,1672 temp_C=31.09
+W (99554) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=98516423 dt_us=1123934 pass=118047,114970,118069,117654 rate=99.47,95.83,100.66,98.51 zero=0,0,0,0 D2_mV=278.99 fail=2160,4975,2051,2612 temp_C=30.76
+W (99657) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=98616015 dt_us=1127027 pass=118425,118588,119739,119593 rate=94.57,101.96,98.72,101.25 zero=0,0,0,0 D2_mV=282.09 fail=1913,1740,739,790 temp_C=30.43
+W (99755) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=98716673 dt_us=1128547 pass=119711,117462,118874,119835 rate=97.15,93.25,98.16,98.58 zero=0,0,0,0 D2_mV=281.68 fail=1409,3043,1625,868 temp_C=32.08
+W (99767) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (100581) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=99542548 dt_us=1124115 pass=117434,120146,119757,121251 rate=98.11,102.66,96.10,100.41 zero=0,0,0,0 D2_mV=279.19 fail=4225,2324,2399,1702 temp_C=30.92
+W (100679) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=99640646 dt_us=1124223 pass=120030,117015,120177,119668 rate=94.85,97.82,100.83,96.33 zero=0,0,0,0 D2_mV=279.04 fail=2197,5052,2082,2654 temp_C=30.76
+W (100777) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=99739439 dt_us=1123424 pass=120500,120584,121789,121622 rate=99.32,95.54,98.12,97.12 zero=0,0,0,0 D2_mV=281.99 fail=1946,1769,750,801 temp_C=30.26
+W (100874) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=99835880 dt_us=1119207 pass=121794,119463,120932,121923 rate=100.08,96.14,98.88,100.32 zero=0,0,0,0 D2_mV=281.63 fail=1425,3103,1650,881 temp_C=32.24
+W (100886) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.566A
+W (101706) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=100666120 dt_us=1123572 pass=119605,122192,121879,123323 rate=103.90,97.92,101.56,99.16 zero=0,0,0,0 D2_mV=279.14 fail=4312,2357,2445,1730 temp_C=30.92
+W (101813) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=100770275 dt_us=1129629 pass=122065,118971,122230,121690 rate=96.87,93.11,97.73,96.25 zero=0,0,0,0 D2_mV=279.04 fail=2229,5133,2109,2693 temp_C=30.76
+W (101921) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=100882473 dt_us=1143034 pass=122644,122656,123918,123694 rate=100.86,97.48,100.16,97.48 zero=0,0,0,0 D2_mV=282.04 fail=1972,1796,758,809 temp_C=30.26
+W (102018) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=100979870 dt_us=1143990 pass=123845,121623,123112,123949 rate=96.41,101.53,102.47,95.23 zero=0,0,0,0 D2_mV=281.48 fail=1440,3148,1682,894 temp_C=32.41
+W (102031) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1121 mV TPS=3.566A
+W (102853) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=101815193 dt_us=1149073 pass=121612,124400,124009,125483 rate=93.92,103.33,99.68,101.08 zero=0,0,0,0 D2_mV=279.14 fail=4402,2391,2470,1759 temp_C=31.09
+W (102950) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=101912373 dt_us=1142098 pass=124103,121051,124405,123791 rate=95.95,97.93,102.41,98.92 zero=0,0,0,0 D2_mV=279.09 fail=2263,5233,2153,2727 temp_C=30.76
+W (103048) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=102009702 dt_us=1127229 pass=124782,124754,125949,125757 rate=101.99,100.08,96.89,98.41 zero=0,0,0,0 D2_mV=282.09 fail=2006,1828,767,826 temp_C=30.26
+W (103145) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=102107232 dt_us=1127362 pass=125884,123694,125160,126074 rate=97.26,98.78,97.69,101.36 zero=0,0,0,0 D2_mV=281.53 fail=1465,3198,1709,905 temp_C=32.41
+W (103157) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.566A
+W (103981) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=102942874 dt_us=1127681 pass=123650,126434,126052,127443 rate=97.18,96.99,97.42,93.46 zero=0,0,0,0 D2_mV=279.09 fail=4462,2424,2498,1789 temp_C=30.92
+W (104078) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=103039872 dt_us=1127499 pass=126226,123114,126446,125811 rate=101.25,98.39,97.34,96.34 zero=0,0,0,0 D2_mV=278.94 fail=2297,5333,2194,2772 temp_C=30.76
+W (104176) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=103137623 dt_us=1127921 pass=126782,126918,128073,127889 rate=95.35,103.17,101.26,101.64 zero=0,0,0,0 D2_mV=282.09 fail=2040,1855,779,832 temp_C=30.43
+W (104279) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=103241380 dt_us=1134148 pass=127942,125767,127227,128169 rate=97.58,98.29,98.00,99.33 zero=0,0,0,0 D2_mV=281.63 fail=1488,3261,1738,914 temp_C=32.41
+W (104291) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (105111) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=104073270 dt_us=1130396 pass=125696,128563,128116,129498 rate=97.33,101.28,98.18,97.76 zero=0,0,0,0 D2_mV=279.09 fail=4549,2462,2539,1821 temp_C=31.09
+W (105209) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=104170676 dt_us=1130804 pass=128297,125201,128484,127886 rate=98.48,99.24,96.91,98.67 zero=0,0,0,0 D2_mV=278.99 fail=2339,5420,2221,2812 temp_C=30.76
+W (105307) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=104269356 dt_us=1131733 pass=128806,128968,130231,129970 rate=96.17,97.40,102.54,98.88 zero=0,0,0,0 D2_mV=282.09 fail=2073,1890,794,845 temp_C=30.43
+W (105404) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=104366247 dt_us=1124867 pass=130028,127821,129237,130244 rate=99.72,98.19,96.09,99.19 zero=0,0,0,0 D2_mV=281.58 fail=1519,3320,1759,922 temp_C=32.41
+W (105416) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (106238) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=105199173 dt_us=1125903 pass=127767,130656,130064,131640 rate=98.91,99.96,93.04,102.30 zero=0,0,0,0 D2_mV=279.14 fail=4623,2505,2574,1842 temp_C=30.92
+W (106337) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=105298022 dt_us=1127346 pass=130297,127173,130595,129917 rate=95.40,94.06,100.69,96.88 zero=0,0,0,0 D2_mV=279.04 fail=2377,5490,2259,2850 temp_C=30.92
+W (106435) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=105396361 dt_us=1127005 pass=130960,130955,132297,132109 rate=102.77,94.81,98.58,102.06 zero=0,0,0,0 D2_mV=281.94 fail=2113,1924,806,854 temp_C=30.43
+W (106532) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=105493780 dt_us=1127533 pass=132115,129915,131277,132376 rate=99.53,99.86,97.29,101.68 zero=0,0,0,0 D2_mV=281.63 fail=1538,3368,1785,939 temp_C=32.41
+W (106543) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (107376) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=106338056 dt_us=1138883 pass=129878,132702,132187,133742 rate=99.67,96.60,100.24,99.25 zero=0,0,0,0 D2_mV=279.19 fail=4705,2542,2616,1865 temp_C=31.09
+W (107473) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=106434741 dt_us=1136719 pass=132359,129259,132702,132025 rate=97.54,98.68,99.67,99.72 zero=0,0,0,0 D2_mV=278.89 fail=2403,5566,2290,2888 temp_C=30.92
+W (107571) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=106532391 dt_us=1136030 pass=133044,133144,134420,134122 rate=98.64,103.61,100.49,95.28 zero=0,0,0,0 D2_mV=282.04 fail=2139,1964,817,869 temp_C=30.43
+W (107669) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=106630530 dt_us=1136750 pass=134238,132074,133376,134488 rate=100.43,102.13,99.29,99.91 zero=0,0,0,0 D2_mV=281.53 fail=1566,3415,1811,949 temp_C=32.41
+W (107680) asic_init: BCAST RAIL phase=rejected_hold PCB=1117/1122 mV TPS=3.566A
+W (108502) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=107464434 dt_us=1126378 pass=131885,134697,134261,135764 rate=95.81,95.24,99.01,96.53 zero=0,0,0,0 D2_mV=279.09 fail=4780,2583,2649,1889 temp_C=31.09
+W (108600) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=107561504 dt_us=1126763 pass=134334,131257,134788,134151 rate=94.25,95.35,99.55,101.46 zero=0,0,0,0 D2_mV=279.09 fail=2440,5658,2315,2945 temp_C=30.76
+W (108698) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=107660012 dt_us=1127621 pass=135150,135212,136389,136180 rate=100.43,98.62,93.90,98.14 zero=0,0,0,0 D2_mV=281.99 fail=2171,1994,828,879 temp_C=30.43
+W (108795) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=107757027 dt_us=1126497 pass=136374,134112,135478,136598 rate=101.96,97.28,100.34,100.72 zero=0,0,0,0 D2_mV=281.63 fail=1582,3462,1834,967 temp_C=32.41
+W (108807) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1124 mV TPS=3.598A
+W (109624) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=108586169 dt_us=1121735 pass=134039,136827,136335,137774 rate=103.26,102.11,99.42,96.35 zero=0,0,0,0 D2_mV=279.09 fail=4853,2623,2680,1925 temp_C=31.09
+W (109721) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=108683417 dt_us=1121913 pass=136375,133198,136834,136197 rate=97.82,93.03,98.06,98.06 zero=0,0,0,0 D2_mV=278.99 fail=2477,5755,2353,2992 temp_C=30.92
+W (109818) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=108780297 dt_us=1120285 pass=137265,137280,138510,138265 rate=101.52,99.26,101.81,100.08 zero=0,0,0,0 D2_mV=282.04 fail=2201,2027,834,896 temp_C=30.43
+W (109915) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=108877412 dt_us=1120385 pass=138403,136222,137539,138657 rate=97.38,101.27,98.92,98.82 zero=0,0,0,0 D2_mV=281.53 fail=1603,3508,1858,977 temp_C=32.41
+W (109927) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1122 mV TPS=3.566A
+W (110748) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=109709911 dt_us=1123742 pass=136041,138882,138393,139900 rate=95.80,98.34,98.48,101.73 zero=0,0,0,0 D2_mV=279.09 fail=4909,2664,2720,1961 temp_C=31.25
+W (110845) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=109806699 dt_us=1123282 pass=138463,135216,138885,138176 rate=99.96,96.60,98.18,94.74 zero=0,0,0,0 D2_mV=279.04 fail=2514,5838,2389,3031 temp_C=30.76
+W (110942) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=109903601 dt_us=1123304 pass=139338,139279,140522,140386 rate=99.24,95.69,96.32,101.53 zero=0,0,0,0 D2_mV=282.14 fail=2244,2054,845,907 temp_C=30.43
+W (111039) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=110001602 dt_us=1124190 pass=140451,138239,139771,140738 rate=97.96,96.48,106.76,99.54 zero=0,0,0,0 D2_mV=281.68 fail=1632,3559,1889,991 temp_C=32.57
+W (111051) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.566A
+W (111878) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=110838424 dt_us=1128513 pass=138031,140933,140408,141955 rate=94.82,97.73,96.01,97.92 zero=0,0,0,0 D2_mV=279.14 fail=4976,2704,2752,1982 temp_C=31.25
+W (111975) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=110936900 dt_us=1130201 pass=140444,137169,140926,140268 rate=94.25,92.92,97.11,99.53 zero=0,0,0,0 D2_mV=279.04 fail=2553,5920,2428,3068 temp_C=30.92
+W (112073) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=111034804 dt_us=1131203 pass=141510,141234,142636,142396 rate=103.25,92.93,100.49,95.55 zero=0,0,0,0 D2_mV=282.14 fail=2283,2082,855,912 temp_C=30.59
+W (112170) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=111131983 dt_us=1130381 pass=142566,140190,141814,142899 rate=100.61,92.81,97.19,102.80 zero=0,0,0,0 D2_mV=281.63 fail=1657,3607,1915,999 temp_C=32.41
+W (112182) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1121 mV TPS=3.598A
+W (113004) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=111965628 dt_us=1127204 pass=140062,143062,142465,143946 rate=96.89,101.56,98.13,94.98 zero=0,0,0,0 D2_mV=279.14 fail=5056,2736,2792,2010 temp_C=31.25
+W (113101) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=112063171 dt_us=1126271 pass=142549,139157,142967,142327 rate=100.50,94.92,97.45,98.31 zero=0,0,0,0 D2_mV=279.04 fail=2582,5996,2462,3111 temp_C=30.92
+W (113199) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=112160530 dt_us=1125726 pass=143574,143240,144698,144509 rate=98.59,95.82,98.50,100.93 zero=0,0,0,0 D2_mV=281.99 fail=2322,2096,865,924 temp_C=30.43
+W (113297) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=112258254 dt_us=1126271 pass=144646,142279,143839,144995 rate=99.31,99.74,96.68,100.07 zero=0,0,0,0 D2_mV=281.48 fail=1686,3644,1939,1020 temp_C=32.57
+W (113308) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (114130) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=113091277 dt_us=1125649 pass=142107,145161,144406,145978 rate=97.69,100.27,92.72,97.07 zero=0,0,0,0 D2_mV=279.09 fail=5126,2781,2831,2030 temp_C=31.25
+W (114227) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=113188905 dt_us=1125734 pass=144661,141163,145010,144348 rate=100.88,95.82,97.59,96.54 zero=0,0,0,0 D2_mV=279.04 fail=2619,6087,2501,3144 temp_C=30.92
+W (114328) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=113288871 dt_us=1128341 pass=145605,145333,146790,146553 rate=96.79,99.75,99.70,97.41 zero=0,0,0,0 D2_mV=282.04 fail=2350,2125,874,934 temp_C=30.43
+W (114425) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=113386785 dt_us=1128531 pass=146646,144290,145865,147100 rate=95.30,95.82,96.54,100.30 zero=0,0,0,0 D2_mV=281.63 fail=1712,3683,1962,1038 temp_C=32.41
+W (114437) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (115258) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=114219793 dt_us=1128516 pass=144141,147277,146472,148107 rate=96.92,100.83,98.44,101.45 zero=0,0,0,0 D2_mV=279.14 fail=5199,2813,2873,2063 temp_C=31.09
+W (115358) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=114318233 dt_us=1129328 pass=146760,143226,147085,146459 rate=99.94,98.23,98.80,100.52 zero=0,0,0,0 D2_mV=278.94 fail=2653,6154,2527,3183 temp_C=31.09
+W (115455) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=114416799 dt_us=1127928 pass=147641,147414,148890,148668 rate=97.06,99.21,100.12,100.83 zero=0,0,0,0 D2_mV=282.09 fail=2382,2147,885,946 temp_C=30.59
+W (115551) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=114513548 dt_us=1126763 pass=148746,146386,147927,149266 rate=100.22,100.03,98.41,103.37 zero=0,0,0,0 D2_mV=281.63 fail=1747,3727,1983,1053 temp_C=32.41
+W (115563) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1124 mV TPS=3.566A
+W (116386) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=115345942 dt_us=1126149 pass=146089,149398,148523,150173 rate=93.02,101.28,97.93,98.65 zero=0,0,0,0 D2_mV=279.09 fail=5277,2857,2902,2090 temp_C=31.25
+W (116483) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=115445200 dt_us=1126967 pass=148753,145260,149132,148510 rate=95.10,97.05,97.67,97.86 zero=0,0,0,0 D2_mV=278.99 fail=2690,6246,2559,3224 temp_C=30.92
+W (116581) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=115543504 dt_us=1126705 pass=149648,149451,150958,150731 rate=95.79,97.22,98.70,98.46 zero=0,0,0,0 D2_mV=282.09 fail=2417,2184,901,960 temp_C=30.43
+W (116678) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=115640503 dt_us=1126955 pass=150794,148458,149984,151381 rate=97.72,98.87,98.15,100.92 zero=0,0,0,0 D2_mV=281.63 fail=1775,3787,2015,1059 temp_C=32.57
+W (116690) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1124 mV TPS=3.566A
+W (117514) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=116476283 dt_us=1130341 pass=148178,151386,150546,152290 rate=99.38,94.57,96.24,100.71 zero=0,0,0,0 D2_mV=279.19 fail=5343,2911,2937,2113 temp_C=31.25
+W (117611) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=116573007 dt_us=1127807 pass=150829,147266,151198,150582 rate=98.98,95.64,98.51,98.79 zero=0,0,0,0 D2_mV=278.94 fail=2722,6323,2590,3261 temp_C=30.76
+W (117708) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=116670097 dt_us=1126593 pass=151738,151474,153036,152834 rate=99.76,96.56,99.18,100.38 zero=0,0,0,0 D2_mV=282.09 fail=2453,2218,908,974 temp_C=30.43
+W (117805) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=116767068 dt_us=1126565 pass=152863,150555,151977,153461 rate=98.76,100.09,95.13,99.28 zero=0,0,0,0 D2_mV=281.63 fail=1806,3830,2051,1080 temp_C=32.57
+W (117816) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1122 mV TPS=3.598A
+W (118642) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=117603956 dt_us=1127673 pass=150147,153469,152626,154396 rate=93.89,99.33,99.18,100.42 zero=0,0,0,0 D2_mV=279.04 fail=5415,2952,2973,2138 temp_C=31.09
+W (118739) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=117700654 dt_us=1127647 pass=152864,149280,153272,152678 rate=97.04,96.04,98.90,99.95 zero=0,0,0,0 D2_mV=278.99 fail=2763,6411,2626,3293 temp_C=31.09
+W (118837) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=117798724 dt_us=1128627 pass=153854,153501,155175,154918 rate=100.82,96.58,101.91,99.29 zero=0,0,0,0 D2_mV=282.04 fail=2492,2239,923,980 temp_C=30.59
+W (118934) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=117895565 dt_us=1128497 pass=154909,152603,154000,155560 rate=97.49,97.59,96.40,100.02 zero=0,0,0,0 D2_mV=281.68 fail=1834,3880,2072,1087 temp_C=32.57
+W (118945) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (119765) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=118727127 dt_us=1123171 pass=152223,155537,154666,156481 rate=99.39,99.01,97.67,99.82 zero=0,0,0,0 D2_mV=279.14 fail=5481,2990,3012,2170 temp_C=31.09
+W (119865) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=118825598 dt_us=1124944 pass=154898,151289,155313,154777 rate=97.23,96.03,97.56,100.33 zero=0,0,0,0 D2_mV=278.99 fail=2799,6491,2667,3321 temp_C=30.92
+W (119963) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=118925093 dt_us=1126369 pass=155955,155549,157218,157017 rate=100.30,97.77,97.53,100.21 zero=0,0,0,0 D2_mV=282.14 fail=2515,2268,934,995 temp_C=30.59
+W (120061) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=119022432 dt_us=1126867 pass=156971,154751,156038,157611 rate=98.40,102.50,97.25,97.87 zero=0,0,0,0 D2_mV=281.63 fail=1867,3931,2105,1098 temp_C=32.41
+W (120072) asic_init: BCAST RAIL phase=rejected_hold PCB=1115/1124 mV TPS=3.598A
+W (120896) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=119857293 dt_us=1130166 pass=154255,157661,156703,158610 rate=96.68,101.06,96.92,101.30 zero=0,0,0,0 D2_mV=279.04 fail=5552,3027,3052,2193 temp_C=31.42
+W (120994) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=119955874 dt_us=1130276 pass=157028,153207,157380,156883 rate=101.34,91.25,98.34,100.19 zero=0,0,0,0 D2_mV=278.94 fail=2836,6562,2710,3363 temp_C=31.09
+W (121093) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=120054825 dt_us=1129732 pass=158034,157593,159318,159194 rate=98.96,97.29,99.96,103.62 zero=0,0,0,0 D2_mV=282.19 fail=2541,2289,946,1003 temp_C=30.59
+W (121190) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=120152018 dt_us=1129586 pass=159056,156844,158065,159714 rate=99.25,99.64,96.49,100.11 zero=0,0,0,0 D2_mV=281.68 fail=1886,3975,2126,1112 temp_C=32.74
+W (121204) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (122038) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=121000189 dt_us=1142896 pass=156316,159807,158803,160656 rate=96.97,100.97,98.80,96.26 zero=0,0,0,0 D2_mV=279.14 fail=5626,3076,3102,2225 temp_C=31.09
+W (122137) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=121098477 dt_us=1142603 pass=159179,155274,159438,158949 rate=101.23,97.28,96.85,97.23 zero=0,0,0,0 D2_mV=278.89 fail=2881,6663,2749,3404 temp_C=30.92
+W (122234) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=121196096 dt_us=1141271 pass=160119,159739,161413,161342 rate=98.24,101.11,98.71,101.21 zero=0,0,0,0 D2_mV=282.04 fail=2569,2327,965,1009 temp_C=30.59
+W (122331) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=121292831 dt_us=1140813 pass=161111,158971,160141,161795 rate=96.86,100.26,97.85,98.09 zero=0,0,0,0 D2_mV=281.68 fail=1916,4013,2153,1129 temp_C=32.57
+W (122344) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.598A
+W (123163) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=122125662 dt_us=1125473 pass=158369,161943,160858,162824 rate=98.09,102.05,98.18,103.58 zero=0,0,0,0 D2_mV=279.19 fail=5694,3115,3133,2253 temp_C=31.25
+W (123260) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=122222377 dt_us=1123900 pass=161195,157211,161512,161066 rate=96.46,92.68,99.23,101.29 zero=0,0,0,0 D2_mV=278.89 fail=2914,6758,2788,3446 temp_C=30.92
+W (123357) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=122318971 dt_us=1122875 pass=162207,161814,163466,163443 rate=99.99,99.37,98.32,100.61 zero=0,0,0,0 D2_mV=281.99 fail=2603,2352,972,1018 temp_C=30.59
+W (123455) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=122416553 dt_us=1123722 pass=163210,161011,162240,163954 rate=100.44,97.62,100.44,103.31 zero=0,0,0,0 D2_mV=281.68 fail=1942,4061,2183,1140 temp_C=32.74
+W (123467) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.566A
+W (124291) asic_init: BCAST SAMPLE phase=rejected_hold A1 counter_us=123252786 dt_us=1127124 pass=160348,163956,162873,164906 rate=94.41,96.04,96.13,99.33 zero=0,0,0,0 D2_mV=279.19 fail=5757,3147,3173,2276 temp_C=31.25
+W (124388) asic_init: BCAST SAMPLE phase=rejected_hold A2 counter_us=123350138 dt_us=1127761 pass=163158,159226,163605,163151 rate=93.60,96.08,99.80,99.42 zero=0,0,0,0 D2_mV=278.99 fail=2958,6836,2829,3479 temp_C=30.92
+W (124486) asic_init: BCAST SAMPLE phase=rejected_hold A3 counter_us=123447496 dt_us=1128525 pass=164277,163877,165555,165440 rate=98.63,98.30,99.54,95.16 zero=0,0,0,0 D2_mV=282.14 fail=2637,2381,984,1028 temp_C=30.59
+W (124583) asic_init: BCAST SAMPLE phase=rejected_hold A4 counter_us=123544874 dt_us=1128321 pass=165224,163060,164374,166029 rate=95.98,97.65,101.70,98.89 zero=0,0,0,0 D2_mV=281.58 fail=1971,4098,2218,1150 temp_C=32.57
+W (124596) asic_init: BCAST RAIL phase=rejected_hold PCB=1116/1123 mV TPS=3.566A
+W (124866) asic_init: BCAST END result=COMPLETE healthy_streak=0 max_PCB=1117/1125 mV ASIC_power=OFF

@@ -1,0 +1,8 @@
+W (29301) asic_init: BCAST BEGIN fixed_PLL=350 baseline_voltage=1120 test_voltage=1100; guard=1200; NVS unchanged
+I (33823) asic_init: Proto qualification 100.000MHz chip0@100.000MHz: 121.42/124.80 GH/s throughput=97.29% pass/fail=29141/673 pass_rate=97.74%
+I (33826) asic_init: Proto qualification 100.000MHz chip1@100.000MHz: 121.95/124.80 GH/s throughput=97.72% pass/fail=29268/725 pass_rate=97.58%
+I (33839) asic_init: Proto qualification 100.000MHz chip2@100.000MHz: 123.73/124.80 GH/s throughput=99.14% pass/fail=29695/307 pass_rate=98.98%
+I (33853) asic_init: Proto qualification 100.000MHz chip3@100.000MHz: 121.43/124.80 GH/s throughput=97.30% pass/fail=29143/430 pass_rate=98.55%
+I (33868) asic_init: Proto qualification 100.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=3.53 A
+I (33879) asic_init: Proto qualification 100.000MHz: total=488.53/499.20 GH/s throughput=97.86% min_chip=97.29% min_pass=97.58% balance=9 mV => REJECT
+W (33900) asic_init: BCAST END result=ERROR healthy_streak=0 max_PCB=1117/1124 mV ASIC_power=OFF

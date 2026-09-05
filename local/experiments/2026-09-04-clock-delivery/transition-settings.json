@@ -1,0 +1,11 @@
+{
+  ":TIM:SCAL?": "1.000000e-01",
+  ":TIM:OFFS?": "5.000000e-01",
+  ":ACQ:MDEP?": "28000000",
+  ":ACQ:SRAT?": "2.00000e+07",
+  ":TRIG:EDGE:LEV?": "1.220000e+00",
+  ":CHAN1:BWLimit?": "20M",
+  ":CHAN2:BWLimit?": "20M",
+  ":CHAN1:PROB?": "1",
+  ":CHAN2:PROB?": "1"
+}

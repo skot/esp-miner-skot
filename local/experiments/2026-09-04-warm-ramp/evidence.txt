@@ -1,0 +1,51 @@
+I (1657) vcore: Holding active-high ASIC power enable low on GPIO10
+W (31213) asic_init: WARM BEGIN baseline=300 voltage=1160 target_temp=55 max_frequency=600; fan lease only, NVS unchanged
+W (31224) asic_init: WARM FAN saved auto=1 min=99 manual=100 target_temp=60; temporary fan starts at 20%
+I (72405) asic_init: Proto qualification 300.000MHz chip0@300.000MHz: 371.02/374.40 GH/s throughput=99.10% pass/fail=89044/899 pass_rate=99.00%
+I (72408) asic_init: Proto qualification 300.000MHz chip1@300.000MHz: 370.74/374.40 GH/s throughput=99.02% pass/fail=88977/764 pass_rate=99.15%
+I (72422) asic_init: Proto qualification 300.000MHz chip2@300.000MHz: 371.06/374.40 GH/s throughput=99.11% pass/fail=89054/426 pass_rate=99.52%
+I (72435) asic_init: Proto qualification 300.000MHz chip3@300.000MHz: 371.23/374.40 GH/s throughput=99.15% pass/fail=89096/441 pass_rate=99.51%
+I (72451) asic_init: Proto qualification 300.000MHz domains: lower=1154 upper=1165 delta=+11 mV total=2319 mV TPS current=9.91 A
+I (72461) asic_init: Proto qualification 300.000MHz: total=1484.05/1497.60 GH/s throughput=99.09% min_chip=99.02% min_pass=99.00% balance=11 mV => PASS
+W (73040) asic_init: BCAST SAMPLE phase=cold300 A1 counter_us=72001697 dt_us=0 pass=22121,22031,22428,22464 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=288.59 fail=392,172,154,158 temp_C=35.54 freq=300
+W (73136) asic_init: BCAST SAMPLE phase=cold300 A2 counter_us=72097171 dt_us=0 pass=22161,22301,22262,22253 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=288.44 fail=125,254,134,231 temp_C=34.55 freq=300
+W (73232) asic_init: BCAST SAMPLE phase=cold300 A3 counter_us=72192955 dt_us=0 pass=22207,22332,22265,22250 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=291.74 fail=102,125,68,107 temp_C=35.21 freq=300
+W (73329) asic_init: BCAST SAMPLE phase=cold300 A4 counter_us=72290167 dt_us=0 pass=22616,22369,21946,22165 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=291.69 fail=137,62,134,82 temp_C=38.18 freq=300
+W (73341) asic_init: BCAST RAIL phase=cold300 PCB=1154/1163 mV TPS=9.938A fan=70% rpm=689
+W (73927) asic_init: BCAST SAMPLE phase=warm300 A1 counter_us=72884896 dt_us=0 pass=2787,2839,2890,3083 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=288.64 fail=44,16,30,16 temp_C=35.71 freq=300
+W (74022) asic_init: BCAST SAMPLE phase=warm300 A2 counter_us=72982838 dt_us=0 pass=3169,3367,3407,3587 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=288.39 fail=17,51,26,33 temp_C=34.72 freq=300
+W (74117) asic_init: BCAST SAMPLE phase=warm300 A3 counter_us=73077918 dt_us=0 pass=3880,3966,4081,4269 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=291.84 fail=16,16,22,14 temp_C=35.38 freq=300
+W (74214) asic_init: BCAST SAMPLE phase=warm300 A4 counter_us=73174966 dt_us=0 pass=4382,4544,4520,4817 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=291.79 fail=30,15,22,8 temp_C=38.35 freq=300
+W (74224) asic_init: BCAST RAIL phase=warm300 PCB=1155/1164 mV TPS=9.938A fan=20% rpm=779
+W (173698) asic_init: WARM REARM at 300MHz; prevents counter expiration during warmup
+W (274208) asic_init: WARM REARM at 300MHz; prevents counter expiration during warmup
+W (317869) asic_init: BCAST SAMPLE phase=warm300 A1 counter_us=316830229 dt_us=1130855 pass=242110,240880,242136,243498 rate=99.57,97.54,99.60,99.73 zero=0,0,0,0 D2_mV=286.87 fail=744,928,935,673 temp_C=53.19 freq=300
+W (317966) asic_init: BCAST SAMPLE phase=warm300 A2 counter_us=316926800 dt_us=1130819 pass=242691,242464,242115,242260 rate=101.35,97.83,98.83,98.08 zero=0,0,0,0 D2_mV=287.02 fail=821,1067,1120,1396 temp_C=52.37 freq=300
+W (318063) asic_init: BCAST SAMPLE phase=warm300 A3 counter_us=317024125 dt_us=1131443 pass=242551,243572,243413,243521 rate=98.73,100.03,97.46,99.79 zero=0,0,0,0 D2_mV=291.74 fail=726,802,728,655 temp_C=52.70 freq=300
+W (318163) asic_init: BCAST SAMPLE phase=warm300 A4 counter_us=317122575 dt_us=1133306 pass=243734,244842,243427,243927 rate=99.89,98.83,98.22,99.67 zero=0,0,0,0 D2_mV=291.79 fail=768,402,805,557 temp_C=56.00 freq=300
+W (318176) asic_init: BCAST RAIL phase=warm300 PCB=1155/1164 mV TPS=11.375A fan=20% rpm=681
+W (318183) asic_init: WARM TEMPERATURE READY; qualify 300MHz at the warm temperature without a PLL update
+I (322526) asic_init: Proto qualification WARM baseline300 chip0@300.000MHz: 371.81/374.40 GH/s throughput=99.31% pass/fail=89235/293 pass_rate=99.67%
+I (322530) asic_init: Proto qualification WARM baseline300 chip1@300.000MHz: 372.58/374.40 GH/s throughput=99.51% pass/fail=89419/388 pass_rate=99.57%
+I (322544) asic_init: Proto qualification WARM baseline300 chip2@300.000MHz: 372.68/374.40 GH/s throughput=99.54% pass/fail=89443/314 pass_rate=99.65%
+I (322559) asic_init: Proto qualification WARM baseline300 chip3@300.000MHz: 373.73/374.40 GH/s throughput=99.82% pass/fail=89696/234 pass_rate=99.74%
+I (322575) asic_init: Proto qualification WARM baseline300 domains: lower=1155 upper=1164 delta=+9 mV total=2319 mV TPS current=11.38 A
+I (322586) asic_init: Proto qualification WARM baseline300: total=1490.80/1497.60 GH/s throughput=99.55% min_chip=99.31% min_pass=99.57% balance=9 mV => PASS
+W (323165) asic_init: BCAST SAMPLE phase=warm_qualified300 A1 counter_us=322126188 dt_us=0 pass=22360,22627,22062,22186 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=286.92 fail=51,85,83,64 temp_C=53.36 freq=300
+W (323265) asic_init: BCAST SAMPLE phase=warm_qualified300 A2 counter_us=322226040 dt_us=0 pass=22381,22212,22504,22322 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=287.02 fail=57,73,100,133 temp_C=52.37 freq=300
+W (323362) asic_init: BCAST SAMPLE phase=warm_qualified300 A3 counter_us=322323157 dt_us=0 pass=22393,22593,22353,22104 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=291.69 fail=96,67,63,62 temp_C=52.86 freq=300
+W (323459) asic_init: BCAST SAMPLE phase=warm_qualified300 A4 counter_us=322420129 dt_us=0 pass=22312,22472,22472,22440 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=291.89 fail=69,40,64,37 temp_C=56.32 freq=300
+W (323470) asic_init: BCAST RAIL phase=warm_qualified300 PCB=1157/1162 mV TPS=11.438A fan=70% rpm=679
+W (323478) asic_init: WARM READY target=325; wait for scope G
+W (324052) asic_init: BCAST SAMPLE phase=wait_scope A1 counter_us=323013235 dt_us=887047 pass=22360,22627,22062,22186 rate=0.00,0.00,0.00,0.00 zero=0,0,0,0 D2_mV=286.87 fail=51,85,83,64 temp_C=53.52 freq=300
+W (324148) asic_init: BCAST SAMPLE phase=wait_scope A2 counter_us=323109067 dt_us=883027 pass=22381,22212,22504,22322 rate=0.00,0.00,0.00,0.00 zero=0,0,0,0 D2_mV=287.02 fail=57,73,100,133 temp_C=52.53 freq=300
+W (324247) asic_init: BCAST SAMPLE phase=wait_scope A3 counter_us=323206288 dt_us=883131 pass=22393,22593,22353,22104 rate=0.00,0.00,0.00,0.00 zero=0,0,0,0 D2_mV=291.74 fail=96,67,63,62 temp_C=52.86 freq=300
+W (324344) asic_init: BCAST SAMPLE phase=wait_scope A4 counter_us=323304369 dt_us=884240 pass=22312,22472,22472,22440 rate=0.00,0.00,0.00,0.00 zero=0,0,0,0 D2_mV=291.84 fail=69,40,64,37 temp_C=56.32 freq=300
+W (324355) asic_init: BCAST RAIL phase=wait_scope PCB=1155/1164 mV TPS=11.438A fan=30% rpm=679
+W (326985) asic_init: BCAST SAMPLE phase=wait_scope A1 counter_us=325946271 dt_us=980335 pass=22360,22627,22062,22186 rate=0.00,0.00,0.00,0.00 zero=0,0,0,0 D2_mV=286.81 fail=51,85,83,64 temp_C=53.36 freq=300
+W (327081) asic_init: BCAST SAMPLE phase=wait_scope A2 counter_us=326041793 dt_us=979780 pass=22381,22212,22504,22322 rate=0.00,0.00,0.00,0.00 zero=0,0,0,0 D2_mV=287.12 fail=57,73,100,133 temp_C=52.37 freq=300
+W (327177) asic_init: BCAST SAMPLE phase=wait_scope A3 counter_us=326138087 dt_us=979395 pass=22393,22593,22353,22104 rate=0.00,0.00,0.00,0.00 zero=0,0,0,0 D2_mV=291.59 fail=96,67,63,62 temp_C=52.86 freq=300
+W (327275) asic_init: BCAST SAMPLE phase=wait_scope A4 counter_us=326235750 dt_us=980209 pass=22312,22472,22472,22440 rate=0.00,0.00,0.00,0.00 zero=0,0,0,0 D2_mV=291.74 fail=69,40,64,37 temp_C=56.32 freq=300
+W (327287) asic_init: BCAST RAIL phase=wait_scope PCB=1155/1164 mV TPS=11.406A fan=30% rpm=1118
+I (327395) vcore: Holding active-high ASIC power enable low on GPIO10
+W (327401) asic_init: WARM END result=STOPPED frequency=300 max_PCB=1167/1166 mV ASIC_power=OFF

@@ -1,0 +1,10 @@
+{
+  ":CALC:MODE?": "SUB",
+  ":CALC:SUB:SA?": "CHAN1",
+  ":CALC:SUB:SB?": "CHAN2",
+  ":CALC:SUB:VSC?": "2.000000e-01",
+  ":CALC:SUB:VOFF?": "-1.660000e+00",
+  ":TRIG:STAT?": "AUTO",
+  ":CHAN1:BWLimit?": "20M",
+  ":CHAN2:BWLimit?": "20M"
+}

@@ -1,0 +1,25 @@
+W (30216) asic_init: BCAST BEGIN voltage=1140 baseline=375 test=400; guard=1200; NVS unchanged
+I (89508) asic_init: Proto qualification BCAST baseline chip0@375.000MHz: 462.29/468.00 GH/s throughput=98.78% pass/fail=110950/1555 pass_rate=98.62%
+I (89511) asic_init: Proto qualification BCAST baseline chip1@375.000MHz: 458.94/468.00 GH/s throughput=98.06% pass/fail=110146/1439 pass_rate=98.71%
+I (89525) asic_init: Proto qualification BCAST baseline chip2@375.000MHz: 464.66/468.00 GH/s throughput=99.29% pass/fail=111518/696 pass_rate=99.38%
+I (89539) asic_init: Proto qualification BCAST baseline chip3@375.000MHz: 465.65/468.00 GH/s throughput=99.50% pass/fail=111757/663 pass_rate=99.41%
+I (89555) asic_init: Proto qualification BCAST baseline domains: lower=1136 upper=1144 delta=+8 mV total=2280 mV TPS current=11.97 A
+I (89566) asic_init: Proto qualification BCAST baseline: total=1851.55/1872.00 GH/s throughput=98.91% min_chip=98.06% min_pass=98.62% balance=8 mV => PASS
+W (89668) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A1 D0 absolute=97.29% zero=0
+W (89669) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A1 D1 absolute=98.97% zero=0
+W (89675) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A1 D2 absolute=98.81% zero=0
+W (89684) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A1 D3 absolute=100.05% zero=0
+W (89780) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A2 D0 absolute=98.89% zero=0
+W (89780) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A2 D1 absolute=95.91% zero=0
+W (89787) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A2 D2 absolute=98.97% zero=0
+W (89796) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A2 D3 absolute=98.49% zero=0
+W (89892) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A3 D0 absolute=99.43% zero=0
+W (89893) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A3 D1 absolute=98.38% zero=0
+W (89899) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A3 D2 absolute=99.84% zero=0
+W (89908) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A3 D3 absolute=99.49% zero=0
+W (90005) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A4 D0 absolute=99.69% zero=0
+W (90006) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A4 D1 absolute=98.82% zero=0
+W (90012) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A4 D2 absolute=99.34% zero=0
+W (90021) asic_init: RESET_DELAY DOMAIN stage=BCAST baseline A4 D3 absolute=100.14% zero=0
+W (90030) asic_init: RESET_DELAY PROFILE stage=BCAST baseline accepted=REJECT
+W (90057) asic_init: BCAST END result=ERROR healthy_streak=0 max_PCB=1138/1145 mV ASIC_power=OFF

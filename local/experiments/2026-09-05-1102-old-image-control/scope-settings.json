@@ -1,0 +1,10 @@
+{
+  ":CHAN1:IMP?": "FIFT",
+  ":CHAN2:IMP?": "OMEG",
+  ":TIM:SCAL?": "5.000000e+00",
+  ":TIM:OFFS?": "2.500000e+01",
+  ":ACQ:SRAT?": "1.00000e+04",
+  ":ACQ:MDEP?": "700000",
+  ":CHAN1:BWLimit?": "20M",
+  ":CHAN2:BWLimit?": "20M"
+}

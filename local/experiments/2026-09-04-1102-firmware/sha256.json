@@ -1,0 +1,22 @@
+{
+  "README.md": "0b58e7c56b51a4747e6b5e142b56c956f663d931d3239d13fb9555486333775e",
+  "analyze_warm.py": "30f1d1400f5a2289b8a75eb6250ad3cb2ee57f1861c34defcf35610846d8b51c",
+  "asic-init-normal-source.c": "46121fa6d4b6e11655f4c942e895ef92e2a06d2c7d1b5ce7a6c7feb5b97c9a3c",
+  "asic-init-source.c": "f60f4eccead2091557ad92a6f97d029c191b8ad78afcdfff3e6cb58aa8f91c23",
+  "build-normal.log": "1cb267a9fd64018af6d12a7435171cd53df911f36c50534aee10104c84c73b14",
+  "build-probe.log": "07c8b5d0f267dd0fc2b3c59205c3f10e5ee7733713e22b788bbfe753db5d0e53",
+  "capture_warm.py": "c1b745b20a2abea3bcf0be267093b87c962b3226f564a5605f8a6b7b5a73a7f9",
+  "changes-from-1103-test.patch": "24a708c0c3669c03aba8ce374d83c819efb7f6486f515a0f76fe02c06d50327f",
+  "device-config-source.h": "1a99f305810f2447da52f7058229dee2732e0b00b24624bacc0b5386cc31b2dd",
+  "esp-miner-1102-warm-probe.bin": "87478c5be3423a8f393a23afc19aa055dd6a8d23b18efcebb00bee01c64f6bfe",
+  "esp-miner-normal.bin": "a65cddaea8afd5f2e818eb474c84c09001a97ea9559a6a5f923df4afa073be7b",
+  "fan-controller-source.c": "c5d89bfe5516297091003c2ff487af657a39039795aa2e1f02d40f5fd443c505",
+  "mc3-source.c": "88804e34c6b9292c2528f9999906e1a815ce24bf81d69a9865abba31317eecb0",
+  "scope_limits.py": "47b0de3c1a9a64286dd8da35f24239a763bba65acbf5ad6829ca2d8f610442cd",
+  "sdkconfig-snapshot": "e1391dbb1f49107678ef93012b13ec3bc696d3d2dc81064704f940dc6ca25fb2",
+  "sequence-check.json": "7d4dd4514499d9b5141ad98c8f81331215de392aefafdff9aa5e0008cecd6062",
+  "test.log": "ea8a5c9bead41a1f293d33aeee6c41eae78164aa81f6844c09e338a9e171d546",
+  "test_board_support.py": "e208f81c531693b30b7e85ef0c9eb064b1a25b91071642a25e515f0bf59fabbb",
+  "tps546-source.c": "9481e844f36af2fc5f8fad8a9e20607ab53a9a7e713dc56fdabbfaaa2cbcb179",
+  "vcore-source.c": "6745b62a174c7fe8d4ecb99e5dff515a5d9130cb71ee6f15da7aaa21698b653a"
+}

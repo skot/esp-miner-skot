@@ -1,0 +1,5 @@
+{
+  ":TRIG:STAT?": "TD",
+  ":CHAN1:IMP?": "FIFT",
+  ":CHAN2:IMP?": "OMEG"
+}

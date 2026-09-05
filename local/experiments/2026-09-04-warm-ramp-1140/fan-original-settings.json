@@ -1,0 +1,11 @@
+{
+  "autofanspeed": 1,
+  "manualFanSpeed": 100,
+  "minFanSpeed": 99,
+  "temptarget": 60,
+  "observedStartupFanPercent": 70,
+  "observedStartupFanRPM": 2729,
+  "frequencyMHz": 400,
+  "coreVoltageMV": 1160,
+  "source": "Read-only /api/system/info before the warmup experiment"
+}

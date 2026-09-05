@@ -1,0 +1,75 @@
+W (29298) asic_init: BCAST BEGIN voltage=1120 baseline=400 test=425; guard=1200; NVS unchanged
+I (33818) asic_init: Proto qualification 100.000MHz chip0@100.000MHz: 122.02/124.80 GH/s throughput=97.77% pass/fail=29284/455 pass_rate=98.47%
+I (33821) asic_init: Proto qualification 100.000MHz chip1@100.000MHz: 122.64/124.80 GH/s throughput=98.27% pass/fail=29433/535 pass_rate=98.21%
+I (33835) asic_init: Proto qualification 100.000MHz chip2@100.000MHz: 124.13/124.80 GH/s throughput=99.46% pass/fail=29791/193 pass_rate=99.36%
+I (33848) asic_init: Proto qualification 100.000MHz chip3@100.000MHz: 122.08/124.80 GH/s throughput=97.82% pass/fail=29300/308 pass_rate=98.96%
+I (33863) asic_init: Proto qualification 100.000MHz domains: lower=1116 upper=1123 delta=+7 mV total=2239 mV TPS current=3.83 A
+I (33874) asic_init: Proto qualification 100.000MHz: total=490.87/499.20 GH/s throughput=98.33% min_chip=97.77% min_pass=98.21% balance=7 mV => PASS
+I (38398) asic_init: Proto qualification 125.000MHz chip0@125.000MHz: 153.29/156.00 GH/s throughput=98.26% pass/fail=36789/593 pass_rate=98.41%
+I (38400) asic_init: Proto qualification 125.000MHz chip1@125.000MHz: 152.84/156.00 GH/s throughput=97.97% pass/fail=36681/679 pass_rate=98.18%
+I (38414) asic_init: Proto qualification 125.000MHz chip2@125.000MHz: 155.19/156.00 GH/s throughput=99.48% pass/fail=37246/253 pass_rate=99.33%
+I (38427) asic_init: Proto qualification 125.000MHz chip3@125.000MHz: 153.24/156.00 GH/s throughput=98.23% pass/fail=36778/364 pass_rate=99.02%
+I (38443) asic_init: Proto qualification 125.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=4.55 A
+I (38453) asic_init: Proto qualification 125.000MHz: total=614.56/624.00 GH/s throughput=98.49% min_chip=97.97% min_pass=98.18% balance=9 mV => PASS
+I (42980) asic_init: Proto qualification 150.000MHz chip0@150.000MHz: 184.04/187.20 GH/s throughput=98.31% pass/fail=44170/758 pass_rate=98.31%
+I (42983) asic_init: Proto qualification 150.000MHz chip1@150.000MHz: 183.65/187.20 GH/s throughput=98.11% pass/fail=44077/803 pass_rate=98.21%
+I (42997) asic_init: Proto qualification 150.000MHz chip2@150.000MHz: 186.51/187.20 GH/s throughput=99.63% pass/fail=44763/324 pass_rate=99.28%
+I (43010) asic_init: Proto qualification 150.000MHz chip3@150.000MHz: 185.21/187.20 GH/s throughput=98.94% pass/fail=44450/427 pass_rate=99.05%
+I (43025) asic_init: Proto qualification 150.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=5.27 A
+I (43036) asic_init: Proto qualification 150.000MHz: total=739.42/748.80 GH/s throughput=98.75% min_chip=98.11% min_pass=98.21% balance=9 mV => PASS
+I (47560) asic_init: Proto qualification 175.000MHz chip0@175.000MHz: 214.81/218.40 GH/s throughput=98.36% pass/fail=51554/877 pass_rate=98.33%
+I (47563) asic_init: Proto qualification 175.000MHz chip1@175.000MHz: 214.75/218.40 GH/s throughput=98.33% pass/fail=51540/916 pass_rate=98.25%
+I (47576) asic_init: Proto qualification 175.000MHz chip2@175.000MHz: 216.99/218.40 GH/s throughput=99.36% pass/fail=52078/375 pass_rate=99.29%
+I (47590) asic_init: Proto qualification 175.000MHz chip3@175.000MHz: 216.03/218.40 GH/s throughput=98.91% pass/fail=51847/490 pass_rate=99.06%
+I (47605) asic_init: Proto qualification 175.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=5.98 A
+I (47615) asic_init: Proto qualification 175.000MHz: total=862.58/873.60 GH/s throughput=98.74% min_chip=98.33% min_pass=98.25% balance=9 mV => PASS
+I (52142) asic_init: Proto qualification 200.000MHz chip0@200.000MHz: 245.90/249.60 GH/s throughput=98.52% pass/fail=59016/966 pass_rate=98.39%
+I (52145) asic_init: Proto qualification 200.000MHz chip1@200.000MHz: 244.93/249.60 GH/s throughput=98.13% pass/fail=58783/1080 pass_rate=98.20%
+I (52158) asic_init: Proto qualification 200.000MHz chip2@200.000MHz: 247.70/249.60 GH/s throughput=99.24% pass/fail=59449/456 pass_rate=99.24%
+I (52172) asic_init: Proto qualification 200.000MHz chip3@200.000MHz: 247.01/249.60 GH/s throughput=98.96% pass/fail=59282/555 pass_rate=99.07%
+I (52187) asic_init: Proto qualification 200.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=6.74 A
+I (52197) asic_init: Proto qualification 200.000MHz: total=985.54/998.40 GH/s throughput=98.71% min_chip=98.13% min_pass=98.20% balance=9 mV => PASS
+I (56722) asic_init: Proto qualification 225.000MHz chip0@225.000MHz: 276.57/280.80 GH/s throughput=98.49% pass/fail=66377/1068 pass_rate=98.42%
+I (56725) asic_init: Proto qualification 225.000MHz chip1@225.000MHz: 275.67/280.80 GH/s throughput=98.17% pass/fail=66161/1220 pass_rate=98.19%
+I (56739) asic_init: Proto qualification 225.000MHz chip2@225.000MHz: 279.10/280.80 GH/s throughput=99.39% pass/fail=66983/502 pass_rate=99.26%
+I (56752) asic_init: Proto qualification 225.000MHz chip3@225.000MHz: 277.85/280.80 GH/s throughput=98.95% pass/fail=66684/630 pass_rate=99.06%
+I (56769) asic_init: Proto qualification 225.000MHz domains: lower=1114 upper=1125 delta=+11 mV total=2239 mV TPS current=7.52 A
+I (56778) asic_init: Proto qualification 225.000MHz: total=1109.19/1123.20 GH/s throughput=98.75% min_chip=98.17% min_pass=98.19% balance=11 mV => PASS
+I (61301) asic_init: Proto qualification 250.000MHz chip0@250.000MHz: 306.80/312.00 GH/s throughput=98.33% pass/fail=73631/1212 pass_rate=98.38%
+I (61304) asic_init: Proto qualification 250.000MHz chip1@250.000MHz: 306.72/312.00 GH/s throughput=98.31% pass/fail=73612/1351 pass_rate=98.20%
+I (61317) asic_init: Proto qualification 250.000MHz chip2@250.000MHz: 309.35/312.00 GH/s throughput=99.15% pass/fail=74243/560 pass_rate=99.25%
+I (61331) asic_init: Proto qualification 250.000MHz chip3@250.000MHz: 307.92/312.00 GH/s throughput=98.69% pass/fail=73902/700 pass_rate=99.06%
+I (61347) asic_init: Proto qualification 250.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=8.22 A
+I (61356) asic_init: Proto qualification 250.000MHz: total=1230.78/1248.00 GH/s throughput=98.62% min_chip=98.31% min_pass=98.20% balance=9 mV => PASS
+I (65880) asic_init: Proto qualification 275.000MHz chip0@275.000MHz: 338.11/343.20 GH/s throughput=98.52% pass/fail=81146/1341 pass_rate=98.37%
+I (65884) asic_init: Proto qualification 275.000MHz chip1@275.000MHz: 337.11/343.20 GH/s throughput=98.23% pass/fail=80906/1447 pass_rate=98.24%
+I (65897) asic_init: Proto qualification 275.000MHz chip2@275.000MHz: 339.82/343.20 GH/s throughput=99.02% pass/fail=81557/599 pass_rate=99.27%
+I (65911) asic_init: Proto qualification 275.000MHz chip3@275.000MHz: 338.87/343.20 GH/s throughput=98.74% pass/fail=81328/770 pass_rate=99.06%
+I (65926) asic_init: Proto qualification 275.000MHz domains: lower=1114 upper=1125 delta=+11 mV total=2239 mV TPS current=9.00 A
+I (65937) asic_init: Proto qualification 275.000MHz: total=1353.90/1372.80 GH/s throughput=98.62% min_chip=98.23% min_pass=98.24% balance=11 mV => PASS
+I (70458) asic_init: Proto qualification 300.000MHz chip0@300.000MHz: 368.77/374.40 GH/s throughput=98.50% pass/fail=88506/1467 pass_rate=98.37%
+I (70461) asic_init: Proto qualification 300.000MHz chip1@300.000MHz: 367.24/374.40 GH/s throughput=98.09% pass/fail=88138/1558 pass_rate=98.26%
+I (70475) asic_init: Proto qualification 300.000MHz chip2@300.000MHz: 370.32/374.40 GH/s throughput=98.91% pass/fail=88877/678 pass_rate=99.24%
+I (70488) asic_init: Proto qualification 300.000MHz chip3@300.000MHz: 369.69/374.40 GH/s throughput=98.74% pass/fail=88725/822 pass_rate=99.08%
+I (70503) asic_init: Proto qualification 300.000MHz domains: lower=1115 upper=1124 delta=+9 mV total=2239 mV TPS current=9.69 A
+I (70514) asic_init: Proto qualification 300.000MHz: total=1476.03/1497.60 GH/s throughput=98.56% min_chip=98.09% min_pass=98.26% balance=9 mV => PASS
+I (75038) asic_init: Proto qualification 325.000MHz chip0@325.000MHz: 399.45/405.60 GH/s throughput=98.48% pass/fail=95867/1543 pass_rate=98.42%
+I (75041) asic_init: Proto qualification 325.000MHz chip1@325.000MHz: 397.94/405.60 GH/s throughput=98.11% pass/fail=95506/1705 pass_rate=98.25%
+I (75055) asic_init: Proto qualification 325.000MHz chip2@325.000MHz: 400.80/405.60 GH/s throughput=98.82% pass/fail=96191/735 pass_rate=99.24%
+I (75069) asic_init: Proto qualification 325.000MHz chip3@325.000MHz: 400.77/405.60 GH/s throughput=98.81% pass/fail=96185/822 pass_rate=99.15%
+I (75084) asic_init: Proto qualification 325.000MHz domains: lower=1114 upper=1125 delta=+11 mV total=2239 mV TPS current=10.44 A
+I (75094) asic_init: Proto qualification 325.000MHz: total=1598.95/1622.40 GH/s throughput=98.55% min_chip=98.11% min_pass=98.25% balance=11 mV => PASS
+I (79618) asic_init: Proto qualification 350.000MHz chip0@350.000MHz: 430.23/436.80 GH/s throughput=98.49% pass/fail=103254/1704 pass_rate=98.38%
+I (79622) asic_init: Proto qualification 350.000MHz chip1@350.000MHz: 428.58/436.80 GH/s throughput=98.12% pass/fail=102858/1806 pass_rate=98.27%
+I (79635) asic_init: Proto qualification 350.000MHz chip2@350.000MHz: 431.86/436.80 GH/s throughput=98.87% pass/fail=103647/771 pass_rate=99.26%
+I (79649) asic_init: Proto qualification 350.000MHz chip3@350.000MHz: 431.06/436.80 GH/s throughput=98.69% pass/fail=103454/859 pass_rate=99.18%
+I (79665) asic_init: Proto qualification 350.000MHz domains: lower=1114 upper=1125 delta=+11 mV total=2239 mV TPS current=11.09 A
+I (79674) asic_init: Proto qualification 350.000MHz: total=1721.72/1747.20 GH/s throughput=98.54% min_chip=98.12% min_pass=98.27% balance=11 mV => PASS
+I (84199) asic_init: Proto qualification 375.000MHz chip0@375.000MHz: 346.60/468.00 GH/s throughput=74.06% pass/fail=83185/4212 pass_rate=95.18%
+I (84202) asic_init: Proto qualification 375.000MHz chip1@375.000MHz: 347.32/468.00 GH/s throughput=74.21% pass/fail=83357/6275 pass_rate=93.00%
+I (84216) asic_init: Proto qualification 375.000MHz chip2@375.000MHz: 463.45/468.00 GH/s throughput=99.03% pass/fail=111228/582 pass_rate=99.48%
+I (84229) asic_init: Proto qualification 375.000MHz chip3@375.000MHz: 463.20/468.00 GH/s throughput=98.97% pass/fail=111167/597 pass_rate=99.47%
+I (84244) asic_init: Proto qualification 375.000MHz domains: lower=1091 upper=1148 delta=+57 mV total=2239 mV TPS current=12.17 A
+I (84255) asic_init: Proto qualification 375.000MHz: total=1620.57/1872.00 GH/s throughput=86.57% min_chip=74.06% min_pass=93.00% balance=57 mV => REJECT
+E (84270) asic_init: BCAST baseline ramp rejected at 375 MHz; no test transition
+W (84285) asic_init: BCAST END result=ERROR healthy_streak=0 max_PCB=1136/1151 mV ASIC_power=OFF

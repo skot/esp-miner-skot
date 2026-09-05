@@ -1,0 +1,22 @@
+{
+  "prior": {
+    "baseline_total_v": 2.3096701637087342,
+    "raw_total_min_v": 2.16000027,
+    "raw_total_max_v": 2.448000306,
+    "mean_20us_total_min_v": 2.194200274275,
+    "mean_20us_total_max_v": 2.4120003015,
+    "mean_overshoot_mv": 102.33013779126577,
+    "mean_undershoot_mv": -115.46988943373427,
+    "alignment_time_ms": 10.471759999999996
+  },
+  "tps_local_50ohm": {
+    "baseline_total_v": 2.294498549312283,
+    "raw_total_min_v": 2.1520002689999997,
+    "raw_total_max_v": 2.416000302,
+    "mean_20us_total_min_v": 2.1792002724,
+    "mean_20us_total_max_v": 2.397400299675,
+    "mean_overshoot_mv": 102.90175036271698,
+    "mean_undershoot_mv": -115.298276912283,
+    "alignment_time_ms": 9.195259999999998
+  }
+}

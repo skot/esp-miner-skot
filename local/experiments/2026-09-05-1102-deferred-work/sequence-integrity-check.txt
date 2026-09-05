@@ -1,0 +1,1 @@
+PASS: expected PLL locks from 100 through 550 MHz after warm reset. No logged mining config, target, version base, SPDLOG arm, FIRST_WORK or LAUNCHED between reset and sensor stop. No 575/600 MHz step, 600 MHz job or post-reset domain counter sample occurred.

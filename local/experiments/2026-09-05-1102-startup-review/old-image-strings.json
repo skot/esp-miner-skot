@@ -1,0 +1,18 @@
+{
+  "Ramping Proto Vcore": [
+    "[0;32mI (%lu) %s: Ramping Proto Vcore from %u to %u mV/domain at 100 MHz"
+  ],
+  "Started broadcast qualification work": [],
+  "Qualifying": [],
+  "Failed to quiesce MC3": [],
+  "Starting Proto Vcore": [
+    "[0;32mI (%lu) %s: Starting Proto Vcore at %u mV/domain"
+  ],
+  "Setting TON_RISE": [
+    "[0;32mI (%lu) %s: Setting TON_RISE: %.2fms"
+  ],
+  "Successfully transitioned": [
+    "[0;32mI (%lu) %s: Successfully transitioned to %u MHz",
+    "[0;32mI (%lu) %s: Successfully transitioned to %g MHz"
+  ]
+}

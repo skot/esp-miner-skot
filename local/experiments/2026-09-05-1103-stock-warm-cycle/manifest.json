@@ -1,0 +1,54 @@
+{
+  "prepared_at": "2026-09-05T13:34:36.764913-04:00",
+  "status": "prepared_not_flashed",
+  "target_board": "1103",
+  "output_filter": "stock 330uF polymer; no added 100uF half-stack capacitors",
+  "tps546": {
+    "switching_khz": 550,
+    "scale_loop": 0.25,
+    "compensation_hex": "13 11 8C 11 86",
+    "ton_rise_ms": 31.75,
+    "on_off_config_hex": "1F"
+  },
+  "bench": {
+    "warmup_mhz": 300,
+    "target_warm_c_approx": 55,
+    "voltage_per_half_mv": 1160,
+    "cycle_both_asic_supplies": true,
+    "restart_voltage_per_half_mv": 800,
+    "restart_frequency_mhz": 100,
+    "target_frequency_mhz": 600,
+    "first_job_after_final_settle_ms": 1500,
+    "final_observation_seconds": 120,
+    "voltage_and_throughput_limits": "report_only",
+    "midpoint_adc": "required and measured; skipped only at <=100mV during bounded cycle"
+  },
+  "scope": {
+    "ip": "192.168.1.250",
+    "ch1": "TPS output caps, 50 ohms required",
+    "ch2": "GND0-GND, 1 Mohm",
+    "timebase_s_per_div": 5,
+    "points": 700000,
+    "prefill_seconds": 16
+  },
+  "validation": [
+    "probe and normal ESP-IDF builds",
+    "regulator profiles and board/rail checks",
+    "fresh PMBus error handling",
+    "power-cycle / no-work ordering and failures",
+    "thermal retry",
+    "scope audit"
+  ],
+  "sha256": {
+    "probe.elf": "1806741951f55d3fc50f134857463d9c5e0f30f4092d17d3a0dc46178c12c497",
+    "tps546-source.h": "eff352c3d2c5f7d6b419b173fe0f08f07995872957fd656994be2319867ff4fa",
+    "vcore-source.h": "f2e18c83852545cc65c289559d886d2c31a6ef37ec28db75d663d8018bd6cce2",
+    "asic-init-source.c": "1f0850315c4e3bcdfb244d662ce67fb0d5fc3b58b040b7cbe753a8088f64b82f",
+    "mc3-source.c": "a44b885e76c76b6948485b7b092467e8a9b8e8b72c0c14f4fada89b52acac5ea",
+    "device-config-source.h": "1a99f305810f2447da52f7058229dee2732e0b00b24624bacc0b5386cc31b2dd",
+    "tps546-source.c": "9be156e198aabc20ba8b9fb4833e1f5962a95d52a318a40d0f2ddd8fc94b43e3",
+    "probe.bin": "542d0fcbbe0e7d0d8dab811117b5b5a471e8ac66bd8cdcfab1800b488620b49d",
+    "vcore-source.c": "6c0a2f837a9568327fffe8d6af11b1416de0fbf68cc1c92ec226c29deadc7e61",
+    "normal.bin": "3d96d9a378295a4e649380a945eb110f6f1b814223df7a4425661b888719af34"
+  }
+}

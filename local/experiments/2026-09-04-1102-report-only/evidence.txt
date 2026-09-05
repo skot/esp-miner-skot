@@ -1,0 +1,21 @@
+W (29879) asic_init: WARM POLICY voltage_limits=REPORT_ONLY throughput_limits=REPORT_ONLY final_hold_seconds=120; temperature/communications/manual stop retained
+W (333170) asic_init: WARM TEMPERATURE READY; qualify 300MHz at the warm temperature without a PLL update
+I (337513) asic_init: Proto qualification WARM baseline300 chip0@300.000MHz: 370.58/374.40 GH/s throughput=98.98% pass/fail=88940/354 pass_rate=99.60%
+I (337516) asic_init: Proto qualification WARM baseline300 chip1@300.000MHz: 370.35/374.40 GH/s throughput=98.92% pass/fail=88884/781 pass_rate=99.13%
+I (337530) asic_init: Proto qualification WARM baseline300 chip2@300.000MHz: 373.21/374.40 GH/s throughput=99.68% pass/fail=89571/484 pass_rate=99.46%
+I (337545) asic_init: Proto qualification WARM baseline300 chip3@300.000MHz: 371.53/374.40 GH/s throughput=99.23% pass/fail=89168/543 pass_rate=99.39%
+I (337560) asic_init: Proto qualification WARM baseline300: total=1485.68/1497.60 GH/s throughput=99.20% min_chip=98.92% min_pass=99.13% balance=unavailable => PASS
+W (367054) asic_init: WARM STEP PASS target=325 policy=REPORT_ONLY
+W (386053) asic_init: WARM STEP PASS target=350 policy=REPORT_ONLY
+W (406038) asic_init: WARM STEP PASS target=375 policy=REPORT_ONLY
+W (425037) asic_init: WARM STEP PASS target=400 policy=REPORT_ONLY
+W (445006) asic_init: WARM STEP PASS target=425 policy=REPORT_ONLY
+W (464004) asic_init: WARM STEP PASS target=450 policy=REPORT_ONLY
+W (483957) asic_init: WARM STEP WEAK target=475 policy=REPORT_ONLY
+W (502960) asic_init: WARM STEP WEAK target=500 policy=REPORT_ONLY
+W (522946) asic_init: WARM STEP WEAK target=525 policy=REPORT_ONLY
+W (541959) asic_init: WARM STEP WEAK target=550 policy=REPORT_ONLY
+W (561908) asic_init: WARM STEP WEAK target=575 policy=REPORT_ONLY
+I (562944) mc3: PLL0 locked at 600.000 MHz on all 4 chips
+E (563597) asic_init: BCAST temperature invalid/high A3 -288.90 C
+W (563606) asic_init: WARM END result=STOPPED frequency=600 max_PCB=unavailable PCB_sense=0 max_total=2275 mV ASIC_power=OFF

@@ -1,0 +1,26 @@
+# Local firmware/build outputs and device flash backups (may contain credentials).
+*.bin
+*.elf
+*.log
+*.jsonl
+sdkconfig-snapshot
+__pycache__/
+
+# Raw instrument captures and redundant generated sample tables.
+*.bmp
+*.npy
+*.npz
+*.csv
+domain-samples.json
+thermal-samples.json
+
+# Full device API responses can include network and pool account details.
+*api*.json
+
+# Downloaded vendor documents and experiment source snapshots stay local.
+*.pdf
+*.c
+*.h
+datasheet.md
+register-map.md
+tps546-datasheet.md

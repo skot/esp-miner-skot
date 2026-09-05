@@ -1,0 +1,146 @@
+[
+  {
+    "phase": "passive",
+    "asic": 1,
+    "domain": 0,
+    "delta_pass": 520269,
+    "dt_us": 70612318,
+    "samples": 73,
+    "percent": 99.04961496290862
+  },
+  {
+    "phase": "passive",
+    "asic": 1,
+    "domain": 1,
+    "delta_pass": 521449,
+    "dt_us": 70612318,
+    "samples": 73,
+    "percent": 99.27426518357566
+  },
+  {
+    "phase": "passive",
+    "asic": 1,
+    "domain": 2,
+    "delta_pass": 49462,
+    "dt_us": 70612318,
+    "samples": 73,
+    "percent": 9.416651876808704
+  },
+  {
+    "phase": "passive",
+    "asic": 1,
+    "domain": 3,
+    "delta_pass": 523545,
+    "dt_us": 70612318,
+    "samples": 73,
+    "percent": 99.67330489757413
+  },
+  {
+    "phase": "passive",
+    "asic": 2,
+    "domain": 0,
+    "delta_pass": 521378,
+    "dt_us": 70614469,
+    "samples": 73,
+    "percent": 99.25772449458388
+  },
+  {
+    "phase": "passive",
+    "asic": 2,
+    "domain": 1,
+    "delta_pass": 519698,
+    "dt_us": 70614469,
+    "samples": 73,
+    "percent": 98.93789324518151
+  },
+  {
+    "phase": "passive",
+    "asic": 2,
+    "domain": 2,
+    "delta_pass": 49802,
+    "dt_us": 70614469,
+    "samples": 73,
+    "percent": 9.481092787342899
+  },
+  {
+    "phase": "passive",
+    "asic": 2,
+    "domain": 3,
+    "delta_pass": 519997,
+    "dt_us": 70614469,
+    "samples": 73,
+    "percent": 98.99481559254536
+  },
+  {
+    "phase": "passive",
+    "asic": 3,
+    "domain": 0,
+    "delta_pass": 524073,
+    "dt_us": 70619694,
+    "samples": 73,
+    "percent": 99.76340529685017
+  },
+  {
+    "phase": "passive",
+    "asic": 3,
+    "domain": 1,
+    "delta_pass": 520716,
+    "dt_us": 70619694,
+    "samples": 73,
+    "percent": 99.12436121027918
+  },
+  {
+    "phase": "passive",
+    "asic": 3,
+    "domain": 2,
+    "delta_pass": 523230,
+    "dt_us": 70619694,
+    "samples": 73,
+    "percent": 99.60293041898919
+  },
+  {
+    "phase": "passive",
+    "asic": 3,
+    "domain": 3,
+    "delta_pass": 522628,
+    "dt_us": 70619694,
+    "samples": 73,
+    "percent": 99.48833270075393
+  },
+  {
+    "phase": "passive",
+    "asic": 4,
+    "domain": 0,
+    "delta_pass": 521601,
+    "dt_us": 70620664,
+    "samples": 73,
+    "percent": 99.29146745534379
+  },
+  {
+    "phase": "passive",
+    "asic": 4,
+    "domain": 1,
+    "delta_pass": 522725,
+    "dt_us": 70620664,
+    "samples": 73,
+    "percent": 99.50543102025223
+  },
+  {
+    "phase": "passive",
+    "asic": 4,
+    "domain": 2,
+    "delta_pass": 522074,
+    "dt_us": 70620664,
+    "samples": 73,
+    "percent": 99.38150728292537
+  },
+  {
+    "phase": "passive",
+    "asic": 4,
+    "domain": 3,
+    "delta_pass": 523228,
+    "dt_us": 70620664,
+    "samples": 73,
+    "percent": 99.6011816191392
+  }
+]

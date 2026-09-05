@@ -1,0 +1,18 @@
+{
+  "0ac9d30-asic_init.c": "c0db06cad9220bcdbf396a55ba928f38c8d421313fbd6fc9e575db5cff2c4195",
+  "0ac9d30-mc3.c": "e659831bd181e865e6364b58be477a40b1c2ededdcb3710802f28746502552d0",
+  "9df1d31-asic_init.c": "97f5083992126eec4e76cb73c8e61a2d806fe3a75bf7b23c5556ed5d3cf3bc5e",
+  "9df1d31-mc3.c": "b24fa287fe9d3665607a0066a58895b15ff6ff246254181b034a2efa9eb52e1a",
+  "README.md": "04b34f1abed0e7372b48f7a7389e70ff7cc40b3b0cc28058a2e837ff93a69f0f",
+  "cd82a9e-asic_init.c": "2178d1338d01669c30b1f1eeb3ed3675d459e76064179811e5933b7e600fa2bc",
+  "cd82a9e-mc3.c": "5bbe1ba0868fd8871039252116c186063a9282eea7503c170452ca6a6db7e878",
+  "compare_sources.py": "630efd7f79dea697a4770c8201b3e608f71568c82c7d6c44b6f5f9222ca9baf0",
+  "comparison.log": "dae8fa6b7b3490409e07651111d35ea2974baab901a7dd75dd5deae7c9e1fc04",
+  "current-asic_init.c": "e43841aba4a75a9d1fc94beb7eb350e24d5252b851bf1d5ed72910148daeddd5",
+  "current-boot-evidence.txt": "5d7a866f057419e6ec2157da401c4332d91aaf7132fe521c63f7f28c920831a2",
+  "current-mc3.c": "88804e34c6b9292c2528f9999906e1a815ce24bf81d69a9865abba31317eecb0",
+  "old-binary-pll-table.json": "e3968ec20865a5d6a86bfba416e4ff1ffdb8b18046694fd0520923654f427ead",
+  "old-boot-evidence.txt": "e6302ca0e2982ff545c7115c94ed3770ad6832b3b1b7edef4da9dc6617995ca6",
+  "old-image-strings.json": "fed7a02330bb011f56bd34a98f03f5c06a9ba45e84bf55602dbd30d8fbdab975",
+  "pll-table-comparison.json": "4e12c5c6e70b0962bb29edef984b357be7438306d7b7aad404538570c2a4e4a6"
+}

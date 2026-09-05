@@ -1,0 +1,202 @@
+{
+  "2026-09-04-tps-local-50ohm/step-325": {
+    "CHAN1": {
+      "baseline_v": 2.29449828681225,
+      "raw_min_v": 2.1520002689999997,
+      "raw_max_v": 2.416000302,
+      "mean20us_min_v": 2.1792002724,
+      "mean20us_max_v": 2.397400299675,
+      "mean_overshoot_mv": 102.90201286275024,
+      "mean_undershoot_mv": -115.29801441224974,
+      "baseline_raw_pp_mv": 56.00000699999974,
+      "baseline_p99_minus_p1_mv": 56.00000699999974,
+      "raw_sample_lsb_v": 0.008000001
+    },
+    "CHAN2": {
+      "baseline_v": 1.1476012500000001,
+      "raw_min_v": 0.892,
+      "raw_max_v": 1.42,
+      "mean20us_min_v": 0.93,
+      "mean20us_max_v": 1.4038000000000002,
+      "mean_overshoot_mv": 256.19875,
+      "mean_undershoot_mv": -217.60125000000008,
+      "baseline_raw_pp_mv": 107.99999999999987,
+      "baseline_p99_minus_p1_mv": 35.99999999999981,
+      "raw_sample_lsb_v": 0.004
+    },
+    "upper_estimate": {
+      "baseline_v": 1.1468970368122497,
+      "raw_min_v": 0.9520002939999996,
+      "raw_max_v": 1.32400028,
+      "mean20us_min_v": 0.9872002984999999,
+      "mean20us_max_v": 1.2684002756000003,
+      "mean_overshoot_mv": 121.5032387877506,
+      "mean_undershoot_mv": -159.69673831224983,
+      "baseline_raw_pp_mv": 124.00000300000013,
+      "baseline_p99_minus_p1_mv": 48.0000060000001,
+      "raw_sample_lsb_v": null
+    },
+    "midpoint_error": {
+      "baseline_v": 0.0003521065938751601,
+      "raw_min_v": -0.21200013900000003,
+      "raw_max_v": 0.2319998514999999,
+      "mean20us_min_v": -0.16800013742499995,
+      "mean20us_max_v": 0.2075998505375001,
+      "mean_overshoot_mv": 207.24774394362495,
+      "mean_undershoot_mv": -168.3522440188751,
+      "baseline_raw_pp_mv": 116.00000099999997,
+      "baseline_p99_minus_p1_mv": 32.00000100000011,
+      "raw_sample_lsb_v": null
+    }
+  },
+  "2026-09-04-tps-local-50ohm/warm-baseline300": {
+    "CHAN1": {
+      "baseline_v": 2.29494228686775,
+      "raw_min_v": 2.256000282,
+      "raw_max_v": 2.328000291,
+      "mean20us_min_v": 2.2888002861,
+      "mean20us_max_v": 2.3012002876500004,
+      "mean_overshoot_mv": 6.258000782250583,
+      "mean_undershoot_mv": -6.1420007677499555,
+      "baseline_raw_pp_mv": 64.00000799999984,
+      "baseline_p99_minus_p1_mv": 56.00000699999974,
+      "raw_sample_lsb_v": 0.008000001
+    },
+    "CHAN2": {
+      "baseline_v": 1.1477287500000002,
+      "raw_min_v": 1.096,
+      "raw_max_v": 1.208,
+      "mean20us_min_v": 1.1443,
+      "mean20us_max_v": 1.1522000000000001,
+      "mean_overshoot_mv": 4.471249999999927,
+      "mean_undershoot_mv": -3.4287500000000914,
+      "baseline_raw_pp_mv": 111.99999999999987,
+      "baseline_p99_minus_p1_mv": 31.999999999999808,
+      "raw_sample_lsb_v": 0.004
+    },
+    "upper_estimate": {
+      "baseline_v": 1.1472135368677496,
+      "raw_min_v": 1.0680002839999998,
+      "raw_max_v": 1.200000287,
+      "mean20us_min_v": 1.1427002862999998,
+      "mean20us_max_v": 1.151100287375,
+      "mean_overshoot_mv": 3.8867505072504027,
+      "mean_undershoot_mv": -4.513250567749871,
+      "baseline_raw_pp_mv": 128.00000300000013,
+      "baseline_p99_minus_p1_mv": 48.00000499999979,
+      "raw_sample_lsb_v": null
+    },
+    "midpoint_error": {
+      "baseline_v": 0.0002576065661251607,
+      "raw_min_v": -0.05200014349999993,
+      "raw_max_v": 0.06799985800000008,
+      "mean20us_min_v": -0.0026001434124998226,
+      "mean20us_max_v": 0.0034998565875001553,
+      "mean_overshoot_mv": 3.2422500213749945,
+      "mean_undershoot_mv": -2.8577499786249834,
+      "baseline_raw_pp_mv": 116.00000150000001,
+      "baseline_p99_minus_p1_mv": 28.040002970000014,
+      "raw_sample_lsb_v": null
+    }
+  },
+  "2026-09-04-ceramic-warm-ramp/step-325": {
+    "CHAN1": {
+      "baseline_v": 2.299269787408687,
+      "raw_min_v": 2.16000027,
+      "raw_max_v": 2.416000302,
+      "mean20us_min_v": 2.1752002719,
+      "mean20us_max_v": 2.4090003011250003,
+      "mean_overshoot_mv": 109.73051371631337,
+      "mean_undershoot_mv": -124.06951550868683,
+      "baseline_raw_pp_mv": 24.000002999999825,
+      "baseline_p99_minus_p1_mv": 16.00000200000018,
+      "raw_sample_lsb_v": 0.008000001
+    },
+    "CHAN2": {
+      "baseline_v": 1.14923725,
+      "raw_min_v": 0.884,
+      "raw_max_v": 1.424,
+      "mean20us_min_v": 0.9203000000000001,
+      "mean20us_max_v": 1.4071,
+      "mean_overshoot_mv": 257.8627499999999,
+      "mean_undershoot_mv": -228.93724999999998,
+      "baseline_raw_pp_mv": 79.99999999999984,
+      "baseline_p99_minus_p1_mv": 27.9999999999998,
+      "raw_sample_lsb_v": 0.004
+    },
+    "upper_estimate": {
+      "baseline_v": 1.1500325374086875,
+      "raw_min_v": 0.9680002979999998,
+      "raw_max_v": 1.3320002770000001,
+      "mean20us_min_v": 0.9977003002250001,
+      "mean20us_max_v": 1.2804002772,
+      "mean_overshoot_mv": 130.36773979131254,
+      "mean_undershoot_mv": -152.33223718368737,
+      "baseline_raw_pp_mv": 84.00000099999994,
+      "baseline_p99_minus_p1_mv": 28.000001999999526,
+      "raw_sample_lsb_v": null
+    },
+    "midpoint_error": {
+      "baseline_v": -0.00039764370434368314,
+      "raw_min_v": -0.2240001385,
+      "raw_max_v": 0.22399985100000008,
+      "mean20us_min_v": -0.17760013744999995,
+      "mean20us_max_v": 0.20419984968750005,
+      "mean_overshoot_mv": 204.59749339184373,
+      "mean_undershoot_mv": -177.20249374565628,
+      "baseline_raw_pp_mv": 80.00000049999989,
+      "baseline_p99_minus_p1_mv": 27.99999949999976,
+      "raw_sample_lsb_v": null
+    }
+  },
+  "2026-09-04-ceramic-warm-ramp/warm-baseline300": {
+    "CHAN1": {
+      "baseline_v": 2.2993602874199994,
+      "raw_min_v": 2.288000286,
+      "raw_max_v": 2.3120002889999998,
+      "mean20us_min_v": 2.2932002866500003,
+      "mean20us_max_v": 2.305000288125,
+      "mean_overshoot_mv": 5.640000705000592,
+      "mean_undershoot_mv": -6.160000769999119,
+      "baseline_raw_pp_mv": 24.000002999999825,
+      "baseline_p99_minus_p1_mv": 16.00000200000018,
+      "raw_sample_lsb_v": 0.008000001
+    },
+    "CHAN2": {
+      "baseline_v": 1.1494940000000002,
+      "raw_min_v": 1.112,
+      "raw_max_v": 1.196,
+      "mean20us_min_v": 1.1457000000000002,
+      "mean20us_max_v": 1.1535,
+      "mean_overshoot_mv": 4.005999999999732,
+      "mean_undershoot_mv": -3.794000000000075,
+      "baseline_raw_pp_mv": 79.99999999999984,
+      "baseline_p99_minus_p1_mv": 23.9999999999998,
+      "raw_sample_lsb_v": 0.004
+    },
+    "upper_estimate": {
+      "baseline_v": 1.1498662874199999,
+      "raw_min_v": 1.104000287,
+      "raw_max_v": 1.1920002889999997,
+      "mean20us_min_v": 1.1446002867249998,
+      "mean20us_max_v": 1.153900288,
+      "mean_overshoot_mv": 4.034000580000141,
+      "mean_undershoot_mv": -5.26600069500005,
+      "baseline_raw_pp_mv": 84.00000099999994,
+      "baseline_p99_minus_p1_mv": 28.000000999999884,
+      "raw_sample_lsb_v": null
+    },
+    "midpoint_error": {
+      "baseline_v": -0.00018614370999993528,
+      "raw_min_v": -0.036000144499999776,
+      "raw_max_v": 0.043999856499999934,
+      "mean20us_min_v": -0.002700143787499926,
+      "mean20us_max_v": 0.0023998565750000867,
+      "mean_overshoot_mv": 2.586000285000022,
+      "mean_undershoot_mv": -2.5140000774999907,
+      "baseline_raw_pp_mv": 80.00000049999989,
+      "baseline_p99_minus_p1_mv": 27.99999949999976,
+      "raw_sample_lsb_v": null
+    }
+  }
+}

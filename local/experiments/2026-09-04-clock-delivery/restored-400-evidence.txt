@@ -1,0 +1,33 @@
+I (90711) asic_init: Proto qualification 400.000MHz chip0@400.000MHz: 496.01/499.20 GH/s throughput=99.36% pass/fail=119042/1055 pass_rate=99.12%
+I (90714) asic_init: Proto qualification 400.000MHz chip1@400.000MHz: 494.60/499.20 GH/s throughput=99.08% pass/fail=118704/1027 pass_rate=99.14%
+I (90728) asic_init: Proto qualification 400.000MHz chip2@400.000MHz: 494.39/499.20 GH/s throughput=99.04% pass/fail=118654/635 pass_rate=99.47%
+I (90741) asic_init: Proto qualification 400.000MHz chip3@400.000MHz: 494.48/499.20 GH/s throughput=99.06% pass/fail=118676/591 pass_rate=99.50%
+I (90757) asic_init: Proto qualification 400.000MHz domains: lower=1154 upper=1165 delta=+11 mV total=2319 mV TPS current=13.02 A
+W (91226) asic_init: MC3 PVT 400.000MHz A1 sensors mV: VSS4=0.1 VSS5=0.9 VSS6=0.7 VSS15=0.1 I1[7]=290.7 I1[8]=294.5 I2[9]=582.0 I2[10]=583.4 I3[11]=868.7 I3[12]=872.6 VDD[13]=1154.9 VDD[14]=1156.6 valid=0xFFF0
+W (91235) asic_init: MC3 PVT 400.000MHz A1 averaged taps/domains mV: VSS=0.4 I1=292.6 I2=582.7 I3=870.6 VDD=1155.8 | D0=292.1 D1=290.1 D2=287.9 D3=285.1 sum=1155.3
+W (91250) asic_init: MC3 PVT 400.000MHz A2 sensors mV: VSS4=-0.5 VSS5=0.3 VSS6=0.1 VSS15=-0.4 I1[7]=288.8 I1[8]=292.7 I2[9]=580.3 I2[10]=581.6 I3[11]=866.8 I3[12]=870.6 VDD[13]=1151.7 VDD[14]=1152.9 valid=0xFFF0
+W (91270) asic_init: MC3 PVT 400.000MHz A2 averaged taps/domains mV: VSS=-0.1 I1=290.8 I2=581.0 I3=868.7 VDD=1152.3 | D0=290.9 D1=290.2 D2=287.7 D3=283.6 sum=1152.4
+W (91285) asic_init: MC3 PVT 400.000MHz A3 sensors mV: VSS4=0.4 VSS5=1.1 VSS6=0.9 VSS15=0.4 I1[7]=289.0 I1[8]=292.8 I2[9]=580.6 I2[10]=581.9 I3[11]=870.8 I3[12]=874.5 VDD[13]=1161.9 VDD[14]=1164.3 valid=0xFFF0
+W (91304) asic_init: MC3 PVT 400.000MHz A3 averaged taps/domains mV: VSS=0.7 I1=290.9 I2=581.3 I3=872.7 VDD=1163.1 | D0=290.2 D1=290.4 D2=291.4 D3=290.4 sum=1162.4
+W (91320) asic_init: MC3 PVT 400.000MHz A4 sensors mV: VSS4=-0.4 VSS5=0.3 VSS6=0.2 VSS15=-0.4 I1[7]=287.9 I1[8]=291.9 I2[9]=579.0 I2[10]=580.2 I3[11]=869.1 I3[12]=873.0 VDD[13]=1161.0 VDD[14]=1161.9 valid=0xFFF0
+W (91339) asic_init: MC3 PVT 400.000MHz A4 averaged taps/domains mV: VSS=-0.1 I1=289.9 I2=579.6 I3=871.0 VDD=1161.4 | D0=290.0 D1=289.7 D2=291.4 D3=290.4 sum=1161.5
+W (91441) asic_init: MC3 internal domains 400.000MHz chip0: D0=29557(99.3% ideal,z=0) D1=29518(99.2% ideal,z=0) D2=29971(100.7% ideal,z=0) D3=29996(100.8% ideal,z=0) sum=119042 global=119042 match=100.00% min_core=27:532
+I (91451) asic_init: MC3 internal slices 400.000MHz chip0: S0=10020 S1=9856 S2=9681 S3=9683 S4=9925 S5=9910 S6=9922 S7=10010 S8=10039 S9=9972 S10=10016 S11=10008
+W (91552) asic_init: MC3 internal domains 400.000MHz chip1: D0=29700(100.1% ideal,z=0) D1=29782(100.4% ideal,z=0) D2=29560(99.6% ideal,z=0) D3=29662(100.0% ideal,z=0) sum=118704 global=118704 match=100.00% min_core=47:559
+I (91562) asic_init: MC3 internal slices 400.000MHz chip1: S0=10027 S1=9871 S2=9802 S3=9909 S4=9860 S5=10013 S6=9895 S7=9864 S8=9801 S9=9958 S10=9996 S11=9708
+W (91664) asic_init: MC3 internal domains 400.000MHz chip2: D0=29701(100.1% ideal,z=0) D1=29828(100.6% ideal,z=0) D2=29623(99.9% ideal,z=0) D3=29502(99.5% ideal,z=0) sum=118654 global=118654 match=100.00% min_core=155:687
+I (91674) asic_init: MC3 internal slices 400.000MHz chip2: S0=9827 S1=9938 S2=9936 S3=9909 S4=9969 S5=9950 S6=9893 S7=9852 S8=9878 S9=9831 S10=10009 S11=9662
+W (91782) asic_init: MC3 internal domains 400.000MHz chip3: D0=30010(101.1% ideal,z=0) D1=29660(100.0% ideal,z=0) D2=29391(99.1% ideal,z=0) D3=29615(99.8% ideal,z=0) sum=118676 global=118676 match=100.00% min_core=113:685
+I (91793) asic_init: MC3 internal slices 400.000MHz chip3: S0=10048 S1=10035 S2=9927 S3=9847 S4=9965 S5=9848 S6=9711 S7=9919 S8=9761 S9=9837 S10=9911 S11=9867
+I (91808) asic_init: Proto qualification 400.000MHz: total=1979.48/1996.80 GH/s throughput=99.13% min_chip=99.04% min_pass=99.12% balance=11 mV => PASS
+I (91822) asic_init: Proto qualified through 400 MHz
+I (91840) asic_init: ASIC initialized successfully with 4 chip(s) (cold boot mode)
+I (91907) mc3: SPDLOG: chip0=496.01 GH/s pass/fail=119042/1055 chip1=494.60 GH/s pass/fail=118704/1027 chip2=494.39 GH/s pass/fail=118654/635 chip3=494.48 GH/s pass/fail=118676/591 total=1979.48 GH/s
+I (92282) power_management: Proto PCB domains: lower=1153.0 upper=1166.0 delta=+13.0 mV total=2319.0 mV
+I (95921) mc3: SPDLOG: chip0=495.64 GH/s pass/fail=24782/214 chip1=497.48 GH/s pass/fail=24874/209 chip2=498.44 GH/s pass/fail=24922/122 chip3=506.38 GH/s pass/fail=25319/130 total=1997.94 GH/s
+I (97556) power_management: Proto PCB domains: lower=1153.0 upper=1164.0 delta=+11.0 mV total=2317.0 mV
+I (99906) mc3: SPDLOG: chip0=488.94 GH/s pass/fail=24447/182 chip1=501.34 GH/s pass/fail=25067/226 chip2=496.68 GH/s pass/fail=24834/133 chip3=501.26 GH/s pass/fail=25063/130 total=1988.22 GH/s
+I (102745) power_management: Proto PCB domains: lower=1153.0 upper=1166.0 delta=+13.0 mV total=2319.0 mV
+I (103906) mc3: SPDLOG: chip0=495.70 GH/s pass/fail=24785/191 chip1=491.70 GH/s pass/fail=24585/214 chip2=496.76 GH/s pass/fail=24838/141 chip3=493.08 GH/s pass/fail=24654/102 total=1977.24 GH/s
+I (107906) mc3: SPDLOG: chip0=492.66 GH/s pass/fail=24633/180 chip1=496.28 GH/s pass/fail=24814/213 chip2=499.84 GH/s pass/fail=24992/132 chip3=495.70 GH/s pass/fail=24785/110 total=1984.48 GH/s
+I (107962) power_management: Proto PCB domains: lower=1153.0 upper=1166.0 delta=+13.0 mV total=2319.0 mV

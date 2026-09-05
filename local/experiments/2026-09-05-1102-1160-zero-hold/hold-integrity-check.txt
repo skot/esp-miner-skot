@@ -1,0 +1,2 @@
+PASS: full 120.950-second hold at 500 MHz; A1 D1/A2 D2 zero PASS throughout; one counter epoch per ASIC; no logged PLL/work/rearm intervention.
+PASS: probe source differs from 1140 mV run only in PROTO_WARM_VOLTAGE_MV; MC3, Vcore, device config and fan source snapshots identical.

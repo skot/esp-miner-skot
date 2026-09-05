@@ -1,0 +1,39 @@
+I (90558) asic_init: Proto qualification 400.000MHz chip0@400.000MHz: 495.90/499.20 GH/s throughput=99.34% pass/fail=119015/1033 pass_rate=99.14%
+I (90561) asic_init: Proto qualification 400.000MHz chip1@400.000MHz: 494.96/499.20 GH/s throughput=99.15% pass/fail=118790/970 pass_rate=99.19%
+I (90575) asic_init: Proto qualification 400.000MHz chip2@400.000MHz: 494.27/499.20 GH/s throughput=99.01% pass/fail=118625/617 pass_rate=99.48%
+I (90588) asic_init: Proto qualification 400.000MHz chip3@400.000MHz: 494.47/499.20 GH/s throughput=99.05% pass/fail=118672/586 pass_rate=99.51%
+I (90604) asic_init: Proto qualification 400.000MHz domains: lower=1154 upper=1165 delta=+11 mV total=2319 mV TPS current=13.06 A
+I (91641) asic_init: Proto qualification 400.000MHz: total=1979.59/1996.80 GH/s throughput=99.14% min_chip=99.01% min_pass=99.14% balance=11 mV => PASS
+I (91673) asic_init: ASIC initialized successfully with 4 chip(s) (cold boot mode)
+I (91780) mc3: SPDLOG: chip0=495.90 GH/s pass/fail=119015/1033 chip1=494.96 GH/s pass/fail=118790/970 chip2=494.27 GH/s pass/fail=118625/617 chip3=494.47 GH/s pass/fail=118672/586 total=1979.59 GH/s
+I (92092) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (95774) mc3: SPDLOG: chip0=497.02 GH/s pass/fail=24851/228 chip1=494.26 GH/s pass/fail=24713/213 chip2=494.88 GH/s pass/fail=24744/132 chip3=497.66 GH/s pass/fail=24883/104 total=1983.82 GH/s
+I (97386) power_management: Proto PCB domains: lower=1153.0 upper=1166.0 delta=+13.0 mV total=2319.0 mV
+I (99764) mc3: SPDLOG: chip0=495.74 GH/s pass/fail=24787/175 chip1=500.44 GH/s pass/fail=25022/201 chip2=496.76 GH/s pass/fail=24838/130 chip3=495.18 GH/s pass/fail=24759/112 total=1988.12 GH/s
+I (102558) power_management: Proto PCB domains: lower=1153.0 upper=1166.0 delta=+13.0 mV total=2319.0 mV
+I (103766) mc3: SPDLOG: chip0=494.22 GH/s pass/fail=24711/205 chip1=494.24 GH/s pass/fail=24712/219 chip2=495.86 GH/s pass/fail=24793/126 chip3=490.44 GH/s pass/fail=24522/95 total=1974.76 GH/s
+I (107771) mc3: SPDLOG: chip0=493.66 GH/s pass/fail=24683/198 chip1=495.36 GH/s pass/fail=24768/195 chip2=498.80 GH/s pass/fail=24940/115 chip3=498.26 GH/s pass/fail=24913/113 total=1986.08 GH/s
+I (107776) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (111764) mc3: SPDLOG: chip0=496.96 GH/s pass/fail=24848/186 chip1=496.44 GH/s pass/fail=24822/170 chip2=492.90 GH/s pass/fail=24645/139 chip3=494.82 GH/s pass/fail=24741/103 total=1981.12 GH/s
+I (112969) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (115761) mc3: SPDLOG: chip0=495.30 GH/s pass/fail=24765/178 chip1=490.36 GH/s pass/fail=24518/189 chip2=496.50 GH/s pass/fail=24825/124 chip3=495.08 GH/s pass/fail=24754/126 total=1977.24 GH/s
+I (118222) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (120739) mc3: SPDLOG: chip0=491.20 GH/s pass/fail=24560/196 chip1=497.66 GH/s pass/fail=24883/195 chip2=488.40 GH/s pass/fail=24420/106 chip3=502.66 GH/s pass/fail=25133/95 total=1979.92 GH/s
+I (123563) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (124767) mc3: SPDLOG: chip0=496.74 GH/s pass/fail=24837/182 chip1=491.84 GH/s pass/fail=24592/189 chip2=496.88 GH/s pass/fail=24844/107 chip3=500.98 GH/s pass/fail=25049/85 total=1986.44 GH/s
+I (128764) mc3: SPDLOG: chip0=497.58 GH/s pass/fail=24879/163 chip1=493.64 GH/s pass/fail=24682/224 chip2=486.28 GH/s pass/fail=24314/111 chip3=495.40 GH/s pass/fail=24770/103 total=1972.90 GH/s
+I (128804) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (132739) mc3: SPDLOG: chip0=500.58 GH/s pass/fail=25029/165 chip1=496.98 GH/s pass/fail=24849/192 chip2=496.76 GH/s pass/fail=24838/127 chip3=489.92 GH/s pass/fail=24496/105 total=1984.24 GH/s
+I (134078) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (136771) mc3: SPDLOG: chip0=499.04 GH/s pass/fail=24952/182 chip1=494.82 GH/s pass/fail=24741/180 chip2=496.08 GH/s pass/fail=24804/132 chip3=494.82 GH/s pass/fail=24741/103 total=1984.76 GH/s
+I (139292) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (140765) mc3: SPDLOG: chip0=494.36 GH/s pass/fail=24718/171 chip1=494.66 GH/s pass/fail=24733/195 chip2=492.04 GH/s pass/fail=24602/132 chip3=502.66 GH/s pass/fail=25133/110 total=1983.72 GH/s
+I (144542) power_management: Proto PCB domains: lower=1153.0 upper=1164.0 delta=+11.0 mV total=2317.0 mV
+I (144765) mc3: SPDLOG: chip0=495.46 GH/s pass/fail=24773/157 chip1=494.66 GH/s pass/fail=24733/179 chip2=500.72 GH/s pass/fail=25036/125 chip3=497.60 GH/s pass/fail=24880/94 total=1988.44 GH/s
+I (148766) mc3: SPDLOG: chip0=497.46 GH/s pass/fail=24873/173 chip1=497.08 GH/s pass/fail=24854/171 chip2=497.52 GH/s pass/fail=24876/121 chip3=495.10 GH/s pass/fail=24755/97 total=1987.16 GH/s
+I (149819) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (155080) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (155766) mc3: SPDLOG: chip0=494.18 GH/s pass/fail=24709/157 chip1=499.88 GH/s pass/fail=24994/194 chip2=499.30 GH/s pass/fail=24965/118 chip3=493.30 GH/s pass/fail=24665/115 total=1986.66 GH/s
+I (159768) mc3: SPDLOG: chip0=495.18 GH/s pass/fail=24759/184 chip1=488.00 GH/s pass/fail=24400/209 chip2=487.10 GH/s pass/fail=24355/127 chip3=490.36 GH/s pass/fail=24518/119 total=1960.64 GH/s
+I (160278) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (163771) mc3: SPDLOG: chip0=498.20 GH/s pass/fail=24910/159 chip1=495.94 GH/s pass/fail=24797/180 chip2=498.02 GH/s pass/fail=24901/105 chip3=498.48 GH/s pass/fail=24924/108 total=1990.64 GH/s

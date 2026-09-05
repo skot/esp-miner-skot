@@ -1,0 +1,58 @@
+[
+  {
+    "type": 1,
+    "subtype": 2,
+    "offset": 36864,
+    "size": 24576,
+    "label": "nvs"
+  },
+  {
+    "type": 1,
+    "subtype": 1,
+    "offset": 61440,
+    "size": 4096,
+    "label": "phy_init"
+  },
+  {
+    "type": 0,
+    "subtype": 0,
+    "offset": 65536,
+    "size": 4194304,
+    "label": "factory"
+  },
+  {
+    "type": 1,
+    "subtype": 130,
+    "offset": 4259840,
+    "size": 3145728,
+    "label": "www"
+  },
+  {
+    "type": 0,
+    "subtype": 16,
+    "offset": 7405568,
+    "size": 4194304,
+    "label": "ota_0"
+  },
+  {
+    "type": 0,
+    "subtype": 17,
+    "offset": 11599872,
+    "size": 4194304,
+    "label": "ota_1"
+  },
+  {
+    "type": 1,
+    "subtype": 0,
+    "offset": 15794176,
+    "size": 8192,
+    "label": "otadata"
+  },
+  {
+    "type": 1,
+    "subtype": 3,
+    "offset": 15802368,
+    "size": 65536,
+    "label": "coredump"
+  }
+]

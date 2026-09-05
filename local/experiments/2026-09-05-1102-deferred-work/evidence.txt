@@ -1,0 +1,72 @@
+I (2046) TPS546: Post-config ON_OFF_CONFIG readback: 0x1F expected=0x1F
+I (2053) TPS546: Post-config VOUT_SCALE_LOOP readback: 0.12500 raw=0xA200 expected=0.12500
+I (2062) TPS546: Post-config FREQUENCY_SWITCH readback: 1300 kHz raw=0x0A8A expected=1300 kHz
+I (2071) TPS546: Post-config COMPENSATION_CONFIG readback: 13 20 C6 19 C6
+I (13307) vcore: Set ASIC voltage = 0.800V
+I (14307) vcore: Set ASIC voltage = 0.810V
+I (14765) vcore: Set ASIC voltage = 0.820V
+I (15223) vcore: Set ASIC voltage = 0.830V
+I (15678) vcore: Set ASIC voltage = 0.840V
+I (16134) vcore: Set ASIC voltage = 0.850V
+I (16596) vcore: Set ASIC voltage = 0.860V
+I (17052) vcore: Set ASIC voltage = 0.870V
+I (17508) vcore: Set ASIC voltage = 0.880V
+I (17965) vcore: Set ASIC voltage = 0.890V
+I (18421) vcore: Set ASIC voltage = 0.900V
+I (18878) vcore: Set ASIC voltage = 0.910V
+I (19333) vcore: Set ASIC voltage = 0.920V
+I (19789) vcore: Set ASIC voltage = 0.930V
+I (20245) vcore: Set ASIC voltage = 0.940V
+I (20701) vcore: Set ASIC voltage = 0.950V
+I (21160) vcore: Set ASIC voltage = 0.960V
+I (21624) vcore: Set ASIC voltage = 0.970V
+I (22080) vcore: Set ASIC voltage = 0.980V
+I (22536) vcore: Set ASIC voltage = 0.990V
+W (30786) asic_init: WARM POLICY voltage_limits=REPORT_ONLY throughput_limits=REPORT_ONLY final_hold_seconds=120; temperature/communications/manual stop retained
+W (30801) asic_init: WARM POLICY hold_first_zero=0; stop after 120s observation at first fully zero-PASS domain
+W (30812) asic_init: WARM POLICY deferred_work=1; warm reset, no-work PLL ramp, 1500ms final settle
+I (286011) asic_init: Proto qualification WARM baseline300: total=1487.72/1497.60 GH/s throughput=99.34% min_chip=99.20% min_pass=99.33% balance=unavailable => PASS
+W (286897) asic_init: DEFER READY; wait up to 30s for scope G, then T triggers warm reset/ramp/first work
+W (287883) asic_init: DEFER ARMED; wait up to 5s for scope trigger T
+W (287903) asic_init: DEFER TRIAL call_us=286900124
+W (287903) asic_init: DEFER RESET begin; ASIC rail stays at 1160mV/half, no power cycle
+W (288550) asic_init: DEFER REINITIALIZED chips=4 frequency=100; no work/WORK_CFG/SPDLOG arm since reset
+W (288566) asic_init: DEFER TEMP freq=100 A1=52.86 A2=52.04 A3=52.70 A4=52.70; no work sent
+W (289101) asic_init: DEFER PLL LOCKED target=125 settle_ms=500; no work sent
+W (289628) asic_init: DEFER TEMP freq=125 A1=52.86 A2=52.20 A3=52.70 A4=52.53; no work sent
+W (289656) asic_init: DEFER PLL LOCKED target=150 settle_ms=500; no work sent
+W (290184) asic_init: DEFER TEMP freq=150 A1=53.19 A2=52.20 A3=53.03 A4=52.70; no work sent
+W (290212) asic_init: DEFER PLL LOCKED target=175 settle_ms=500; no work sent
+W (290739) asic_init: DEFER TEMP freq=175 A1=53.36 A2=52.53 A3=53.19 A4=53.19; no work sent
+W (290767) asic_init: DEFER PLL LOCKED target=200 settle_ms=500; no work sent
+W (291294) asic_init: DEFER TEMP freq=200 A1=53.69 A2=52.70 A3=53.52 A4=53.36; no work sent
+W (291322) asic_init: DEFER PLL LOCKED target=225 settle_ms=500; no work sent
+W (291849) asic_init: DEFER TEMP freq=225 A1=54.02 A2=53.03 A3=53.69 A4=53.69; no work sent
+W (291877) asic_init: DEFER PLL LOCKED target=250 settle_ms=500; no work sent
+W (292404) asic_init: DEFER TEMP freq=250 A1=54.51 A2=53.36 A3=54.02 A4=54.02; no work sent
+W (292432) asic_init: DEFER PLL LOCKED target=275 settle_ms=500; no work sent
+W (292959) asic_init: DEFER TEMP freq=275 A1=54.68 A2=53.69 A3=54.35 A4=54.51; no work sent
+W (292988) asic_init: DEFER PLL LOCKED target=300 settle_ms=500; no work sent
+W (293515) asic_init: DEFER TEMP freq=300 A1=55.17 A2=53.85 A3=54.68 A4=54.84; no work sent
+W (293543) asic_init: DEFER PLL LOCKED target=325 settle_ms=500; no work sent
+W (294071) asic_init: DEFER TEMP freq=325 A1=55.34 A2=54.18 A3=55.01 A4=55.17; no work sent
+W (294099) asic_init: DEFER PLL LOCKED target=350 settle_ms=500; no work sent
+W (294626) asic_init: DEFER TEMP freq=350 A1=55.67 A2=54.51 A3=55.34 A4=55.50; no work sent
+W (294654) asic_init: DEFER PLL LOCKED target=375 settle_ms=500; no work sent
+W (295181) asic_init: DEFER TEMP freq=375 A1=56.00 A2=54.84 A3=55.83 A4=56.00; no work sent
+W (295209) asic_init: DEFER PLL LOCKED target=400 settle_ms=500; no work sent
+W (295736) asic_init: DEFER TEMP freq=400 A1=56.32 A2=55.01 A3=56.16 A4=56.32; no work sent
+W (295764) asic_init: DEFER PLL LOCKED target=425 settle_ms=500; no work sent
+W (296292) asic_init: DEFER TEMP freq=425 A1=56.82 A2=55.50 A3=56.49 A4=56.82; no work sent
+W (296320) asic_init: DEFER PLL LOCKED target=450 settle_ms=500; no work sent
+W (296847) asic_init: DEFER TEMP freq=450 A1=57.31 A2=56.00 A3=56.82 A4=56.98; no work sent
+W (296875) asic_init: DEFER PLL LOCKED target=475 settle_ms=500; no work sent
+W (297402) asic_init: DEFER TEMP freq=475 A1=57.48 A2=56.16 A3=57.31 A4=57.48; no work sent
+W (297430) asic_init: DEFER PLL LOCKED target=500 settle_ms=500; no work sent
+W (297958) asic_init: DEFER TEMP freq=500 A1=57.97 A2=56.65 A3=57.97 A4=58.30; no work sent
+W (297985) asic_init: DEFER PLL LOCKED target=525 settle_ms=1000; no work sent
+W (299018) asic_init: DEFER TEMP freq=525 A1=58.47 A2=57.15 A3=58.63 A4=58.80; no work sent
+W (299046) asic_init: DEFER PLL LOCKED target=550 settle_ms=1000; no work sent
+E (300073) asic_init: DEFER temperature invalid/high A3 -288.90 C
+I (300077) vcore: Set ASIC voltage = 0.000V
+W (300089) asic_init: WARM END result=STOPPED frequency=550 max_PCB=unavailable PCB_sense=0 max_total=2314 mV ASIC_power=OFF

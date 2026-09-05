@@ -1,0 +1,25 @@
+I (1230) vcore: Holding active-high ASIC power enable low on GPIO10
+I (1652) vcore: Holding active-high ASIC power enable low on GPIO10
+W (91697) asic_init: RESET_DELAY BEGIN repeat=1 delay_ms=1000 baseline=400 test=425 voltage=1160; one full work reapplication, one SPDLOG arm; power off between trials
+I (96201) asic_init: Proto qualification RESET_DELAY-r1-d1000-baseline chip0@400.000MHz: 496.36/499.20 GH/s throughput=99.43% pass/fail=119126/939 pass_rate=99.22%
+I (96206) asic_init: Proto qualification RESET_DELAY-r1-d1000-baseline chip1@400.000MHz: 495.12/499.20 GH/s throughput=99.18% pass/fail=118830/954 pass_rate=99.20%
+I (96221) asic_init: Proto qualification RESET_DELAY-r1-d1000-baseline chip2@400.000MHz: 494.64/499.20 GH/s throughput=99.09% pass/fail=118713/591 pass_rate=99.50%
+I (96236) asic_init: Proto qualification RESET_DELAY-r1-d1000-baseline chip3@400.000MHz: 494.51/499.20 GH/s throughput=99.06% pass/fail=118683/571 pass_rate=99.52%
+I (96261) vcore: Holding active-high ASIC power enable low on GPIO10
+E (96268) asic_init: RESET_DELAY SAFETY STOP valid=0 PCB=0/0 mV; ASIC rail disabled
+I (96277) asic_init: Proto qualification RESET_DELAY-r1-d1000-baseline domains: lower=243 upper=2076 delta=+1833 mV total=2319 mV TPS current=13.19 A
+E (97920) asic_init: MC3 PVT RESET_DELAY-r1-d1000-baseline: conversion unavailable
+E (97971) asic_init: MC3 internal-domain diagnostic RESET_DELAY-r1-d1000-baseline chip0: could not read per-core counters
+E (97983) asic_init: MC3 internal-domain diagnostic RESET_DELAY-r1-d1000-baseline A1 unavailable
+E (98040) asic_init: MC3 internal-domain diagnostic RESET_DELAY-r1-d1000-baseline chip1: could not read per-core counters
+E (98052) asic_init: MC3 internal-domain diagnostic RESET_DELAY-r1-d1000-baseline A2 unavailable
+E (98110) asic_init: MC3 internal-domain diagnostic RESET_DELAY-r1-d1000-baseline chip2: could not read per-core counters
+E (98121) asic_init: MC3 internal-domain diagnostic RESET_DELAY-r1-d1000-baseline A3 unavailable
+E (98178) asic_init: MC3 internal-domain diagnostic RESET_DELAY-r1-d1000-baseline chip3: could not read per-core counters
+E (98190) asic_init: MC3 internal-domain diagnostic RESET_DELAY-r1-d1000-baseline A4 unavailable
+I (98199) asic_init: Proto qualification RESET_DELAY-r1-d1000-baseline: total=1980.63/1996.80 GH/s throughput=99.19% min_chip=99.06% min_pass=99.20% balance=1833 mV => REJECT
+W (98263) asic_init: RESET_DELAY TRIAL repeat=1 delay_ms=1000
+W (98270) asic_init: RESET_DELAY TIMING repeat=1 delay_ms=1000 pll_ms=0.006 reset_call_gap_ms=0.007 reset_count=0
+W (98281) asic_init: RESET_DELAY RESULT repeat=1 delay_ms=1000 first=REJECT measurement=ERROR
+I (98290) vcore: Holding active-high ASIC power enable low on GPIO10
+W (98297) asic_init: RESET_DELAY END result=ERROR max_PCB=1155/1166 mV ASIC_power=OFF

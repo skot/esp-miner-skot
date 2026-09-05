@@ -1,0 +1,1 @@
+PASS: reset/reinitialize followed by exactly 125..550 MHz in 25 MHz steps; no mining configuration, job target, V_BASE, FIRST_WORK or LAUNCHED log before sensor stop. Source host tests additionally verify no premature work or SPDLOG arm.

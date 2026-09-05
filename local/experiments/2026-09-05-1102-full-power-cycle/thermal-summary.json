@@ -1,0 +1,31 @@
+{
+  "samples": 1232,
+  "invalid": [],
+  "retry_messages": [],
+  "per_asic": {
+    "1": {
+      "samples": 308,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 60.28
+    },
+    "2": {
+      "samples": 308,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 58.8
+    },
+    "3": {
+      "samples": 308,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 59.79
+    },
+    "4": {
+      "samples": 308,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 59.79
+    }
+  }
+}

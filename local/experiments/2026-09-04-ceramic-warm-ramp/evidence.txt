@@ -1,0 +1,61 @@
+I (2041) TPS546: Post-config ON_OFF_CONFIG readback: 0x1F expected=0x1F
+I (2047) TPS546: Post-config VOUT_SCALE_LOOP readback: 0.25000 raw=0xAA00 expected=0.25000
+I (2056) TPS546: Post-config FREQUENCY_SWITCH readback: 550 kHz raw=0x0226 expected=550 kHz
+I (2065) TPS546: Post-config COMPENSATION_CONFIG readback: 13 11 8C 19 86
+W (30250) asic_init: WARM BEGIN baseline=300 voltage=1140 target_temp=55 max_frequency=600; fan lease only, NVS unchanged
+W (30261) asic_init: WARM FAN saved auto=1 min=99 manual=100 target_temp=60; temporary fan starts at 20%
+W (172473) asic_init: WARM REARM at 300MHz; prevents counter expiration during warmup
+W (272967) asic_init: WARM REARM at 300MHz; prevents counter expiration during warmup
+W (304537) asic_init: WARM TEMPERATURE READY; qualify 300MHz at the warm temperature without a PLL update
+I (308881) asic_init: Proto qualification WARM baseline300 chip0@300.000MHz: 373.30/374.40 GH/s throughput=99.71% pass/fail=89591/424 pass_rate=99.53%
+I (308884) asic_init: Proto qualification WARM baseline300 chip1@300.000MHz: 372.01/374.40 GH/s throughput=99.36% pass/fail=89283/654 pass_rate=99.27%
+I (308899) asic_init: Proto qualification WARM baseline300 chip2@300.000MHz: 372.21/374.40 GH/s throughput=99.41% pass/fail=89330/331 pass_rate=99.63%
+I (308914) asic_init: Proto qualification WARM baseline300 chip3@300.000MHz: 373.33/374.40 GH/s throughput=99.71% pass/fail=89599/280 pass_rate=99.69%
+I (308929) asic_init: Proto qualification WARM baseline300 domains: lower=1133 upper=1147 delta=+14 mV total=2280 mV TPS current=11.25 A
+I (308940) asic_init: Proto qualification WARM baseline300: total=1490.85/1497.60 GH/s throughput=99.55% min_chip=99.36% min_pass=99.27% balance=14 mV => PASS
+W (309835) asic_init: WARM READY target=325; wait for scope G
+W (318634) asic_init: WARM ARMED target=325; wait for scope trigger T
+W (318644) asic_init: WARM TRIAL target=325 call_us=317648058
+W (318839) asic_init: WARM LAUNCHED target=325; await R, X powers off
+W (319410) asic_init: BCAST SAMPLE phase=warm325 A1 counter_us=318371156 dt_us=0 pass=3020,3042,3173,3348 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=281.23 fail=14,16,11,16 temp_C=54.18 freq=325
+W (319505) asic_init: BCAST SAMPLE phase=warm325 A2 counter_us=318466057 dt_us=0 pass=3613,3701,3895,3885 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=281.48 fail=12,36,20,34 temp_C=53.36 freq=325
+W (319601) asic_init: BCAST SAMPLE phase=warm325 A3 counter_us=318561704 dt_us=0 pass=4202,4318,4412,4569 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=287.07 fail=16,27,16,13 temp_C=53.36 freq=325
+W (319696) asic_init: BCAST SAMPLE phase=warm325 A4 counter_us=318657334 dt_us=0 pass=4713,4867,4901,5052 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=287.37 fail=15,6,24,11 temp_C=56.00 freq=325
+W (319706) asic_init: BCAST RAIL phase=warm325 PCB=1135/1145 mV TPS=12.047A fan=20% rpm=689
+W (320375) asic_init: BCAST SAMPLE phase=warm325 A1 counter_us=319336266 dt_us=965110 pass=8964,8742,9044,9281 rate=101.90,97.72,100.65,101.71 zero=0,0,0,0 D2_mV=281.28 fail=56,38,39,34 temp_C=54.18 freq=325
+W (320471) asic_init: BCAST SAMPLE phase=warm325 A2 counter_us=319432081 dt_us=966024 pass=9334,9537,9665,9705 rate=97.99,99.96,98.83,99.68 zero=0,0,0,0 D2_mV=281.53 fail=33,81,53,76 temp_C=53.36 freq=325
+W (320569) asic_init: BCAST SAMPLE phase=warm325 A3 counter_us=319529694 dt_us=967990 pass=10027,10262,10250,10376 rate=99.57,101.60,99.79,99.26 zero=0,0,0,0 D2_mV=287.12 fail=38,53,28,29 temp_C=53.36 freq=325
+W (320666) asic_init: BCAST SAMPLE phase=warm325 A4 counter_us=319626645 dt_us=969311 pass=10662,10707,10693,10896 rate=101.55,99.69,98.87,99.75 zero=0,0,0,0 D2_mV=287.37 fail=56,18,52,28 temp_C=56.00 freq=325
+W (320677) asic_init: BCAST RAIL phase=warm325 PCB=1136/1144 mV TPS=12.000A fan=20% rpm=681
+W (321350) asic_init: BCAST SAMPLE phase=warm325 A1 counter_us=320311460 dt_us=975194 pass=14862,14600,14982,15213 rate=100.07,99.39,100.75,100.64 zero=0,0,0,0 D2_mV=281.28 fail=89,65,60,61 temp_C=54.35 freq=325
+W (321447) asic_init: BCAST SAMPLE phase=warm325 A2 counter_us=320408018 dt_us=975937 pass=15224,15379,15557,15658 rate=99.86,99.04,99.89,100.92 zero=0,0,0,0 D2_mV=281.48 fail=64,137,73,125 temp_C=53.36 freq=325
+W (321549) asic_init: BCAST SAMPLE phase=warm325 A3 counter_us=320508000 dt_us=978306 pass=15897,16019,16169,16175 rate=99.28,97.37,100.10,98.08 zero=0,0,0,0 D2_mV=287.12 fail=51,75,44,64 temp_C=53.52 freq=325
+W (321645) asic_init: BCAST SAMPLE phase=warm325 A4 counter_us=320606259 dt_us=979614 pass=16736,16601,16505,16727 rate=102.59,99.55,98.16,98.48 zero=0,0,0,0 D2_mV=287.32 fail=89,33,72,46 temp_C=56.00 freq=325
+W (321656) asic_init: BCAST RAIL phase=warm325 PCB=1135/1145 mV TPS=12.000A fan=20% rpm=681
+W (322335) asic_init: BCAST SAMPLE phase=warm325 A1 counter_us=321293850 dt_us=982390 pass=20645,20466,20989,21169 rate=97.40,98.80,101.17,100.31 zero=0,0,0,0 D2_mV=281.18 fail=125,95,80,93 temp_C=54.51 freq=325
+W (322431) asic_init: BCAST SAMPLE phase=warm325 A2 counter_us=321392363 dt_us=984345 pass=21007,21318,21435,21604 rate=97.20,99.83,98.80,99.94 zero=0,0,0,0 D2_mV=281.43 fail=84,204,94,164 temp_C=53.52 freq=325
+W (322527) asic_init: BCAST SAMPLE phase=warm325 A3 counter_us=321488063 dt_us=980063 pass=21673,21948,21962,22098 rate=97.51,100.09,97.80,99.99 zero=0,0,0,0 D2_mV=287.07 fail=73,91,60,88 temp_C=53.36 freq=325
+W (322630) asic_init: BCAST SAMPLE phase=warm325 A4 counter_us=321587592 dt_us=981333 pass=22653,22531,22291,22595 rate=99.76,99.98,97.55,98.94 zero=0,0,0,0 D2_mV=287.37 fail=109,45,98,60 temp_C=56.16 freq=325
+W (322641) asic_init: BCAST RAIL phase=warm325 PCB=1136/1144 mV TPS=12.000A fan=20% rpm=681
+W (322656) asic_init: WARM END result=STOPPED frequency=325 max_PCB=1136/1150 mV ASIC_power=OFF
+
+RIGOL TECHNOLOGIES,DS2302A,DS2D221500416,00.03.06
+W (30250) asic_init: WARM BEGIN baseline=300 voltage=1140 target_temp=55 max_frequency=600; fan lease only, NVS unchanged
+W (30261) asic_init: WARM FAN saved auto=1 min=99 manual=100 target_temp=60; temporary fan starts at 20%
+W (172473) asic_init: WARM REARM at 300MHz; prevents counter expiration during warmup
+W (272967) asic_init: WARM REARM at 300MHz; prevents counter expiration during warmup
+W (304537) asic_init: WARM TEMPERATURE READY; qualify 300MHz at the warm temperature without a PLL update
+I (308881) asic_init: Proto qualification WARM baseline300 chip0@300.000MHz: 373.30/374.40 GH/s throughput=99.71% pass/fail=89591/424 pass_rate=99.53%
+I (308884) asic_init: Proto qualification WARM baseline300 chip1@300.000MHz: 372.01/374.40 GH/s throughput=99.36% pass/fail=89283/654 pass_rate=99.27%
+I (308899) asic_init: Proto qualification WARM baseline300 chip2@300.000MHz: 372.21/374.40 GH/s throughput=99.41% pass/fail=89330/331 pass_rate=99.63%
+I (308914) asic_init: Proto qualification WARM baseline300 chip3@300.000MHz: 373.33/374.40 GH/s throughput=99.71% pass/fail=89599/280 pass_rate=99.69%
+I (308929) asic_init: Proto qualification WARM baseline300 domains: lower=1133 upper=1147 delta=+14 mV total=2280 mV TPS current=11.25 A
+I (308940) asic_init: Proto qualification WARM baseline300: total=1490.85/1497.60 GH/s throughput=99.55% min_chip=99.36% min_pass=99.27% balance=14 mV => PASS
+W (309835) asic_init: WARM READY target=325; wait for scope G
+warm-baseline300 {'lower_max_v': 1.196, 'upper_max_v': 1.1920002889999997, 'total_max_v': 2.3120002889999998, 'clipped_samples': 0, 'record_end_s': 0.27499950999999995, 'download_s': 7.165910291999978, 'raw_limit_v': 1.25, 'mean_limit_v': 1.22, 'mean_window_samples': 40, 'sample_interval_s': np.float64(5e-07), 'lower_max_moving_mean_v': 1.153499999997439, 'upper_max_moving_mean_v': 1.1539002880090266, 'reasons': [], 'voltage_accepted': True, 'accepted': True}
+W (318634) asic_init: WARM ARMED target=325; wait for scope trigger T
+W (318644) asic_init: WARM TRIAL target=325 call_us=317648058
+W (318839) asic_init: WARM LAUNCHED target=325; await R, X powers off
+step-325 early voltage rejection; X sent after 2.505 s
+W (322656) asic_init: WARM END result=STOPPED frequency=325 max_PCB=1136/1150 mV ASIC_power=OFF
+step-325 {'lower_max_v': 1.424, 'upper_max_v': 1.3320002770000001, 'total_max_v': 2.416000302, 'clipped_samples': 0, 'record_end_s': 0.27499950999999995, 'download_s': 7.209906208000007, 'launch_duration_s': 0.195, 'raw_limit_v': 1.25, 'mean_limit_v': 1.22, 'mean_window_samples': 40, 'sample_interval_s': np.float64(5e-07), 'lower_max_moving_mean_v': 1.407100000000355, 'upper_max_moving_mean_v': 1.2804002771990781, 'reasons': ['lower: raw voltage limit', 'lower: moving-mean voltage limit', 'upper: raw voltage limit', 'upper: moving-mean voltage limit'], 'voltage_accepted': False, 'accepted': False}

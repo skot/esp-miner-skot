@@ -1,0 +1,11 @@
+{
+  ":CHAN1:IMP?": "FIFT",
+  ":CHAN2:IMP?": "OMEG",
+  ":CHAN1:COUP?": "DC",
+  ":CHAN2:COUP?": "DC",
+  ":CHAN1:PROB?": "1",
+  ":CHAN2:PROB?": "1",
+  ":CHAN1:SCAL?": "2.000000e-01",
+  ":CHAN2:SCAL?": "5.000000e-01",
+  ":TRIG:STAT?": "STOP"
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "type": 1,
+    "subtype": 2,
+    "offset": "0x9000",
+    "size": "0x6000",
+    "label": "nvs",
+    "flags": 0
+  },
+  {
+    "type": 1,
+    "subtype": 1,
+    "offset": "0xf000",
+    "size": "0x1000",
+    "label": "phy_init",
+    "flags": 0
+  },
+  {
+    "type": 0,
+    "subtype": 0,
+    "offset": "0x10000",
+    "size": "0x400000",
+    "label": "factory",
+    "flags": 0
+  },
+  {
+    "type": 1,
+    "subtype": 130,
+    "offset": "0x410000",
+    "size": "0x300000",
+    "label": "www",
+    "flags": 0
+  },
+  {
+    "type": 0,
+    "subtype": 16,
+    "offset": "0x710000",
+    "size": "0x400000",
+    "label": "ota_0",
+    "flags": 0
+  },
+  {
+    "type": 0,
+    "subtype": 17,
+    "offset": "0xb10000",
+    "size": "0x400000",
+    "label": "ota_1",
+    "flags": 0
+  },
+  {
+    "type": 1,
+    "subtype": 0,
+    "offset": "0xf10000",
+    "size": "0x2000",
+    "label": "otadata",
+    "flags": 0
+  },
+  {
+    "type": 1,
+    "subtype": 3,
+    "offset": "0xf12000",
+    "size": "0x10000",
+    "label": "coredump",
+    "flags": 0
+  }
+]

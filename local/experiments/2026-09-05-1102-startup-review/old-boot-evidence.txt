@@ -1,0 +1,29 @@
+I (1676) TPS546: Power config-ON_OFF_CONFIG: 1F
+I (1711) TPS546: Setting ON_OFF_CONFIG: 1B
+I (2010) TPS546: Setting TON_RISE: 31.75ms
+I (2144) TPS546: read TON_RISE: 31.75ms
+I (2204) TPS546: read ON_OFF_CONFIG: 1b
+I (13758) mc3: PLL0 locked at 100 MHz on all 4 chips
+I (19170) asic_init: Proto Vcore ramp reached 1160 mV/domain
+I (19210) mc3: PLL0 locked at 125 MHz on all 4 chips
+I (19734) mc3: PLL0 locked at 150 MHz on all 4 chips
+I (20260) mc3: PLL0 locked at 175 MHz on all 4 chips
+I (20784) mc3: PLL0 locked at 200 MHz on all 4 chips
+I (21308) mc3: PLL0 locked at 225 MHz on all 4 chips
+I (21833) mc3: PLL0 locked at 250 MHz on all 4 chips
+I (22358) mc3: PLL0 locked at 275 MHz on all 4 chips
+I (22883) mc3: PLL0 locked at 300 MHz on all 4 chips
+I (23407) mc3: PLL0 locked at 325 MHz on all 4 chips
+I (23931) mc3: PLL0 locked at 350 MHz on all 4 chips
+I (24456) mc3: PLL0 locked at 375 MHz on all 4 chips
+I (24982) mc3: PLL0 locked at 400 MHz on all 4 chips
+I (25507) mc3: PLL0 locked at 425 MHz on all 4 chips
+I (26031) mc3: PLL0 locked at 450 MHz on all 4 chips
+I (26556) mc3: PLL0 locked at 475 MHz on all 4 chips
+I (27081) mc3: PLL0 locked at 500 MHz on all 4 chips
+I (27605) mc3: PLL0 locked at 525 MHz on all 4 chips
+I (28630) mc3: PLL0 locked at 550 MHz on all 4 chips
+I (29655) mc3: PLL0 locked at 575 MHz on all 4 chips
+I (30681) mc3: PLL0 locked at 600 MHz on all 4 chips
+I (32221) mc3: Writing MC3 work job_id=1 chips=4
+I (32225) mc3: Writing MC3 mining config: rolltime=0x00055523 version_mask=0x1FFFE000 start_bit=13 V_CTRL=0xFFFF00D1

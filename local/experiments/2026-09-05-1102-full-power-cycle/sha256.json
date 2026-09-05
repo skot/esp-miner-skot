@@ -1,0 +1,9 @@
+{
+  "probe.bin": "ca853994da970ddfc1bfb898ea4a3b7378481c600101e2e99c2a9c89e390949c",
+  "probe.elf": "a41f6da79d5f6f7c042b3d6e9fb49cc3ebb51365bdb617fa633ed5e1e2d16866",
+  "normal.bin": "be78d3d8208b9a91edd46ab51d7b34b7f61bd642ce72565e65066840c4960f18",
+  "asic-init-source.c": "1b6c3cba69aa99e74d762c340b58a94a342e41d9e398e781e30fb0641bf45759",
+  "mc3-source.c": "a44b885e76c76b6948485b7b092467e8a9b8e8b72c0c14f4fada89b52acac5ea",
+  "vcore-source.c": "6745b62a174c7fe8d4ecb99e5dff515a5d9130cb71ee6f15da7aaa21698b653a",
+  "device-config-source.h": "1a99f305810f2447da52f7058229dee2732e0b00b24624bacc0b5386cc31b2dd"
+}

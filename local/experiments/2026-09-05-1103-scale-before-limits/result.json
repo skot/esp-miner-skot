@@ -1,0 +1,321 @@
+{
+  "windows": {
+    "whole_hold": {
+      "chips": [
+        {
+          "asic": 1,
+          "ghs": 737.8059737373246,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.5690483964495,
+              "percent_ideal": 99.12876516904353,
+              "max_zero_cores": 0,
+              "seconds": 118.823386
+            },
+            {
+              "domain": 1,
+              "ghs": 185.81091468199702,
+              "percent_ideal": 99.25796724465653,
+              "max_zero_cores": 0,
+              "seconds": 118.823386
+            },
+            {
+              "domain": 2,
+              "ghs": 180.5310852121989,
+              "percent_ideal": 96.43754551933702,
+              "max_zero_cores": 1,
+              "seconds": 118.823386
+            },
+            {
+              "domain": 3,
+              "ghs": 185.89492544667934,
+              "percent_ideal": 99.30284478989282,
+              "max_zero_cores": 0,
+              "seconds": 118.823386
+            }
+          ]
+        },
+        {
+          "asic": 2,
+          "ghs": 741.142608602699,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.19874859496522,
+              "percent_ideal": 98.93095544602843,
+              "max_zero_cores": 0,
+              "seconds": 118.825707
+            },
+            {
+              "domain": 1,
+              "ghs": 185.59634471661929,
+              "percent_ideal": 99.14334653665561,
+              "max_zero_cores": 0,
+              "seconds": 118.825707
+            },
+            {
+              "domain": 2,
+              "ghs": 185.22571622963707,
+              "percent_ideal": 98.94536123378049,
+              "max_zero_cores": 0,
+              "seconds": 118.825707
+            },
+            {
+              "domain": 3,
+              "ghs": 185.12179906147747,
+              "percent_ideal": 98.88984992600292,
+              "max_zero_cores": 0,
+              "seconds": 118.825707
+            }
+          ]
+        },
+        {
+          "asic": 3,
+          "ghs": 742.6103924778826,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.70526139768702,
+              "percent_ideal": 99.20152852440548,
+              "max_zero_cores": 0,
+              "seconds": 118.828561
+            },
+            {
+              "domain": 1,
+              "ghs": 185.25529392402555,
+              "percent_ideal": 98.9611612842017,
+              "max_zero_cores": 0,
+              "seconds": 118.828561
+            },
+            {
+              "domain": 2,
+              "ghs": 186.17231266937583,
+              "percent_ideal": 99.45102172509394,
+              "max_zero_cores": 0,
+              "seconds": 118.828561
+            },
+            {
+              "domain": 3,
+              "ghs": 185.47752448679407,
+              "percent_ideal": 99.0798741916635,
+              "max_zero_cores": 0,
+              "seconds": 118.828561
+            }
+          ]
+        },
+        {
+          "asic": 4,
+          "ghs": 743.0254526746725,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.5734196459906,
+              "percent_ideal": 99.13110023824285,
+              "max_zero_cores": 0,
+              "seconds": 118.829447
+            },
+            {
+              "domain": 1,
+              "ghs": 186.15624107112106,
+              "percent_ideal": 99.44243646961596,
+              "max_zero_cores": 0,
+              "seconds": 118.829447
+            },
+            {
+              "domain": 2,
+              "ghs": 185.53656974483775,
+              "percent_ideal": 99.11141546198598,
+              "max_zero_cores": 0,
+              "seconds": 118.829447
+            },
+            {
+              "domain": 3,
+              "ghs": 185.75922221272307,
+              "percent_ideal": 99.23035374611275,
+              "max_zero_cores": 0,
+              "seconds": 118.829447
+            }
+          ]
+        }
+      ],
+      "total_ghs": 2964.584427492579
+    },
+    "last30s": {
+      "chips": [
+        {
+          "asic": 1,
+          "ghs": 737.854524307435,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.388556404307,
+              "percent_ideal": 99.03234850657425,
+              "max_zero_cores": 0,
+              "seconds": 29.729813
+            },
+            {
+              "domain": 1,
+              "ghs": 185.60525642001178,
+              "percent_ideal": 99.14810706197211,
+              "max_zero_cores": 0,
+              "seconds": 29.729813
+            },
+            {
+              "domain": 2,
+              "ghs": 180.8897737866027,
+              "percent_ideal": 96.62915266378349,
+              "max_zero_cores": 1,
+              "seconds": 29.729813
+            },
+            {
+              "domain": 3,
+              "ghs": 185.9709376965136,
+              "percent_ideal": 99.34344962420599,
+              "max_zero_cores": 0,
+              "seconds": 29.729813
+            }
+          ]
+        },
+        {
+          "asic": 2,
+          "ghs": 740.7430130611158,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 184.96245385743532,
+              "percent_ideal": 98.80472962469837,
+              "max_zero_cores": 0,
+              "seconds": 30.917343
+            },
+            {
+              "domain": 1,
+              "ghs": 185.74712200747652,
+              "percent_ideal": 99.22388996125882,
+              "max_zero_cores": 0,
+              "seconds": 30.917343
+            },
+            {
+              "domain": 2,
+              "ghs": 184.9054758797352,
+              "percent_ideal": 98.77429267079873,
+              "max_zero_cores": 0,
+              "seconds": 30.917343
+            },
+            {
+              "domain": 3,
+              "ghs": 185.12796131646888,
+              "percent_ideal": 98.89314172888297,
+              "max_zero_cores": 0,
+              "seconds": 30.917343
+            }
+          ]
+        },
+        {
+          "asic": 3,
+          "ghs": 742.6367350083038,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 184.74240387997767,
+              "percent_ideal": 98.68718155981713,
+              "max_zero_cores": 0,
+              "seconds": 30.918116
+            },
+            {
+              "domain": 1,
+              "ghs": 185.7956561627494,
+              "percent_ideal": 99.24981632625503,
+              "max_zero_cores": 0,
+              "seconds": 30.918116
+            },
+            {
+              "domain": 2,
+              "ghs": 186.41208820459823,
+              "percent_ideal": 99.57910694690078,
+              "max_zero_cores": 0,
+              "seconds": 30.918116
+            },
+            {
+              "domain": 3,
+              "ghs": 185.68658676097857,
+              "percent_ideal": 99.19155275693299,
+              "max_zero_cores": 0,
+              "seconds": 30.918116
+            }
+          ]
+        },
+        {
+          "asic": 4,
+          "ghs": 743.523692309603,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.96787948646164,
+              "percent_ideal": 99.3418159649902,
+              "max_zero_cores": 0,
+              "seconds": 30.918352
+            },
+            {
+              "domain": 1,
+              "ghs": 186.45190517683477,
+              "percent_ideal": 99.60037669702713,
+              "max_zero_cores": 0,
+              "seconds": 30.918352
+            },
+            {
+              "domain": 2,
+              "ghs": 185.47734223971577,
+              "percent_ideal": 99.07977683745501,
+              "max_zero_cores": 0,
+              "seconds": 30.918352
+            },
+            {
+              "domain": 3,
+              "ghs": 185.62656540659088,
+              "percent_ideal": 99.15949006762335,
+              "max_zero_cores": 0,
+              "seconds": 30.918352
+            }
+          ]
+        }
+      ],
+      "total_ghs": 2964.757964686458
+    }
+  },
+  "thermal_invalid": [],
+  "post_launch_temperatures": {
+    "1": {
+      "min": 57.97,
+      "max": 60.12,
+      "final": 59.95,
+      "distinct": 12
+    },
+    "2": {
+      "min": 56.49,
+      "max": 59.13,
+      "final": 58.63,
+      "distinct": 15
+    },
+    "3": {
+      "min": 57.31,
+      "max": 59.79,
+      "final": 59.46,
+      "distinct": 15
+    },
+    "4": {
+      "min": 57.15,
+      "max": 59.46,
+      "final": 59.13,
+      "distinct": 14
+    }
+  },
+  "completion": [
+    "W (439775) asic_init: DEFER END observed_seconds=120.325 healthy_all=0; powering off",
+    "W (439801) asic_init: WARM END result=COMPLETE frequency=600 max_PCB=1184/1180 mV PCB_sense=1 max_total=2325 mV ASIC_power=OFF"
+  ],
+  "scope": {
+    "captured": false,
+    "reason": "User requested log-only test; no probes attached"
+  }
+}

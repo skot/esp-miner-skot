@@ -1,0 +1,18 @@
+{
+  "CHAN1": {
+    "clipped": 0,
+    "min": 0.0,
+    "max": 2.56,
+    "start_s": -10.0,
+    "end_s": 59.9999,
+    "sample_interval_s": 0.0001
+  },
+  "CHAN2": {
+    "clipped": 0,
+    "min": 0.02,
+    "max": 1.74,
+    "start_s": -10.0,
+    "end_s": 59.9999,
+    "sample_interval_s": 0.0001
+  }
+}

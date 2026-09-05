@@ -1,0 +1,19 @@
+{
+  "board": "1103",
+  "mac": "28:84:85:ba:96:08",
+  "port": "/dev/cu.usbmodem11434201",
+  "hardware": "User-confirmed stock 1103; no scope probes attached",
+  "scope_used": false,
+  "scope_policy": "User explicitly requested skipping scope and confirming throughput in logs",
+  "probe_sha256": "ce69bffe178c7d9f08e5351d5f1557d11671a88a633ead672a426d666b69b2a9",
+  "tps546": {
+    "frequency_khz": 550,
+    "scale_loop": 0.25,
+    "compensation_hex": "13 11 8C 11 86",
+    "on_off_config_hex": "1F"
+  },
+  "sequence": "300MHz warmup; full Vcore/VDDIO cycle; 800-to-1160mV/half ramp at100MHz; no-work PLL ramp to600; 1500ms settle; fresh temperatures; synthetic job;120s counters; ASIC power off",
+  "limits": "Voltage/throughput report-only as in prepared comparison; temperature, fresh rail/ADC reads, timing and manual-stop retained",
+  "backup": "factory app, bootloader/partition-table/NVS header, and OTA selection saved; factory selection verified",
+  "settings_changed_in_nvs": false
+}

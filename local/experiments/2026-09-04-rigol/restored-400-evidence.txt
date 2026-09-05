@@ -1,0 +1,11 @@
+I (91679) asic_init: Proto qualification 400.000MHz: total=1980.01/1996.80 GH/s throughput=99.16% min_chip=99.08% min_pass=99.14% balance=9 mV => PASS
+I (91710) asic_init: ASIC initialized successfully with 4 chip(s) (cold boot mode)
+I (91782) mc3: SPDLOG: chip0=496.06 GH/s pass/fail=119055/976 chip1=494.70 GH/s pass/fail=118728/1024 chip2=494.65 GH/s pass/fail=118717/588 chip3=494.59 GH/s pass/fail=118702/575 total=1980.01 GH/s
+I (92147) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (95782) mc3: SPDLOG: chip0=500.80 GH/s pass/fail=25040/201 chip1=494.80 GH/s pass/fail=24740/204 chip2=499.56 GH/s pass/fail=24978/94 chip3=498.40 GH/s pass/fail=24920/104 total=1993.56 GH/s
+I (97503) power_management: Proto PCB domains: lower=1155.0 upper=1164.0 delta=+9.0 mV total=2319.0 mV
+I (99790) mc3: SPDLOG: chip0=492.70 GH/s pass/fail=24635/187 chip1=485.86 GH/s pass/fail=24293/201 chip2=499.82 GH/s pass/fail=24991/113 chip3=496.14 GH/s pass/fail=24807/95 total=1974.52 GH/s
+I (102678) power_management: Proto PCB domains: lower=1154.0 upper=1165.0 delta=+11.0 mV total=2319.0 mV
+I (103780) mc3: SPDLOG: chip0=496.74 GH/s pass/fail=24837/162 chip1=492.62 GH/s pass/fail=24631/226 chip2=497.60 GH/s pass/fail=24880/124 chip3=492.40 GH/s pass/fail=24620/95 total=1979.36 GH/s
+I (107773) mc3: SPDLOG: chip0=495.38 GH/s pass/fail=24769/190 chip1=496.40 GH/s pass/fail=24820/195 chip2=493.14 GH/s pass/fail=24657/129 chip3=495.28 GH/s pass/fail=24764/98 total=1980.20 GH/s
+I (107883) power_management: Proto PCB domains: lower=1153.0 upper=1166.0 delta=+13.0 mV total=2319.0 mV

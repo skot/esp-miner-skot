@@ -1,0 +1,100 @@
+I (1230) vcore: Holding active-high ASIC power enable low on GPIO10
+I (1651) vcore: Holding active-high ASIC power enable low on GPIO10
+W (91713) asic_init: RESET_DELAY BEGIN repeats=3 baseline=400 test=425 voltage=1160; exactly one work reset per trial
+I (96214) asic_init: Proto qualification RESET_DELAY-r1-d0-baseline chip0@400.000MHz: 496.43/499.20 GH/s throughput=99.45% pass/fail=119144/874 pass_rate=99.27%
+I (96219) asic_init: Proto qualification RESET_DELAY-r1-d0-baseline chip1@400.000MHz: 495.04/499.20 GH/s throughput=99.17% pass/fail=118810/924 pass_rate=99.23%
+I (96234) asic_init: Proto qualification RESET_DELAY-r1-d0-baseline chip2@400.000MHz: 494.74/499.20 GH/s throughput=99.11% pass/fail=118737/606 pass_rate=99.49%
+I (96249) asic_init: Proto qualification RESET_DELAY-r1-d0-baseline chip3@400.000MHz: 494.48/499.20 GH/s throughput=99.05% pass/fail=118675/576 pass_rate=99.52%
+I (96266) asic_init: Proto qualification RESET_DELAY-r1-d0-baseline domains: lower=1155 upper=1164 delta=+9 mV total=2319 mV TPS current=13.19 A
+W (96734) asic_init: MC3 PVT RESET_DELAY-r1-d0-baseline A1 sensors mV: VSS4=0.1 VSS5=0.9 VSS6=0.7 VSS15=0.2 I1[7]=290.7 I1[8]=294.5 I2[9]=582.0 I2[10]=583.3 I3[11]=868.5 I3[12]=872.3 VDD[13]=1154.7 VDD[14]=1156.4 valid=0xFFF0
+W (96746) asic_init: MC3 PVT RESET_DELAY-r1-d0-baseline A1 averaged taps/domains mV: VSS=0.5 I1=292.6 I2=582.7 I3=870.4 VDD=1155.6 | D0=292.1 D1=290.1 D2=287.7 D3=285.2 sum=1155.1
+W (96776) asic_init: MC3 PVT RESET_DELAY-r1-d0-baseline A2 sensors mV: VSS4=-0.5 VSS5=0.3 VSS6=0.1 VSS15=-0.5 I1[7]=288.7 I1[8]=292.7 I2[9]=580.2 I2[10]=581.4 I3[11]=866.4 I3[12]=870.3 VDD[13]=1151.3 VDD[14]=1152.7 valid=0xFFF0
+W (96806) asic_init: MC3 PVT RESET_DELAY-r1-d0-baseline A2 averaged taps/domains mV: VSS=-0.2 I1=290.7 I2=580.8 I3=868.4 VDD=1152.0 | D0=290.9 D1=290.1 D2=287.5 D3=283.6 sum=1152.2
+W (96822) asic_init: MC3 PVT RESET_DELAY-r1-d0-baseline A3 sensors mV: VSS4=0.4 VSS5=1.2 VSS6=1.0 VSS15=0.4 I1[7]=288.9 I1[8]=292.8 I2[9]=580.5 I2[10]=581.8 I3[11]=870.5 I3[12]=874.4 VDD[13]=1161.7 VDD[14]=1164.1 valid=0xFFF0
+W (96843) asic_init: MC3 PVT RESET_DELAY-r1-d0-baseline A3 averaged taps/domains mV: VSS=0.7 I1=290.9 I2=581.2 I3=872.5 VDD=1162.9 | D0=290.1 D1=290.3 D2=291.3 D3=290.4 sum=1162.1
+W (96860) asic_init: MC3 PVT RESET_DELAY-r1-d0-baseline A4 sensors mV: VSS4=-0.4 VSS5=0.4 VSS6=0.2 VSS15=-0.4 I1[7]=287.8 I1[8]=291.9 I2[9]=578.8 I2[10]=580.1 I3[11]=869.0 I3[12]=873.0 VDD[13]=1161.2 VDD[14]=1162.3 valid=0xFFF0
+W (96881) asic_init: MC3 PVT RESET_DELAY-r1-d0-baseline A4 averaged taps/domains mV: VSS=-0.1 I1=289.8 I2=579.5 I3=871.0 VDD=1161.8 | D0=289.9 D1=289.6 D2=291.5 D3=290.8 sum=1161.8
+W (96985) asic_init: MC3 internal domains RESET_DELAY-r1-d0-baseline chip0: D0=29632(99.5% ideal,z=0) D1=29542(99.2% ideal,z=0) D2=29965(100.6% ideal,z=0) D3=30005(100.7% ideal,z=0) sum=119144 global=119144 match=100.00% min_core=27:573
+I (96997) asic_init: MC3 internal slices RESET_DELAY-r1-d0-baseline chip0: S0=10028 S1=9881 S2=9723 S3=9694 S4=9935 S5=9913 S6=9921 S7=10010 S8=10034 S9=9974 S10=10019 S11=10012
+W (97100) asic_init: MC3 internal domains RESET_DELAY-r1-d0-baseline chip1: D0=29705(100.0% ideal,z=0) D1=29863(100.5% ideal,z=0) D2=29575(99.6% ideal,z=0) D3=29667(99.9% ideal,z=0) sum=118810 global=118810 match=100.00% min_core=47:616
+I (97111) asic_init: MC3 internal slices RESET_DELAY-r1-d0-baseline chip1: S0=10031 S1=9868 S2=9806 S3=9970 S4=9873 S5=10020 S6=9905 S7=9866 S8=9804 S9=9958 S10=10003 S11=9706
+W (97215) asic_init: MC3 internal domains RESET_DELAY-r1-d0-baseline chip2: D0=29721(100.1% ideal,z=0) D1=29867(100.6% ideal,z=0) D2=29629(99.8% ideal,z=0) D3=29520(99.4% ideal,z=0) sum=118737 global=118737 match=100.00% min_core=126:687
+I (97226) asic_init: MC3 internal slices RESET_DELAY-r1-d0-baseline chip2: S0=9837 S1=9935 S2=9949 S3=9911 S4=9964 S5=9992 S6=9896 S7=9851 S8=9882 S9=9832 S10=10018 S11=9670
+W (97329) asic_init: MC3 internal domains RESET_DELAY-r1-d0-baseline chip3: D0=30000(101.1% ideal,z=0) D1=29653(99.9% ideal,z=0) D2=29398(99.1% ideal,z=0) D3=29624(99.8% ideal,z=0) sum=118675 global=118675 match=100.00% min_core=113:686
+I (97340) asic_init: MC3 internal slices RESET_DELAY-r1-d0-baseline chip3: S0=10053 S1=10022 S2=9925 S3=9837 S4=9965 S5=9851 S6=9712 S7=9929 S8=9757 S9=9846 S10=9913 S11=9865
+I (97357) asic_init: Proto qualification RESET_DELAY-r1-d0-baseline: total=1980.69/1996.80 GH/s throughput=99.19% min_chip=99.05% min_pass=99.23% balance=9 mV => PASS
+W (97460) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A1 D0 absolute=98.93% zero=0
+W (97460) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A1 D1 absolute=98.63% zero=0
+W (97469) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A1 D2 absolute=100.04% zero=0
+W (97479) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A1 D3 absolute=100.18% zero=0
+W (97576) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A2 D0 absolute=99.18% zero=0
+W (97577) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A2 D1 absolute=99.70% zero=0
+W (97586) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A2 D2 absolute=98.74% zero=0
+W (97596) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A2 D3 absolute=99.05% zero=0
+W (97692) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A3 D0 absolute=99.23% zero=0
+W (97693) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A3 D1 absolute=99.72% zero=0
+W (97703) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A3 D2 absolute=98.92% zero=0
+W (97711) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A3 D3 absolute=98.56% zero=0
+W (97808) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A4 D0 absolute=100.16% zero=0
+W (97809) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A4 D1 absolute=99.00% zero=0
+W (97818) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A4 D2 absolute=98.15% zero=0
+W (97828) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-baseline A4 D3 absolute=98.90% zero=0
+W (97838) asic_init: RESET_DELAY PROFILE stage=RESET_DELAY-r1-d0-baseline accepted=PASS
+W (97846) asic_init: RESET_DELAY TRIAL repeat=1 delay_ms=0
+I (97853) mc3: Setting chip 0 frequency to 425.000 MHz
+I (97875) mc3: PLL0 locked on chip 0 at 425.000 MHz
+I (97876) mc3: Setting chip 2 frequency to 425.000 MHz
+I (97892) mc3: PLL0 locked on chip 2 at 425.000 MHz
+I (97893) mc3: Setting chip 1 frequency to 425.000 MHz
+I (97910) mc3: PLL0 locked on chip 1 at 425.000 MHz
+I (97911) mc3: Setting chip 3 frequency to 425.000 MHz
+I (97927) mc3: PLL0 locked on chip 3 at 425.000 MHz
+W (98077) asic_init: RESET_DELAY TIMING repeat=1 delay_ms=0 pll_ms=75.533 reset_call_gap_ms=0.010 reset_count=1
+I (102418) asic_init: Proto qualification RESET_DELAY-r1-d0-w1 chip0@425.000MHz: 396.20/530.40 GH/s throughput=74.70% pass/fail=95087/4995 pass_rate=95.01%
+I (102422) asic_init: Proto qualification RESET_DELAY-r1-d0-w1 chip1@425.000MHz: 395.83/530.40 GH/s throughput=74.63% pass/fail=94998/6994 pass_rate=93.14%
+I (102436) asic_init: Proto qualification RESET_DELAY-r1-d0-w1 chip2@425.000MHz: 526.21/530.40 GH/s throughput=99.21% pass/fail=126290/559 pass_rate=99.56%
+I (102451) asic_init: Proto qualification RESET_DELAY-r1-d0-w1 chip3@425.000MHz: 525.98/530.40 GH/s throughput=99.17% pass/fail=126236/546 pass_rate=99.57%
+I (102468) asic_init: Proto qualification RESET_DELAY-r1-d0-w1 domains: lower=1130 upper=1189 delta=+59 mV total=2319 mV TPS current=14.34 A
+W (102938) asic_init: MC3 PVT RESET_DELAY-r1-d0-w1 A1 sensors mV: VSS4=0.1 VSS5=0.9 VSS6=0.7 VSS15=0.1 I1[7]=297.5 I1[8]=301.7 I2[9]=596.3 I2[10]=597.7 I3[11]=834.1 I3[12]=838.4 VDD[13]=1127.9 VDD[14]=1129.5 valid=0xFFF0
+W (102948) asic_init: MC3 PVT RESET_DELAY-r1-d0-w1 A1 averaged taps/domains mV: VSS=0.4 I1=299.6 I2=597.0 I3=836.2 VDD=1128.7 | D0=299.2 D1=297.4 D2=239.3 D3=292.5 sum=1128.3
+W (102964) asic_init: MC3 PVT RESET_DELAY-r1-d0-w1 A2 sensors mV: VSS4=-0.4 VSS5=0.4 VSS6=0.1 VSS15=-0.5 I1[7]=295.3 I1[8]=299.6 I2[9]=593.8 I2[10]=595.2 I3[11]=832.5 I3[12]=836.8 VDD[13]=1124.7 VDD[14]=1125.9 valid=0xFFF0
+W (102984) asic_init: MC3 PVT RESET_DELAY-r1-d0-w1 A2 averaged taps/domains mV: VSS=-0.1 I1=297.5 I2=594.5 I3=834.6 VDD=1125.3 | D0=297.6 D1=297.0 D2=240.1 D3=290.7 sum=1125.4
+W (103001) asic_init: MC3 PVT RESET_DELAY-r1-d0-w1 A3 sensors mV: VSS4=0.4 VSS5=1.2 VSS6=1.0 VSS15=0.4 I1[7]=294.8 I1[8]=299.1 I2[9]=592.9 I2[10]=594.2 I3[11]=889.1 I3[12]=893.2 VDD[13]=1186.8 VDD[14]=1189.3 valid=0xFFF0
+W (103021) asic_init: MC3 PVT RESET_DELAY-r1-d0-w1 A3 averaged taps/domains mV: VSS=0.7 I1=297.0 I2=593.6 I3=891.2 VDD=1188.1 | D0=296.2 D1=296.6 D2=297.6 D3=296.9 sum=1187.3
+W (103037) asic_init: MC3 PVT RESET_DELAY-r1-d0-w1 A4 sensors mV: VSS4=-0.3 VSS5=0.5 VSS6=0.2 VSS15=-0.4 I1[7]=293.8 I1[8]=298.2 I2[9]=591.2 I2[10]=592.5 I3[11]=887.7 I3[12]=891.9 VDD[13]=1186.4 VDD[14]=1187.5 valid=0xFFF0
+W (103058) asic_init: MC3 PVT RESET_DELAY-r1-d0-w1 A4 averaged taps/domains mV: VSS=-0.0 I1=296.0 I2=591.8 I3=889.8 VDD=1186.9 | D0=296.0 D1=295.9 D2=297.9 D3=297.2 sum=1187.0
+W (103160) asic_init: MC3 internal domains RESET_DELAY-r1-d0-w1 chip0: D0=31695(133.3% ideal,z=0) D1=31451(132.3% ideal,z=0) D2=0(0.0% ideal,z=39) D3=31941(134.4% ideal,z=0) sum=95087 global=95087 match=100.00% min_core=78:0
+I (103171) asic_init: MC3 internal slices RESET_DELAY-r1-d0-w1 chip0: S0=10662 S1=10561 S2=10472 S3=10358 S4=10553 S5=10540 S6=0 S7=0 S8=0 S9=10592 S10=10678 S11=10671
+W (103273) asic_init: MC3 internal domains RESET_DELAY-r1-d0-w1 chip1: D0=31517(132.7% ideal,z=0) D1=31882(134.2% ideal,z=0) D2=0(0.0% ideal,z=39) D3=31599(133.1% ideal,z=0) sum=94998 global=94998 match=100.00% min_core=78:0
+I (103284) asic_init: MC3 internal slices RESET_DELAY-r1-d0-w1 chip1: S0=10637 S1=10494 S2=10386 S3=10689 S4=10504 S5=10689 S6=0 S7=0 S8=0 S9=10586 S10=10611 S11=10402
+W (103386) asic_init: MC3 internal domains RESET_DELAY-r1-d0-w1 chip2: D0=31644(100.2% ideal,z=0) D1=31701(100.4% ideal,z=0) D2=31473(99.7% ideal,z=0) D3=31472(99.7% ideal,z=0) sum=126290 global=126290 match=100.00% min_core=126:728
+I (103397) asic_init: MC3 internal slices RESET_DELAY-r1-d0-w1 chip2: S0=10479 S1=10586 S2=10579 S3=10584 S4=10608 S5=10509 S6=10571 S7=10435 S8=10467 S9=10478 S10=10643 S11=10351
+W (103501) asic_init: MC3 internal domains RESET_DELAY-r1-d0-w1 chip3: D0=31886(101.0% ideal,z=0) D1=31578(100.1% ideal,z=0) D2=31251(99.0% ideal,z=0) D3=31521(99.9% ideal,z=0) sum=126236 global=126236 match=100.00% min_core=125:746
+I (103512) asic_init: MC3 internal slices RESET_DELAY-r1-d0-w1 chip3: S0=10673 S1=10650 S2=10563 S3=10464 S4=10622 S5=10492 S6=10338 S7=10513 S8=10400 S9=10504 S10=10552 S11=10465
+I (103529) asic_init: Proto qualification RESET_DELAY-r1-d0-w1: total=1844.21/2121.60 GH/s throughput=86.93% min_chip=74.63% min_pass=93.14% balance=59 mV => REJECT
+W (103631) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A1 D0 absolute=99.59% zero=0
+W (103632) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A1 D1 absolute=98.83% zero=0
+W (103640) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A1 D2 absolute=0.00% zero=39
+W (103649) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A1 D3 absolute=100.37% zero=0
+W (103746) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A2 D0 absolute=99.04% zero=0
+W (103747) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A2 D1 absolute=100.18% zero=0
+W (103754) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A2 D2 absolute=0.00% zero=39
+W (103765) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A2 D3 absolute=99.29% zero=0
+W (103860) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A3 D0 absolute=99.43% zero=0
+W (103862) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A3 D1 absolute=99.61% zero=0
+W (103870) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A3 D2 absolute=98.90% zero=0
+W (103879) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A3 D3 absolute=98.89% zero=0
+W (103976) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A4 D0 absolute=100.19% zero=0
+W (103977) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A4 D1 absolute=99.23% zero=0
+W (103984) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A4 D2 absolute=98.20% zero=0
+W (103994) asic_init: RESET_DELAY DOMAIN stage=RESET_DELAY-r1-d0-w1 A4 D3 absolute=99.05% zero=0
+W (104003) asic_init: RESET_DELAY PROFILE stage=RESET_DELAY-r1-d0-w1 accepted=REJECT
+W (104012) asic_init: RESET_DELAY RESULT repeat=1 delay_ms=0 first=REJECT measurement=OK
+I (104021) mc3: Setting chip 0 frequency to 400.000 MHz
+I (104043) mc3: PLL0 locked on chip 0 at 400.000 MHz
+I (104044) mc3: Setting chip 2 frequency to 400.000 MHz
+I (104051) vcore: Holding active-high ASIC power enable low on GPIO10
+E (104052) asic_init: RESET_DELAY SAFETY STOP valid=1 PCB=943/1374 mV; ASIC rail disabled
+E (104405) mc3: PLL0 failed to lock on chip 2 at 400.000 MHz
+I (104405) vcore: Holding active-high ASIC power enable low on GPIO10
+W (104407) asic_init: RESET_DELAY END result=ERROR max_PCB=1155/1374 mV final_MHz=418.750

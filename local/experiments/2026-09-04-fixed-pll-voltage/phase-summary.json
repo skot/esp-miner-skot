@@ -1,0 +1,178 @@
+[
+  {
+    "phase": "rejected_hold",
+    "asic": 1,
+    "domain": 0,
+    "delta_pass": 159495,
+    "delta_fail": 5733,
+    "dt_us": 88921227,
+    "samples": 79,
+    "pass_percent": 96.45104293350477,
+    "fail_fraction_percent": 3.469750889679715
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 1,
+    "domain": 1,
+    "delta_pass": 163047,
+    "delta_fail": 3116,
+    "dt_us": 88921227,
+    "samples": 79,
+    "pass_percent": 98.59903568876234,
+    "fail_fraction_percent": 1.8752670570463943
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 1,
+    "domain": 2,
+    "delta_pass": 161918,
+    "delta_fail": 3150,
+    "dt_us": 88921227,
+    "samples": 79,
+    "pass_percent": 97.91629812663234,
+    "fail_fraction_percent": 1.9083044563452638
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 1,
+    "domain": 3,
+    "delta_pass": 163867,
+    "delta_fail": 2261,
+    "dt_us": 88921227,
+    "samples": 79,
+    "pass_percent": 99.09491239464951,
+    "fail_fraction_percent": 1.3609987479533854
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 2,
+    "domain": 0,
+    "delta_pass": 162089,
+    "delta_fail": 2935,
+    "dt_us": 88923535,
+    "samples": 79,
+    "pass_percent": 98.01716247156645,
+    "fail_fraction_percent": 1.7785291836338957
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 2,
+    "domain": 1,
+    "delta_pass": 158156,
+    "delta_fail": 6803,
+    "dt_us": 88923535,
+    "samples": 79,
+    "pass_percent": 95.63883019731793,
+    "fail_fraction_percent": 4.124055068229075
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 2,
+    "domain": 2,
+    "delta_pass": 162424,
+    "delta_fail": 2807,
+    "dt_us": 88923535,
+    "samples": 79,
+    "pass_percent": 98.21974098971373,
+    "fail_fraction_percent": 1.698833753956582
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 2,
+    "domain": 3,
+    "delta_pass": 161958,
+    "delta_fail": 3449,
+    "dt_us": 88923535,
+    "samples": 79,
+    "pass_percent": 97.93794520029094,
+    "fail_fraction_percent": 2.0851596365329157
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 3,
+    "domain": 0,
+    "delta_pass": 163011,
+    "delta_fail": 2616,
+    "dt_us": 88925551,
+    "samples": 79,
+    "pass_percent": 98.57247217783508,
+    "fail_fraction_percent": 1.5794526254777301
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 3,
+    "domain": 1,
+    "delta_pass": 162566,
+    "delta_fail": 2356,
+    "dt_us": 88925551,
+    "samples": 79,
+    "pass_percent": 98.30338144089625,
+    "fail_fraction_percent": 1.4285541043644874
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 3,
+    "domain": 2,
+    "delta_pass": 164255,
+    "delta_fail": 977,
+    "dt_us": 88925551,
+    "samples": 79,
+    "pass_percent": 99.32471684469331,
+    "fail_fraction_percent": 0.5912898227946161
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 3,
+    "domain": 3,
+    "delta_pass": 164096,
+    "delta_fail": 1017,
+    "dt_us": 88925551,
+    "samples": 79,
+    "pass_percent": 99.22856981733763,
+    "fail_fraction_percent": 0.6159418095486122
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 4,
+    "domain": 0,
+    "delta_pass": 163799,
+    "delta_fail": 1950,
+    "dt_us": 88928389,
+    "samples": 79,
+    "pass_percent": 99.04581344515073,
+    "fail_fraction_percent": 1.1764776861398862
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 4,
+    "domain": 1,
+    "delta_pass": 161556,
+    "delta_fail": 4064,
+    "dt_us": 88928389,
+    "samples": 79,
+    "pass_percent": 97.68951847657662,
+    "fail_fraction_percent": 2.453809926337399
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 4,
+    "domain": 2,
+    "delta_pass": 162791,
+    "delta_fail": 2197,
+    "dt_us": 88928389,
+    "samples": 79,
+    "pass_percent": 98.43629702592527,
+    "fail_fraction_percent": 1.3316119960239532
+  },
+  {
+    "phase": "rejected_hold",
+    "asic": 4,
+    "domain": 3,
+    "delta_pass": 164502,
+    "delta_fail": 1139,
+    "dt_us": 88928389,
+    "samples": 79,
+    "pass_percent": 99.47090277324152,
+    "fail_fraction_percent": 0.6876316853919018
+  }
+]

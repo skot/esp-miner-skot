@@ -1,0 +1,1 @@
+PASS: completed 120.930 s; both initially failed domains have zero PASS throughout; one counter epoch per ASIC at 475 MHz; no logged PLL/work/rearm during hold.

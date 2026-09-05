@@ -1,0 +1,120 @@
+{
+  "samples": 420,
+  "invalid": [
+    {
+      "boot_ms": 209410,
+      "attempt": 1,
+      "asic": 3,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    },
+    {
+      "boot_ms": 209432,
+      "attempt": 1,
+      "asic": 4,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    },
+    {
+      "boot_ms": 210078,
+      "attempt": 2,
+      "asic": 3,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    },
+    {
+      "boot_ms": 210100,
+      "attempt": 2,
+      "asic": 4,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    },
+    {
+      "boot_ms": 210746,
+      "attempt": 3,
+      "asic": 3,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    },
+    {
+      "boot_ms": 210768,
+      "attempt": 3,
+      "asic": 4,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    }
+  ],
+  "retry_messages": [
+    "W (209436) mc3: THERMAL retry after invalid sample attempt=1; wait 100ms",
+    "W (210104) mc3: THERMAL retry after invalid sample attempt=2; wait 100ms",
+    "E (210772) mc3: THERMAL invalid after bounded retries attempt=3"
+  ],
+  "per_asic": {
+    "1": {
+      "samples": 105,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 59.79
+    },
+    "2": {
+      "samples": 105,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 58.47
+    },
+    "3": {
+      "samples": 105,
+      "invalid": 3,
+      "raw_zero": 3,
+      "max_valid_c": 55.34
+    },
+    "4": {
+      "samples": 105,
+      "invalid": 3,
+      "raw_zero": 3,
+      "max_valid_c": 55.34
+    }
+  }
+}

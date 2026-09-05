@@ -1,0 +1,18 @@
+{
+  "before": {
+    ":CHAN1:IMP?": "FIFT",
+    ":CHAN2:IMP?": "OMEG",
+    ":CHAN1:COUP?": "DC",
+    ":CHAN2:COUP?": "DC",
+    ":CHAN1:PROB?": "1",
+    ":CHAN2:PROB?": "1"
+  },
+  "after": {
+    ":CHAN1:IMP?": "FIFT",
+    ":CHAN2:IMP?": "OMEG",
+    ":CHAN1:COUP?": "DC",
+    ":CHAN2:COUP?": "DC",
+    ":CHAN1:PROB?": "1",
+    ":CHAN2:PROB?": "1"
+  }
+}

@@ -1,0 +1,219 @@
+--- previous/asic-init-normal-source.c
++++ main/power/asic_init.c
+@@ -80,7 +80,8 @@
+ #define PROTO_RUN_CLOCK_DELIVERY_PROBE 0
+ #define PROTO_RUN_BROADCAST_RECOVERY_PROBE 0
+ #define PROTO_RUN_FIXED_PLL_VOLTAGE_PROBE 0
+-#define PROTO_RUN_WARM_RAMP_PROBE 0
++#define PROTO_RUN_WARM_RAMP_PROBE 1
++#define PROTO_WARM_BOARD_VERSION "1102"
+ #define PROTO_WARM_VOLTAGE_MV 1140
+ #define PROTO_FIXED_PROBE_MHZ 350
+ #define PROTO_FIXED_BASELINE_MV 1120
+@@ -285,7 +286,7 @@
+     int16_t regulator_voltage_mv = VCORE_get_regulator_voltage_mv(GLOBAL_STATE);
+     uint16_t lower_domain_mv = 0;
+     uint16_t upper_domain_mv = 0;
+-    if (regulator_voltage_mv > 0 &&
++    if (GLOBAL_STATE->DEVICE_CONFIG.domain_voltage_sense && regulator_voltage_mv > 0 &&
+         VCORE_get_domain_voltages_mv(GLOBAL_STATE, (uint16_t)regulator_voltage_mv,
+             &lower_domain_mv, &upper_domain_mv) == ESP_OK) {
+         ESP_LOGI(TAG,
+@@ -547,11 +548,15 @@
+                 : 0.0f,
+         };
+     }
++    char balance_text[24] = "unavailable";
++    if (GLOBAL_STATE->DEVICE_CONFIG.domain_voltage_sense && domains_valid) {
++        snprintf(balance_text, sizeof(balance_text), "%d mV", absolute_domain_delta_mv);
++    }
+     ESP_LOGI(TAG,
+-        "Proto qualification %s: total=%.2f/%.2f GH/s throughput=%.2f%% min_chip=%.2f%% min_pass=%.2f%% balance=%d mV => %s",
++        "Proto qualification %s: total=%.2f/%.2f GH/s throughput=%.2f%% min_chip=%.2f%% min_pass=%.2f%% balance=%s => %s",
+         profile, result->total_hashrate_ghs, expected_hashrate_ghs,
+         throughput_percent, min_chip_throughput_percent,
+-        min_pass_rate_percent, absolute_domain_delta_mv,
++        min_pass_rate_percent, balance_text,
+         accepted ? "PASS" : "REJECT");
+     return accepted;
+ }
+@@ -1829,7 +1834,42 @@
+     SemaphoreHandle_t stopped;
+     uint16_t max_lower_mv;
+     uint16_t max_upper_mv;
++    uint16_t max_total_mv;
+ } proto_delay_guard_t;
++
++// Both boards route GPIO10 to active-high TPS EN. Also issue PMBus OFF on
++// 1102 as a second shutdown command; preserve the established 1103 sequence.
++static esp_err_t proto_probe_power_off(GlobalState *global)
++{
++    esp_err_t gpio_err = VCORE_prepare_asic_enable(global);
++    bool is_1102 = global->DEVICE_CONFIG.board_version != NULL &&
++        strcmp(global->DEVICE_CONFIG.board_version, "1102") == 0;
++    if (is_1102 || !global->DEVICE_CONFIG.asic_enable ||
++        !global->DEVICE_CONFIG.asic_enable_active_high) {
++        esp_err_t regulator_err = VCORE_set_voltage(global, 0);
++        return regulator_err != ESP_OK ? regulator_err : gpio_err;
++    }
++    return gpio_err;
++}
++
++static bool proto_probe_read_rails(GlobalState *global, int16_t *total,
++    uint16_t *lower, uint16_t *upper)
++{
++    *total = VCORE_get_regulator_voltage_mv(global);
++    *lower = 0;
++    *upper = 0;
++    if (*total <= 0) return false;
++    if (global->DEVICE_CONFIG.domain_voltage_sense) {
++        return VCORE_get_domain_voltages_mv(global, *total, lower, upper) == ESP_OK &&
++            *lower < PROTO_CLEAN_ALL_RECOVERY_MAX_DOMAIN_MV &&
++            *upper < PROTO_CLEAN_ALL_RECOVERY_MAX_DOMAIN_MV;
++    }
++    // Only the explicitly supported 1102 warm comparison may lack midpoint
++    // sensing. This guards the total rail; it cannot detect redistribution.
++    return global->DEVICE_CONFIG.board_version != NULL &&
++        strcmp(global->DEVICE_CONFIG.board_version, "1102") == 0 &&
++        *total < 2 * PROTO_CLEAN_ALL_RECOVERY_MAX_DOMAIN_MV;
++}
+ 
+ // Independent of the ASIC UART lock: also watches the PLL updates, settling
+ // interval, and blocking SPDLOG windows. This is sampled protection, not a
+@@ -1838,21 +1878,20 @@
+ {
+     proto_delay_guard_t *guard = arg;
+     while (!atomic_load(&guard->stop)) {
+-        int16_t total = VCORE_get_regulator_voltage_mv(guard->global);
++        int16_t total = 0;
+         uint16_t lower = 0, upper = 0;
+-        bool valid = total > 0 &&
+-            VCORE_get_domain_voltages_mv(guard->global, total,
+-                &lower, &upper) == ESP_OK;
++        bool valid = proto_probe_read_rails(guard->global, &total, &lower, &upper);
+         if (atomic_load(&guard->stop)) break;
++        if (total > guard->max_total_mv) guard->max_total_mv = total;
+         if (lower > guard->max_lower_mv) guard->max_lower_mv = lower;
+         if (upper > guard->max_upper_mv) guard->max_upper_mv = upper;
+-        if (!valid || lower >= PROTO_CLEAN_ALL_RECOVERY_MAX_DOMAIN_MV ||
+-            upper >= PROTO_CLEAN_ALL_RECOVERY_MAX_DOMAIN_MV) {
++        if (!valid) {
+             atomic_store(&guard->tripped, true);
+-            VCORE_prepare_asic_enable(guard->global);
++            esp_err_t off_err = proto_probe_power_off(guard->global);
+             ESP_LOGE(TAG,
+-                "RESET_DELAY SAFETY STOP valid=%u PCB=%u/%u mV; ASIC rail disabled",
+-                valid, lower, upper);
++                "RESET_DELAY SAFETY STOP valid=%u PCB_sense=%u PCB=%u/%u total=%d mV; shutdown=%s",
++                valid, guard->global->DEVICE_CONFIG.domain_voltage_sense,
++                lower, upper, total, esp_err_to_name(off_err));
+             break;
+         }
+         vTaskDelay(pdMS_TO_TICKS(20));
+@@ -1960,11 +1999,16 @@
+         observation->previous_us[chip] = now;
+         observation->temperature_c[chip] = temperatures[chip];
+     }
+-    int16_t total = VCORE_get_regulator_voltage_mv(global);
++    int16_t total = 0;
+     uint16_t lower = 0, upper = 0;
+-    if (total <= 0 || VCORE_get_domain_voltages_mv(global, total, &lower, &upper) != ESP_OK) return false;
+-    ESP_LOGW(TAG, "BCAST RAIL phase=%s PCB=%u/%u mV TPS=%.3fA fan=%.0f%% rpm=%u", phase, lower, upper, TPS546_get_iout(),
+-        global->POWER_MANAGEMENT_MODULE.fan_perc, (unsigned)global->POWER_MANAGEMENT_MODULE.fan_rpm);
++    if (!proto_probe_read_rails(global, &total, &lower, &upper)) return false;
++    if (global->DEVICE_CONFIG.domain_voltage_sense) {
++        ESP_LOGW(TAG, "BCAST RAIL phase=%s PCB=%u/%u mV TPS=%.3fA fan=%.0f%% rpm=%u", phase, lower, upper, TPS546_get_iout(),
++            global->POWER_MANAGEMENT_MODULE.fan_perc, (unsigned)global->POWER_MANAGEMENT_MODULE.fan_rpm);
++    } else {
++        ESP_LOGW(TAG, "BCAST RAIL phase=%s PCB=unavailable TPS_total=%d mV TPS=%.3fA fan=%.0f%% rpm=%u", phase, total, TPS546_get_iout(),
++            global->POWER_MANAGEMENT_MODULE.fan_perc, (unsigned)global->POWER_MANAGEMENT_MODULE.fan_rpm);
++    }
+     observation->healthy_streak = healthy ? observation->healthy_streak + 1 : 0;
+     return !atomic_load(&guard->tripped);
+ }
+@@ -2125,6 +2169,8 @@
+     atomic_init(&guard.stop, false);
+     atomic_init(&guard.tripped, false);
+     bool ok = false;
++    esp_err_t off_err = ESP_OK;
++    char max_pcb_text[32] = "unavailable";
+     int64_t warm_start = esp_timer_get_time();
+     usb_serial_jtag_driver_config_t usb_config = USB_SERIAL_JTAG_DRIVER_CONFIG_DEFAULT();
+     if (!usb_serial_jtag_is_driver_installed() && usb_serial_jtag_driver_install(&usb_config) != ESP_OK) goto power_off;
+@@ -2135,6 +2181,11 @@
+         goto power_off;
+     }
+     ESP_LOGW(TAG, "WARM BEGIN baseline=300 voltage=%u target_temp=55 max_frequency=600; fan lease only, NVS unchanged", PROTO_WARM_VOLTAGE_MV);
++    ESP_LOGW(TAG, "WARM BOARD version=%s PCB_sense=%u shutdown=%s; sampled limit=%u mV %s",
++        global->DEVICE_CONFIG.board_version, global->DEVICE_CONFIG.domain_voltage_sense,
++        strcmp(global->DEVICE_CONFIG.board_version, "1102") == 0 ? "GPIO+PMBus" : "GPIO",
++        global->DEVICE_CONFIG.domain_voltage_sense ? PROTO_CLEAN_ALL_RECOVERY_MAX_DOMAIN_MV : 2 * PROTO_CLEAN_ALL_RECOVERY_MAX_DOMAIN_MV,
++        global->DEVICE_CONFIG.domain_voltage_sense ? "per half" : "total only; scope required for half-stack voltage");
+     ESP_LOGW(TAG, "WARM FAN saved auto=%u min=%u manual=%u target_temp=%u; temporary fan starts at 20%%",
+         nvs_config_get_bool(NVS_CONFIG_AUTO_FAN_SPEED), nvs_config_get_u16(NVS_CONFIG_MIN_FAN_SPEED),
+         nvs_config_get_u16(NVS_CONFIG_MANUAL_FAN_SPEED), nvs_config_get_u16(NVS_CONFIG_TEMP_TARGET));
+@@ -2238,18 +2289,22 @@
+     ok = true;
+ finish:
+     atomic_store(&guard.stop, true);
+-    VCORE_prepare_asic_enable(global);
++    off_err = proto_probe_power_off(global);
+     FAN_CONTROLLER_set_bench_percent(-1);
+     xSemaphoreTake(guard.stopped, portMAX_DELAY);
+     vSemaphoreDelete(guard.stopped);
+-    ESP_LOGW(TAG, "WARM END result=%s frequency=%.0f max_PCB=%u/%u mV ASIC_power=OFF",
+-        ok && !atomic_load(&guard.tripped) ? "COMPLETE" : "STOPPED", global->POWER_MANAGEMENT_MODULE.actual_frequency,
+-        guard.max_lower_mv, guard.max_upper_mv);
++    if (global->DEVICE_CONFIG.domain_voltage_sense) {
++        snprintf(max_pcb_text, sizeof(max_pcb_text), "%u/%u mV", guard.max_lower_mv, guard.max_upper_mv);
++    }
++    ESP_LOGW(TAG, "WARM END result=%s frequency=%.0f max_PCB=%s PCB_sense=%u max_total=%u mV ASIC_power=%s",
++        ok && off_err == ESP_OK && !atomic_load(&guard.tripped) ? "COMPLETE" : "STOPPED", global->POWER_MANAGEMENT_MODULE.actual_frequency,
++        max_pcb_text, global->DEVICE_CONFIG.domain_voltage_sense,
++        guard.max_total_mv, off_err == ESP_OK ? "OFF" : "SHUTDOWN_FAILED");
+     return;
+ power_off:
+-    VCORE_prepare_asic_enable(global);
++    off_err = proto_probe_power_off(global);
+     FAN_CONTROLLER_set_bench_percent(-1);
+-    ESP_LOGE(TAG, "WARM END setup failed; ASIC power off");
++    ESP_LOGE(TAG, "WARM END setup failed; shutdown=%s", esp_err_to_name(off_err));
+ }
+ 
+ static void run_proto_fixed_pll_voltage_probe(GlobalState *global)
+@@ -3126,11 +3181,14 @@
+         ? get_proto_target_core_voltage_mv(GLOBAL_STATE)
+         : 0;
+     if ((PROTO_RUN_CLOCK_DELIVERY_PROBE || PROTO_RUN_BROADCAST_RECOVERY_PROBE || PROTO_RUN_FIXED_PLL_VOLTAGE_PROBE || PROTO_RUN_WARM_RAMP_PROBE) && is_proto_mc3) {
+-        if (GLOBAL_STATE->DEVICE_CONFIG.board_version == NULL ||
+-            strcmp(GLOBAL_STATE->DEVICE_CONFIG.board_version, "1103") != 0 ||
++        const char *probe_board = PROTO_RUN_WARM_RAMP_PROBE ? PROTO_WARM_BOARD_VERSION : "1103";
++        if ((strcmp(probe_board, "1103") != 0 && strcmp(probe_board, "1102") != 0) ||
++            GLOBAL_STATE->DEVICE_CONFIG.board_version == NULL ||
++            strcmp(GLOBAL_STATE->DEVICE_CONFIG.board_version, probe_board) != 0 ||
+             GLOBAL_STATE->DEVICE_CONFIG.family.asic_count != 4 ||
+             GLOBAL_STATE->SELF_TEST_MODULE.is_active) {
+-            VCORE_prepare_asic_enable(GLOBAL_STATE);
++            proto_probe_power_off(GLOBAL_STATE);
++            ESP_LOGE(TAG, "Probe board/chip/self-test mismatch; expected board=%s", probe_board);
+             return 0;
+         }
+         target_core_voltage_mv = PROTO_RUN_WARM_RAMP_PROBE ? PROTO_WARM_VOLTAGE_MV : PROTO_RUN_FIXED_PLL_VOLTAGE_PROBE ? PROTO_FIXED_BASELINE_MV :
+--- previous/vcore-source.c
++++ main/power/vcore.c
+@@ -94,6 +94,15 @@
+         config.TPS546_INIT_COMPENSATION_CONFIG[2] = 0x8C;
+         config.TPS546_INIT_COMPENSATION_CONFIG[3] = 0x19;
+         config.TPS546_INIT_COMPENSATION_CONFIG[4] = 0x86;
++        if (device_config->board_version != NULL &&
++            strcmp(device_config->board_version, "1102") == 0) {
++            // 1102 output filter: compensation from its recorded warm-boot
++            // readback (cd82a9e-era firmware), matching its 1300 kHz design.
++            const uint8_t compensation_1102[] = {0x13, 0x20, 0xC6, 0x19, 0xC6};
++            config.TPS546_INIT_FREQUENCY = 1300;
++            memcpy(config.TPS546_INIT_COMPENSATION_CONFIG,
++                compensation_1102, sizeof(compensation_1102));
++        }
+         break;
+     case HEX:
+     case SUPRA_HEX:

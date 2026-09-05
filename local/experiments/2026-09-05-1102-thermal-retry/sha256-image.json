@@ -1,0 +1,9 @@
+{
+  "probe.elf": "c98d2a3117d22aa5a07de0fbd662b3c0c9b8dd7e011e5efa8587d2c200bb3e7b",
+  "fan-controller-source.c": "c5d89bfe5516297091003c2ff487af657a39039795aa2e1f02d40f5fd443c505",
+  "asic-init-source.c": "f9e1539e59dcd7a1422ede12fbaffac521c5689ca51d99ad929b39703f52dee3",
+  "mc3-source.c": "3f6cd17ee09ceb6852524c9d9e0e7c8a4e4160065aa996e98917a6fd9c36b7de",
+  "device-config-source.h": "1a99f305810f2447da52f7058229dee2732e0b00b24624bacc0b5386cc31b2dd",
+  "probe.bin": "5cb338a380780ac2ecede28dbac63fc28a653246b8d65a1408a8b220c253eb51",
+  "vcore-source.c": "6745b62a174c7fe8d4ecb99e5dff515a5d9130cb71ee6f15da7aaa21698b653a"
+}

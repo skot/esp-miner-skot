@@ -1,0 +1,178 @@
+[
+  {
+    "boot_ms": 286011,
+    "event": "Proto qualification WARM baseline300: total=1487.72/1497.60 GH/s throughput=99.34% min_chip=99.20% min_pass=99.33% balance=unavailable => PASS"
+  },
+  {
+    "boot_ms": 286897,
+    "event": "DEFER READY; wait up to 30s for scope G, then T triggers warm reset/ramp/first work"
+  },
+  {
+    "boot_ms": 287883,
+    "event": "DEFER ARMED; wait up to 5s for scope trigger T"
+  },
+  {
+    "boot_ms": 287903,
+    "event": "DEFER TRIAL call_us=286900124"
+  },
+  {
+    "boot_ms": 287903,
+    "event": "DEFER RESET begin; ASIC rail stays at 1160mV/half, no power cycle"
+  },
+  {
+    "boot_ms": 288550,
+    "event": "DEFER REINITIALIZED chips=4 frequency=100; no work/WORK_CFG/SPDLOG arm since reset"
+  },
+  {
+    "boot_ms": 288566,
+    "event": "DEFER TEMP freq=100 A1=52.86 A2=52.04 A3=52.70 A4=52.70; no work sent"
+  },
+  {
+    "boot_ms": 289101,
+    "event": "DEFER PLL LOCKED target=125 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 289628,
+    "event": "DEFER TEMP freq=125 A1=52.86 A2=52.20 A3=52.70 A4=52.53; no work sent"
+  },
+  {
+    "boot_ms": 289656,
+    "event": "DEFER PLL LOCKED target=150 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 290184,
+    "event": "DEFER TEMP freq=150 A1=53.19 A2=52.20 A3=53.03 A4=52.70; no work sent"
+  },
+  {
+    "boot_ms": 290212,
+    "event": "DEFER PLL LOCKED target=175 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 290739,
+    "event": "DEFER TEMP freq=175 A1=53.36 A2=52.53 A3=53.19 A4=53.19; no work sent"
+  },
+  {
+    "boot_ms": 290767,
+    "event": "DEFER PLL LOCKED target=200 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 291294,
+    "event": "DEFER TEMP freq=200 A1=53.69 A2=52.70 A3=53.52 A4=53.36; no work sent"
+  },
+  {
+    "boot_ms": 291322,
+    "event": "DEFER PLL LOCKED target=225 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 291849,
+    "event": "DEFER TEMP freq=225 A1=54.02 A2=53.03 A3=53.69 A4=53.69; no work sent"
+  },
+  {
+    "boot_ms": 291877,
+    "event": "DEFER PLL LOCKED target=250 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 292404,
+    "event": "DEFER TEMP freq=250 A1=54.51 A2=53.36 A3=54.02 A4=54.02; no work sent"
+  },
+  {
+    "boot_ms": 292432,
+    "event": "DEFER PLL LOCKED target=275 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 292959,
+    "event": "DEFER TEMP freq=275 A1=54.68 A2=53.69 A3=54.35 A4=54.51; no work sent"
+  },
+  {
+    "boot_ms": 292988,
+    "event": "DEFER PLL LOCKED target=300 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 293515,
+    "event": "DEFER TEMP freq=300 A1=55.17 A2=53.85 A3=54.68 A4=54.84; no work sent"
+  },
+  {
+    "boot_ms": 293543,
+    "event": "DEFER PLL LOCKED target=325 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 294071,
+    "event": "DEFER TEMP freq=325 A1=55.34 A2=54.18 A3=55.01 A4=55.17; no work sent"
+  },
+  {
+    "boot_ms": 294099,
+    "event": "DEFER PLL LOCKED target=350 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 294626,
+    "event": "DEFER TEMP freq=350 A1=55.67 A2=54.51 A3=55.34 A4=55.50; no work sent"
+  },
+  {
+    "boot_ms": 294654,
+    "event": "DEFER PLL LOCKED target=375 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 295181,
+    "event": "DEFER TEMP freq=375 A1=56.00 A2=54.84 A3=55.83 A4=56.00; no work sent"
+  },
+  {
+    "boot_ms": 295209,
+    "event": "DEFER PLL LOCKED target=400 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 295736,
+    "event": "DEFER TEMP freq=400 A1=56.32 A2=55.01 A3=56.16 A4=56.32; no work sent"
+  },
+  {
+    "boot_ms": 295764,
+    "event": "DEFER PLL LOCKED target=425 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 296292,
+    "event": "DEFER TEMP freq=425 A1=56.82 A2=55.50 A3=56.49 A4=56.82; no work sent"
+  },
+  {
+    "boot_ms": 296320,
+    "event": "DEFER PLL LOCKED target=450 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 296847,
+    "event": "DEFER TEMP freq=450 A1=57.31 A2=56.00 A3=56.82 A4=56.98; no work sent"
+  },
+  {
+    "boot_ms": 296875,
+    "event": "DEFER PLL LOCKED target=475 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 297402,
+    "event": "DEFER TEMP freq=475 A1=57.48 A2=56.16 A3=57.31 A4=57.48; no work sent"
+  },
+  {
+    "boot_ms": 297430,
+    "event": "DEFER PLL LOCKED target=500 settle_ms=500; no work sent"
+  },
+  {
+    "boot_ms": 297958,
+    "event": "DEFER TEMP freq=500 A1=57.97 A2=56.65 A3=57.97 A4=58.30; no work sent"
+  },
+  {
+    "boot_ms": 297985,
+    "event": "DEFER PLL LOCKED target=525 settle_ms=1000; no work sent"
+  },
+  {
+    "boot_ms": 299018,
+    "event": "DEFER TEMP freq=525 A1=58.47 A2=57.15 A3=58.63 A4=58.80; no work sent"
+  },
+  {
+    "boot_ms": 299046,
+    "event": "DEFER PLL LOCKED target=550 settle_ms=1000; no work sent"
+  },
+  {
+    "boot_ms": 300073,
+    "event": "DEFER temperature invalid/high A3 -288.90 C"
+  },
+  {
+    "boot_ms": 300089,
+    "event": "WARM END result=STOPPED frequency=550 max_PCB=unavailable PCB_sense=0 max_total=2314 mV ASIC_power=OFF"
+  }
+]

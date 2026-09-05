@@ -1,0 +1,32 @@
+{
+  "polymer": {
+    "baseline_total_v": 2.294498549312283,
+    "raw_total_min_v": 2.1520002689999997,
+    "raw_total_max_v": 2.416000302,
+    "mean_20us_total_min_v": 2.1792002724,
+    "mean_20us_total_max_v": 2.397400299675,
+    "mean_overshoot_mv": 102.90175036271698,
+    "mean_undershoot_mv": -115.298276912283,
+    "alignment_time_ms": 9.195259999999998
+  },
+  "ceramic": {
+    "baseline_total_v": 2.2992705124087793,
+    "raw_total_min_v": 2.16000027,
+    "raw_total_max_v": 2.416000302,
+    "mean_20us_total_min_v": 2.1752002719,
+    "mean_20us_total_max_v": 2.4090003011250003,
+    "mean_overshoot_mv": 109.72978871622097,
+    "mean_undershoot_mv": -124.07024050877924,
+    "alignment_time_ms": 18.510259999999988
+  },
+  "1102": {
+    "baseline_total_v": 2.299681037460095,
+    "raw_total_min_v": 2.144000268,
+    "raw_total_max_v": 2.4240003029999997,
+    "mean_20us_total_min_v": 2.180200272525,
+    "mean_20us_total_max_v": 2.41320030165,
+    "mean_overshoot_mv": 113.51926418990476,
+    "mean_undershoot_mv": -119.48076493509507,
+    "alignment_time_ms": 12.690759999999996
+  }
+}

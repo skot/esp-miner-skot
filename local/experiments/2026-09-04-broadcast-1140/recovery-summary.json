@@ -1,0 +1,16 @@
+[
+  {
+    "asic": 1,
+    "last_zero_s": 63.837652,
+    "first_passing_s": 64.803842,
+    "tail_seconds": 4.837793,
+    "tail_percent": 99.00881238349378
+  },
+  {
+    "asic": 2,
+    "last_zero_s": 62.962302,
+    "first_passing_s": 63.929854,
+    "tail_seconds": 5.808742,
+    "tail_percent": 98.46270240127637
+  }
+]

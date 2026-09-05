@@ -2,6 +2,8 @@
 #include "esp_adc/adc_oneshot.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
 
 #define ADC_ATTEN   ADC_ATTEN_DB_12
 #define ADC_CHANNEL ADC_CHANNEL_1
@@ -11,6 +13,7 @@ static const char * TAG = "adc";
 
 static adc_cali_handle_t adc1_cali_chan1_handle;
 static adc_oneshot_unit_handle_t adc1_handle;
+static SemaphoreHandle_t adc_measurement_lock;
 
 
 /*---------------------------------------------------------------
@@ -68,6 +71,8 @@ static bool adc_calibration_init(adc_unit_t unit, adc_channel_t channel, adc_att
 // Sets up GPIO2/ADC1_CH1 for board voltage sensing.
 void ADC_init(void)
 {
+    adc_measurement_lock = xSemaphoreCreateMutex();
+    ESP_ERROR_CHECK(adc_measurement_lock != NULL ? ESP_OK : ESP_ERR_NO_MEM);
     // adc1_config_channel_atten(ADC1_CHANNEL_1, ADC_ATTEN_DB_12);
     // esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_12, ADC_WIDTH_BIT_DEFAULT, 0, &adc1_chars);
 
@@ -97,8 +102,16 @@ esp_err_t ADC_get_domain_midpoint_mv(uint16_t *voltage_mv)
     if (voltage_mv == NULL) {
         return ESP_ERR_INVALID_ARG;
     }
-    if (adc1_handle == NULL || adc1_cali_chan1_handle == NULL) {
+    if (adc1_handle == NULL || adc1_cali_chan1_handle == NULL ||
+        adc_measurement_lock == NULL) {
         return ESP_ERR_INVALID_STATE;
+    }
+
+    // A rail guard and normal telemetry can sample concurrently. The ADC
+    // driver uses a try-lock; serialize the entire average and calibration
+    // to avoid spurious ESP_ERR_TIMEOUT and protect the calibration handle.
+    if (xSemaphoreTake(adc_measurement_lock, pdMS_TO_TICKS(20)) != pdTRUE) {
+        return ESP_ERR_TIMEOUT;
     }
 
     uint32_t raw_total = 0;
@@ -106,6 +119,7 @@ esp_err_t ADC_get_domain_midpoint_mv(uint16_t *voltage_mv)
         int adc_raw = 0;
         esp_err_t err = adc_oneshot_read(adc1_handle, ADC_CHANNEL, &adc_raw);
         if (err != ESP_OK) {
+            xSemaphoreGive(adc_measurement_lock);
             return err;
         }
         raw_total += (uint32_t)adc_raw;
@@ -115,6 +129,7 @@ esp_err_t ADC_get_domain_midpoint_mv(uint16_t *voltage_mv)
     int calibrated_mv = 0;
     esp_err_t err = adc_cali_raw_to_voltage(
         adc1_cali_chan1_handle, average_raw, &calibrated_mv);
+    xSemaphoreGive(adc_measurement_lock);
     if (err != ESP_OK) {
         return err;
     }

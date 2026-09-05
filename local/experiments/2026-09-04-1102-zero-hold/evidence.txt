@@ -1,0 +1,37 @@
+I (13311) vcore: Set ASIC voltage = 0.800V
+I (14311) vcore: Set ASIC voltage = 0.810V
+I (14770) vcore: Set ASIC voltage = 0.820V
+I (15225) vcore: Set ASIC voltage = 0.830V
+I (15681) vcore: Set ASIC voltage = 0.840V
+I (16139) vcore: Set ASIC voltage = 0.850V
+I (16599) vcore: Set ASIC voltage = 0.860V
+I (17056) vcore: Set ASIC voltage = 0.870V
+I (17512) vcore: Set ASIC voltage = 0.880V
+I (17969) vcore: Set ASIC voltage = 0.890V
+I (18425) vcore: Set ASIC voltage = 0.900V
+I (18881) vcore: Set ASIC voltage = 0.910V
+I (19337) vcore: Set ASIC voltage = 0.920V
+I (19793) vcore: Set ASIC voltage = 0.930V
+I (20249) vcore: Set ASIC voltage = 0.940V
+I (20705) vcore: Set ASIC voltage = 0.950V
+I (21161) vcore: Set ASIC voltage = 0.960V
+I (21627) vcore: Set ASIC voltage = 0.970V
+I (22083) vcore: Set ASIC voltage = 0.980V
+I (22540) vcore: Set ASIC voltage = 0.990V
+W (29875) asic_init: WARM POLICY voltage_limits=REPORT_ONLY throughput_limits=REPORT_ONLY final_hold_seconds=120; temperature/communications/manual stop retained
+W (29890) asic_init: WARM POLICY hold_first_zero=1; stop after 120s observation at first fully zero-PASS domain
+W (442805) asic_init: WARM TEMPERATURE READY; qualify 300MHz at the warm temperature without a PLL update
+I (447195) asic_init: Proto qualification WARM baseline300: total=1486.58/1497.60 GH/s throughput=99.26% min_chip=98.97% min_pass=99.01% balance=unavailable => PASS
+W (474757) asic_init: WARM STEP WEAK target=325 policy=REPORT_ONLY
+W (494726) asic_init: WARM STEP PASS target=350 policy=REPORT_ONLY
+W (514697) asic_init: WARM STEP PASS target=375 policy=REPORT_ONLY
+W (534666) asic_init: WARM STEP PASS target=400 policy=REPORT_ONLY
+W (553653) asic_init: WARM STEP PASS target=425 policy=REPORT_ONLY
+W (572662) asic_init: WARM STEP PASS target=450 policy=REPORT_ONLY
+W (574724) asic_init: WARM ZERO DETECTED target=475 mask=0x0042 hold_seconds=120; no further PLL/work/counter rearm
+W (582458) asic_init: WARM ZERO HOLD freq=475 mask=0x0042; fixed PLL/work/voltage, counters not rearmed
+W (695350) asic_init: WARM ZERO HOLD WHOLE_WINDOW
+W (695497) asic_init: WARM ZERO HOLD LAST_10_SECONDS
+W (695653) asic_init: WARM ZERO HOLD END elapsed_seconds=120.930 recovered_all=0 initial_mask=0x0042; powering off
+I (695672) vcore: Set ASIC voltage = 0.000V
+W (695679) asic_init: WARM END result=COMPLETE frequency=475 max_PCB=unavailable PCB_sense=0 max_total=2275 mV ASIC_power=OFF

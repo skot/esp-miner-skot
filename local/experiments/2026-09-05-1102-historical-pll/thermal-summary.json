@@ -1,0 +1,78 @@
+{
+  "samples": 920,
+  "invalid": [
+    {
+      "boot_ms": 334856,
+      "attempt": 1,
+      "asic": 3,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    },
+    {
+      "boot_ms": 335516,
+      "attempt": 2,
+      "asic": 3,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    },
+    {
+      "boot_ms": 336176,
+      "attempt": 3,
+      "asic": 3,
+      "fresh": 1,
+      "trigger": 1,
+      "done": 0,
+      "status": 3,
+      "status_read": 1,
+      "raw": 0,
+      "data_read": 1,
+      "temperature": -288.9,
+      "valid": 0
+    }
+  ],
+  "retry_messages": [
+    "W (334874) mc3: THERMAL retry after invalid sample attempt=1; wait 100ms",
+    "W (335534) mc3: THERMAL retry after invalid sample attempt=2; wait 100ms",
+    "E (336194) mc3: THERMAL invalid after bounded retries attempt=3"
+  ],
+  "per_asic": {
+    "1": {
+      "samples": 230,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 59.46
+    },
+    "2": {
+      "samples": 230,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 57.97
+    },
+    "3": {
+      "samples": 230,
+      "invalid": 3,
+      "raw_zero": 3,
+      "max_valid_c": 58.8
+    },
+    "4": {
+      "samples": 230,
+      "invalid": 0,
+      "raw_zero": 0,
+      "max_valid_c": 60.12
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "source_sha256": "95b504888b18df621b6bc3a57aa668a5ee112732010470a78027e21675d83e69",
+  "reported_firmware": "v2.14.0-40-gcd82a9e-dirty",
+  "reference_commit": "cd82a9e43e59d6fa92c7bd13ca14c9d5cabc2e43",
+  "reference_source_exact_match": false,
+  "reset_method": "User confirmed reset button or software reboot; input power remained connected",
+  "samples": [
+    {
+      "phase": "before_restart",
+      "asic": 1,
+      "ghs": 372.92,
+      "passed": 18646,
+      "failed": 1514,
+      "percent_of_600mhz_ideal": 49.80235042735043,
+      "fail_percent": 7.509920634920634
+    },
+    {
+      "phase": "before_restart",
+      "asic": 2,
+      "ghs": 366.62,
+      "passed": 18331,
+      "failed": 3387,
+      "percent_of_600mhz_ideal": 48.96100427350428,
+      "fail_percent": 15.595358688645364
+    },
+    {
+      "phase": "before_restart",
+      "asic": 3,
+      "ghs": 744.04,
+      "passed": 37202,
+      "failed": 235,
+      "percent_of_600mhz_ideal": 99.36431623931624,
+      "fail_percent": 0.6277212383470898
+    },
+    {
+      "phase": "before_restart",
+      "asic": 4,
+      "ghs": 745.3,
+      "passed": 37265,
+      "failed": 236,
+      "percent_of_600mhz_ideal": 99.53258547008546,
+      "fail_percent": 0.6293165515586251
+    },
+    {
+      "phase": "after_restart",
+      "asic": 1,
+      "ghs": 740.58,
+      "passed": 37029,
+      "failed": 345,
+      "percent_of_600mhz_ideal": 98.9022435897436,
+      "fail_percent": 0.9231016214480655
+    },
+    {
+      "phase": "after_restart",
+      "asic": 2,
+      "ghs": 730.1,
+      "passed": 36505,
+      "failed": 462,
+      "percent_of_600mhz_ideal": 97.50267094017096,
+      "fail_percent": 1.2497633024048476
+    },
+    {
+      "phase": "after_restart",
+      "asic": 3,
+      "ghs": 739.08,
+      "passed": 36954,
+      "failed": 320,
+      "percent_of_600mhz_ideal": 98.7019230769231,
+      "fail_percent": 0.858507270483447
+    },
+    {
+      "phase": "after_restart",
+      "asic": 4,
+      "ghs": 739.88,
+      "passed": 36994,
+      "failed": 347,
+      "percent_of_600mhz_ideal": 98.80876068376068,
+      "fail_percent": 0.9292734527730914
+    }
+  ],
+  "compile_time": "Jul 24 2026 11:59:35",
+  "running_elf_sha256_prefix": "3186ecc06",
+  "esp_idf_version": "v5.5.1-dirty",
+  "host_built_application_checksum": "5bba4c53c1fe0655e8306b53d75d7a202da9f9e01f3a76e677d53f3bc53fd702"
+}

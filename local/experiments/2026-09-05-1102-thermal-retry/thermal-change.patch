@@ -1,0 +1,98 @@
+--- previous/components/asic/mc3.c
++++ current/components/asic/mc3.c
+@@ -178,6 +178,7 @@
+ static pthread_mutex_t mc3_core_scan_lock = PTHREAD_MUTEX_INITIALIZER;
+ static pthread_mutex_t mc3_work_lock = PTHREAD_MUTEX_INITIALIZER;
+ static pthread_mutex_t mc3_voltage_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
++static pthread_mutex_t mc3_thermal_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
+ static float mc3_active_chip_frequency_mhz[MC3_QUALIFICATION_MAX_CHIPS];
+ static uint8_t mc3_active_frequency_count;
+ static bool mc3_active_frequency_profile_mixed;
+@@ -1259,12 +1260,6 @@
+     mc3_wait_register(0, MC3_THERMAL_STATUS, 0x00000000, 500);
+ }
+ 
+-static bool mc3_trigger_thermal_conversion(void)
+-{
+-    mc3_write_register(0, MC3_THERMAL_COMMAND, 0x88000105, MC3_CHIP_NUM_ALL);
+-    return mc3_wait_register(0, MC3_THERMAL_DONE, 0x00000001, 500);
+-}
+-
+ static void mc3_setup_vdd_voltage_sensor(void)
+ {
+     mc3_write_register(0, MC3_VOLTAGE_SDIF_ENABLE, 0x00000000, MC3_CHIP_NUM_ALL);
+@@ -2947,18 +2942,63 @@
+         chip_count = max_temps;
+     }
+ 
+-    if (!mc3_trigger_thermal_conversion()) {
+-        return 0;
+-    }
+-
+-    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+-        uint32_t raw = 0;
+-        if (mc3_read_register(chip_id, MC3_THERMAL_DOUT, &raw)) {
+-            temps[chip_id] = mc3_temperature_from_dout(raw);
+-        } else {
++    pthread_mutex_lock(&mc3_thermal_sensor_lock);
++    // A stale result must not satisfy the next conversion's DONE check. Drain
++    // DOUT, then verify DONE=0 separately on every ASIC before triggering.
++    // Three attempts share a two-second budget; no cached value masks failure.
++    int64_t deadline = esp_timer_get_time() + 2000000;
++    for (unsigned attempt = 1; attempt <= 3; attempt++) {
++        bool fresh[MC3_MAX_TRACKED_CHIPS] = {false};
++        for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
++            uint32_t discarded = 0, before = UINT32_MAX;
+             temps[chip_id] = -1.0f;
+-        }
+-    }
++            bool drained = mc3_read_register(chip_id, MC3_THERMAL_DOUT, &discarded);
++            bool read_done = mc3_read_register(chip_id, MC3_THERMAL_DONE, &before);
++            fresh[chip_id] = drained && read_done && before == 0;
++            if (!fresh[chip_id]) {
++                ESP_LOGW(TAG, "THERMAL stale/not-ready attempt=%u A%u drained=%u done_before=0x%08" PRIX32,
++                    attempt, chip_id + 1, drained, before);
++            }
++        }
++        bool triggered = mc3_write_register(0, MC3_THERMAL_COMMAND, 0x88000105, MC3_CHIP_NUM_ALL);
++        bool all_valid = true, hot = false;
++        int64_t conversion_deadline = esp_timer_get_time() + 500000;
++        if (conversion_deadline > deadline) conversion_deadline = deadline;
++        for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
++            uint32_t done = UINT32_MAX, status = UINT32_MAX, raw = UINT32_MAX;
++            bool ready = false;
++            do {
++                ready = mc3_read_register(chip_id, MC3_THERMAL_DONE, &done) && done == 1;
++                if (ready || !triggered) break;
++                vTaskDelay(pdMS_TO_TICKS(10));
++            } while (esp_timer_get_time() < conversion_deadline);
++            bool read_status = mc3_read_register(chip_id, MC3_THERMAL_STATUS, &status);
++            bool read_data = mc3_read_register(chip_id, MC3_THERMAL_DOUT, &raw);
++            float temperature = read_data ? mc3_temperature_from_dout(raw) : -1.0f;
++            bool valid = triggered && fresh[chip_id] && ready && read_data &&
++                raw < (1U << MC3_THERMAL_RESOLUTION_BITS) && temperature > 0;
++            if (valid) temps[chip_id] = temperature;
++            all_valid = all_valid && valid;
++            // Do not retry away a credible hot result when a different ASIC
++            // has an invalid sample. Return it for the caller's thermal policy.
++            hot = hot || (valid && temperature >= 70.0f);
++            ESP_LOGI(TAG, "THERMAL attempt=%u A%u fresh=%u trigger=%u done=0x%08" PRIX32
++                " status=0x%08" PRIX32 " status_read=%u raw=0x%08" PRIX32 " data_read=%u temp=%.2f valid=%u",
++                attempt, chip_id + 1, fresh[chip_id], triggered, done, status,
++                read_status, raw, read_data, temperature, valid);
++        }
++        if (all_valid || hot) {
++            if (attempt > 1 && all_valid) ESP_LOGW(TAG, "THERMAL recovered attempt=%u", attempt);
++            break;
++        }
++        if (attempt == 3 || esp_timer_get_time() + 100000 >= deadline) {
++            ESP_LOGE(TAG, "THERMAL invalid after bounded retries attempt=%u", attempt);
++            break;
++        }
++        ESP_LOGW(TAG, "THERMAL retry after invalid sample attempt=%u; wait 100ms", attempt);
++        vTaskDelay(pdMS_TO_TICKS(100));
++    }
++    pthread_mutex_unlock(&mc3_thermal_sensor_lock);
+ 
+     return chip_count;
+ }

@@ -332,11 +332,48 @@ static uint16_t float_2_ulinear16(float value)
     return result;
 }
 
+// Test-only starting state for the 1103 scale-transition regression probe.
+#define TPS546_BENCH_SEED_SCALE_0125 0
+
+static esp_err_t TPS546_prepare_voltage_scale(void)
+{
+    uint8_t operation = 0;
+    uint16_t raw = 0;
+    ESP_RETURN_ON_ERROR(smb_read_byte(PMBUS_OPERATION, &operation), TAG,
+        "Cannot verify converter is off before changing voltage scale");
+    ESP_RETURN_ON_FALSE(operation == OPERATION_OFF, ESP_ERR_INVALID_STATE, TAG,
+        "Converter must be off before programming voltage scale");
+    if (TPS546_BENCH_SEED_SCALE_0125 && tps546_config.TPS546_INIT_SCALE_LOOP == 0.25f) {
+        ESP_RETURN_ON_ERROR(smb_write_word(PMBUS_VOUT_SCALE_LOOP, float_2_slinear11(0.125f)), TAG,
+            "Cannot seed bench starting scale");
+        ESP_LOGW(TAG, "BENCH seeded VOUT_SCALE_LOOP=0.125 while off; no NVM write");
+    }
+    // Program the divider before VOUT_COMMAND, MAX, MIN, trim and margins.
+    // Register readback alone did not expose a 1.2V output ceiling when an
+    // earlier 1103 initialization changed scale after setting these values.
+    ESP_LOGI(TAG, "Setting VOUT SCALE before voltage commands/limits: %.3f",
+        tps546_config.TPS546_INIT_SCALE_LOOP);
+    ESP_RETURN_ON_ERROR(smb_write_word(PMBUS_VOUT_SCALE_LOOP,
+        float_2_slinear11(tps546_config.TPS546_INIT_SCALE_LOOP)), TAG,
+        "Failed programming voltage scale");
+    ESP_RETURN_ON_ERROR(smb_read_word(PMBUS_VOUT_SCALE_LOOP, &raw), TAG,
+        "Failed reading voltage scale");
+    ESP_RETURN_ON_FALSE(fabsf(slinear11_2_float(raw) - tps546_config.TPS546_INIT_SCALE_LOOP) < 0.00001f,
+        ESP_ERR_INVALID_RESPONSE, TAG, "Voltage scale readback mismatch");
+    return ESP_OK;
+}
+
+static uint8_t tps546_on_off_config(void)
+{
+    uint8_t config = ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY |
+        ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU;
+    return tps546_config.TPS546_INIT_IGNORE_CONTROL_PIN
+        ? config & ~ON_OFF_CONFIG_CP : config;
+}
+
 static esp_err_t TPS546_verify_control_loop_config(void)
 {
-    const uint8_t expected_on_off_config = ON_OFF_CONFIG_DELAY |
-        ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD |
-        ON_OFF_CONFIG_PU;
+    const uint8_t expected_on_off_config = tps546_on_off_config();
     uint8_t on_off_config = 0;
     uint16_t scale_raw = 0;
     uint16_t frequency_raw = 0;
@@ -444,7 +481,7 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
         "Failed to command Vout off during initialization");
 
     /* Make sure power is turned off until commanded */
-    u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY | ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
+    u8_value = tps546_on_off_config();
     ESP_LOGI(TAG, "Power config-ON_OFF_CONFIG: %02X", u8_value);
     ESP_RETURN_ON_ERROR(smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value), TAG,
         "Failed to configure TPS546 CONTROL input");
@@ -459,6 +496,8 @@ esp_err_t TPS546_init(TPS546_CONFIG config)
     ESP_LOGI(TAG, "Writing new config values");
     smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
     ESP_LOGI(TAG, "VOUT_MODE: %02x", voutmode);
+    ESP_RETURN_ON_ERROR(TPS546_prepare_voltage_scale(), TAG,
+        "Cannot establish voltage scale before configuring converter");
     TPS546_write_entire_config();
     ESP_RETURN_ON_ERROR(TPS546_verify_control_loop_config(), TAG,
         "TPS546 control-loop configuration verification failed");
@@ -577,8 +616,7 @@ void TPS546_write_entire_config(void)
     ESP_LOGI(TAG, "---Writing new config values to TPS546---");
 
         // ON_OFF_CONFIG
-    uint8_t u8_value = (ON_OFF_CONFIG_DELAY | ON_OFF_CONFIG_POLARITY |
-        ON_OFF_CONFIG_CP | ON_OFF_CONFIG_CMD | ON_OFF_CONFIG_PU);
+    uint8_t u8_value = tps546_on_off_config();
     ESP_LOGI(TAG, "Setting ON_OFF_CONFIG: %02X", u8_value);
     smb_write_byte(PMBUS_ON_OFF_CONFIG, u8_value);
 
@@ -681,9 +719,6 @@ void TPS546_write_entire_config(void)
         ESP_LOGI(TAG, "Setting VOUT_TRANSITION_RATE: %04X", tps546_config.TPS546_INIT_VOUT_TRANSITION_RATE);
         smb_write_word(PMBUS_VOUT_TRANSITION_RATE, tps546_config.TPS546_INIT_VOUT_TRANSITION_RATE);
     }
-
-    ESP_LOGI(TAG, "Setting VOUT SCALE: %.2f", tps546_config.TPS546_INIT_SCALE_LOOP);
-    smb_write_word(PMBUS_VOUT_SCALE_LOOP, float_2_slinear11(tps546_config.TPS546_INIT_SCALE_LOOP));
 
     ESP_LOGI(TAG, "Setting VOUT_MIN: %.2fV", tps546_config.TPS546_INIT_VOUT_MIN);
     smb_write_word(PMBUS_VOUT_MIN, float_2_ulinear16(tps546_config.TPS546_INIT_VOUT_MIN));
@@ -869,23 +904,36 @@ float TPS546_get_iout(void)
     }
 }
 
-float TPS546_get_vout(void)
+esp_err_t TPS546_read_vout(float *volts)
 {
+    if (volts == NULL) return ESP_ERR_INVALID_ARG;
     uint16_t u16_value = 0;
-    float vout;
-
-    /* Get voltage output (ULINEAR16) */
-    if (smb_read_word(PMBUS_READ_VOUT, &u16_value) != ESP_OK) {
+    uint8_t mode = 0;
+    esp_err_t err = smb_read_word(PMBUS_READ_VOUT, &u16_value);
+    if (err != ESP_OK) {
         ESP_LOGE(TAG, "Could not read Vout");
-        return last_vout;
-    } else {
-        vout = ulinear16_2_float(u16_value);
+        return err;
+    }
+    err = smb_read_byte(PMBUS_VOUT_MODE, &mode);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "Could not read Vout exponent");
+        return err;
+    }
+    int exponent = mode & 0x1F;
+    if (exponent & 0x10) exponent -= 32;
+    float vout = (float)u16_value * powf(2.0f, exponent);
     #ifdef DEBUG_TPS546_MEAS
         ESP_LOGI(TAG, "Got Vout: %2.3f V", vout);
     #endif
-        last_vout = vout;
-        return vout;
-    }
+    last_vout = vout;
+    *volts = vout;
+    return ESP_OK;
+}
+
+float TPS546_get_vout(void)
+{
+    float vout = 0;
+    return TPS546_read_vout(&vout) == ESP_OK ? vout : last_vout;
 }
 
 esp_err_t TPS546_check_status(GlobalState * GLOBAL_STATE) {

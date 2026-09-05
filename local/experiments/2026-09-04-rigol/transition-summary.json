@@ -1,0 +1,25 @@
+{
+  "points": 7000000,
+  "sample_interval_s": 5e-08,
+  "time_start_s": -0.2,
+  "time_end_s": 0.14999995,
+  "note": "Voltages are uncorrected scope readings. Saturated channels are excluded; math is invalid if either channel saturates.",
+  "total": {
+    "baseline_v": 2.3520002939999998,
+    "max_v": 2.440000305,
+    "max_time_s": 0.0010250499999999718,
+    "min_valid_v": 0.8720001089999999
+  },
+  "lower": {
+    "baseline_v": 1.184,
+    "max_v": 1.476,
+    "max_time_s": 0.001046499999999978,
+    "min_valid_v": 0.676
+  },
+  "upper": {
+    "baseline_v": 1.1640002939999998,
+    "max_v": 1.4680003039999998,
+    "max_time_s": 0.018257549999999984,
+    "min_valid_v": 0.5400001519999998
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "key": "hostname",
+    "value": "bitaxe"
+  },
+  {
+    "key": "devicemodel",
+    "value": "proto"
+  },
+  {
+    "key": "boardversion",
+    "value": "1103"
+  },
+  {
+    "key": "autofanspeed",
+    "value": 1
+  },
+  {
+    "key": "fanspeed",
+    "value": 100
+  },
+  {
+    "key": "minfanspeed",
+    "value": 99
+  }
+]

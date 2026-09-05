@@ -1,0 +1,10 @@
+{
+  "same_warm_ramp_asic_call_expressions": true,
+  "calls": [
+    "qualify_proto_frequency_step(global, frequency, &result)",
+    "MC3_start_active_spdlog_observation(180000)",
+    "MC3_start_active_spdlog_observation(180000)",
+    "MC3_measure_active_frequency_profile(global, &result)",
+    "MC3_start_broadcast_recovery_probe(global, target - 25, target, proto_clock_probe_abort, &guard)"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "previous-factory.bin": {
+    "bytes": 4194304,
+    "sha256": "01551029f035275096cb56e7b2b298335ef43535f25b447a4b3ea9f347fbe802",
+    "descriptor_offset": 32,
+    "version": "v2.14.0-40-gcd82a9e-dirty",
+    "project": "esp-miner",
+    "compile_time": "11:59:35",
+    "compile_date": "Jul 24 2026",
+    "idf_version": "v5.5.1-dirty",
+    "elf_sha256": "3186ecc062dd020151319e06ab1fa34548420b5eb51fa0ed3382ac5fc42a8e50"
+  },
+  "esp-miner-1102-warm-probe.bin": {
+    "bytes": 1791968,
+    "sha256": "87478c5be3423a8f393a23afc19aa055dd6a8d23b18efcebb00bee01c64f6bfe",
+    "descriptor_offset": 32,
+    "version": "v2.14.0-45-gbe978c3-dirty",
+    "project": "esp-miner",
+    "compile_time": "16:59:25",
+    "compile_date": "Sep  4 2026",
+    "idf_version": "v5.5.1-dirty",
+    "elf_sha256": "5a903168dab1a73f30c6653ce47638e1af37c04470d1159d883b806d878f1b52"
+  }
+}

@@ -1,0 +1,5 @@
+# Keep raw device logs and exact bench firmware locally; summaries are tracked.
+*.bin
+*.elf
+*.log
+asic_init-sweep*.c

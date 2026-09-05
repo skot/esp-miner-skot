@@ -122,6 +122,9 @@
 #define MC3_V_CTRL_START_BIT_SHIFT 4
 #define MC3_V_CTRL_START_BIT_MASK (0x1FU << MC3_V_CTRL_START_BIT_SHIFT)
 #define MC3_PLL0_ENABLE 0x00000001
+// pll_clk_on readback is not proof of hash-clock delivery: the 2026-09-04
+// bench probe found sustained hashing at EN=5, both after live clearing and
+// after restarting PLL0 with EN=1. Keep bit 1 set in normal operation.
 #define MC3_PLL_CLOCK_ON (1U << 1)
 #define MC3_DEFAULT_PLL0_ENABLE 0x00000003
 #define MC3_PLL_LOCK_BIT 0x00000004
@@ -175,6 +178,7 @@ static pthread_mutex_t mc3_pending_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_core_scan_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_work_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_voltage_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t mc3_thermal_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
 static float mc3_active_chip_frequency_mhz[MC3_QUALIFICATION_MAX_CHIPS];
 static uint8_t mc3_active_frequency_count;
 static bool mc3_active_frequency_profile_mixed;
@@ -222,7 +226,7 @@ static const mc3_pll_config_t PLL_CONFIGS[] = {
     {440.6250f, 1, 141, 3, 1},
     {443.7500f, 1, 142, 3, 1},
     {446.8750f, 1, 143, 3, 1},
-    {450, 1, 144, 3, 1},
+    {450, 1, 144, 7, 0},
     {453.1250f, 1, 145, 3, 1},
     {456.2500f, 1, 146, 3, 1},
     {459.3750f, 1, 147, 3, 1},
@@ -230,7 +234,7 @@ static const mc3_pll_config_t PLL_CONFIGS[] = {
     {465.6250f, 1, 149, 3, 1},
     {468.7500f, 1, 150, 3, 1},
     {471.8750f, 1, 151, 3, 1},
-    {475, 1, 152, 3, 1},
+    {475, 1, 152, 7, 0},
     {478.1250f, 1, 153, 3, 1},
     {481.2500f, 1, 154, 3, 1},
     {484.3750f, 1, 155, 3, 1},
@@ -238,31 +242,31 @@ static const mc3_pll_config_t PLL_CONFIGS[] = {
     {490.6250f, 1, 157, 3, 1},
     {493.7500f, 1, 158, 3, 1},
     {496.8750f, 1, 159, 3, 1},
-    {500, 1, 160, 3, 1},
+    {500, 1, 160, 7, 0},
     {504.1667f, 1, 121, 2, 1},
     {508.3333f, 1, 122, 2, 1},
     {512.5000f, 1, 123, 2, 1},
     {516.6667f, 1, 124, 2, 1},
     {520.8333f, 1, 125, 2, 1},
-    {525, 1, 126, 2, 1},
+    {525, 1, 147, 6, 0},
     {529.1667f, 1, 127, 2, 1},
     {533.3333f, 1, 128, 2, 1},
     {537.5000f, 1, 129, 2, 1},
     {541.6667f, 1, 130, 2, 1},
     {545.8333f, 1, 131, 2, 1},
-    {550, 1, 132, 2, 1},
+    {550, 1, 154, 6, 0},
     {554.1667f, 1, 133, 2, 1},
     {558.3333f, 1, 134, 2, 1},
     {562.5000f, 1, 135, 2, 1},
     {566.6667f, 1, 136, 2, 1},
     {570.8333f, 1, 137, 2, 1},
-    {575, 1, 138, 2, 1},
+    {575, 1, 138, 5, 0},
     {579.1667f, 1, 139, 2, 1},
     {583.3333f, 1, 140, 2, 1},
     {587.5000f, 1, 141, 2, 1},
     {591.6667f, 1, 142, 2, 1},
     {595.8333f, 1, 143, 2, 1},
-    {600, 1, 144, 2, 1},
+    {600, 1, 144, 5, 0},
     {625, 1, 150, 5, 0},
     {650, 1, 156, 5, 0},
     {675, 1, 135, 4, 0},
@@ -893,7 +897,7 @@ static void mc3_begin_core_scan(void)
 }
 
 static bool mc3_read_core_spdlog_bank(uint8_t chip_id, uint32_t base, uint16_t logical_core_offset,
-    uint32_t *pass_counts)
+    uint32_t *pass_counts, uint32_t *fail_counts)
 {
     for (uint16_t offset = 0; offset < MC3_CORE_SPDLOG_BANK_CORE_COUNT; offset += MC3_CORE_PASS_READ_CHUNK) {
         uint16_t remaining = MC3_CORE_SPDLOG_BANK_CORE_COUNT - offset;
@@ -913,6 +917,7 @@ static bool mc3_read_core_spdlog_bank(uint8_t chip_id, uint32_t base, uint16_t l
         }
 
         for (uint8_t i = 0; i < count; i++) {
+            if (fail_counts) fail_counts[logical_core_offset + offset + i] = packed_counters[i] >> 16;
             packed_counters[i] &= MC3_CORE_SPDLOG_PASS_MASK;
         }
     }
@@ -922,9 +927,9 @@ static bool mc3_read_core_spdlog_bank(uint8_t chip_id, uint32_t base, uint16_t l
 
 static bool mc3_read_core_pass_counts(uint8_t chip_id, uint32_t *pass_counts)
 {
-    return mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK0, 0, pass_counts) &&
+    return mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK0, 0, pass_counts, NULL) &&
         mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK1,
-            MC3_CORE_SPDLOG_BANK_CORE_COUNT, pass_counts);
+            MC3_CORE_SPDLOG_BANK_CORE_COUNT, pass_counts, NULL);
 }
 
 bool MC3_read_core_domain_summary(uint8_t chip_id,
@@ -935,8 +940,12 @@ bool MC3_read_core_domain_summary(uint8_t chip_id,
     }
 
     uint32_t core_pass_counts[ASIC_TUNING_MAX_CORES] = {0};
+    uint32_t core_fail_counts[ASIC_TUNING_MAX_CORES] = {0};
     pthread_mutex_lock(&mc3_work_lock);
-    bool read_ok = mc3_read_core_pass_counts(chip_id, core_pass_counts);
+    bool read_ok = mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK0, 0,
+        core_pass_counts, core_fail_counts) &&
+        mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK1,
+            MC3_CORE_SPDLOG_BANK_CORE_COUNT, core_pass_counts, core_fail_counts);
     pthread_mutex_unlock(&mc3_work_lock);
     if (!read_ok) {
         return false;
@@ -956,6 +965,7 @@ bool MC3_read_core_domain_summary(uint8_t chip_id,
         summary->core_pass_sum += pass_count;
         summary->slice_pass[slice_id] += pass_count;
         summary->domain_pass[domain_id] += pass_count;
+        summary->domain_fail[domain_id] += core_fail_counts[core_id];
         if (pass_count == 0) {
             summary->domain_zero_cores[domain_id]++;
         }
@@ -1248,12 +1258,6 @@ static void mc3_setup_thermal_sensor(void)
     mc3_write_register(0, MC3_THERMAL_COMMAND, 0x89000000, MC3_CHIP_NUM_ALL);
     mc3_write_register(0, MC3_THERMAL_COMMAND, 0x8D000200, MC3_CHIP_NUM_ALL);
     mc3_wait_register(0, MC3_THERMAL_STATUS, 0x00000000, 500);
-}
-
-static bool mc3_trigger_thermal_conversion(void)
-{
-    mc3_write_register(0, MC3_THERMAL_COMMAND, 0x88000105, MC3_CHIP_NUM_ALL);
-    return mc3_wait_register(0, MC3_THERMAL_DONE, 0x00000001, 500);
 }
 
 static void mc3_setup_vdd_voltage_sensor(void)
@@ -2392,6 +2396,164 @@ bool MC3_set_active_pll_running_preserve_config(void *pvParameters,
     return success;
 }
 
+typedef struct {
+    uint32_t cfg, en, passed, failed;
+    int64_t counter_us;
+} mc3_clock_probe_sample_t;
+
+static bool mc3_clock_probe_snapshot(mc3_clock_probe_sample_t *samples,
+    bool (*abort_requested)(void *), void *abort_context)
+{
+    for (uint8_t chip = 0; chip < mc3_chip_count; chip++) {
+        uint32_t pll[2], counts[2];
+        if (abort_requested(abort_context) ||
+            !mc3_read_register_block(chip, MC3_PLL0_CFG, pll, 2)) return false;
+        int64_t start = esp_timer_get_time();
+        if (!mc3_read_register_block(chip, MC3_SPDLOG_PASS, counts, 2)) return false;
+        samples[chip] = (mc3_clock_probe_sample_t){
+            .cfg = pll[0], .en = pll[1], .passed = counts[0], .failed = counts[1],
+            .counter_us = (start + esp_timer_get_time()) / 2,
+        };
+    }
+    return !abort_requested(abort_context);
+}
+
+static bool mc3_clock_probe_interval(mc3_clock_probe_sample_t samples[2][MC3_QUALIFICATION_MAX_CHIPS],
+    bool (*abort_requested)(void *), void *abort_context)
+{
+    if (!mc3_clock_probe_snapshot(samples[0], abort_requested, abort_context)) return false;
+    int64_t deadline = esp_timer_get_time() + 100000;
+    while (esp_timer_get_time() < deadline) {
+        if (abort_requested(abort_context)) return false;
+        vTaskDelay(1);
+    }
+    return mc3_clock_probe_snapshot(samples[1], abort_requested, abort_context);
+}
+
+bool MC3_start_broadcast_recovery_probe(void *global_state, float baseline_mhz, float test_mhz,
+    bool (*abort_requested)(void *), void *abort_context)
+{
+    GlobalState *global = global_state;
+    if (!abort_requested || mc3_chip_count != 4 || mc3_active_frequency_count != 4 ||
+        mc3_active_frequency_profile_mixed || mc3_active_uniform_pll_id != 0 ||
+        mc3_active_chip_frequency_mhz[0] != baseline_mhz || test_mhz != baseline_mhz + 25 ||
+        test_mhz < 125 || test_mhz > 600) return false;
+    pthread_mutex_lock(&mc3_work_lock);
+    bool ok = !abort_requested(abort_context) &&
+        mc3_write_register(0, MC3_WORK_CFG, MC3_DEFAULT_WORK_CFG_APPLY_AND_RESET, MC3_CHIP_NUM_ALL);
+    if (ok) vTaskDelay(pdMS_TO_TICKS(10));
+    // Match normal qualification: quiesce, broadcast PLL change, same work.
+    float actual = ok && !abort_requested(abort_context) ? MC3_send_hash_frequency(test_mhz) : 0;
+    ok = actual == test_mhz && !abort_requested(abort_context) && mc3_program_qualification_work(actual);
+    if (ok) global->POWER_MANAGEMENT_MODULE.actual_frequency = actual;
+    pthread_mutex_unlock(&mc3_work_lock);
+    // One arm only; its SPD/FIFO strobes belong to the initial launch.
+    return ok && !abort_requested(abort_context) && MC3_start_active_spdlog_observation(180000);
+}
+
+bool MC3_broadcast_recovery_action(unsigned action)
+{
+    if (mc3_chip_count != 4 || mc3_active_frequency_profile_mixed ||
+        (mc3_active_chip_frequency_mhz[0] != 375 && mc3_active_chip_frequency_mhz[0] != 400 && mc3_active_chip_frequency_mhz[0] != 425) || action < 1 || action > 3) return false;
+    uint32_t cfg = MC3_DEFAULT_WORK_CFG_SPDLOG & ~(MC3_WORK_CFG_RST_FIFO | MC3_WORK_CFG_SPD_GO);
+    pthread_mutex_lock(&mc3_work_lock);
+    bool ok = true;
+    if (action == 1) cfg |= MC3_WORK_CFG_RST_FIFO;
+    else if (action == 2) cfg |= MC3_WORK_CFG_SPD_GO;
+    else ok = mc3_program_qualification_work(mc3_active_chip_frequency_mhz[0]);
+    // Full work changes core_target to the mining default. Restore the same
+    // SPDLOG counting target without rearming its timer or resetting counters.
+    ok = ok && mc3_write_register(0, MC3_WORK_CFG, cfg, MC3_CHIP_NUM_ALL);
+    pthread_mutex_unlock(&mc3_work_lock);
+    return ok;
+}
+
+bool MC3_probe_clock_delivery(void *global_state,
+    bool (*abort_requested)(void *), void *abort_context)
+{
+    GlobalState *global = global_state;
+    if (!abort_requested || mc3_chip_count != 4 ||
+        mc3_active_frequency_count != 4 || mc3_active_frequency_profile_mixed ||
+        mc3_active_uniform_pll_id != 0 || mc3_active_chip_frequency_mhz[0] != 100.0f) return false;
+
+    const char *names[] = {"control100", "live_EN1_100", "restart_EN1_125", "released_EN3_125"};
+    mc3_clock_probe_sample_t samples[4][2][MC3_QUALIFICATION_MAX_CHIPS] = {0};
+    int64_t events[4] = {0};
+    unsigned completed = 0;
+    bool ok = false;
+    const mc3_pll_config_t *config = mc3_get_pll_config(125);
+    pthread_mutex_lock(&mc3_work_lock);
+    // Arm exactly once, before all interventions. Subsequent snapshots only
+    // read counters; no WORK_CFG/SPD action strobes occur during the probe.
+    if (abort_requested(abort_context) ||
+        !mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL,
+            MC3_QUALIFICATION_SPDLOG_TIMER_COUNT)) goto done;
+    ESP_LOGW(TAG, "CLOCK_PROBE TRIAL control=100 target=125; one counter arm before interventions");
+    events[0] = esp_timer_get_time();
+    if (!mc3_clock_probe_interval(samples[0], abort_requested, abort_context)) goto done;
+    completed++;
+
+    events[1] = esp_timer_get_time();
+    if (abort_requested(abort_context) ||
+        !mc3_write_register(0, MC3_PLL0_EN, MC3_PLL0_ENABLE, MC3_CHIP_NUM_ALL) ||
+        !mc3_clock_probe_interval(samples[1], abort_requested, abort_context)) goto done;
+    completed++;
+    if (abort_requested(abort_context) ||
+        !mc3_write_register(0, MC3_PLL0_EN, MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL)) goto done;
+
+    // Unlike clearing clk_on on a running PLL, this tests whether withholding
+    // clk_on at PLL startup prevents delivery until a later common release.
+    events[2] = esp_timer_get_time();
+    if (abort_requested(abort_context) ||
+        !mc3_write_register(0, MC3_PLL0_EN, 0, MC3_CHIP_NUM_ALL) ||
+        abort_requested(abort_context) ||
+        !mc3_write_register_pair(0, MC3_PLL0_CFG, mc3_pll_config_value(config),
+            MC3_PLL0_ENABLE, MC3_CHIP_NUM_ALL)) goto done;
+    // Confirm all four lock with clk_on=0 before allowing the observation.
+    // A failed read/lock check ends the probe; never release an unknown state.
+    for (uint8_t chip = 0; chip < mc3_chip_count; chip++) {
+        uint32_t en = 0;
+        if (abort_requested(abort_context) ||
+            !mc3_read_register(chip, MC3_PLL0_EN, &en)) goto done;
+        if ((en & (MC3_PLL0_ENABLE | MC3_PLL_CLOCK_ON | MC3_PLL_LOCK_BIT)) !=
+            (MC3_PLL0_ENABLE | MC3_PLL_LOCK_BIT)) {
+            ESP_LOGE(TAG, "CLOCK_PROBE pre-release lock/state check failed A%u EN=0x%08" PRIX32,
+                chip + 1, en);
+            goto done;
+        }
+    }
+    mc3_set_active_uniform_frequency(config->frequency_mhz);
+    global->POWER_MANAGEMENT_MODULE.actual_frequency = config->frequency_mhz;
+    if (!mc3_clock_probe_interval(samples[2], abort_requested, abort_context)) goto done;
+    completed++;
+
+    events[3] = esp_timer_get_time();
+    if (abort_requested(abort_context) ||
+        !mc3_write_register(0, MC3_PLL0_EN, MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL) ||
+        !mc3_clock_probe_interval(samples[3], abort_requested, abort_context)) goto done;
+    completed++;
+    ok = true;
+done:
+    pthread_mutex_unlock(&mc3_work_lock);
+    // Emit after the critical interval so serial logging cannot stretch it.
+    for (unsigned stage = 0; stage < completed; stage++) {
+        ESP_LOGW(TAG, "CLOCK_PROBE EVENT stage=%s call_us=%" PRId64, names[stage], events[stage]);
+        for (uint8_t chip = 0; chip < mc3_chip_count; chip++) {
+            const mc3_clock_probe_sample_t *a = &samples[stage][0][chip];
+            const mc3_clock_probe_sample_t *b = &samples[stage][1][chip];
+            ESP_LOGW(TAG, "CLOCK_PROBE SAMPLE stage=%s A%u CFG=0x%08" PRIX32 "->0x%08" PRIX32
+                " EN=0x%08" PRIX32 "->0x%08" PRIX32
+                " pass=%" PRIu32 "->%" PRIu32 " fail=%" PRIu32 "->%" PRIu32
+                " sample_us=%" PRId64 "->%" PRId64 " GHs=%.3f",
+                names[stage], chip + 1, a->cfg, b->cfg, a->en, b->en,
+                a->passed, b->passed, a->failed, b->failed, a->counter_us, b->counter_us,
+                (b->passed - a->passed) * 16777.216 / (b->counter_us - a->counter_us));
+        }
+    }
+    ESP_LOGW(TAG, "CLOCK_PROBE SEQUENCE result=%s completed=%u/4", ok ? "COMPLETE" : "ERROR", completed);
+    return ok;
+}
+
 bool MC3_qualify_frequency(void *pvParameters, float frequency,
     mc3_qualification_result_t *result_out)
 {
@@ -2572,17 +2734,19 @@ bool MC3_measure_active_frequency_profile(void *pvParameters,
     }
     result.frequency_mhz /= result.chip_count;
 
-    // Measure the work already in flight. Unlike the qualification helpers,
-    // this does not reset work or touch a PLL, so it preserves the staggered
-    // electrical transition that led to the active profile.
-    mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL,
-        MC3_QUALIFICATION_SPDLOG_TIMER_COUNT);
+    // Keep the PLL dividers and work payload, but this is not passive:
+    // SPDLOG setup writes GLOBAL_SPD and WORK_CFG with the write-one
+    // spd_go/rst_fifo actions. Rearming may change a failing domain's state.
+    if (!mc3_start_spdlog_window(0, MC3_CHIP_NUM_ALL,
+            MC3_QUALIFICATION_SPDLOG_TIMER_COUNT)) {
+        goto done;
+    }
     uint32_t measurement_ms = (uint32_t)(
         mc3_spdlog_runtime_seconds(MC3_QUALIFICATION_SPDLOG_TIMER_COUNT) *
             1000.0) +
         MC3_QUALIFICATION_SETTLE_TIME_MS;
     ESP_LOGI(TAG,
-        "Measuring active %.3f MHz average profile for %.3f seconds on %u chips without resetting work",
+        "Measuring active %.3f MHz average profile for %.3f seconds on %u chips; SPD reapplied and check FIFO reset, PLL dividers unchanged",
         result.frequency_mhz, (double)measurement_ms / 1000.0,
         result.chip_count);
     vTaskDelay(pdMS_TO_TICKS(measurement_ms));
@@ -2630,7 +2794,7 @@ bool MC3_start_active_spdlog_observation(uint32_t duration_ms)
     pthread_mutex_unlock(&mc3_work_lock);
     if (started) {
         ESP_LOGW(TAG,
-            "Started active-profile SPDLOG observation count=%" PRIu64 " runtime=%.3f seconds; no further work or PLL writes are required",
+            "Started active-profile SPDLOG observation count=%" PRIu64 " runtime=%.3f seconds; arm reapplied SPD/reset check FIFO; subsequent counter reads need no work or PLL writes",
             timer_count, mc3_spdlog_runtime_seconds((uint16_t)timer_count));
     }
     return started;
@@ -2778,18 +2942,63 @@ uint8_t MC3_read_temperatures(float *temps, size_t max_temps)
         chip_count = max_temps;
     }
 
-    if (!mc3_trigger_thermal_conversion()) {
-        return 0;
-    }
-
-    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
-        uint32_t raw = 0;
-        if (mc3_read_register(chip_id, MC3_THERMAL_DOUT, &raw)) {
-            temps[chip_id] = mc3_temperature_from_dout(raw);
-        } else {
+    pthread_mutex_lock(&mc3_thermal_sensor_lock);
+    // A stale result must not satisfy the next conversion's DONE check. Drain
+    // DOUT, then verify DONE=0 separately on every ASIC before triggering.
+    // Three attempts share a two-second budget; no cached value masks failure.
+    int64_t deadline = esp_timer_get_time() + 2000000;
+    for (unsigned attempt = 1; attempt <= 3; attempt++) {
+        bool fresh[MC3_MAX_TRACKED_CHIPS] = {false};
+        for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+            uint32_t discarded = 0, before = UINT32_MAX;
             temps[chip_id] = -1.0f;
+            bool drained = mc3_read_register(chip_id, MC3_THERMAL_DOUT, &discarded);
+            bool read_done = mc3_read_register(chip_id, MC3_THERMAL_DONE, &before);
+            fresh[chip_id] = drained && read_done && before == 0;
+            if (!fresh[chip_id]) {
+                ESP_LOGW(TAG, "THERMAL stale/not-ready attempt=%u A%u drained=%u done_before=0x%08" PRIX32,
+                    attempt, chip_id + 1, drained, before);
+            }
         }
+        bool triggered = mc3_write_register(0, MC3_THERMAL_COMMAND, 0x88000105, MC3_CHIP_NUM_ALL);
+        bool all_valid = true, hot = false;
+        int64_t conversion_deadline = esp_timer_get_time() + 500000;
+        if (conversion_deadline > deadline) conversion_deadline = deadline;
+        for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+            uint32_t done = UINT32_MAX, status = UINT32_MAX, raw = UINT32_MAX;
+            bool ready = false;
+            do {
+                ready = mc3_read_register(chip_id, MC3_THERMAL_DONE, &done) && done == 1;
+                if (ready || !triggered) break;
+                vTaskDelay(pdMS_TO_TICKS(10));
+            } while (esp_timer_get_time() < conversion_deadline);
+            bool read_status = mc3_read_register(chip_id, MC3_THERMAL_STATUS, &status);
+            bool read_data = mc3_read_register(chip_id, MC3_THERMAL_DOUT, &raw);
+            float temperature = read_data ? mc3_temperature_from_dout(raw) : -1.0f;
+            bool valid = triggered && fresh[chip_id] && ready && read_data &&
+                raw < (1U << MC3_THERMAL_RESOLUTION_BITS) && temperature > 0;
+            if (valid) temps[chip_id] = temperature;
+            all_valid = all_valid && valid;
+            // Do not retry away a credible hot result when a different ASIC
+            // has an invalid sample. Return it for the caller's thermal policy.
+            hot = hot || (valid && temperature >= 70.0f);
+            ESP_LOGI(TAG, "THERMAL attempt=%u A%u fresh=%u trigger=%u done=0x%08" PRIX32
+                " status=0x%08" PRIX32 " status_read=%u raw=0x%08" PRIX32 " data_read=%u temp=%.2f valid=%u",
+                attempt, chip_id + 1, fresh[chip_id], triggered, done, status,
+                read_status, raw, read_data, temperature, valid);
+        }
+        if (all_valid || hot) {
+            if (attempt > 1 && all_valid) ESP_LOGW(TAG, "THERMAL recovered attempt=%u", attempt);
+            break;
+        }
+        if (attempt == 3 || esp_timer_get_time() + 100000 >= deadline) {
+            ESP_LOGE(TAG, "THERMAL invalid after bounded retries attempt=%u", attempt);
+            break;
+        }
+        ESP_LOGW(TAG, "THERMAL retry after invalid sample attempt=%u; wait 100ms", attempt);
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
+    pthread_mutex_unlock(&mc3_thermal_sensor_lock);
 
     return chip_count;
 }

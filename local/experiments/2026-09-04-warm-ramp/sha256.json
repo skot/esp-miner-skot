@@ -1,0 +1,11 @@
+{
+  "probe.bin": "63b10a2f4ab8d0ae88bf00bab20bc4660b87a48f7ccefa17843fb7a355a476ed",
+  "normal.bin": "cb3b1065026adc5f0be8e2a751be7639046d77a6f1bb4a18d1ed9b83c53fae11",
+  "serial.log": "d5a063afff22646bee70c234d707fd1c82e922a4a19d8cb3cb4c9bcf38fd0184",
+  "capture.log": "c259530056f61902198da64f42ac9df2b73920333088e2dd4772550954978b7b",
+  "asic-init-source.c": "2bf6d552c779a4fd6ecd6360a671c53c79b55e98cd6abf80aa67148f180ec8cc",
+  "fan-controller-source.c": "c5d89bfe5516297091003c2ff487af657a39039795aa2e1f02d40f5fd443c505",
+  "mc3-source.c": "88804e34c6b9292c2528f9999906e1a815ce24bf81d69a9865abba31317eecb0",
+  "warm-baseline300/raw.npz": "2e724b685bb91dade5e4ab24181a4b198097ecdc91cc74b5a78472ffc4dd104e",
+  "warm-baseline300/preambles.json": "f0af09a18091a5e079396618fa14bb31e29b68f5ad25fb0eaa67898014766bb1"
+}

@@ -13,6 +13,12 @@
 #define GPIO_ASIC_ENABLE CONFIG_GPIO_ASIC_ENABLE
 #define GPIO_PLUG_SENSE CONFIG_GPIO_PLUG_SENSE
 
+// Stock 1103 has the 330 uF polymer output capacitor. Set to 1 only for
+// the modified board with four 100 uF ceramic output capacitors.
+#ifndef PROTO_1103_CERAMIC_OUTPUT
+#define PROTO_1103_CERAMIC_OUTPUT 0
+#endif
+
 static const char *TAG = "vcore";
 
 static TPS546_CONFIG get_tps546_config(const DeviceConfig *device_config)
@@ -75,6 +81,9 @@ static TPS546_CONFIG get_tps546_config(const DeviceConfig *device_config)
         config.TPS546_INIT_IOUT_CAL_GAIN = 0xC881;   // Linear11: 1.0078125
         config.TPS546_INIT_IOUT_CAL_OFFSET = 0xE008; // Linear11: +0.5 A
         config.TPS546_INIT_TON_RISE_MS = 31.75f;
+        config.TPS546_INIT_IGNORE_CONTROL_PIN = PROTO_1103_PMBUS_ONLY &&
+            device_config->board_version != NULL &&
+            strcmp(device_config->board_version, "1103") == 0;
         config.TPS546_INIT_SCALE_LOOP =
             device_config->board_version != NULL &&
                 strcmp(device_config->board_version, "1103") == 0
@@ -89,11 +98,24 @@ static TPS546_CONFIG get_tps546_config(const DeviceConfig *device_config)
         // single phase configuration for 1 TPS module
         config.TPS546_INIT_STACK_CONFIG = 0x0000; // 1 module
         config.TPS546_INIT_SYNC_CONFIG = 0x00; // Enable Auto Detect SYNC
-        config.TPS546_INIT_COMPENSATION_CONFIG[0] = 0x13;  //0x13 11 8C 11 86
+        config.TPS546_INIT_COMPENSATION_CONFIG[0] = 0x13;  // Stock 1103: 13 11 8C 11 86
         config.TPS546_INIT_COMPENSATION_CONFIG[1] = 0x11;
         config.TPS546_INIT_COMPENSATION_CONFIG[2] = 0x8C;
         config.TPS546_INIT_COMPENSATION_CONFIG[3] = 0x11;
         config.TPS546_INIT_COMPENSATION_CONFIG[4] = 0x86;
+        if (PROTO_1103_CERAMIC_OUTPUT && device_config->board_version != NULL &&
+            strcmp(device_config->board_version, "1103") == 0) {
+            config.TPS546_INIT_COMPENSATION_CONFIG[3] = 0x19;
+        }
+        if (device_config->board_version != NULL &&
+            strcmp(device_config->board_version, "1102") == 0) {
+            // 1102 output filter: compensation from its recorded warm-boot
+            // readback (cd82a9e-era firmware), matching its 1300 kHz design.
+            const uint8_t compensation_1102[] = {0x13, 0x20, 0xC6, 0x19, 0xC6};
+            config.TPS546_INIT_FREQUENCY = 1300;
+            memcpy(config.TPS546_INIT_COMPENSATION_CONFIG,
+                compensation_1102, sizeof(compensation_1102));
+        }
         break;
     case HEX:
     case SUPRA_HEX:
@@ -269,6 +291,20 @@ int16_t VCORE_get_regulator_voltage_mv(GlobalState * GLOBAL_STATE)
         return voltage_mv > 0 ? (int16_t)voltage_mv : 0;
     }
     return 0;
+}
+
+// Bench discharge/rail checks must not accept cached telemetry after an I2C
+// error. Keep the existing cached accessor for ordinary display telemetry.
+int16_t VCORE_get_regulator_voltage_mv_fresh(GlobalState *global)
+{
+    float vout = 0;
+    if (global == NULL || !global->DEVICE_CONFIG.TPS546 ||
+        TPS546_read_vout(&vout) != ESP_OK || !isfinite(vout) ||
+        vout < 0 || vout > 30) return -1;
+    int32_t mv = (int32_t)(vout * 1000.0f) +
+        global->DEVICE_CONFIG.regulator_voltage_offset_mv;
+    if (mv > INT16_MAX) return -1;
+    return mv > 0 ? (int16_t)mv : 0;
 }
 
 esp_err_t VCORE_get_domain_voltages_mv(GlobalState * GLOBAL_STATE,

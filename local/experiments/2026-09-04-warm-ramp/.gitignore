@@ -1,0 +1,6 @@
+*.bin
+*.log
+*.bmp
+__pycache__/
+*-source.c
+transition-*-raw.npy

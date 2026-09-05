@@ -1,0 +1,478 @@
+I (13777) mc3: PLL0 locked at 100.000 MHz on all 4 chips
+W (30250) asic_init: BCAST BEGIN voltage=1140 baseline=375 test=400; guard=1200; NVS unchanged
+I (30298) mc3: PLL0 locked at 100.000 MHz on all 4 chips
+I (34770) asic_init: Proto qualification 100.000MHz chip0@100.000MHz: 122.20/124.80 GH/s throughput=97.92% pass/fail=29328/444 pass_rate=98.51%
+I (34773) asic_init: Proto qualification 100.000MHz chip1@100.000MHz: 122.98/124.80 GH/s throughput=98.54% pass/fail=29515/446 pass_rate=98.51%
+I (34787) asic_init: Proto qualification 100.000MHz chip2@100.000MHz: 124.44/124.80 GH/s throughput=99.71% pass/fail=29865/196 pass_rate=99.35%
+I (34800) asic_init: Proto qualification 100.000MHz chip3@100.000MHz: 122.29/124.80 GH/s throughput=97.99% pass/fail=29349/268 pass_rate=99.10%
+I (34815) asic_init: Proto qualification 100.000MHz domains: lower=1138 upper=1140 delta=+2 mV total=2278 mV TPS current=3.63 A
+I (34826) asic_init: Proto qualification 100.000MHz: total=491.90/499.20 GH/s throughput=98.54% min_chip=97.92% min_pass=98.51% balance=2 mV => PASS
+I (34876) mc3: PLL0 locked at 125.000 MHz on all 4 chips
+I (39351) asic_init: Proto qualification 125.000MHz chip0@125.000MHz: 153.44/156.00 GH/s throughput=98.36% pass/fail=36826/568 pass_rate=98.48%
+I (39354) asic_init: Proto qualification 125.000MHz chip1@125.000MHz: 153.49/156.00 GH/s throughput=98.39% pass/fail=36837/559 pass_rate=98.51%
+I (39367) asic_init: Proto qualification 125.000MHz chip2@125.000MHz: 155.24/156.00 GH/s throughput=99.51% pass/fail=37257/210 pass_rate=99.44%
+I (39381) asic_init: Proto qualification 125.000MHz chip3@125.000MHz: 153.49/156.00 GH/s throughput=98.39% pass/fail=36837/293 pass_rate=99.21%
+I (39396) asic_init: Proto qualification 125.000MHz domains: lower=1138 upper=1140 delta=+2 mV total=2278 mV TPS current=4.34 A
+I (39406) asic_init: Proto qualification 125.000MHz: total=615.65/624.00 GH/s throughput=98.66% min_chip=98.36% min_pass=98.48% balance=2 mV => PASS
+I (39456) mc3: PLL0 locked at 150.000 MHz on all 4 chips
+I (43930) asic_init: Proto qualification 150.000MHz chip0@150.000MHz: 184.27/187.20 GH/s throughput=98.44% pass/fail=44225/702 pass_rate=98.44%
+I (43933) asic_init: Proto qualification 150.000MHz chip1@150.000MHz: 184.40/187.20 GH/s throughput=98.50% pass/fail=44256/661 pass_rate=98.53%
+I (43946) asic_init: Proto qualification 150.000MHz chip2@150.000MHz: 186.65/187.20 GH/s throughput=99.71% pass/fail=44797/282 pass_rate=99.37%
+I (43960) asic_init: Proto qualification 150.000MHz chip3@150.000MHz: 185.43/187.20 GH/s throughput=99.06% pass/fail=44504/347 pass_rate=99.23%
+I (43976) asic_init: Proto qualification 150.000MHz domains: lower=1138 upper=1142 delta=+4 mV total=2280 mV TPS current=5.03 A
+I (43986) asic_init: Proto qualification 150.000MHz: total=740.76/748.80 GH/s throughput=98.93% min_chip=98.44% min_pass=98.44% balance=4 mV => PASS
+I (44035) mc3: PLL0 locked at 175.000 MHz on all 4 chips
+I (48508) asic_init: Proto qualification 175.000MHz chip0@175.000MHz: 215.08/218.40 GH/s throughput=98.48% pass/fail=51620/811 pass_rate=98.45%
+I (48511) asic_init: Proto qualification 175.000MHz chip1@175.000MHz: 215.46/218.40 GH/s throughput=98.65% pass/fail=51710/754 pass_rate=98.56%
+I (48525) asic_init: Proto qualification 175.000MHz chip2@175.000MHz: 217.10/218.40 GH/s throughput=99.40% pass/fail=52103/326 pass_rate=99.38%
+I (48538) asic_init: Proto qualification 175.000MHz chip3@175.000MHz: 216.43/218.40 GH/s throughput=99.10% pass/fail=51943/400 pass_rate=99.24%
+I (48553) asic_init: Proto qualification 175.000MHz domains: lower=1138 upper=1142 delta=+4 mV total=2280 mV TPS current=5.85 A
+I (48564) asic_init: Proto qualification 175.000MHz: total=864.07/873.60 GH/s throughput=98.91% min_chip=98.48% min_pass=98.45% balance=4 mV => PASS
+I (48613) mc3: PLL0 locked at 200.000 MHz on all 4 chips
+I (53086) asic_init: Proto qualification 200.000MHz chip0@200.000MHz: 246.24/249.60 GH/s throughput=98.65% pass/fail=59098/894 pass_rate=98.51%
+I (53089) asic_init: Proto qualification 200.000MHz chip1@200.000MHz: 245.80/249.60 GH/s throughput=98.48% pass/fail=58992/856 pass_rate=98.57%
+I (53103) asic_init: Proto qualification 200.000MHz chip2@200.000MHz: 248.08/249.60 GH/s throughput=99.39% pass/fail=59539/358 pass_rate=99.40%
+I (53117) asic_init: Proto qualification 200.000MHz chip3@200.000MHz: 247.40/249.60 GH/s throughput=99.12% pass/fail=59377/449 pass_rate=99.25%
+I (53132) asic_init: Proto qualification 200.000MHz domains: lower=1137 upper=1141 delta=+4 mV total=2278 mV TPS current=6.63 A
+I (53142) asic_init: Proto qualification 200.000MHz: total=987.53/998.40 GH/s throughput=98.91% min_chip=98.48% min_pass=98.51% balance=4 mV => PASS
+I (53195) mc3: PLL0 locked at 225.000 MHz on all 4 chips
+I (57670) asic_init: Proto qualification 225.000MHz chip0@225.000MHz: 276.95/280.80 GH/s throughput=98.63% pass/fail=66467/987 pass_rate=98.54%
+I (57674) asic_init: Proto qualification 225.000MHz chip1@225.000MHz: 276.82/280.80 GH/s throughput=98.58% pass/fail=66436/923 pass_rate=98.63%
+I (57688) asic_init: Proto qualification 225.000MHz chip2@225.000MHz: 279.40/280.80 GH/s throughput=99.50% pass/fail=67055/392 pass_rate=99.42%
+I (57702) asic_init: Proto qualification 225.000MHz chip3@225.000MHz: 278.38/280.80 GH/s throughput=99.14% pass/fail=66811/495 pass_rate=99.26%
+I (57717) asic_init: Proto qualification 225.000MHz domains: lower=1136 upper=1144 delta=+8 mV total=2280 mV TPS current=7.45 A
+I (57727) asic_init: Proto qualification 225.000MHz: total=1111.54/1123.20 GH/s throughput=98.96% min_chip=98.58% min_pass=98.54% balance=8 mV => PASS
+I (57778) mc3: PLL0 locked at 250.000 MHz on all 4 chips
+I (62252) asic_init: Proto qualification 250.000MHz chip0@250.000MHz: 307.31/312.00 GH/s throughput=98.50% pass/fail=73754/1094 pass_rate=98.54%
+I (62255) asic_init: Proto qualification 250.000MHz chip1@250.000MHz: 308.08/312.00 GH/s throughput=98.74% pass/fail=73938/1030 pass_rate=98.63%
+I (62269) asic_init: Proto qualification 250.000MHz chip2@250.000MHz: 309.81/312.00 GH/s throughput=99.30% pass/fail=74355/471 pass_rate=99.37%
+I (62282) asic_init: Proto qualification 250.000MHz chip3@250.000MHz: 308.61/312.00 GH/s throughput=98.91% pass/fail=74067/550 pass_rate=99.26%
+I (62297) asic_init: Proto qualification 250.000MHz domains: lower=1136 upper=1144 delta=+8 mV total=2280 mV TPS current=8.23 A
+I (62308) asic_init: Proto qualification 250.000MHz: total=1233.81/1248.00 GH/s throughput=98.86% min_chip=98.50% min_pass=98.54% balance=8 mV => PASS
+I (62359) mc3: PLL0 locked at 275.000 MHz on all 4 chips
+I (66833) asic_init: Proto qualification 275.000MHz chip0@275.000MHz: 338.69/343.20 GH/s throughput=98.69% pass/fail=81285/1167 pass_rate=98.58%
+I (66835) asic_init: Proto qualification 275.000MHz chip1@275.000MHz: 338.94/343.20 GH/s throughput=98.76% pass/fail=81345/1062 pass_rate=98.71%
+I (66849) asic_init: Proto qualification 275.000MHz chip2@275.000MHz: 340.38/343.20 GH/s throughput=99.18% pass/fail=81692/500 pass_rate=99.39%
+I (66863) asic_init: Proto qualification 275.000MHz chip3@275.000MHz: 339.62/343.20 GH/s throughput=98.96% pass/fail=81508/583 pass_rate=99.29%
+I (66878) asic_init: Proto qualification 275.000MHz domains: lower=1136 upper=1144 delta=+8 mV total=2280 mV TPS current=8.92 A
+I (66889) asic_init: Proto qualification 275.000MHz: total=1357.62/1372.80 GH/s throughput=98.89% min_chip=98.69% min_pass=98.58% balance=8 mV => PASS
+I (66938) mc3: PLL0 locked at 300.000 MHz on all 4 chips
+I (71411) asic_init: Proto qualification 300.000MHz chip0@300.000MHz: 369.46/374.40 GH/s throughput=98.68% pass/fail=88671/1315 pass_rate=98.54%
+I (71414) asic_init: Proto qualification 300.000MHz chip1@300.000MHz: 368.92/374.40 GH/s throughput=98.54% pass/fail=88540/1203 pass_rate=98.66%
+I (71428) asic_init: Proto qualification 300.000MHz chip2@300.000MHz: 370.60/374.40 GH/s throughput=98.99% pass/fail=88944/529 pass_rate=99.41%
+I (71441) asic_init: Proto qualification 300.000MHz chip3@300.000MHz: 370.62/374.40 GH/s throughput=98.99% pass/fail=88950/620 pass_rate=99.31%
+I (71457) asic_init: Proto qualification 300.000MHz domains: lower=1136 upper=1144 delta=+8 mV total=2280 mV TPS current=9.67 A
+I (71468) asic_init: Proto qualification 300.000MHz: total=1479.60/1497.60 GH/s throughput=98.80% min_chip=98.54% min_pass=98.54% balance=8 mV => PASS
+I (71518) mc3: PLL0 locked at 325.000 MHz on all 4 chips
+I (75989) asic_init: Proto qualification 325.000MHz chip0@325.000MHz: 400.28/405.60 GH/s throughput=98.69% pass/fail=96067/1352 pass_rate=98.61%
+I (75992) asic_init: Proto qualification 325.000MHz chip1@325.000MHz: 399.80/405.60 GH/s throughput=98.57% pass/fail=95953/1292 pass_rate=98.67%
+I (76006) asic_init: Proto qualification 325.000MHz chip2@325.000MHz: 401.50/405.60 GH/s throughput=98.99% pass/fail=96361/569 pass_rate=99.41%
+I (76019) asic_init: Proto qualification 325.000MHz chip3@325.000MHz: 401.45/405.60 GH/s throughput=98.98% pass/fail=96348/646 pass_rate=99.33%
+I (76034) asic_init: Proto qualification 325.000MHz domains: lower=1137 upper=1143 delta=+6 mV total=2280 mV TPS current=10.45 A
+I (76045) asic_init: Proto qualification 325.000MHz: total=1603.04/1622.40 GH/s throughput=98.81% min_chip=98.57% min_pass=98.61% balance=6 mV => PASS
+I (76096) mc3: PLL0 locked at 350.000 MHz on all 4 chips
+I (80570) asic_init: Proto qualification 350.000MHz chip0@350.000MHz: 431.12/436.80 GH/s throughput=98.70% pass/fail=103469/1393 pass_rate=98.67%
+I (80573) asic_init: Proto qualification 350.000MHz chip1@350.000MHz: 430.59/436.80 GH/s throughput=98.58% pass/fail=103342/1360 pass_rate=98.70%
+I (80587) asic_init: Proto qualification 350.000MHz chip2@350.000MHz: 432.68/436.80 GH/s throughput=99.06% pass/fail=103843/634 pass_rate=99.39%
+I (80600) asic_init: Proto qualification 350.000MHz chip3@350.000MHz: 431.78/436.80 GH/s throughput=98.85% pass/fail=103627/680 pass_rate=99.35%
+I (80616) asic_init: Proto qualification 350.000MHz domains: lower=1136 upper=1144 delta=+8 mV total=2280 mV TPS current=11.22 A
+I (80626) asic_init: Proto qualification 350.000MHz: total=1726.17/1747.20 GH/s throughput=98.80% min_chip=98.58% min_pass=98.67% balance=8 mV => PASS
+I (80676) mc3: PLL0 locked at 375.000 MHz on all 4 chips
+I (85153) asic_init: Proto qualification 375.000MHz chip0@375.000MHz: 462.08/468.00 GH/s throughput=98.73% pass/fail=110899/1504 pass_rate=98.66%
+I (85156) asic_init: Proto qualification 375.000MHz chip1@375.000MHz: 461.77/468.00 GH/s throughput=98.67% pass/fail=110825/1463 pass_rate=98.70%
+I (85170) asic_init: Proto qualification 375.000MHz chip2@375.000MHz: 463.16/468.00 GH/s throughput=98.97% pass/fail=111158/672 pass_rate=99.40%
+I (85184) asic_init: Proto qualification 375.000MHz chip3@375.000MHz: 462.71/468.00 GH/s throughput=98.87% pass/fail=111051/708 pass_rate=99.37%
+I (85199) asic_init: Proto qualification 375.000MHz domains: lower=1136 upper=1142 delta=+6 mV total=2278 mV TPS current=12.00 A
+I (85210) asic_init: Proto qualification 375.000MHz: total=1849.72/1872.00 GH/s throughput=98.81% min_chip=98.67% min_pass=98.66% balance=6 mV => PASS
+W (85311) asic_init: BCAST BASE_DOMAIN A1 D0 absolute=97.08 zero=0
+W (85312) asic_init: BCAST BASE_DOMAIN A1 D1 absolute=98.24 zero=0
+W (85314) asic_init: BCAST BASE_DOMAIN A1 D2 absolute=99.81 zero=0
+W (85321) asic_init: BCAST BASE_DOMAIN A1 D3 absolute=99.80 zero=0
+W (85416) asic_init: BCAST BASE_DOMAIN A2 D0 absolute=98.80 zero=0
+W (85417) asic_init: BCAST BASE_DOMAIN A2 D1 absolute=98.45 zero=0
+W (85419) asic_init: BCAST BASE_DOMAIN A2 D2 absolute=98.64 zero=0
+W (85427) asic_init: BCAST BASE_DOMAIN A2 D3 absolute=98.78 zero=0
+W (85520) asic_init: BCAST BASE_DOMAIN A3 D0 absolute=98.81 zero=0
+W (85520) asic_init: BCAST BASE_DOMAIN A3 D1 absolute=99.54 zero=0
+W (85523) asic_init: BCAST BASE_DOMAIN A3 D2 absolute=98.92 zero=0
+W (85530) asic_init: BCAST BASE_DOMAIN A3 D3 absolute=98.59 zero=0
+W (85623) asic_init: BCAST BASE_DOMAIN A4 D0 absolute=99.98 zero=0
+W (85624) asic_init: BCAST BASE_DOMAIN A4 D1 absolute=98.96 zero=0
+W (85627) asic_init: BCAST BASE_DOMAIN A4 D2 absolute=97.92 zero=0
+W (85634) asic_init: BCAST BASE_DOMAIN A4 D3 absolute=98.63 zero=0
+W (85641) asic_init: BCAST READY: wait up to 30s for G after scope arming
+W (85929) asic_init: BCAST TRIAL broadcast 375->400 voltage=1140
+I (85966) mc3: PLL0 locked at 400.000 MHz on all 4 chips
+W (86126) asic_init: BCAST LAUNCHED; passive counters until scope verdict R; X aborts
+W (86557) asic_init: BCAST SAMPLE phase=passive A1 counter_us=85518366 dt_us=0 pass=2626,2706,0,3086 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,39,0 D2_mV=237.03
+W (86648) asic_init: BCAST SAMPLE phase=passive A2 counter_us=85609355 dt_us=0 pass=3359,3498,0,3743 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,39,0 D2_mV=238.25
+W (86745) asic_init: BCAST SAMPLE phase=passive A3 counter_us=85703087 dt_us=0 pass=4042,4201,4347,4538 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=-1.00
+W (86836) asic_init: BCAST SAMPLE phase=passive A4 counter_us=85796928 dt_us=0 pass=4706,4886,4949,5132 rate=-1.00,-1.00,-1.00,-1.00 zero=0,0,0,0 D2_mV=-1.00
+W (86843) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.016A
+W (87518) asic_init: BCAST SAMPLE phase=passive A1 counter_us=86479335 dt_us=960969 pass=9884,9715,0,10375 rate=101.53,98.05,0.00,101.97 zero=0,0,39,0 D2_mV=236.93
+W (87610) asic_init: BCAST SAMPLE phase=passive A2 counter_us=86571120 dt_us=961765 pass=10400,10631,0,10878 rate=98.42,99.70,0.00,99.73 zero=0,0,39,0 D2_mV=238.20
+W (87702) asic_init: BCAST SAMPLE phase=passive A3 counter_us=86663033 dt_us=959946 pass=11185,11438,11486,11554 rate=100.03,101.35,99.98,98.25 zero=0,0,0,0 D2_mV=-1.00
+W (87794) asic_init: BCAST SAMPLE phase=passive A4 counter_us=86755515 dt_us=958587 pass=11909,11977,12008,12291 rate=101.02,99.44,99.00,100.40 zero=0,0,0,0 D2_mV=-1.00
+W (87803) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.047A
+W (88481) asic_init: BCAST SAMPLE phase=passive A1 counter_us=87442108 dt_us=962773 pass=16950,16766,0,17477 rate=98.66,98.45,0.00,99.17 zero=0,0,39,0 D2_mV=236.98
+W (88574) asic_init: BCAST SAMPLE phase=passive A2 counter_us=87534587 dt_us=963467 pass=17456,17874,0,18095 rate=98.45,101.06,0.00,100.70 zero=0,0,39,0 D2_mV=238.10
+W (88667) asic_init: BCAST SAMPLE phase=passive A3 counter_us=87627364 dt_us=964331 pass=18236,18493,18579,18728 rate=98.29,98.35,98.88,100.01 zero=0,0,0,0 D2_mV=-1.00
+W (88760) asic_init: BCAST SAMPLE phase=passive A4 counter_us=87720558 dt_us=965043 pass=19208,19070,18998,19235 rate=101.68,98.81,97.37,96.73 zero=0,0,0,0 D2_mV=-1.00
+W (88767) asic_init: BCAST RAIL phase=passive PCB=1110/1168 mV TPS=13.047A
+W (89442) asic_init: BCAST SAMPLE phase=passive A1 counter_us=88403248 dt_us=961140 pass=23821,23851,0,24660 rate=96.10,99.10,0.00,100.47 zero=0,0,39,0 D2_mV=236.83
+W (89536) asic_init: BCAST SAMPLE phase=passive A2 counter_us=88497018 dt_us=962431 pass=24592,24942,0,25094 rate=99.68,98.73,0.00,97.76 zero=0,0,39,0 D2_mV=238.05
+W (89628) asic_init: BCAST SAMPLE phase=passive A3 counter_us=88589116 dt_us=961752 pass=25271,25642,25592,25723 rate=98.33,99.93,98.03,97.78 zero=0,0,0,0 D2_mV=-1.00
+W (89720) asic_init: BCAST SAMPLE phase=passive A4 counter_us=88681187 dt_us=960629 pass=26248,26151,26041,26311 rate=98.52,99.09,98.56,99.02 zero=0,0,0,0 D2_mV=-1.00
+W (89728) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.047A
+W (90404) asic_init: BCAST SAMPLE phase=passive A1 counter_us=89365663 dt_us=962415 pass=30991,31040,0,31856 rate=100.15,100.42,0.00,100.52 zero=0,0,39,0 D2_mV=236.78
+W (90496) asic_init: BCAST SAMPLE phase=passive A2 counter_us=89457529 dt_us=960511 pass=31650,32074,0,32132 rate=98.78,99.82,0.00,98.50 zero=0,0,39,0 D2_mV=238.05
+W (90590) asic_init: BCAST SAMPLE phase=passive A3 counter_us=89551056 dt_us=961940 pass=32517,32754,32695,32804 rate=101.26,99.39,99.27,98.96 zero=0,0,0,0 D2_mV=-1.00
+W (90682) asic_init: BCAST SAMPLE phase=passive A4 counter_us=89643343 dt_us=962156 pass=33437,33332,33058,33580 rate=100.44,100.33,98.04,101.56 zero=0,0,0,0 D2_mV=-1.00
+W (90689) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.078A
+W (91365) asic_init: BCAST SAMPLE phase=passive A1 counter_us=90325864 dt_us=960201 pass=38048,38183,0,39079 rate=98.80,100.01,0.00,101.13 zero=0,0,39,0 D2_mV=236.88
+W (91457) asic_init: BCAST SAMPLE phase=passive A2 counter_us=90418356 dt_us=960827 pass=38744,38988,0,39261 rate=99.25,96.74,0.00,99.74 zero=0,0,39,0 D2_mV=238.00
+W (91549) asic_init: BCAST SAMPLE phase=passive A3 counter_us=90510234 dt_us=959178 pass=39657,39804,39849,39845 rate=100.07,98.81,100.27,98.68 zero=0,0,0,0 D2_mV=-1.00
+W (91642) asic_init: BCAST SAMPLE phase=passive A4 counter_us=90602746 dt_us=959403 pass=40610,40439,40274,40683 rate=100.51,99.58,101.11,99.53 zero=0,0,0,0 D2_mV=-1.00
+W (91649) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.078A
+W (92324) asic_init: BCAST SAMPLE phase=passive A1 counter_us=91284888 dt_us=959024 pass=45217,45192,0,46276 rate=100.49,98.25,0.00,100.89 zero=0,0,39,0 D2_mV=236.73
+W (92416) asic_init: BCAST SAMPLE phase=passive A2 counter_us=91376827 dt_us=958471 pass=45770,45955,0,46427 rate=98.54,97.72,0.00,100.51 zero=0,0,39,0 D2_mV=237.84
+W (92508) asic_init: BCAST SAMPLE phase=passive A3 counter_us=91468816 dt_us=958582 pass=46729,46832,46961,47026 rate=99.18,98.56,99.74,100.71 zero=0,0,0,0 D2_mV=-1.00
+W (92600) asic_init: BCAST SAMPLE phase=passive A4 counter_us=91561032 dt_us=958286 pass=47790,47412,47450,47801 rate=100.72,97.82,100.67,99.85 zero=0,0,0,0 D2_mV=-1.00
+W (92607) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.078A
+W (93285) asic_init: BCAST SAMPLE phase=passive A1 counter_us=92245448 dt_us=960560 pass=52269,52319,0,53361 rate=98.69,99.74,0.00,99.16 zero=0,0,39,0 D2_mV=236.73
+W (93376) asic_init: BCAST SAMPLE phase=passive A2 counter_us=92337442 dt_us=960615 pass=52984,52787,0,53407 rate=100.96,95.61,0.00,97.68 zero=0,0,39,0 D2_mV=237.79
+W (93469) asic_init: BCAST SAMPLE phase=passive A3 counter_us=92429455 dt_us=960639 pass=53858,53769,54010,53999 rate=99.76,97.08,98.64,97.58 zero=0,0,0,0 D2_mV=-1.00
+W (93560) asic_init: BCAST SAMPLE phase=passive A4 counter_us=92521644 dt_us=960612 pass=54813,54526,54510,55021 rate=98.28,99.56,98.80,101.04 zero=0,0,0,0 D2_mV=-1.00
+W (93568) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.125A
+W (94243) asic_init: BCAST SAMPLE phase=passive A1 counter_us=93204359 dt_us=958911 pass=59162,59354,0,60495 rate=96.64,98.63,0.00,100.01 zero=0,0,39,0 D2_mV=236.62
+W (94337) asic_init: BCAST SAMPLE phase=passive A2 counter_us=93298178 dt_us=960736 pass=60033,59874,0,60408 rate=98.63,99.17,0.00,97.96 zero=0,0,39,0 D2_mV=237.89
+W (94430) asic_init: BCAST SAMPLE phase=passive A3 counter_us=93390875 dt_us=961420 pass=60900,60858,61246,61175 rate=98.47,99.12,101.18,100.34 zero=0,0,0,0 D2_mV=-1.00
+W (94523) asic_init: BCAST SAMPLE phase=passive A4 counter_us=93484327 dt_us=962683 pass=62040,61553,61566,62176 rate=100.92,98.13,98.53,99.92 zero=0,0,0,0 D2_mV=-1.00
+W (94530) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.094A
+W (95208) asic_init: BCAST SAMPLE phase=passive A1 counter_us=94168908 dt_us=964549 pass=66250,66637,0,67669 rate=98.79,101.51,0.00,99.99 zero=0,0,39,0 D2_mV=236.57
+W (95301) asic_init: BCAST SAMPLE phase=passive A2 counter_us=94261855 dt_us=963677 pass=67256,66919,0,67399 rate=100.76,98.28,0.00,97.52 zero=0,0,39,0 D2_mV=237.69
+W (95393) asic_init: BCAST SAMPLE phase=passive A3 counter_us=94354158 dt_us=963283 pass=68054,67947,68299,68276 rate=99.84,98.93,98.43,99.10 zero=0,0,0,0 D2_mV=-1.00
+W (95486) asic_init: BCAST SAMPLE phase=passive A4 counter_us=94446647 dt_us=962320 pass=69230,68648,68698,69540 rate=100.44,99.11,99.63,102.87 zero=0,0,0,0 D2_mV=-1.00
+W (95492) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.094A
+W (96172) asic_init: BCAST SAMPLE phase=passive A1 counter_us=95133265 dt_us=964357 pass=73202,73787,0,74847 rate=96.91,99.67,0.00,100.06 zero=0,0,39,0 D2_mV=236.47
+W (96264) asic_init: BCAST SAMPLE phase=passive A2 counter_us=95224881 dt_us=963026 pass=74318,74179,0,74496 rate=98.58,101.35,0.00,99.07 zero=0,0,39,0 D2_mV=237.64
+W (96356) asic_init: BCAST SAMPLE phase=passive A3 counter_us=95316814 dt_us=962656 pass=75374,75022,75360,75408 rate=102.22,98.80,98.61,99.60 zero=0,0,0,0 D2_mV=-1.00
+W (96448) asic_init: BCAST SAMPLE phase=passive A4 counter_us=95408947 dt_us=962300 pass=76312,75881,75708,76641 rate=98.94,101.04,97.93,99.20 zero=0,0,0,0 D2_mV=-1.00
+W (96455) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.125A
+W (97145) asic_init: BCAST SAMPLE phase=passive A1 counter_us=96106622 dt_us=973357 pass=80439,81010,0,82098 rate=99.95,99.76,0.00,100.15 zero=0,0,39,0 D2_mV=236.37
+W (97237) asic_init: BCAST SAMPLE phase=passive A2 counter_us=96198364 dt_us=973483 pass=81472,81318,0,81630 rate=98.79,98.59,0.00,98.52 zero=0,0,39,0 D2_mV=237.64
+W (97329) asic_init: BCAST SAMPLE phase=passive A3 counter_us=96290130 dt_us=973316 pass=82582,82223,82511,82662 rate=99.56,99.46,98.77,100.19 zero=0,0,0,0 D2_mV=-1.00
+W (97421) asic_init: BCAST SAMPLE phase=passive A4 counter_us=96382143 dt_us=973196 pass=83553,82890,82958,83900 rate=100.02,96.82,100.15,100.27 zero=0,0,0,0 D2_mV=-1.00
+W (97428) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.156A
+W (98109) asic_init: BCAST SAMPLE phase=passive A1 counter_us=97069482 dt_us=962860 pass=87445,88005,0,89194 rate=97.82,97.66,0.00,99.07 zero=0,0,39,0 D2_mV=236.47
+W (98201) asic_init: BCAST SAMPLE phase=passive A2 counter_us=97161799 dt_us=963435 pass=88630,88507,0,88576 rate=99.88,100.31,0.00,96.92 zero=0,0,39,0 D2_mV=237.59
+W (98293) asic_init: BCAST SAMPLE phase=passive A3 counter_us=97254234 dt_us=964104 pass=89752,89301,89696,89806 rate=99.98,98.69,100.19,99.61 zero=0,0,0,0 D2_mV=-1.00
+W (98385) asic_init: BCAST SAMPLE phase=passive A4 counter_us=97346560 dt_us=964417 pass=90715,90065,90072,91135 rate=99.83,100.01,99.16,100.85 zero=0,0,0,0 D2_mV=-1.00
+W (98394) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.125A
+W (99069) asic_init: BCAST SAMPLE phase=passive A1 counter_us=98030487 dt_us=961005 pass=94493,95040,0,96316 rate=98.59,98.41,0.00,99.63 zero=0,0,39,0 D2_mV=236.37
+W (99161) asic_init: BCAST SAMPLE phase=passive A2 counter_us=98122264 dt_us=960465 pass=95681,95491,0,95601 rate=98.69,97.75,0.00,98.33 zero=0,0,39,0 D2_mV=237.54
+W (99253) asic_init: BCAST SAMPLE phase=passive A3 counter_us=98214253 dt_us=960019 pass=96746,96383,96803,96968 rate=97.94,99.17,99.52,100.29 zero=0,0,0,0 D2_mV=-1.00
+W (99348) asic_init: BCAST SAMPLE phase=passive A4 counter_us=98308932 dt_us=962372 pass=97801,97245,97040,98034 rate=98.98,100.30,97.34,96.37 zero=0,0,0,0 D2_mV=-1.00
+W (99355) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.125A
+W (100035) asic_init: BCAST SAMPLE phase=passive A1 counter_us=98995446 dt_us=964959 pass=101612,102109,0,103401 rate=99.18,98.48,0.00,98.70 zero=0,0,39,0 D2_mV=236.42
+W (100127) asic_init: BCAST SAMPLE phase=passive A2 counter_us=99088097 dt_us=965833 pass=102776,102617,0,102638 rate=98.75,99.19,0.00,97.95 zero=0,0,39,0 D2_mV=237.54
+W (100219) asic_init: BCAST SAMPLE phase=passive A3 counter_us=99180289 dt_us=966036 pass=103905,103516,103999,104228 rate=99.62,99.26,100.14,101.03 zero=0,0,0,0 D2_mV=-1.00
+W (100314) asic_init: BCAST SAMPLE phase=passive A4 counter_us=99275160 dt_us=966228 pass=104932,104436,104168,105198 rate=99.21,100.05,99.17,99.67 zero=0,0,0,0 D2_mV=-1.00
+W (100321) asic_init: BCAST RAIL phase=passive PCB=1110/1168 mV TPS=13.125A
+W (100998) asic_init: BCAST SAMPLE phase=passive A1 counter_us=99959042 dt_us=963596 pass=108857,109314,0,110473 rate=101.08,100.52,0.00,98.66 zero=0,0,39,0 D2_mV=236.32
+W (101091) asic_init: BCAST SAMPLE phase=passive A2 counter_us=100051260 dt_us=963163 pass=109925,109656,0,109930 rate=99.78,98.25,0.00,101.78 zero=0,0,39,0 D2_mV=237.49
+W (101183) asic_init: BCAST SAMPLE phase=passive A3 counter_us=100144504 dt_us=964215 pass=111029,110796,111099,111304 rate=99.32,101.50,98.99,98.66 zero=0,0,0,0 D2_mV=-1.00
+W (101278) asic_init: BCAST SAMPLE phase=passive A4 counter_us=100238109 dt_us=962949 pass=112113,111577,111397,112265 rate=100.25,99.69,100.92,98.66 zero=0,0,0,0 D2_mV=-1.00
+W (101285) asic_init: BCAST RAIL phase=passive PCB=1110/1168 mV TPS=13.125A
+W (101966) asic_init: BCAST SAMPLE phase=passive A1 counter_us=100926794 dt_us=967752 pass=115982,116502,0,117770 rate=98.98,99.85,0.00,101.36 zero=0,0,39,0 D2_mV=236.37
+W (102058) asic_init: BCAST SAMPLE phase=passive A2 counter_us=101019155 dt_us=967895 pass=117085,116776,0,117104 rate=99.45,98.89,0.00,99.64 zero=0,0,39,0 D2_mV=237.39
+W (102151) asic_init: BCAST SAMPLE phase=passive A3 counter_us=101111865 dt_us=967361 pass=118177,117882,118359,118329 rate=99.33,98.47,100.89,97.63 zero=0,0,0,0 D2_mV=-1.00
+W (102244) asic_init: BCAST SAMPLE phase=passive A4 counter_us=101205086 dt_us=966977 pass=119289,118668,118546,119322 rate=99.76,98.58,99.39,98.11 zero=0,0,0,0 D2_mV=-1.00
+W (102252) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.125A
+W (102932) asic_init: BCAST SAMPLE phase=passive A1 counter_us=101892456 dt_us=965662 pass=122961,123757,0,124950 rate=97.16,101.00,0.00,99.96 zero=0,0,39,0 D2_mV=236.27
+W (103024) asic_init: BCAST SAMPLE phase=passive A2 counter_us=101984882 dt_us=965727 pass=124239,123888,0,124229 rate=99.59,99.00,0.00,99.18 zero=0,0,39,0 D2_mV=237.34
+W (103117) asic_init: BCAST SAMPLE phase=passive A3 counter_us=102077559 dt_us=965694 pass=125166,125094,125549,125513 rate=97.29,100.40,100.09,100.01 zero=0,0,0,0 D2_mV=-1.00
+W (103210) asic_init: BCAST SAMPLE phase=passive A4 counter_us=102171217 dt_us=966131 pass=126422,125935,125678,126379 rate=99.25,101.12,99.24,98.20 zero=0,0,0,0 D2_mV=-1.00
+W (103218) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.188A
+W (103895) asic_init: BCAST SAMPLE phase=passive A1 counter_us=102855988 dt_us=963532 pass=129893,130835,0,132090 rate=96.72,98.75,0.00,99.62 zero=0,0,39,0 D2_mV=236.27
+W (103989) asic_init: BCAST SAMPLE phase=passive A2 counter_us=102948961 dt_us=964079 pass=131324,130999,0,131311 rate=98.79,99.16,0.00,98.75 zero=0,0,39,0 D2_mV=237.28
+W (104081) asic_init: BCAST SAMPLE phase=passive A3 counter_us=103042101 dt_us=964542 pass=132339,132220,132651,132521 rate=99.97,99.32,98.98,97.67 zero=0,0,0,0 D2_mV=-1.00
+W (104174) asic_init: BCAST SAMPLE phase=passive A4 counter_us=103135129 dt_us=963912 pass=133488,132975,132895,133433 rate=98.55,98.18,100.65,98.38 zero=0,0,0,0 D2_mV=-1.00
+W (104182) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.188A
+W (104860) asic_init: BCAST SAMPLE phase=passive A1 counter_us=103821463 dt_us=965475 pass=137150,138063,0,139151 rate=101.05,100.64,0.00,98.32 zero=0,0,39,0 D2_mV=236.27
+W (104954) asic_init: BCAST SAMPLE phase=passive A2 counter_us=103915338 dt_us=966377 pass=138449,138236,0,138382 rate=99.12,100.67,0.00,98.36 zero=0,0,39,0 D2_mV=237.34
+W (105046) asic_init: BCAST SAMPLE phase=passive A3 counter_us=104007578 dt_us=965477 pass=139449,139483,139814,139667 rate=99.00,101.13,99.74,99.50 zero=0,0,0,0 D2_mV=-1.00
+W (105139) asic_init: BCAST SAMPLE phase=passive A4 counter_us=104100288 dt_us=965159 pass=140537,140249,139944,140612 rate=98.18,101.32,98.18,99.99 zero=0,0,0,0 D2_mV=-1.00
+W (105148) asic_init: BCAST RAIL phase=passive PCB=1109/1169 mV TPS=13.156A
+W (105828) asic_init: BCAST SAMPLE phase=passive A1 counter_us=104788761 dt_us=967298 pass=144446,145171,0,146364 rate=101.40,98.79,0.00,100.24 zero=0,0,39,0 D2_mV=236.32
+W (105921) asic_init: BCAST SAMPLE phase=passive A2 counter_us=104882041 dt_us=966703 pass=145438,145423,0,145594 rate=97.19,99.94,0.00,100.29 zero=0,0,39,0 D2_mV=237.23
+W (106014) asic_init: BCAST SAMPLE phase=passive A3 counter_us=104974784 dt_us=967206 pass=146768,146696,146884,146759 rate=101.73,100.25,98.27,98.57 zero=0,0,0,0 D2_mV=-1.00
+W (106108) asic_init: BCAST SAMPLE phase=passive A4 counter_us=105068682 dt_us=968394 pass=147818,147562,147109,147794 rate=101.08,101.52,99.46,99.70 zero=0,0,0,0 D2_mV=-1.00
+W (106115) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.188A
+W (106806) asic_init: BCAST SAMPLE phase=passive A1 counter_us=105760960 dt_us=972199 pass=151669,152398,0,153620 rate=99.88,99.93,0.00,100.33 zero=0,0,39,0 D2_mV=236.12
+W (106898) asic_init: BCAST SAMPLE phase=passive A2 counter_us=105859476 dt_us=977435 pass=152610,152489,0,152813 rate=98.64,97.18,0.00,99.29 zero=0,0,39,0 D2_mV=237.18
+W (106991) asic_init: BCAST SAMPLE phase=passive A3 counter_us=105951760 dt_us=976976 pass=154149,153685,154105,153965 rate=101.56,96.17,99.36,99.16 zero=0,0,0,0 D2_mV=-1.00
+W (107084) asic_init: BCAST SAMPLE phase=passive A4 counter_us=106044673 dt_us=975991 pass=155009,154724,154445,155154 rate=99.05,98.65,101.05,101.38 zero=0,0,0,0 D2_mV=-1.00
+W (107092) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.156A
+W (107767) asic_init: BCAST SAMPLE phase=passive A1 counter_us=106728016 dt_us=967056 pass=158835,159754,0,160622 rate=99.62,102.26,0.00,97.34 zero=0,0,39,0 D2_mV=236.12
+W (107861) asic_init: BCAST SAMPLE phase=passive A2 counter_us=106821317 dt_us=961841 pass=159786,159642,0,159939 rate=100.30,99.97,0.00,99.60 zero=0,0,39,0 D2_mV=237.18
+W (107953) asic_init: BCAST SAMPLE phase=passive A3 counter_us=106914126 dt_us=962366 pass=161177,160778,161211,161065 rate=98.17,99.08,99.26,99.18 zero=0,0,0,0 D2_mV=-1.00
+W (108046) asic_init: BCAST SAMPLE phase=passive A4 counter_us=107007044 dt_us=962371 pass=162098,161896,161440,162392 rate=99.03,100.19,97.71,101.11 zero=0,0,0,0 D2_mV=-1.00
+W (108054) asic_init: BCAST RAIL phase=passive PCB=1110/1168 mV TPS=13.188A
+W (108733) asic_init: BCAST SAMPLE phase=passive A1 counter_us=107693865 dt_us=965849 pass=165976,166873,0,167900 rate=99.39,99.09,0.00,101.30 zero=0,0,39,0 D2_mV=236.07
+W (108827) asic_init: BCAST SAMPLE phase=passive A2 counter_us=107788473 dt_us=967156 pass=166904,166694,0,167207 rate=98.94,98.02,0.00,101.02 zero=0,0,39,0 D2_mV=237.23
+W (108919) asic_init: BCAST SAMPLE phase=passive A3 counter_us=107880676 dt_us=966550 pass=168455,167819,168370,168331 rate=101.23,97.93,99.57,101.06 zero=0,0,0,0 D2_mV=-1.00
+W (109012) asic_init: BCAST SAMPLE phase=passive A4 counter_us=107973271 dt_us=966227 pass=169216,169247,168433,169542 rate=99.03,102.28,97.29,99.48 zero=0,0,0,0 D2_mV=-1.00
+W (109020) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.156A
+W (109697) asic_init: BCAST SAMPLE phase=passive A1 counter_us=108657914 dt_us=964049 pass=173072,174193,0,175063 rate=98.95,102.07,0.00,99.89 zero=0,0,39,0 D2_mV=236.07
+W (109790) asic_init: BCAST SAMPLE phase=passive A2 counter_us=108750604 dt_us=962131 pass=173988,173669,0,174416 rate=98.98,97.46,0.00,100.73 zero=0,0,39,0 D2_mV=237.08
+W (109883) asic_init: BCAST SAMPLE phase=passive A3 counter_us=108843833 dt_us=963157 pass=175615,175016,175506,175503 rate=99.94,100.45,99.60,100.10 zero=0,0,0,0 D2_mV=-1.00
+W (109977) asic_init: BCAST SAMPLE phase=passive A4 counter_us=108937712 dt_us=964441 pass=176264,176446,175643,176723 rate=98.24,100.35,100.50,100.10 zero=0,0,0,0 D2_mV=-1.00
+W (109985) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.156A
+W (110665) asic_init: BCAST SAMPLE phase=passive A1 counter_us=109625835 dt_us=967921 pass=180228,181333,0,182261 rate=99.39,99.17,0.00,99.97 zero=0,0,39,0 D2_mV=236.01
+W (110758) asic_init: BCAST SAMPLE phase=passive A2 counter_us=109718477 dt_us=967873 pass=181052,180799,0,181482 rate=98.12,99.03,0.00,98.14 zero=0,0,39,0 D2_mV=237.08
+W (110850) asic_init: BCAST SAMPLE phase=passive A3 counter_us=109811289 dt_us=967456 pass=182704,182078,182756,182833 rate=98.51,98.13,100.74,101.85 zero=0,0,0,0 D2_mV=-1.00
+W (110943) asic_init: BCAST SAMPLE phase=passive A4 counter_us=109904137 dt_us=966425 pass=183428,183655,182856,183879 rate=99.65,100.28,100.34,99.54 zero=0,0,0,0 D2_mV=-1.00
+W (110952) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.219A
+W (111632) asic_init: BCAST SAMPLE phase=passive A1 counter_us=110593112 dt_us=967277 pass=187279,188518,0,189332 rate=98.00,99.86,0.00,98.27 zero=0,0,39,0 D2_mV=236.07
+W (111725) asic_init: BCAST SAMPLE phase=passive A2 counter_us=110685509 dt_us=967032 pass=188182,187959,0,188569 rate=99.12,99.54,0.00,98.52 zero=0,0,39,0 D2_mV=237.08
+W (111830) asic_init: BCAST SAMPLE phase=passive A3 counter_us=110784446 dt_us=973157 pass=189840,189321,189978,190097 rate=98.58,100.06,99.77,100.35 zero=0,0,0,0 D2_mV=-1.00
+W (111923) asic_init: BCAST SAMPLE phase=passive A4 counter_us=110884010 dt_us=979873 pass=190607,190903,189953,190987 rate=98.49,99.44,97.37,97.52 zero=0,0,0,0 D2_mV=-1.00
+W (111931) asic_init: BCAST RAIL phase=passive PCB=1108/1172 mV TPS=13.219A
+W (112607) asic_init: BCAST SAMPLE phase=passive A1 counter_us=111567859 dt_us=974747 pass=194325,195616,0,196679 rate=97.18,97.89,0.00,101.33 zero=0,0,39,0 D2_mV=236.07
+W (112702) asic_init: BCAST SAMPLE phase=passive A2 counter_us=111662252 dt_us=976743 pass=195353,195253,0,195833 rate=98.70,100.39,0.00,99.98 zero=0,0,39,0 D2_mV=237.08
+W (112795) asic_init: BCAST SAMPLE phase=passive A3 counter_us=111755763 dt_us=971317 pass=197080,196575,197186,197340 rate=100.20,100.40,99.76,100.25 zero=0,0,0,0 D2_mV=-1.00
+W (112890) asic_init: BCAST SAMPLE phase=passive A4 counter_us=111850626 dt_us=966616 pass=197727,197984,197154,198179 rate=99.02,98.48,100.15,100.02 zero=0,0,0,0 D2_mV=-1.00
+W (112897) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.250A
+W (113574) asic_init: BCAST SAMPLE phase=passive A1 counter_us=112534918 dt_us=967059 pass=201400,202697,0,204017 rate=98.35,98.43,0.00,102.01 zero=0,0,39,0 D2_mV=236.01
+W (113667) asic_init: BCAST SAMPLE phase=passive A2 counter_us=112627996 dt_us=965744 pass=202617,202328,0,202818 rate=101.12,98.48,0.00,97.23 zero=0,0,39,0 D2_mV=236.93
+W (113760) asic_init: BCAST SAMPLE phase=passive A3 counter_us=112720651 dt_us=964888 pass=204208,203787,204420,204543 rate=99.31,100.48,100.79,100.36 zero=0,0,0,0 D2_mV=-1.00
+W (113855) asic_init: BCAST SAMPLE phase=passive A4 counter_us=112815894 dt_us=965268 pass=204842,205105,204383,205290 rate=99.09,99.17,100.68,99.03 zero=0,0,0,0 D2_mV=-1.00
+W (113862) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.250A
+W (114542) asic_init: BCAST SAMPLE phase=passive A1 counter_us=113503071 dt_us=968153 pass=208464,209698,0,211074 rate=98.09,97.21,0.00,97.99 zero=0,0,39,0 D2_mV=235.91
+W (114635) asic_init: BCAST SAMPLE phase=passive A2 counter_us=113595678 dt_us=967682 pass=209729,209545,0,209883 rate=98.80,100.26,0.00,98.15 zero=0,0,39,0 D2_mV=236.93
+W (114727) asic_init: BCAST SAMPLE phase=passive A3 counter_us=113688110 dt_us=967459 pass=211474,210862,211602,211698 rate=100.96,98.31,99.80,99.42 zero=0,0,0,0 D2_mV=-1.00
+W (114819) asic_init: BCAST SAMPLE phase=passive A4 counter_us=113780736 dt_us=964842 pass=211981,212189,211536,212379 rate=99.47,98.70,99.66,98.77 zero=0,0,0,0 D2_mV=-1.00
+W (114829) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.266A
+W (115508) asic_init: BCAST SAMPLE phase=passive A1 counter_us=114469676 dt_us=966605 pass=215561,216854,0,218276 rate=98.70,99.52,0.00,100.16 zero=0,0,39,0 D2_mV=235.96
+W (115602) asic_init: BCAST SAMPLE phase=passive A2 counter_us=114562771 dt_us=967093 pass=216780,216817,0,217099 rate=98.01,101.09,0.00,100.31 zero=0,0,39,0 D2_mV=236.93
+W (115694) asic_init: BCAST SAMPLE phase=passive A3 counter_us=114654952 dt_us=966842 pass=218686,217951,218760,218890 rate=100.28,98.57,99.53,100.00 zero=0,0,0,0 D2_mV=-1.00
+W (115787) asic_init: BCAST SAMPLE phase=passive A4 counter_us=114747617 dt_us=966881 pass=219053,219333,218618,219499 rate=98.33,99.33,98.47,98.99 zero=0,0,0,0 D2_mV=-1.00
+W (115795) asic_init: BCAST RAIL phase=passive PCB=1108/1170 mV TPS=13.219A
+W (116473) asic_init: BCAST SAMPLE phase=passive A1 counter_us=115433966 dt_us=964290 pass=222497,224002,0,225467 rate=96.70,99.65,0.00,100.25 zero=0,0,39,0 D2_mV=235.96
+W (116565) asic_init: BCAST SAMPLE phase=passive A2 counter_us=115526069 dt_us=963298 pass=223977,223932,0,224246 rate=100.44,99.29,0.00,99.74 zero=0,0,39,0 D2_mV=236.78
+W (116658) asic_init: BCAST SAMPLE phase=passive A3 counter_us=115619595 dt_us=964643 pass=225973,224968,225876,226003 rate=101.55,97.79,99.17,99.13 zero=0,0,0,0 D2_mV=-1.00
+W (116755) asic_init: BCAST SAMPLE phase=passive A4 counter_us=115714005 dt_us=966388 pass=226227,226520,225839,226772 rate=99.80,99.98,100.45,101.17 zero=0,0,0,0 D2_mV=-1.00
+W (116763) asic_init: BCAST RAIL phase=passive PCB=1109/1169 mV TPS=13.219A
+W (117446) asic_init: BCAST SAMPLE phase=passive A1 counter_us=116407665 dt_us=973699 pass=229756,231289,0,232666 rate=100.22,100.61,0.00,99.39 zero=0,0,39,0 D2_mV=235.91
+W (117539) asic_init: BCAST SAMPLE phase=passive A2 counter_us=116500063 dt_us=973994 pass=231067,231185,0,231492 rate=97.86,100.11,0.00,100.01 zero=0,0,39,0 D2_mV=236.88
+W (117631) asic_init: BCAST SAMPLE phase=passive A3 counter_us=116592440 dt_us=972845 pass=233181,232064,233082,233229 rate=99.60,98.06,99.58,99.85 zero=0,0,0,0 D2_mV=-1.00
+W (117724) asic_init: BCAST SAMPLE phase=passive A4 counter_us=116685172 dt_us=971167 pass=233413,233886,232948,234032 rate=99.47,101.96,98.41,100.50 zero=0,0,0,0 D2_mV=-1.00
+W (117732) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.219A
+W (118415) asic_init: BCAST SAMPLE phase=passive A1 counter_us=117375326 dt_us=967661 pass=236943,238257,0,239934 rate=99.85,96.80,0.00,100.97 zero=0,0,39,0 D2_mV=235.86
+W (118507) asic_init: BCAST SAMPLE phase=passive A2 counter_us=117468374 dt_us=968311 pass=238282,238492,0,238633 rate=100.17,101.44,0.00,99.14 zero=0,0,39,0 D2_mV=236.78
+W (118600) asic_init: BCAST SAMPLE phase=passive A3 counter_us=117560842 dt_us=968402 pass=240236,239286,240241,240446 rate=97.94,100.26,99.38,100.19 zero=0,0,0,0 D2_mV=-1.00
+W (118693) asic_init: BCAST SAMPLE phase=passive A4 counter_us=117654153 dt_us=968981 pass=240502,241011,240065,241235 rate=98.35,98.85,98.74,99.93 zero=0,0,0,0 D2_mV=-1.00
+W (118701) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.266A
+W (119382) asic_init: BCAST SAMPLE phase=passive A1 counter_us=118341159 dt_us=965833 pass=244081,245410,0,247069 rate=99.35,99.56,0.00,99.31 zero=0,0,39,0 D2_mV=235.86
+W (119474) asic_init: BCAST SAMPLE phase=passive A2 counter_us=118435291 dt_us=966917 pass=245417,245533,0,245604 rate=99.20,97.89,0.00,96.92 zero=0,0,39,0 D2_mV=236.73
+W (119566) asic_init: BCAST SAMPLE phase=passive A3 counter_us=118527503 dt_us=966661 pass=247541,246473,247371,247579 rate=101.59,99.95,99.16,99.20 zero=0,0,0,0 D2_mV=-1.00
+W (119660) asic_init: BCAST SAMPLE phase=passive A4 counter_us=118620636 dt_us=966483 pass=247590,247983,247237,248465 rate=98.59,96.98,99.76,100.57 zero=0,0,0,0 D2_mV=-1.00
+W (119667) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.297A
+W (120350) asic_init: BCAST SAMPLE phase=passive A1 counter_us=119309701 dt_us=968542 pass=251318,252663,0,254240 rate=100.45,100.67,0.00,99.53 zero=0,0,39,0 D2_mV=235.91
+W (120444) asic_init: BCAST SAMPLE phase=passive A2 counter_us=119404439 dt_us=969148 pass=252595,252654,0,252717 rate=99.57,98.78,0.00,98.67 zero=0,0,39,0 D2_mV=236.68
+W (120536) asic_init: BCAST SAMPLE phase=passive A3 counter_us=119496993 dt_us=969490 pass=254861,253511,254414,254651 rate=101.50,97.59,97.66,98.06 zero=0,0,0,0 D2_mV=-1.00
+W (120629) asic_init: BCAST SAMPLE phase=passive A4 counter_us=119590072 dt_us=969436 pass=254715,255170,254392,255600 rate=98.80,99.66,99.22,98.94 zero=0,0,0,0 D2_mV=-1.00
+W (120638) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.266A
+W (121315) asic_init: BCAST SAMPLE phase=passive A1 counter_us=120275868 dt_us=966167 pass=258621,259918,0,261337 rate=101.61,100.95,0.00,98.75 zero=0,0,39,0 D2_mV=235.86
+W (121413) asic_init: BCAST SAMPLE phase=passive A2 counter_us=120371108 dt_us=966669 pass=259794,259833,0,259774 rate=100.12,99.84,0.00,98.14 zero=0,0,39,0 D2_mV=236.78
+W (121506) asic_init: BCAST SAMPLE phase=passive A3 counter_us=120466769 dt_us=969776 pass=262013,260521,261589,261844 rate=99.14,97.17,99.46,99.71 zero=0,0,0,0 D2_mV=-1.00
+W (121599) asic_init: BCAST SAMPLE phase=passive A4 counter_us=120560198 dt_us=970126 pass=261837,262257,261658,262735 rate=98.69,98.21,100.69,98.87 zero=0,0,0,0 D2_mV=-1.00
+W (121607) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.234A
+W (122293) asic_init: BCAST SAMPLE phase=passive A1 counter_us=121254480 dt_us=978612 pass=265864,267258,0,268543 rate=99.50,100.83,0.00,98.99 zero=0,0,39,0 D2_mV=235.86
+W (122386) asic_init: BCAST SAMPLE phase=passive A2 counter_us=121346895 dt_us=975787 pass=267034,266996,0,266950 rate=99.74,98.68,0.00,98.86 zero=0,0,39,0 D2_mV=236.73
+W (122479) asic_init: BCAST SAMPLE phase=passive A3 counter_us=121439703 dt_us=972934 pass=269194,267568,268718,269084 rate=99.22,97.37,98.50,100.04 zero=0,0,0,0 D2_mV=-1.00
+W (122571) asic_init: BCAST SAMPLE phase=passive A4 counter_us=121532353 dt_us=972155 pass=269045,269419,268890,269848 rate=99.67,99.04,100.01,98.36 zero=0,0,0,0 D2_mV=-1.00
+W (122579) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.328A
+W (123265) asic_init: BCAST SAMPLE phase=passive A1 counter_us=122226064 dt_us=971584 pass=273097,274397,0,275678 rate=100.08,98.78,0.00,98.72 zero=0,0,39,0 D2_mV=235.86
+W (123359) asic_init: BCAST SAMPLE phase=passive A2 counter_us=122319401 dt_us=972506 pass=274262,274121,0,274033 rate=99.92,98.49,0.00,97.91 zero=0,0,39,0 D2_mV=236.62
+W (123453) asic_init: BCAST SAMPLE phase=passive A3 counter_us=122413094 dt_us=973391 pass=276337,274656,275889,276419 rate=98.65,97.89,99.04,101.30 zero=0,0,0,0 D2_mV=-1.00
+W (123546) asic_init: BCAST SAMPLE phase=passive A4 counter_us=122506770 dt_us=974417 pass=276257,276504,276160,276993 rate=99.50,97.75,100.30,98.57 zero=0,0,0,0 D2_mV=-1.00
+W (123553) asic_init: BCAST RAIL phase=passive PCB=1110/1168 mV TPS=13.297A
+W (124233) asic_init: BCAST SAMPLE phase=passive A1 counter_us=123194142 dt_us=968078 pass=280253,281478,0,282980 rate=99.37,98.33,0.00,101.40 zero=0,0,39,0 D2_mV=235.76
+W (124327) asic_init: BCAST SAMPLE phase=passive A2 counter_us=123288163 dt_us=968762 pass=281474,281367,0,281299 rate=100.08,100.55,0.00,100.83 zero=0,0,39,0 D2_mV=236.57
+W (124420) asic_init: BCAST SAMPLE phase=passive A3 counter_us=123380758 dt_us=967664 pass=283478,281896,282999,283628 rate=99.21,100.58,98.78,100.15 zero=0,0,0,0 D2_mV=-1.00
+W (124514) asic_init: BCAST SAMPLE phase=passive A4 counter_us=123474424 dt_us=967654 pass=283408,283621,283424,284111 rate=99.35,98.87,100.92,98.89 zero=0,0,0,0 D2_mV=-1.00
+W (124522) asic_init: BCAST RAIL phase=passive PCB=1108/1172 mV TPS=13.297A
+W (125202) asic_init: BCAST SAMPLE phase=passive A1 counter_us=124162956 dt_us=968814 pass=287531,288558,0,290191 rate=100.99,98.24,0.00,100.06 zero=0,0,39,0 D2_mV=235.76
+W (125295) asic_init: BCAST SAMPLE phase=passive A2 counter_us=124255904 dt_us=967741 pass=288505,288501,0,288366 rate=97.67,99.10,0.00,98.17 zero=0,0,39,0 D2_mV=236.57
+W (125387) asic_init: BCAST SAMPLE phase=passive A3 counter_us=124348579 dt_us=967821 pass=290413,288979,290166,290664 rate=96.33,98.38,99.55,97.73 zero=0,0,0,0 D2_mV=-1.00
+W (125483) asic_init: BCAST SAMPLE phase=passive A4 counter_us=124442712 dt_us=968288 pass=290666,290739,290536,291336 rate=100.77,98.82,98.74,100.31 zero=0,0,0,0 D2_mV=-1.00
+W (125491) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.266A
+W (126162) asic_init: BCAST SAMPLE phase=passive A1 counter_us=125122949 dt_us=959993 pass=294640,295641,0,297117 rate=99.55,99.19,0.00,96.99 zero=0,0,39,0 D2_mV=235.81
+W (126254) asic_init: BCAST SAMPLE phase=passive A2 counter_us=125214979 dt_us=959075 pass=295529,295641,0,295491 rate=98.45,100.08,0.00,99.87 zero=0,0,39,0 D2_mV=236.68
+W (126347) asic_init: BCAST SAMPLE phase=passive A3 counter_us=125308406 dt_us=959827 pass=297606,295939,297345,297853 rate=100.74,97.48,100.55,100.69 zero=0,0,0,0 D2_mV=-1.00
+W (126440) asic_init: BCAST SAMPLE phase=passive A4 counter_us=125401320 dt_us=958608 pass=297661,297800,297520,298445 rate=98.10,99.02,97.94,99.69 zero=0,0,0,0 D2_mV=-1.00
+W (126448) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.297A
+W (127146) asic_init: BCAST SAMPLE phase=passive A1 counter_us=126105777 dt_us=982828 pass=301852,302987,0,304388 rate=98.65,100.48,0.00,99.45 zero=0,0,39,0 D2_mV=235.81
+W (127238) asic_init: BCAST SAMPLE phase=passive A2 counter_us=126199506 dt_us=984527 pass=302767,302952,0,302744 rate=98.83,99.83,0.00,99.04 zero=0,0,39,0 D2_mV=236.57
+W (127331) asic_init: BCAST SAMPLE phase=passive A3 counter_us=126291721 dt_us=983315 pass=304938,303194,304623,305051 rate=100.24,99.19,99.50,98.41 zero=0,0,0,0 D2_mV=-1.00
+W (127425) asic_init: BCAST SAMPLE phase=passive A4 counter_us=126385165 dt_us=983845 pass=304851,305042,304766,305601 rate=98.24,98.95,99.01,97.78 zero=0,0,0,0 D2_mV=-1.00
+W (127439) asic_init: BCAST RAIL phase=passive PCB=1108/1172 mV TPS=13.359A
+W (128116) asic_init: BCAST SAMPLE phase=passive A1 counter_us=127077078 dt_us=971301 pass=309003,310114,0,311522 rate=98.97,98.64,0.00,98.74 zero=0,0,39,0 D2_mV=235.76
+W (128208) asic_init: BCAST SAMPLE phase=passive A2 counter_us=127169274 dt_us=969768 pass=309865,310139,0,309895 rate=98.40,99.63,0.00,99.13 zero=0,0,39,0 D2_mV=236.52
+W (128300) asic_init: BCAST SAMPLE phase=passive A3 counter_us=127261530 dt_us=969809 pass=312120,310220,311798,312177 rate=99.56,97.39,99.46,98.78 zero=0,0,0,0 D2_mV=-1.00
+W (128395) asic_init: BCAST SAMPLE phase=passive A4 counter_us=127355626 dt_us=970461 pass=312065,312274,311917,312937 rate=99.93,100.18,99.06,101.62 zero=0,0,0,0 D2_mV=-1.00
+W (128402) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.297A
+W (129084) asic_init: BCAST SAMPLE phase=passive A1 counter_us=128044611 dt_us=967533 pass=316146,317342,0,318632 rate=99.25,100.43,0.00,98.79 zero=0,0,39,0 D2_mV=235.76
+W (129177) asic_init: BCAST SAMPLE phase=passive A2 counter_us=128138013 dt_us=968739 pass=317033,317280,0,317029 rate=99.47,99.10,0.00,99.00 zero=0,0,39,0 D2_mV=236.57
+W (129269) asic_init: BCAST SAMPLE phase=passive A3 counter_us=128230601 dt_us=969071 pass=319141,317335,318912,319435 rate=97.40,98.70,98.69,100.69 zero=0,0,0,0 D2_mV=-1.00
+W (129364) asic_init: BCAST SAMPLE phase=passive A4 counter_us=128325571 dt_us=969945 pass=319154,319504,319027,320069 rate=98.25,100.21,98.54,98.85 zero=0,0,0,0 D2_mV=-1.00
+W (129372) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.328A
+W (130054) asic_init: BCAST SAMPLE phase=passive A1 counter_us=129014800 dt_us=970189 pass=323267,324558,0,325865 rate=98.67,99.99,0.00,100.22 zero=0,0,39,0 D2_mV=235.76
+W (130148) asic_init: BCAST SAMPLE phase=passive A2 counter_us=129108347 dt_us=970334 pass=324057,324478,0,324213 rate=97.31,99.72,0.00,99.53 zero=0,0,39,0 D2_mV=236.47
+W (130240) asic_init: BCAST SAMPLE phase=passive A3 counter_us=129201158 dt_us=970557 pass=326397,324567,326104,326630 rate=100.50,100.17,99.62,99.66 zero=0,0,0,0 D2_mV=-1.00
+W (130334) asic_init: BCAST SAMPLE phase=passive A4 counter_us=129294427 dt_us=968856 pass=326216,326571,326192,327311 rate=97.99,98.06,99.42,100.49 zero=0,0,0,0 D2_mV=-1.00
+W (130341) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.359A
+W (131024) asic_init: BCAST SAMPLE phase=passive A1 counter_us=129984493 dt_us=969693 pass=330391,331615,0,333054 rate=98.76,97.83,0.00,99.66 zero=0,0,39,0 D2_mV=235.86
+W (131117) asic_init: BCAST SAMPLE phase=passive A2 counter_us=130077974 dt_us=969627 pass=331369,331518,0,331385 rate=101.38,97.61,0.00,99.44 zero=0,0,39,0 D2_mV=236.47
+W (131212) asic_init: BCAST SAMPLE phase=passive A3 counter_us=130173252 dt_us=972094 pass=333698,331841,333347,333804 rate=100.97,100.59,100.16,99.21 zero=0,0,0,0 D2_mV=-1.00
+W (131306) asic_init: BCAST SAMPLE phase=passive A4 counter_us=130266692 dt_us=972265 pass=333304,333728,333349,334334 rate=98.00,98.96,98.96,97.11 zero=0,0,0,0 D2_mV=-1.00
+W (131313) asic_init: BCAST RAIL phase=passive PCB=1109/1169 mV TPS=13.328A
+W (132002) asic_init: BCAST SAMPLE phase=passive A1 counter_us=130961486 dt_us=976993 pass=337568,338764,0,340306 rate=98.75,98.37,0.00,99.79 zero=0,0,39,0 D2_mV=235.71
+W (132094) asic_init: BCAST SAMPLE phase=passive A2 counter_us=131055015 dt_us=977041 pass=338531,338706,0,338569 rate=98.54,98.90,0.00,98.85 zero=0,0,39,0 D2_mV=236.52
+W (132188) asic_init: BCAST SAMPLE phase=passive A3 counter_us=131148576 dt_us=975324 pass=341103,338884,340525,340992 rate=102.07,97.08,98.94,99.08 zero=0,0,0,0 D2_mV=-1.00
+W (132281) asic_init: BCAST SAMPLE phase=passive A4 counter_us=131241772 dt_us=975080 pass=340233,340790,340545,341619 rate=95.53,97.36,99.21,100.44 zero=0,0,0,0 D2_mV=-1.00
+W (132288) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.328A
+W (132968) asic_init: BCAST SAMPLE phase=passive A1 counter_us=131928648 dt_us=967162 pass=344791,345964,0,347353 rate=100.40,100.08,0.00,97.95 zero=0,0,39,0 D2_mV=235.81
+W (133061) asic_init: BCAST SAMPLE phase=passive A2 counter_us=132021712 dt_us=966697 pass=345697,345847,0,345668 rate=99.65,99.31,0.00,98.72 zero=0,0,39,0 D2_mV=236.57
+W (133154) asic_init: BCAST SAMPLE phase=passive A3 counter_us=132114935 dt_us=966359 pass=348298,346041,347663,348135 rate=100.09,99.56,99.30,99.37 zero=0,0,0,0 D2_mV=-1.00
+W (133247) asic_init: BCAST SAMPLE phase=passive A4 counter_us=132208082 dt_us=966310 pass=347293,348163,347943,348689 rate=98.22,102.57,102.92,98.36 zero=0,0,0,0 D2_mV=-1.00
+W (133255) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.328A
+W (133931) asic_init: BCAST SAMPLE phase=passive A1 counter_us=132892442 dt_us=963794 pass=351862,353154,0,354516 rate=98.63,100.29,0.00,99.91 zero=0,0,39,0 D2_mV=235.71
+W (134024) asic_init: BCAST SAMPLE phase=passive A2 counter_us=132984884 dt_us=963172 pass=352861,353134,0,352733 rate=99.99,101.71,0.00,98.61 zero=0,0,39,0 D2_mV=236.47
+W (134116) asic_init: BCAST SAMPLE phase=passive A3 counter_us=133077342 dt_us=962407 pass=355420,353102,354659,355112 rate=99.48,98.63,97.72,97.46 zero=0,0,0,0 D2_mV=-1.00
+W (134212) asic_init: BCAST SAMPLE phase=passive A4 counter_us=133172233 dt_us=964151 pass=354610,355127,355138,355809 rate=102.02,97.10,100.32,99.28 zero=0,0,0,0 D2_mV=-1.00
+W (134220) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.359A
+W (134899) asic_init: BCAST SAMPLE phase=passive A1 counter_us=133859697 dt_us=967255 pass=358957,360318,0,361636 rate=98.61,99.57,0.00,98.96 zero=0,0,39,0 D2_mV=235.71
+W (134991) asic_init: BCAST SAMPLE phase=passive A2 counter_us=133951984 dt_us=967100 pass=360039,360173,0,359756 rate=99.78,97.85,0.00,97.62 zero=0,0,39,0 D2_mV=236.52
+W (135084) asic_init: BCAST SAMPLE phase=passive A3 counter_us=134044539 dt_us=967197 pass=362604,360166,361766,362374 rate=99.85,98.18,98.78,100.94 zero=0,0,0,0 D2_mV=-1.00
+W (135176) asic_init: BCAST SAMPLE phase=passive A4 counter_us=134137449 dt_us=965216 pass=361717,362318,362268,363004 rate=98.98,100.15,99.30,100.21 zero=0,0,0,0 D2_mV=-1.00
+W (135184) asic_init: BCAST RAIL phase=passive PCB=1109/1169 mV TPS=13.359A
+W (135860) asic_init: BCAST SAMPLE phase=passive A1 counter_us=134820918 dt_us=961221 pass=365898,367440,0,368717 rate=97.07,99.61,0.00,99.03 zero=0,0,39,0 D2_mV=235.66
+W (135952) asic_init: BCAST SAMPLE phase=passive A2 counter_us=134912980 dt_us=960996 pass=367047,367429,0,366755 rate=98.03,101.50,0.00,97.91 zero=0,0,39,0 D2_mV=236.47
+W (136048) asic_init: BCAST SAMPLE phase=passive A3 counter_us=135007735 dt_us=963196 pass=369829,367286,368938,369542 rate=100.84,99.37,100.10,100.04 zero=0,0,0,0 D2_mV=-1.00
+W (136141) asic_init: BCAST SAMPLE phase=passive A4 counter_us=135102000 dt_us=964551 pass=368829,369238,369323,370328 rate=99.12,96.45,98.33,102.08 zero=0,0,0,0 D2_mV=-1.00
+W (136150) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.328A
+W (136828) asic_init: BCAST SAMPLE phase=passive A1 counter_us=135789042 dt_us=968124 pass=373265,374511,0,375964 rate=102.30,98.19,0.00,100.63 zero=0,0,39,0 D2_mV=235.71
+W (136921) asic_init: BCAST SAMPLE phase=passive A2 counter_us=135881974 dt_us=968994 pass=374257,374542,0,374028 rate=100.03,98.68,0.00,100.90 zero=0,0,39,0 D2_mV=236.52
+W (137015) asic_init: BCAST SAMPLE phase=passive A3 counter_us=135975616 dt_us=967881 pass=377056,374521,376209,376716 rate=100.38,100.49,100.99,99.64 zero=0,0,0,0 D2_mV=-1.00
+W (137109) asic_init: BCAST SAMPLE phase=passive A4 counter_us=136069230 dt_us=967230 pass=375903,376335,376421,377599 rate=98.32,98.64,98.65,101.06 zero=0,0,0,0 D2_mV=-1.00
+W (137116) asic_init: BCAST RAIL phase=passive PCB=1108/1170 mV TPS=13.359A
+W (137793) asic_init: BCAST SAMPLE phase=passive A1 counter_us=136754162 dt_us=965120 pass=380210,381719,0,383090 rate=96.74,100.40,0.00,99.26 zero=0,0,39,0 D2_mV=235.76
+W (137885) asic_init: BCAST SAMPLE phase=passive A2 counter_us=136846551 dt_us=964577 pass=381422,381684,0,381226 rate=99.86,99.54,0.00,100.32 zero=0,0,39,0 D2_mV=236.37
+W (137978) asic_init: BCAST SAMPLE phase=passive A3 counter_us=136939332 dt_us=963716 pass=384163,381574,383443,383796 rate=99.14,98.39,100.91,98.76 zero=0,0,0,0 D2_mV=-1.00
+W (138071) asic_init: BCAST SAMPLE phase=passive A4 counter_us=137032175 dt_us=962945 pass=383074,383516,383511,384662 rate=100.11,100.25,98.98,98.60 zero=0,0,0,0 D2_mV=-1.00
+W (138080) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.391A
+W (138760) asic_init: BCAST SAMPLE phase=passive A1 counter_us=137720601 dt_us=966439 pass=387290,388844,0,390226 rate=98.48,99.11,0.00,99.26 zero=0,0,39,0 D2_mV=235.86
+W (138852) asic_init: BCAST SAMPLE phase=passive A2 counter_us=137812943 dt_us=966392 pass=388740,388759,0,388284 rate=101.80,98.42,0.00,98.18 zero=0,0,39,0 D2_mV=236.37
+W (138945) asic_init: BCAST SAMPLE phase=passive A3 counter_us=137906284 dt_us=966952 pass=391322,388633,390718,390821 rate=99.53,98.14,101.14,97.67 zero=0,0,0,0 D2_mV=-1.00
+W (139038) asic_init: BCAST SAMPLE phase=passive A4 counter_us=137998747 dt_us=966572 pass=390182,390695,390645,391766 rate=98.86,99.85,99.22,98.80 zero=0,0,0,0 D2_mV=-1.00
+W (139045) asic_init: BCAST RAIL phase=passive PCB=1109/1169 mV TPS=13.391A
+W (139725) asic_init: BCAST SAMPLE phase=passive A1 counter_us=138685393 dt_us=964792 pass=394450,395906,0,397439 rate=99.77,98.40,0.00,100.50 zero=0,0,39,0 D2_mV=235.81
+W (139817) asic_init: BCAST SAMPLE phase=passive A2 counter_us=138778029 dt_us=965086 pass=396008,395590,0,395376 rate=101.24,95.15,0.00,98.79 zero=0,0,39,0 D2_mV=236.47
+W (139909) asic_init: BCAST SAMPLE phase=passive A3 counter_us=138870481 dt_us=964197 pass=398654,395833,397910,397823 rate=102.23,100.39,100.27,97.63 zero=0,0,0,0 D2_mV=-1.00
+W (140002) asic_init: BCAST SAMPLE phase=passive A4 counter_us=138963366 dt_us=964619 pass=397514,397801,397724,398969 rate=102.18,99.03,98.66,100.38 zero=0,0,0,0 D2_mV=-1.00
+W (140010) asic_init: BCAST RAIL phase=passive PCB=1110/1168 mV TPS=13.359A
+W (140694) asic_init: BCAST SAMPLE phase=passive A1 counter_us=139655156 dt_us=969763 pass=401510,403038,0,404623 rate=97.87,98.87,0.00,99.59 zero=0,0,39,0 D2_mV=235.76
+W (140787) asic_init: BCAST SAMPLE phase=passive A2 counter_us=139747815 dt_us=969786 pass=403222,402750,0,402579 rate=100.00,99.25,0.00,99.85 zero=0,0,39,0 D2_mV=236.42
+W (140879) asic_init: BCAST SAMPLE phase=passive A3 counter_us=139840090 dt_us=969609 pass=405760,403010,405132,405001 rate=98.52,99.51,100.13,99.52 zero=0,0,0,0 D2_mV=-1.00
+W (140972) asic_init: BCAST SAMPLE phase=passive A4 counter_us=139933092 dt_us=969726 pass=404814,404922,404866,406198 rate=101.20,98.72,99.01,100.22 zero=0,0,0,0 D2_mV=-1.00
+W (140981) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.328A
+W (141660) asic_init: BCAST SAMPLE phase=passive A1 counter_us=140620720 dt_us=965564 pass=408763,409975,0,411670 rate=100.98,96.58,0.00,98.11 zero=0,0,39,0 D2_mV=235.76
+W (141753) asic_init: BCAST SAMPLE phase=passive A2 counter_us=140713949 dt_us=966134 pass=410203,409800,0,409762 rate=97.14,98.10,0.00,99.95 zero=0,0,39,0 D2_mV=236.37
+W (141846) asic_init: BCAST SAMPLE phase=passive A3 counter_us=140806766 dt_us=966676 pass=412806,410063,412218,412027 rate=97.99,98.08,98.54,97.71 zero=0,0,0,0 D2_mV=-1.00
+W (141947) asic_init: BCAST SAMPLE phase=passive A4 counter_us=140904336 dt_us=971244 pass=412048,412329,412075,413463 rate=100.13,102.52,99.78,100.56 zero=0,0,0,0 D2_mV=-1.00
+W (141955) asic_init: BCAST RAIL phase=passive PCB=1110/1170 mV TPS=13.391A
+W (142634) asic_init: BCAST SAMPLE phase=passive A1 counter_us=141594502 dt_us=973782 pass=415972,417239,0,418850 rate=99.52,100.28,0.00,99.12 zero=0,0,39,0 D2_mV=235.81
+W (142728) asic_init: BCAST SAMPLE phase=passive A2 counter_us=141688144 dt_us=974195 pass=417455,417230,0,416902 rate=100.07,102.53,0.00,98.53 zero=0,0,39,0 D2_mV=236.37
+W (142820) asic_init: BCAST SAMPLE phase=passive A3 counter_us=141781139 dt_us=974373 pass=420046,417202,419451,419294 rate=99.89,98.50,99.79,100.26 zero=0,0,0,0 D2_mV=-1.00
+W (142915) asic_init: BCAST SAMPLE phase=passive A4 counter_us=141875343 dt_us=971007 pass=419182,419542,419257,420711 rate=98.77,99.86,99.43,100.35 zero=0,0,0,0 D2_mV=-1.00
+W (142922) asic_init: BCAST RAIL phase=passive PCB=1108/1172 mV TPS=13.406A
+W (143598) asic_init: BCAST SAMPLE phase=passive A1 counter_us=142559012 dt_us=964510 pass=423073,424190,0,426074 rate=98.97,96.88,0.00,100.69 zero=0,0,39,0 D2_mV=235.71
+W (143691) asic_init: BCAST SAMPLE phase=passive A2 counter_us=142651932 dt_us=963788 pass=424508,424358,0,424021 rate=98.38,99.42,0.00,99.30 zero=0,0,39,0 D2_mV=236.37
+W (143784) asic_init: BCAST SAMPLE phase=passive A3 counter_us=142744866 dt_us=963727 pass=427228,424338,426539,426474 rate=100.18,99.54,98.87,100.16 zero=0,0,0,0 D2_mV=-1.00
+W (143877) asic_init: BCAST SAMPLE phase=passive A4 counter_us=142837735 dt_us=962392 pass=426314,426661,426331,427763 rate=99.62,99.44,98.81,98.51 zero=0,0,0,0 D2_mV=-1.00
+W (143886) asic_init: BCAST RAIL phase=passive PCB=1109/1169 mV TPS=13.359A
+W (144563) asic_init: BCAST SAMPLE phase=passive A1 counter_us=143524564 dt_us=965552 pass=430314,431365,0,433222 rate=100.82,99.90,0.00,99.52 zero=0,0,39,0 D2_mV=235.71
+W (144657) asic_init: BCAST SAMPLE phase=passive A2 counter_us=143617590 dt_us=965658 pass=431550,431557,0,431059 rate=98.03,100.22,0.00,97.98 zero=0,0,39,0 D2_mV=236.32
+W (144751) asic_init: BCAST SAMPLE phase=passive A3 counter_us=143711363 dt_us=966497 pass=434423,431412,433574,433629 rate=100.08,98.39,97.85,99.52 zero=0,0,0,0 D2_mV=-1.00
+W (144844) asic_init: BCAST SAMPLE phase=passive A4 counter_us=143804869 dt_us=967134 pass=433361,433838,433480,434926 rate=97.95,99.76,99.37,99.57 zero=0,0,0,0 D2_mV=-1.00
+W (144852) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.391A
+W (145535) asic_init: BCAST SAMPLE phase=passive A1 counter_us=144496383 dt_us=971819 pass=437493,438331,0,440472 rate=99.31,96.36,0.00,100.29 zero=0,0,39,0 D2_mV=235.66
+W (145628) asic_init: BCAST SAMPLE phase=passive A2 counter_us=144588819 dt_us=971229 pass=438840,438582,0,438008 rate=100.90,97.24,0.00,96.18 zero=0,0,39,0 D2_mV=236.32
+W (145725) asic_init: BCAST SAMPLE phase=passive A3 counter_us=144686138 dt_us=974775 pass=441616,438716,440813,440962 rate=99.20,100.73,99.83,101.13 zero=0,0,0,0 D2_mV=-1.00
+W (145818) asic_init: BCAST SAMPLE phase=passive A4 counter_us=144779357 dt_us=974488 pass=440627,441032,440683,442255 rate=100.24,99.24,99.37,101.11 zero=0,0,0,0 D2_mV=-1.00
+W (145826) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.359A
+W (146506) asic_init: BCAST SAMPLE phase=passive A1 counter_us=145466650 dt_us=970267 pass=444699,445572,0,447762 rate=99.84,100.33,0.00,101.00 zero=0,0,39,0 D2_mV=235.76
+W (146598) asic_init: BCAST SAMPLE phase=passive A2 counter_us=145559190 dt_us=970371 pass=446075,445674,0,445280 rate=100.23,98.25,0.00,100.74 zero=0,0,39,0 D2_mV=236.32
+W (146694) asic_init: BCAST SAMPLE phase=passive A3 counter_us=145653171 dt_us=967033 pass=448798,445798,447981,447976 rate=99.84,98.45,99.65,97.51 zero=0,0,0,0 D2_mV=-1.00
+W (146787) asic_init: BCAST SAMPLE phase=passive A4 counter_us=145748411 dt_us=969054 pass=447891,448164,447818,449252 rate=100.77,98.94,98.98,97.07 zero=0,0,0,0 D2_mV=-1.00
+W (146795) asic_init: BCAST RAIL phase=passive PCB=1112/1168 mV TPS=13.438A
+W (147477) asic_init: BCAST SAMPLE phase=passive A1 counter_us=146437619 dt_us=970969 pass=451902,452660,0,454908 rate=99.73,98.13,0.00,98.94 zero=0,0,39,0 D2_mV=235.76
+W (147570) asic_init: BCAST SAMPLE phase=passive A2 counter_us=146531180 dt_us=971990 pass=453414,452726,0,452495 rate=101.50,97.53,0.00,99.79 zero=0,0,39,0 D2_mV=236.27
+W (147668) asic_init: BCAST SAMPLE phase=passive A3 counter_us=146626371 dt_us=973200 pass=455984,453021,455076,455284 rate=99.26,99.77,98.01,100.95 zero=0,0,0,0 D2_mV=-1.00
+W (147762) asic_init: BCAST SAMPLE phase=passive A4 counter_us=146723555 dt_us=975144 pass=454929,455454,455129,456580 rate=97.03,100.50,100.79,101.02 zero=0,0,0,0 D2_mV=-1.00
+W (147770) asic_init: BCAST RAIL phase=passive PCB=1110/1168 mV TPS=13.438A
+W (148455) asic_init: BCAST SAMPLE phase=passive A1 counter_us=147416553 dt_us=978934 pass=459163,459905,0,462148 rate=99.71,99.49,0.00,99.42 zero=0,0,39,0 D2_mV=235.66
+W (148547) asic_init: BCAST SAMPLE phase=passive A2 counter_us=147508653 dt_us=977473 pass=460718,460004,0,459635 rate=100.45,100.10,0.00,98.20 zero=0,0,39,0 D2_mV=236.42
+W (148640) asic_init: BCAST SAMPLE phase=passive A3 counter_us=147600947 dt_us=974576 pass=463130,460168,462593,462574 rate=98.57,98.59,103.69,100.56 zero=0,0,0,0 D2_mV=-1.00
+W (148735) asic_init: BCAST SAMPLE phase=passive A4 counter_us=147694982 dt_us=971427 pass=461977,462577,462398,463756 rate=97.54,98.57,100.59,99.31 zero=0,0,0,0 D2_mV=-1.00
+W (148744) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.375A
+W (149427) asic_init: BCAST SAMPLE phase=passive A1 counter_us=148388524 dt_us=971971 pass=466321,466997,0,469373 rate=99.00,98.09,0.00,99.93 zero=0,0,39,0 D2_mV=235.81
+W (149520) asic_init: BCAST SAMPLE phase=passive A2 counter_us=148480668 dt_us=972015 pass=467804,467204,0,466962 rate=98.00,99.58,0.00,101.33 zero=0,0,39,0 D2_mV=236.32
+W (149612) asic_init: BCAST SAMPLE phase=passive A3 counter_us=148572930 dt_us=971983 pass=470289,467332,469837,469724 rate=99.01,99.08,100.19,98.89 zero=0,0,0,0 D2_mV=-1.00
+W (149705) asic_init: BCAST SAMPLE phase=passive A4 counter_us=148665799 dt_us=970817 pass=469114,469888,469495,470966 rate=98.83,101.24,98.27,99.84 zero=0,0,0,0 D2_mV=-1.00
+W (149714) asic_init: BCAST RAIL phase=passive PCB=1109/1171 mV TPS=13.469A
+W (150395) asic_init: BCAST SAMPLE phase=passive A1 counter_us=149356018 dt_us=967494 pass=473477,474131,0,476474 rate=99.43,99.13,0.00,98.67 zero=0,0,39,0 D2_mV=235.71
+W (150487) asic_init: BCAST SAMPLE phase=passive A2 counter_us=149448220 dt_us=967552 pass=474772,474288,153,473968 rate=96.81,98.43,2.13,97.34 zero=0,0,2,0 D2_mV=236.37
+W (150580) asic_init: BCAST SAMPLE phase=passive A3 counter_us=149541353 dt_us=968423 pass=477550,474544,476973,476782 rate=100.79,100.11,99.06,97.98 zero=0,0,0,0 D2_mV=-1.00
+W (150673) asic_init: BCAST SAMPLE phase=passive A4 counter_us=149634028 dt_us=968229 pass=476225,477181,476788,478107 rate=98.73,101.26,101.26,99.15 zero=0,0,0,0 D2_mV=-1.00
+W (150681) asic_init: BCAST RAIL phase=passive PCB=1137/1143 mV TPS=13.109A
+W (151361) asic_init: BCAST SAMPLE phase=passive A1 counter_us=150322208 dt_us=966190 pass=480663,481204,6529,483627 rate=99.98,98.41,90.84,99.52 zero=0,0,0,0 D2_mV=282.70
+W (151454) asic_init: BCAST SAMPLE phase=passive A2 counter_us=150415082 dt_us=966862 pass=481851,481303,7257,481066 rate=98.43,97.54,98.77,98.69 zero=0,0,0,0 D2_mV=282.60
+W (151547) asic_init: BCAST SAMPLE phase=passive A3 counter_us=150507962 dt_us=966609 pass=484723,481647,484192,483992 rate=99.76,98.79,100.40,100.27 zero=0,0,0,0 D2_mV=-1.00
+W (151642) asic_init: BCAST SAMPLE phase=passive A4 counter_us=150602559 dt_us=968531 pass=483354,484391,484028,485327 rate=98.95,100.08,100.49,100.21 zero=0,0,0,0 D2_mV=-1.00
+W (151650) asic_init: BCAST RAIL phase=passive PCB=1136/1144 mV TPS=13.078A
+W (152332) asic_init: BCAST SAMPLE phase=passive A1 counter_us=151292891 dt_us=970683 pass=487677,488431,13832,490860 rate=97.14,100.09,101.14,100.17 zero=0,0,0,0 D2_mV=282.80
+W (152424) asic_init: BCAST SAMPLE phase=passive A2 counter_us=151385630 dt_us=970548 pass=489100,488291,14334,488245 rate=100.41,96.79,98.03,99.44 zero=0,0,0,0 D2_mV=282.60
+W (152518) asic_init: BCAST SAMPLE phase=passive A3 counter_us=151478871 dt_us=970909 pass=492065,489080,491378,491210 rate=101.66,102.92,99.50,99.94 zero=0,0,0,0 D2_mV=-1.00
+W (152612) asic_init: BCAST SAMPLE phase=passive A4 counter_us=151572519 dt_us=969960 pass=490603,491499,491167,492478 rate=100.47,98.51,98.94,99.11 zero=0,0,0,0 D2_mV=-1.00
+W (152619) asic_init: BCAST RAIL phase=passive PCB=1136/1144 mV TPS=13.047A
+W (153301) asic_init: BCAST SAMPLE phase=passive A1 counter_us=152260667 dt_us=967776 pass=494781,495553,20955,498079 rate=98.68,98.93,98.94,100.28 zero=0,0,0,0 D2_mV=282.70
+W (153394) asic_init: BCAST SAMPLE phase=passive A2 counter_us=152355032 dt_us=969402 pass=496310,495364,21355,495360 rate=99.99,98.09,97.36,98.67 zero=0,0,0,0 D2_mV=282.55
+W (153487) asic_init: BCAST SAMPLE phase=passive A3 counter_us=152447761 dt_us=968890 pass=499314,496200,498655,498409 rate=100.58,98.79,100.97,99.89 zero=0,0,0,0 D2_mV=-1.00
+W (153582) asic_init: BCAST SAMPLE phase=passive A4 counter_us=152542406 dt_us=969887 pass=497809,498774,498322,499703 rate=99.88,100.84,99.17,100.14 zero=0,0,0,0 D2_mV=-1.00
+W (153590) asic_init: BCAST RAIL phase=passive PCB=1136/1144 mV TPS=13.141A
+W (154269) asic_init: BCAST SAMPLE phase=passive A1 counter_us=153229914 dt_us=969247 pass=501776,502865,28084,505008 rate=97.02,101.42,98.88,96.10 zero=0,0,0,0 D2_mV=282.70
+W (154362) asic_init: BCAST SAMPLE phase=passive A2 counter_us=153323121 dt_us=968089 pass=503412,502290,28605,502436 rate=98.62,96.18,100.68,98.26 zero=0,0,0,0 D2_mV=282.60
+W (154456) asic_init: BCAST SAMPLE phase=passive A3 counter_us=153416827 dt_us=969066 pass=506628,503372,505827,505608 rate=101.46,99.49,99.49,99.87 zero=0,0,0,0 D2_mV=-1.00
+W (154550) asic_init: BCAST SAMPLE phase=passive A4 counter_us=153510622 dt_us=968216 pass=505013,505982,505520,506957 rate=100.02,100.08,99.94,100.72 zero=0,0,0,0 D2_mV=-1.00
+W (154558) asic_init: BCAST RAIL phase=passive PCB=1137/1143 mV TPS=13.141A
+W (155236) asic_init: BCAST SAMPLE phase=passive A1 counter_us=154196476 dt_us=966562 pass=508830,509921,35286,512176 rate=98.11,98.14,100.17,99.70 zero=0,0,0,0 D2_mV=282.75
+W (155330) asic_init: BCAST SAMPLE phase=passive A2 counter_us=154290200 dt_us=967079 pass=510563,509293,35601,509460 rate=99.41,97.35,97.25,97.64 zero=0,0,0,0 D2_mV=282.55
+W (155422) asic_init: BCAST SAMPLE phase=passive A3 counter_us=154383536 dt_us=966709 pass=513755,510518,512978,512719 rate=99.11,99.37,99.44,98.89 zero=0,0,0,0 D2_mV=-1.00
+W (155517) asic_init: BCAST SAMPLE phase=passive A4 counter_us=154477667 dt_us=967045 pass=512203,513217,512608,514213 rate=99.95,100.58,98.53,100.87 zero=0,0,0,0 D2_mV=-1.00
+W (155524) asic_init: BCAST RAIL phase=passive PCB=1136/1142 mV TPS=13.109A
+W (156201) asic_init: BCAST SAMPLE phase=passive A1 counter_us=155161944 dt_us=965468 pass=515825,516984,42370,519336 rate=97.40,98.35,98.64,99.70 zero=0,0,0,0 D2_mV=282.75
+W (156295) asic_init: BCAST SAMPLE phase=passive A2 counter_us=155255231 dt_us=965031 pass=517702,516203,42658,516554 rate=99.45,96.26,98.31,98.82 zero=0,0,0,0 D2_mV=282.60
+W (156387) asic_init: BCAST SAMPLE phase=passive A3 counter_us=155348180 dt_us=964644 pass=520809,517755,520204,520034 rate=98.30,100.85,100.70,101.94 zero=0,0,0,0 D2_mV=-1.00
+W (156481) asic_init: BCAST SAMPLE phase=passive A4 counter_us=155441598 dt_us=963931 pass=519304,520398,519801,521250 rate=99.03,100.15,100.32,98.14 zero=0,0,0,0 D2_mV=-1.00
+W (156488) asic_init: BCAST RAIL phase=passive PCB=1136/1144 mV TPS=13.109A
+W (157170) asic_init: BCAST SAMPLE phase=passive A1 counter_us=156130684 dt_us=968740 pass=522895,524155,49462,526631 rate=98.11,99.51,98.42,101.23 zero=0,0,0,0 D2_mV=282.75
+W (157263) asic_init: BCAST SAMPLE phase=passive A2 counter_us=156223824 dt_us=968593 pass=524737,523196,49802,523740 rate=97.64,97.06,99.15,99.74 zero=0,0,0,0 D2_mV=282.50
+W (157362) asic_init: BCAST SAMPLE phase=passive A3 counter_us=156322781 dt_us=974601 pass=528115,524917,527577,527166 rate=100.78,98.79,101.70,98.38 zero=0,0,0,0 D2_mV=-1.00
+W (157456) asic_init: BCAST SAMPLE phase=passive A4 counter_us=156417592 dt_us=975994 pass=526307,527611,527023,528360 rate=96.46,99.35,99.48,97.93 zero=0,0,0,0 D2_mV=-1.00
+W (157464) asic_init: BCAST RAIL phase=passive PCB=1136/1144 mV TPS=13.141A
+E (157470) asic_init: BCAST scope verdict missing/rejected; no recovery intervention
+W (157489) asic_init: BCAST END result=ERROR healthy_streak=6 max_PCB=1157/1173 mV ASIC_power=OFF

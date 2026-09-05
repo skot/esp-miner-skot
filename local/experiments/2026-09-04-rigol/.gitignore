@@ -1,0 +1,6 @@
+*.bin
+*.log
+*.bmp
+asic_init-scope.c
+__pycache__/
+transition-*-raw.npy

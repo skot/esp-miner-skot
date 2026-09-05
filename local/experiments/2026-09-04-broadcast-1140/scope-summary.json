@@ -1,0 +1,22 @@
+{
+  "points": 7000000,
+  "sample_interval_s": 5e-08,
+  "time_start_s": -0.07499999,
+  "time_end_s": 0.27499996,
+  "note": "Uncorrected scope voltages; clipped samples excluded.",
+  "CHAN1": {
+    "min_v": 2.1120002639999997,
+    "max_v": 2.48000031,
+    "baseline_v": 2.32000029
+  },
+  "CHAN2": {
+    "min_v": 0.912,
+    "max_v": 1.504,
+    "baseline_v": 1.164
+  },
+  "upper": {
+    "min_v": 0.9160002999999999,
+    "max_v": 1.348000285,
+    "baseline_v": 1.15600029
+  }
+}

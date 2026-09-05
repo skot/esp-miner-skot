@@ -1,0 +1,14 @@
+{
+  "probe.bin": "d92495bab05a0302aa86f6c143873d7850d5da8d0f882b3dcd391defa95d8e28",
+  "serial.log": "44422a814d8cb5312bfd895c800d22be2601a4e9fcfabf2f279dc02221cf0a01",
+  "capture.log": "87938f74950277ee6954dd0acea3b3ed705b7e97e7b074dbc6d683bd1a707337",
+  "asic-init-source.c": "8a437b671d7018a3238b3d0e8adec9f79295856fb27f51f90193f311d6db223b",
+  "fan-controller-source.c": "c5d89bfe5516297091003c2ff487af657a39039795aa2e1f02d40f5fd443c505",
+  "mc3-source.c": "88804e34c6b9292c2528f9999906e1a815ce24bf81d69a9865abba31317eecb0",
+  "scope_limits.py": "47b0de3c1a9a64286dd8da35f24239a763bba65acbf5ad6829ca2d8f610442cd",
+  "capture_warm.py": "a4aa0d3bbf2da52b43b89f17da23bc5f4adfe1e3ad0a77c37100918cb0c861e5",
+  "warm-baseline300/raw.npz": "075fc2630ac416bd47a73e0ae59c631e2b79ab44b63aa91c0a5a9b5616c5171f",
+  "warm-baseline300/preambles.json": "f0af09a18091a5e079396618fa14bb31e29b68f5ad25fb0eaa67898014766bb1",
+  "step-325/raw.npz": "3254a58fb51c5f6c636c7a86a310f68d99578c9d22ae0a0e43317f14a9cfc129",
+  "step-325/preambles.json": "f0af09a18091a5e079396618fa14bb31e29b68f5ad25fb0eaa67898014766bb1"
+}

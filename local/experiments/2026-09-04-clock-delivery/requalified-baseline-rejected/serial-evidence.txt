@@ -1,0 +1,28 @@
+I (1230) vcore: Holding active-high ASIC power enable low on GPIO10
+I (1654) vcore: Holding active-high ASIC power enable low on GPIO10
+W (21797) asic_init: CLOCK_PROBE BEGIN baseline=100 target=125 voltage=960; power off after one attempt
+I (30649) asic_init: Proto qualification CLOCK_PROBE baseline100 chip0@100.000MHz: 78.93/124.80 GH/s throughput=63.25% pass/fail=18944/11167 pass_rate=62.91%
+I (30653) asic_init: Proto qualification CLOCK_PROBE baseline100 chip1@100.000MHz: 69.28/124.80 GH/s throughput=55.52% pass/fail=16628/13410 pass_rate=55.36%
+I (30668) asic_init: Proto qualification CLOCK_PROBE baseline100 chip2@100.000MHz: 90.98/124.80 GH/s throughput=72.90% pass/fail=21836/7929 pass_rate=73.36%
+I (30683) asic_init: Proto qualification CLOCK_PROBE baseline100 chip3@100.000MHz: 92.77/124.80 GH/s throughput=74.33% pass/fail=22264/7792 pass_rate=74.08%
+I (30700) asic_init: Proto qualification CLOCK_PROBE baseline100 domains: lower=955 upper=966 delta=+11 mV total=1921 mV TPS current=3.01 A
+I (30711) asic_init: Proto qualification CLOCK_PROBE baseline100: total=331.97/499.20 GH/s throughput=66.50% min_chip=55.52% min_pass=55.36% balance=11 mV => REJECT
+W (30813) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A1 D0 absolute=65.25% zero=1
+W (30814) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A1 D1 absolute=58.89% zero=1
+W (30822) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A1 D2 absolute=62.49% zero=1
+W (30832) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A1 D3 absolute=66.36% zero=0
+W (30928) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A2 D0 absolute=52.38% zero=2
+W (30929) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A2 D1 absolute=59.25% zero=1
+W (30937) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A2 D2 absolute=53.19% zero=0
+W (30947) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A2 D3 absolute=57.24% zero=0
+W (31044) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A3 D0 absolute=63.93% zero=3
+W (31045) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A3 D1 absolute=77.16% zero=1
+W (31053) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A3 D2 absolute=72.05% zero=1
+W (31063) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A3 D3 absolute=78.47% zero=0
+W (31159) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A4 D0 absolute=79.83% zero=1
+W (31160) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A4 D1 absolute=72.65% zero=2
+W (31168) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A4 D2 absolute=67.75% zero=2
+W (31178) asic_init: RESET_DELAY DOMAIN stage=CLOCK_PROBE baseline100 A4 D3 absolute=77.10% zero=0
+W (31187) asic_init: RESET_DELAY PROFILE stage=CLOCK_PROBE baseline100 accepted=REJECT
+I (31196) vcore: Holding active-high ASIC power enable low on GPIO10
+W (31206) asic_init: CLOCK_PROBE END result=ERROR max_PCB=957/968 mV ASIC_power=OFF

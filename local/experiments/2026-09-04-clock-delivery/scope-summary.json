@@ -1,0 +1,22 @@
+{
+  "points": 28000000,
+  "sample_interval_s": 5e-08,
+  "time_start_s": -0.2,
+  "time_end_s": 1.19999995,
+  "note": "Uncorrected scope voltages. Saturated samples excluded. Full record includes deliberate shutdown.",
+  "CHAN1": {
+    "min_valid_v": 0.9120001139999999,
+    "max_valid_v": 2.008000251,
+    "baseline_v": 1.9440002429999999
+  },
+  "CHAN2": {
+    "min_valid_v": 0.008000001,
+    "max_valid_v": 1.072000134,
+    "baseline_v": 0.968000121
+  },
+  "upper": {
+    "min_valid_v": 0.4480000559999999,
+    "max_valid_v": 1.064000133,
+    "baseline_v": 0.968000121
+  }
+}
