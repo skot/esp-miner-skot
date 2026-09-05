@@ -1,0 +1,18 @@
+{
+  "macAddr": "28:84:85:BA:96:08",
+  "boardVersion": "1103",
+  "frequency": 450,
+  "coreVoltage": 1160,
+  "regulatorVoltage": 34,
+  "minFanSpeed": 99,
+  "autofanspeed": 1,
+  "fanspeed": 70,
+  "tempTarget": null,
+  "sharesAccepted": 0,
+  "sharesRejected": 0,
+  "hashRate": 0,
+  "asicTemps": [],
+  "asicCount": null,
+  "asicStatus": null,
+  "asicInitError": null
+}

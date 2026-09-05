@@ -55,6 +55,9 @@ int MC3_set_default_baud(void);
 float MC3_send_hash_frequency(float frequency);
 bool MC3_ramp_hash_frequency(void * GLOBAL_STATE);
 bool MC3_start_qualification_work(void * GLOBAL_STATE);
+// Discard synthetic-work results and counters before releasing pool producers.
+// Caller keeps ASIC_initalized false; no PLL or ASIC work registers are changed.
+void MC3_prepare_pool_work(void * GLOBAL_STATE);
 bool MC3_refresh_qualification_work(void * GLOBAL_STATE);
 bool MC3_reapply_active_qualification_work(void);
 bool MC3_set_active_pll_running_preserve_config(void * GLOBAL_STATE,

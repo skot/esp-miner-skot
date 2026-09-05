@@ -86,12 +86,19 @@ void FAN_CONTROLLER_task(void * pvParameters)
         int leased_percent = atomic_load(&bench_percent);
         bool lease_valid = leased_percent >= 0 &&
             (int32_t)(atomic_load(&bench_deadline) - xTaskGetTickCount()) > 0;
-        if (nvs_config_get_bool(NVS_CONFIG_OVERHEAT_MODE)) {
+        if (GLOBAL_STATE->SYSTEM_MODULE.hardware_fault || nvs_config_get_bool(NVS_CONFIG_OVERHEAT_MODE)) {
             update_fan_speed(GLOBAL_STATE, 100.0f, "Overheat");
         } else if (lease_valid) {
-            update_fan_speed(GLOBAL_STATE, leased_percent, "Bench warmup");
+            update_fan_speed(GLOBAL_STATE, leased_percent, "ASIC warmup");
         } else if (GLOBAL_STATE->SYSTEM_MODULE.mining_paused) {
-            update_fan_speed(GLOBAL_STATE, 30.0f, "Paused");
+            // Keep the normal idle floor, but allow deliberate cooling while
+            // ASIC power is off by honoring a higher manual fan setting.
+            float paused_percent = 30.0f;
+            if (!nvs_config_get_bool(NVS_CONFIG_AUTO_FAN_SPEED)) {
+                paused_percent = fmaxf(paused_percent,
+                    nvs_config_get_u16(NVS_CONFIG_MANUAL_FAN_SPEED));
+            }
+            update_fan_speed(GLOBAL_STATE, paused_percent, "Paused");
         } else if (GLOBAL_STATE->SYSTEM_MODULE.pools_unavailable) {
             update_fan_speed(GLOBAL_STATE, 30.0f, "No pool");
         } else {

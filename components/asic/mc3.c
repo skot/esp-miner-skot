@@ -2195,6 +2195,24 @@ bool MC3_ramp_hash_frequency(void * pvParameters)
     return true;
 }
 
+void MC3_prepare_pool_work(void *pvParameters)
+{
+    GlobalState *global = pvParameters;
+    pthread_mutex_lock(&mc3_work_lock);
+    mc3_spdlog_started = false;
+    pthread_mutex_lock(&mc3_pending_lock);
+    mc3_pending_head = 0;
+    mc3_pending_count = 0;
+    pthread_mutex_unlock(&mc3_pending_lock);
+    memset(mc3_seen_nonce_words, 0, sizeof(mc3_seen_nonce_words));
+    if (global->valid_jobs != NULL) {
+        pthread_mutex_lock(&global->valid_jobs_lock);
+        memset(global->valid_jobs, 0, 128 * sizeof(global->valid_jobs[0]));
+        pthread_mutex_unlock(&global->valid_jobs_lock);
+    }
+    pthread_mutex_unlock(&mc3_work_lock);
+}
+
 bool MC3_start_qualification_work(void *pvParameters)
 {
     GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;

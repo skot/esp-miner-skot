@@ -17,6 +17,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #define POLL_RATE 100
 #define MAX_TEMP 90.0
@@ -155,6 +156,22 @@ static void update_asic_telemetry(GlobalState *GLOBAL_STATE)
 
         float temperatures[MAX_ASIC_TEMPS] = {0};
         uint8_t count = MC3_read_temperatures(temperatures, MAX_ASIC_TEMPS);
+        if (GLOBAL_STATE->DEVICE_CONFIG.family.id == PROTO) {
+            bool valid = count == GLOBAL_STATE->DEVICE_CONFIG.family.asic_count;
+            for (uint8_t i = 0; i < count; i++) {
+                valid = valid && isfinite(temperatures[i]) && temperatures[i] > 0;
+            }
+            // MC3 already retried fresh conversions. Do not silently keep
+            // cached temperatures after that bounded recovery has failed.
+            if (!valid) {
+                GLOBAL_STATE->SYSTEM_MODULE.hardware_fault = true;
+                snprintf(GLOBAL_STATE->SYSTEM_MODULE.hardware_fault_msg,
+                    sizeof(GLOBAL_STATE->SYSTEM_MODULE.hardware_fault_msg),
+                    "ASIC temperature unavailable after retries");
+                ESP_LOGE(TAG, "Proto temperature read failed; stopping mining");
+                return;
+            }
+        }
         if (count > 0) {
             for (uint8_t i = 0; i < count; i++) {
                 if (temperatures[i] > 0.0f) {

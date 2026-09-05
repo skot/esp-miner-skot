@@ -64,6 +64,9 @@ void create_jobs_task(void *pvParameters)
     ESP_LOGI(TAG, "ASIC Ready!");
 
     while (1) {
+        // A reset discards ASIC work even if the pool job is unchanged. Keep
+        // receiving new jobs while paused, then resend the latest on resume.
+        if (!GLOBAL_STATE->ASIC_initalized) current_work_sent = false;
         // Read protocol dynamically each iteration (coordinator may have switched it)
         stratum_protocol_t active_protocol = GLOBAL_STATE->stratum_protocol;
 
@@ -157,8 +160,9 @@ void create_jobs_task(void *pvParameters)
             // SV2 standard and MC3 have enough nonce+version space to keep mining
             // without re-feeding. Re-sending the same job restarts the search and,
             // on MC3, hammers the register path. Only send work on new jobs.
-            if ((active_protocol == STRATUM_PROTOCOL_V2 && !stratum_v2_is_extended_channel(GLOBAL_STATE)) ||
-                (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3 && current_work_sent)) {
+            if (current_work_sent &&
+                ((active_protocol == STRATUM_PROTOCOL_V2 && !stratum_v2_is_extended_channel(GLOBAL_STATE)) ||
+                 GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3)) {
                 timeout_ms = ASIC_get_asic_job_frequency_ms(GLOBAL_STATE);
                 continue;
             }
@@ -173,6 +177,12 @@ void create_jobs_task(void *pvParameters)
             current_work_sent = false;
             current_work_protocol = active_protocol;
             timeout_ms = ASIC_get_asic_job_frequency_ms(GLOBAL_STATE);
+            continue;
+        }
+
+        if (!GLOBAL_STATE->ASIC_initalized) {
+            current_work_sent = false;
+            timeout_ms = 100;
             continue;
         }
 

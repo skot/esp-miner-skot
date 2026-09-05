@@ -1,0 +1,25 @@
+{
+  "outcome": "Failed final ASIC qualification; pool handoff not reached",
+  "total_ghs": 2773.8,
+  "failed_asic": "A2",
+  "failed_domain": "D0",
+  "zero_pass_cores": 39,
+  "a2_ghs": 557.27,
+  "a2_ideal_percent": 74.42,
+  "a1_ideal_percent": 97.48,
+  "pool_work_writes_before_first_work": 0,
+  "first_temperatures_c": [
+    28.12,
+    27.62,
+    27.46,
+    27.95
+  ],
+  "pre_first_work_temperatures_c": [
+    55.34,
+    53.69,
+    55.01,
+    54.84
+  ],
+  "firmware_sha256": "826a43260f8bf1cfac837c1b07650e76124cdd5279d47c93fd217f6e6041edcd",
+  "remaining_test": "Established-mining full-fan pause/resume was not run because prerequisite recovery failed"
+}

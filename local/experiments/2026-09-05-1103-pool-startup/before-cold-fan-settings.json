@@ -1,0 +1,8 @@
+{
+  "autofanspeed": 1,
+  "manualFanSpeed": 100,
+  "minFanSpeed": 99,
+  "fanspeed": 30,
+  "regulatorVoltage": 34,
+  "miningPaused": true
+}

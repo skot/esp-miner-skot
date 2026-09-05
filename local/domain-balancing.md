@@ -2,6 +2,73 @@
 
 Last updated: 2026-09-05
 
+## Production pool startup on 1103x-support (2026-09-05)
+
+Fast-forwarded `1103x-balancing` through `c91844e` into `1103x-support`.
+The production path now performs the successful warm startup automatically
+and then hands over to ordinary pool mining. The older staggered diagnostic
+and all new bench selectors are disabled. This supersedes the installed-image
+and saved-setting descriptions in the historical sections below.
+
+The combined sequence is: enumerate at 100 MHz / 800 mV per half, raise
+voltage to 1160 mV, qualify through 300 MHz, warm all four ASICs, disable
+both Vcore and VDDIO and verify discharge, reinitialize at 100 MHz / 800 mV,
+raise voltage again, broadcast the PLL ramp without work or thermal
+conversions, settle 1500 ms at 600 MHz, then obtain fresh temperatures and
+qualify throughput before releasing pool work. Warmup temporarily leases
+fan control without changing the saved fan settings. The stock 1103 TPS
+profile remains 550 kHz, scale 0.25, compensation `13 11 8C 11 86`, with
+scale configured before voltage commands/limits. The 1102 profile remains
+separate at 1300 kHz.
+
+The final production refinement clears synthetic qualification counters,
+pending results and old valid-job flags before pool handoff. The job producer
+retains the latest pool job while ASICs are unavailable and resends it after
+reset, even without a new pool notification. These are software-state changes;
+the cleanup does not rewrite PLLs. Persistent invalid temperature readings
+after bounded retries now stop mining and force full fan speed.
+
+Stock 1103 MAC 28:84:85:BA:96:08 completed the first **30-minute real-pool
+hold at 600 MHz**, averaging **2949.43 GH/s** from ASIC counters. There were
+**60 accepted shares during the hold, zero rejects**, and a maximum sampled
+ASIC temperature of **55.17°C during the hold**. First fresh startup
+temperatures were 27.62–28.28°C. No thermal retry, persistent thermal failure
+or unexpected reboot occurred. This first run used the initial production
+build. The handoff refinement then passed two five-minute holds at 2951.04
+and 2955.93 GH/s, with 38 and 45 accepted shares during the holds and zero
+rejects. Across the three holds, 40.09 minutes and 143 accepted shares were
+recorded. These were successive build revisions, not one identical binary.
+
+**Cold-resume repeatability remains unresolved.** At the user's request,
+paused fan control was fixed to honor manual 100% through the API. Three
+minutes of verified 100% fan / ASIC power OFF cooled fresh initial readings
+to approximately 27–28°C. One resume qualified at 2963.04 GH/s but could not
+mine because an interrupted boot had returned from `app_main` before creating
+mining and pool tasks. Proto now creates those waiting tasks after interrupted
+boot; a focused test compiles the real startup tail and verifies the behavior.
+
+The next cold-resume run with that fix failed ASIC qualification at 2773.80
+GH/s: **A2 D0 had all 39 cores at zero PASS**, though it was healthy at the warm
+300 MHz checkpoint. A2 achieved 74.42% ideal throughput; A1 was marginal at
+97.48%. No pool work was logged during the unloaded ramp. The firmware stopped
+and powered ASICs off. The cause has not been isolated; the latest recovery
+path's successful pool handoff is still unverified on hardware. The planned
+pause/resume from an established mining session was cancelled after this failure.
+
+Final board state is paused, ASIC rail 34 mV, saved 600 MHz / 1160 mV, automatic
+fan settings restored. All test supervisors have stopped. The final installed
+build SHA256 is `826a43260f8bf1cfac837c1b07650e76124cdd5279d47c93fd217f6e6041edcd`.
+
+No scope was attached. This establishes sustained mining on stock
+capacitance, not absence of fast voltage transients. Runtime counters show
+per-ASIC throughput; they do not continuously measure all 16 internal domains.
+An isolated weak core remains compatible with the final qualification limits.
+The individual contributions of warmth, full supply cycling, voltage and work
+timing have not been isolated by these combined-sequence tests.
+
+Artifacts and exact build identities:
+`local/experiments/2026-09-05-1103-pool-startup/README.md`.
+
 ## Stock 1103 result: 600 MHz / 2.965 TH/s without capacitor modifications (2026-09-05)
 
 User connected a stock board that has mined before (MAC 28:84:85:BA:96:08,

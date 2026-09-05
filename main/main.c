@@ -174,14 +174,22 @@ void app_main(void)
     queue_init(&GLOBAL_STATE.stratum_queue);
 
     if (system_init_ret == ESP_OK) {
-        if (asic_initialize(&GLOBAL_STATE, ASIC_INIT_COLD_BOOT, 0) == 0) {
-            if (!GLOBAL_STATE.SELF_TEST_MODULE.is_active) {
+        bool asic_ready = asic_initialize(&GLOBAL_STATE, ASIC_INIT_COLD_BOOT, 0) != 0;
+        bool proto_recovery = GLOBAL_STATE.DEVICE_CONFIG.family.id == PROTO &&
+            !GLOBAL_STATE.SELF_TEST_MODULE.is_active;
+        if (!asic_ready) {
+            if (GLOBAL_STATE.SELF_TEST_MODULE.is_active) {
+                self_test_show_message(&GLOBAL_STATE, GLOBAL_STATE.SYSTEM_MODULE.asic_status);
+                system_init_ret = ESP_FAIL;
+            } else if (!proto_recovery) {
                 return;
+            } else {
+                ESP_LOGW(TAG, "Proto ASIC startup incomplete; keeping pool tasks available for resume");
             }
-
-            self_test_show_message(&GLOBAL_STATE, GLOBAL_STATE.SYSTEM_MODULE.asic_status);
-            system_init_ret = ESP_FAIL;
-        } else {
+        }
+        if (asic_ready || proto_recovery) {
+            // Workers already wait on ASIC_initalized. Create them once even
+            // when boot was paused/failed, so a later recovery can feed work.
             if (xTaskCreate(create_jobs_task, "stratum miner", 8192, (void *) &GLOBAL_STATE, 20, NULL) != pdPASS) {
                 ESP_LOGE(TAG, "Error creating stratum miner task");
             }

@@ -1,0 +1,362 @@
+[
+  {
+    "uptimeSeconds": 91,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3629,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 96,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3629,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 101,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 106,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 111,
+    "regulatorVoltage": 34,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3572,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 116,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 122,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 127,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 132,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 137,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 142,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3627,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 147,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 152,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3629,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 157,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3627,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 162,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 167,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3627,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 172,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 177,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 182,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 187,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 192,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 197,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 202,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 207,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 212,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3572,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 217,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 222,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 227,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3569,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 232,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3572,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 237,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 242,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3629,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 247,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 252,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3630,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 257,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 262,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3600,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  {
+    "uptimeSeconds": 267,
+    "regulatorVoltage": 32,
+    "miningPaused": true,
+    "fanspeed": 100,
+    "fanrpm": 3599,
+    "asicTemps": [],
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  }
+]
