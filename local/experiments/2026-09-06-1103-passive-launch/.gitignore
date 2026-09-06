@@ -1,0 +1,3 @@
+# Regenerable detailed audit/readback arrays and setup snapshots.
+run-*/analysis.json
+before-settings.json

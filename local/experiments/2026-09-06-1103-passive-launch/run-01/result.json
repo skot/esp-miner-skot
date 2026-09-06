@@ -1,0 +1,37 @@
+{
+  "completed": true,
+  "error": null,
+  "elf_prefix": "50889078a",
+  "final_state": {
+    "macAddr": "28:84:85:BA:96:08",
+    "boardVersion": "1103",
+    "version": "v2.14.0-48-gd4b92b6-dirty",
+    "uptimeSeconds": 385,
+    "frequency": 600,
+    "actualFrequency": 600,
+    "coreVoltage": 1160,
+    "regulatorVoltage": 36,
+    "domainVoltages": [
+      21,
+      15
+    ],
+    "asicTemps": [
+      56.98476028442383,
+      55.83015441894531,
+      56.48992919921875,
+      56.16004180908203
+    ],
+    "temp": 56.9847603,
+    "vrTemp": 48,
+    "miningPaused": true,
+    "hardware_fault": null,
+    "power": 0.0055676,
+    "fanspeed": 100,
+    "fanrpm": 3627,
+    "minFanSpeed": 99,
+    "autofanspeed": 0,
+    "manualFanSpeed": 100
+  },
+  "asic_power_off": true,
+  "elapsed_seconds": 399.615700459
+}

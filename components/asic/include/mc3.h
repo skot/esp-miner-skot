@@ -84,6 +84,16 @@ bool MC3_set_chip_hash_frequency_live(void * GLOBAL_STATE, uint8_t chip_id,
 // WORK_CFG. They preserve PLL dividers/payload, but are not passive observation.
 bool MC3_measure_active_frequency_profile(void * GLOBAL_STATE,
     mc3_qualification_result_t *result);
+typedef struct {
+    uint32_t pll_cfg[4], pll_en[4];
+    unsigned writes, pll_writes, logger_writes, write_failures;
+} mc3_passive_launch_state_t;
+// Bench only: four ASICs at 600 MHz, no pool producers, external safety guard.
+// First launch arms counters before job 0; false repeats the identical work/config
+// reset without rearming counters. Neither writes PLL registers (including EN).
+bool MC3_passive_launch_work(bool first_launch);
+// Passive PLL readback and software write audit; never rearms the counter window.
+bool MC3_passive_launch_snapshot(mc3_passive_launch_state_t *state);
 bool MC3_start_active_spdlog_observation(uint32_t duration_ms);
 bool MC3_read_core_domain_summary(uint8_t chip_id,
     mc3_core_domain_summary_t *summary);

@@ -1,6 +1,43 @@
 # bitaxeProto 1103x domain-balancing investigation
 
-Last updated: 2026-09-05
+Last updated: 2026-09-06
+
+## Passive first launch and delayed identical-work reset (2026-09-06)
+
+Completed the requested comparison on cold stock 1103 with the same 1160 mV
+and 300 MHz thermal warmup, full supply cycle/reinitialization and unloaded
+600 MHz broadcast ramp. First fresh temperatures were about 28 C; pre-first-job
+temperatures were 56.00/54.51/55.67/55.17 C.
+
+The normal post-job counter-arm helper applies SPD/FIFO strobes. This probe
+instead selects the counter target and arms only SPDLOG_RST/TIMER **before**
+the first job, then passively reads domain counters. It also omits redundant
+PLL EN writes when sending work. One identical job/configuration reset occurred
+10.276 seconds after the first launch call, with another 30-second observation.
+
+- Before reset: **2961.49 GH/s** from passive counter growth.
+- After reset: **2962.65 GH/s**.
+- All 16 domains active throughout. A1 D2 retained one known zero-PASS core
+  (96.51% -> 96.03% of ideal); all other domains were approximately 99%.
+- No work/SPD configuration writes during either hold, no counter rearm after
+  the initial pre-job arm, and **no PLL writes** during the entire comparison.
+  All four PLL CFG/EN readbacks remained `01410908` / `00000007`.
+- Maximum fresh 600 MHz temperature was 57.15 C. No scope measurements.
+
+**No failed domain occurred in this trial, so recovery from a failed domain is
+still untested by this comparison.** The extra post-job counter-arm strobe is
+worth isolating next, but success here cannot identify a cause: redundant PLL
+EN writes and measurement timing also differ from the previous failed launches.
+This is synthetic qualification throughput, not a new pool endurance result.
+
+Probe image application SHA256
+`448cf6c008f28b3be54d089f4e7e975e14ed46bd0b4bacdec1ebc9b7aee1884f`, ELF
+prefix `50889078a`, remains installed. The normal source has the probe selector
+OFF and builds successfully, but was not reflashed. Final hardware state:
+ASIC power OFF (36 mV), paused, manual fan **100%** for cooldown, saved
+600 MHz / 1160 mV retained. A restart/resume currently repeats the probe.
+
+Record: `local/experiments/2026-09-06-1103-passive-launch/README.md`.
 
 ## Clean unchanged-firmware control: normal boot also loses a domain (2026-09-05)
 

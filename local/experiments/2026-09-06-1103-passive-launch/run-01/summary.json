@@ -1,0 +1,100 @@
+{
+  "completed": true,
+  "passive_audit_verified": true,
+  "totals": {
+    "before_reset": 2961.4867783528907,
+    "after_reset": 2962.647504544425
+  },
+  "domain_percent_ideal": {
+    "before_reset": [
+      [
+        98.665,
+        99.158,
+        96.507,
+        99.622
+      ],
+      [
+        98.847,
+        98.566,
+        98.794,
+        98.484
+      ],
+      [
+        99.262,
+        98.61,
+        99.05,
+        98.952
+      ],
+      [
+        99.878,
+        98.927,
+        98.896,
+        99.773
+      ]
+    ],
+    "after_reset": [
+      [
+        98.925,
+        99.461,
+        96.033,
+        99.334
+      ],
+      [
+        98.744,
+        99.022,
+        99.126,
+        98.833
+      ],
+      [
+        99.353,
+        98.531,
+        99.196,
+        99.192
+      ],
+      [
+        99.158,
+        99.253,
+        99.118,
+        99.333
+      ]
+    ]
+  },
+  "audit_boundaries": [
+    {
+      "phase": "before",
+      "us": 339373074,
+      "writes": 585,
+      "pll": 134,
+      "logger": 20,
+      "failures": 0
+    },
+    {
+      "phase": "first",
+      "us": 339592269,
+      "writes": 622,
+      "pll": 134,
+      "logger": 22,
+      "failures": 0
+    },
+    {
+      "phase": "reset",
+      "us": 349860329,
+      "writes": 657,
+      "pll": 134,
+      "logger": 22,
+      "failures": 0
+    },
+    {
+      "phase": "after_reset",
+      "us": 380133077,
+      "writes": 657,
+      "pll": 134,
+      "logger": 22,
+      "failures": 0
+    }
+  ],
+  "all_pll_cfg": "01410908",
+  "all_pll_en": "00000007",
+  "single_zero_core": "A1 D2 before and after; no other zero-PASS cores",
+  "reset_call_delay_seconds": 10.275852
+}

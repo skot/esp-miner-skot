@@ -82,6 +82,7 @@
 #define PROTO_RUN_BROADCAST_RECOVERY_PROBE 0
 #define PROTO_RUN_FIXED_PLL_VOLTAGE_PROBE 0
 #define PROTO_RUN_WARM_RAMP_PROBE 0
+#define PROTO_RUN_PASSIVE_LAUNCH_PROBE 0
 // Explicitly selected 1102/1103 bench comparison: voltage/throughput report-only.
 #define PROTO_WARM_REPORT_ONLY 0
 #define PROTO_WARM_HOLD_FIRST_ZERO 0
@@ -3577,6 +3578,69 @@ static bool proto_pool_startup_settings_valid(const GlobalState *global, uint16_
         isfinite(request) && request >= 100 && request <= 600 && voltage_mv >= 800 && voltage_mv <= 1160;
 }
 
+#if PROTO_RUN_PASSIVE_LAUNCH_PROBE
+static bool proto_passive_state(const char *phase, mc3_passive_launch_state_t *out,
+    const mc3_passive_launch_state_t *reference, bool allow_work_reset)
+{
+    if (!MC3_passive_launch_snapshot(out)) return false;
+    ESP_LOGI(TAG, "PASSIVE AUDIT phase=%s us=%" PRId64 " writes=%u pll=%u logger=%u failures=%u",
+        phase, esp_timer_get_time(), out->writes, out->pll_writes, out->logger_writes, out->write_failures);
+    for (unsigned c = 0; c < 4; c++) {
+        ESP_LOGI(TAG, "PASSIVE PLL phase=%s A%u cfg=%08" PRIx32 " en=%08" PRIx32,
+            phase, c + 1, out->pll_cfg[c], out->pll_en[c]);
+        if (reference && (reference->pll_cfg[c] != out->pll_cfg[c] ||
+            reference->pll_en[c] != out->pll_en[c])) return false;
+    }
+    return !reference || (out->pll_writes == reference->pll_writes &&
+        out->logger_writes == reference->logger_writes &&
+        out->write_failures == reference->write_failures &&
+        (allow_work_reset || out->writes == reference->writes));
+}
+
+static bool proto_passive_hold(proto_startup_guard_t *guard, const char *phase, unsigned seconds,
+    const mc3_passive_launch_state_t *reference)
+{
+    int64_t start = esp_timer_get_time();
+    do {
+        for (unsigned c = 0; c < 4; c++) {
+            mc3_core_domain_summary_t d;
+            int64_t before = esp_timer_get_time();
+            if (proto_startup_cancelled(guard) || !MC3_read_core_domain_summary(c, &d)) return false;
+            int64_t after = esp_timer_get_time();
+            for (unsigned k = 0; k < 4; k++)
+                ESP_LOGI(TAG, "PASSIVE COUNT phase=%s A%u D%u begin_us=%" PRId64 " end_us=%" PRId64
+                    " pass=%" PRIu32 " fail=%" PRIu32 " zero=%u",
+                    phase, c + 1, k, before, after, d.domain_pass[k], d.domain_fail[k], d.domain_zero_cores[k]);
+        }
+        float coldest, hottest;
+        if (!proto_startup_temperature(guard, 0, &coldest, &hottest)) return false;
+        FAN_CONTROLLER_set_bench_percent(70);
+        mc3_passive_launch_state_t state;
+        if (!proto_passive_state(phase, &state, reference, false)) return false;
+        if (esp_timer_get_time() - start >= (int64_t)seconds * 1000000) break;
+        if (!proto_startup_wait(guard, 700)) return false;
+    } while (true);
+    return !proto_startup_cancelled(guard);
+}
+
+static bool run_proto_passive_launch(proto_startup_guard_t *guard)
+{
+    mc3_passive_launch_state_t before, first, reset;
+    if (!proto_passive_state("before", &before, NULL, false)) return false;
+    ESP_LOGW(TAG, "PASSIVE FIRST_WORK us=%" PRId64 "; counter-only arm before job; target=24 bits; no PLL writes", esp_timer_get_time());
+    if (!MC3_passive_launch_work(true) || !proto_passive_state("first", &first, NULL, false)) return false;
+    // Only the initial arm may change logger writes; PLL and failures must stay fixed.
+    if (first.pll_writes != before.pll_writes || first.logger_writes != before.logger_writes + 2 ||
+        first.write_failures != before.write_failures) return false;
+    for (unsigned c = 0; c < 4; c++)
+        if (first.pll_cfg[c] != before.pll_cfg[c] || first.pll_en[c] != before.pll_en[c]) return false;
+    if (!proto_passive_hold(guard, "before_reset", 10, &first)) return false;
+    ESP_LOGW(TAG, "PASSIVE IDENTICAL_RESET us=%" PRId64 "; same job 0; no PLL writes, no counter rearm", esp_timer_get_time());
+    if (!MC3_passive_launch_work(false) || !proto_passive_state("reset", &reset, &first, true)) return false;
+    return proto_passive_hold(guard, "after_reset", 30, &reset);
+}
+#endif
+
 static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
 {
     float request = global->POWER_MANAGEMENT_MODULE.frequency_value;
@@ -3584,6 +3648,10 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
         ESP_LOGE(TAG, "PROTO STARTUP requires four ASICs, 100..600 MHz and 800..1160 mV/half");
         return false;
     }
+#if PROTO_RUN_PASSIVE_LAUNCH_PROBE
+    if (request != 600 || voltage_mv != 1160 ||
+        strcmp(global->DEVICE_CONFIG.board_version, "1103") != 0) return false;
+#endif
     unsigned target = (unsigned)(request / 25.0f + 0.5f) * 25;
     unsigned warm_frequency = target < 300 ? target : 300;
     proto_startup_guard_t guard = {.global = global};
@@ -3650,6 +3718,11 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
         }
         if (esp_timer_get_time() >= deadline ||
             !proto_startup_temperature(&guard, 0, &coldest, &hottest)) goto done;
+#if PROTO_RUN_PASSIVE_LAUNCH_PROBE
+        bool completed = run_proto_passive_launch(&guard);
+        ESP_LOGW(TAG, "PASSIVE END completed=%u; powering ASICs off; no pool handoff", completed);
+        goto done;
+#endif
         ESP_LOGI(TAG, "PROTO STARTUP FIRST_WORK frequency=%u", target);
         if (!MC3_start_qualification_work(global) ||
             !MC3_measure_active_frequency_profile(global, &result) ||

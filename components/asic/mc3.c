@@ -1,6 +1,7 @@
 #include "mc3.h"
 
 #include <stdbool.h>
+#include <stdatomic.h>
 #include <inttypes.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -177,6 +178,20 @@ static pthread_mutex_t mc3_serial_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_pending_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_core_scan_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_work_lock = PTHREAD_MUTEX_INITIALIZER;
+// Count attempted writes below the sensor register ranges, including failed writes.
+// Passive bench windows may read counters and convert temperatures, but must not
+// change mining, logger or PLL configuration.
+static atomic_uint mc3_bench_writes, mc3_bench_pll_writes;
+static atomic_uint mc3_bench_logger_writes, mc3_bench_write_failures;
+
+static void mc3_audit_write(uint32_t reg)
+{
+    if (reg < 0x00050000) atomic_fetch_add(&mc3_bench_writes, 1);
+    if (reg >= MC3_PLL0_CFG && reg < MC3_PLL0_CFG + 4 * MC3_PLL_REGISTER_STRIDE)
+        atomic_fetch_add(&mc3_bench_pll_writes, 1);
+    if (reg == MC3_SPDLOG_RST || reg == MC3_SPDLOG_TIMER)
+        atomic_fetch_add(&mc3_bench_logger_writes, 1);
+}
 static pthread_mutex_t mc3_voltage_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mc3_thermal_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
 static float mc3_active_chip_frequency_mhz[MC3_QUALIFICATION_MAX_CHIPS];
@@ -594,7 +609,7 @@ static void mc3_store_active_job(GlobalState *GLOBAL_STATE, uint8_t job_id, bm_j
     pthread_mutex_unlock(&GLOBAL_STATE->valid_jobs_lock);
 }
 
-static bool mc3_write_mining_config(uint32_t rolltime, uint32_t version_mask)
+static bool mc3_write_mining_config_impl(uint32_t rolltime, uint32_t version_mask, bool enable_pll)
 {
     uint8_t start_bit = 0;
     if (!mc3_version_start_bit(version_mask, &start_bit)) {
@@ -620,11 +635,16 @@ static bool mc3_write_mining_config(uint32_t rolltime, uint32_t version_mask)
         !mc3_write_register(0, MC3_WORK_CFG,
             MC3_DEFAULT_WORK_CFG_MINING, MC3_CHIP_NUM_ALL) ||
         !mc3_write_register(0, MC3_V_CTRL, v_ctrl, MC3_CHIP_NUM_ALL) ||
-        !mc3_write_register(0, mc3_pll_en_register(active_pll_id),
-            MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL)) {
+        (enable_pll && !mc3_write_register(0, mc3_pll_en_register(active_pll_id),
+            MC3_DEFAULT_PLL0_ENABLE, MC3_CHIP_NUM_ALL))) {
         return false;
     }
     return true;
+}
+
+static bool mc3_write_mining_config(uint32_t rolltime, uint32_t version_mask)
+{
+    return mc3_write_mining_config_impl(rolltime, version_mask, true);
 }
 
 static uint64_t mc3_work_target_from_difficulty(double difficulty)
@@ -1536,12 +1556,14 @@ static int16_t mc3_transact(uint8_t *packet, uint16_t packet_len, uint8_t *respo
 
 static bool mc3_write_register(uint8_t chip_id, uint32_t reg, uint32_t value, uint8_t chip_num)
 {
+    mc3_audit_write(reg);
     uint8_t packet[MC3_ULINK_FIELD_BYTES * 3] = {0};
     uint8_t response[MC3_ULINK_FIELD_BYTES * 3] = {0};
     uint8_t packet_len = mc3_build_write_packet(packet, chip_id, reg, &value, 1, chip_num);
 
     int16_t received = mc3_transact(packet, packet_len, response, sizeof(response));
     if (received < 0) {
+        atomic_fetch_add(&mc3_bench_write_failures, 1);
         ESP_LOGW(TAG, "Failed writing register 0x%08" PRIX32, reg);
         return false;
     }
@@ -1551,6 +1573,8 @@ static bool mc3_write_register(uint8_t chip_id, uint32_t reg, uint32_t value, ui
 static bool mc3_write_register_pair(uint8_t chip_id, uint32_t reg,
     uint32_t first_value, uint32_t second_value, uint8_t chip_num)
 {
+    mc3_audit_write(reg);
+    mc3_audit_write(reg + 4);
     uint32_t values[2] = {first_value, second_value};
     uint8_t packet[MC3_ULINK_FIELD_BYTES * 4] = {0};
     uint8_t response[MC3_ULINK_FIELD_BYTES * 4] = {0};
@@ -1560,6 +1584,7 @@ static bool mc3_write_register_pair(uint8_t chip_id, uint32_t reg,
     int16_t received = mc3_transact(packet, packet_len, response,
         sizeof(response));
     if (received < 0) {
+        atomic_fetch_add(&mc3_bench_write_failures, 1);
         ESP_LOGW(TAG,
             "Failed burst writing registers 0x%08" PRIX32 "-0x%08" PRIX32,
             reg, reg + sizeof(uint32_t));
@@ -2785,6 +2810,63 @@ done:
     *result_out = result;
     pthread_mutex_unlock(&mc3_work_lock);
     return success;
+}
+
+// Bench caller holds ASIC_initalized false and independently guards temperature,
+// supply/read faults and cancellation. Both calls submit exactly job 0; only the
+// first call arms the logger. Neither call writes any PLL register, including EN.
+bool MC3_passive_launch_work(bool first_launch)
+{
+    pthread_mutex_lock(&mc3_work_lock);
+    bool ok = false;
+    unsigned failures = atomic_load(&mc3_bench_write_failures);
+    if (mc3_chip_count != 4 || mc3_active_frequency_count != 4 ||
+        mc3_active_frequency_profile_mixed || mc3_active_uniform_pll_id != 0) goto done;
+    for (unsigned c = 0; c < 4; c++)
+        if (mc3_active_chip_frequency_mhz[c] != 600) goto done;
+    bm_job job = {
+        .version = MC3_QUALIFICATION_VERSION,
+        .version_mask = MC3_QUALIFICATION_VERSION_MASK,
+        .ntime = MC3_QUALIFICATION_NTIME,
+        .target = MC3_QUALIFICATION_NBITS,
+        .pool_diff = MC3_QUALIFICATION_POOL_DIFFICULTY,
+    };
+    if (!mc3_write_mining_config_impl(mc3_rolltime_for_frequency(600), job.version_mask, false) ||
+        // Select the same counter target as normal qualification, without either
+        // write-one action. This happens before the first payload is submitted.
+        !mc3_write_register(0, MC3_WORK_CFG,
+            (MC3_DEFAULT_WORK_CFG_SPDLOG | MC3_SPDLOG_CORE_TARGET) &
+                ~(MC3_WORK_CFG_RST_FIFO | MC3_WORK_CFG_SPD_GO), MC3_CHIP_NUM_ALL)) goto done;
+    if (first_launch) {
+        // 120.04 seconds: one epoch spanning both holds, well below the 16-bit
+        // per-core PASS wrap time at 600 MHz. Do not call mc3_start_spdlog_window.
+        if (!mc3_write_register(0, MC3_SPDLOG_RST, 1, MC3_CHIP_NUM_ALL) ||
+            !mc3_write_register(0, MC3_SPDLOG_TIMER, mc3_spdlog_timer_value(1431), MC3_CHIP_NUM_ALL)) goto done;
+    }
+    mc3_write_work_target(job.pool_diff, 4);
+    mc3_write_version_bases(&job, 4);
+    mc3_write_v_work(&job, 0);
+    ok = failures == atomic_load(&mc3_bench_write_failures);
+done:
+    pthread_mutex_unlock(&mc3_work_lock);
+    return ok;
+}
+
+bool MC3_passive_launch_snapshot(mc3_passive_launch_state_t *state)
+{
+    if (!state) return false;
+    pthread_mutex_lock(&mc3_work_lock);
+    bool ok = mc3_chip_count == 4;
+    for (unsigned c = 0; c < 4 && ok; c++) {
+        ok = mc3_read_register(c, MC3_PLL0_CFG, &state->pll_cfg[c]) &&
+            mc3_read_register(c, MC3_PLL0_EN, &state->pll_en[c]);
+    }
+    state->writes = atomic_load(&mc3_bench_writes);
+    state->pll_writes = atomic_load(&mc3_bench_pll_writes);
+    state->logger_writes = atomic_load(&mc3_bench_logger_writes);
+    state->write_failures = atomic_load(&mc3_bench_write_failures);
+    pthread_mutex_unlock(&mc3_work_lock);
+    return ok;
 }
 
 bool MC3_start_active_spdlog_observation(uint32_t duration_ms)
