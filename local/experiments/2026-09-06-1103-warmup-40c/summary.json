@@ -1,0 +1,122 @@
+{
+  "warmup_threshold_c": 40,
+  "dwell_seconds": 10,
+  "last_warmup_temperatures_c": [
+    42.3,
+    41.32,
+    41.64,
+    41.81
+  ],
+  "pre_first_work_temperatures_c": [
+    45.93,
+    43.79,
+    44.61,
+    44.94
+  ],
+  "qualification_ghs": 2045.5,
+  "qualified": false,
+  "domains": [
+    {
+      "asic": 1,
+      "domain": 0,
+      "relative_share": 0.0,
+      "zero_pass_cores": 39
+    },
+    {
+      "asic": 1,
+      "domain": 1,
+      "relative_share": 199.15,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 1,
+      "domain": 2,
+      "relative_share": 0.0,
+      "zero_pass_cores": 39
+    },
+    {
+      "asic": 1,
+      "domain": 3,
+      "relative_share": 200.85,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 0,
+      "relative_share": 0.0,
+      "zero_pass_cores": 39
+    },
+    {
+      "asic": 2,
+      "domain": 1,
+      "relative_share": 199.52,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 2,
+      "relative_share": 0.0,
+      "zero_pass_cores": 39
+    },
+    {
+      "asic": 2,
+      "domain": 3,
+      "relative_share": 200.48,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 0,
+      "relative_share": 133.3,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 1,
+      "relative_share": 133.24,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 2,
+      "relative_share": 0.0,
+      "zero_pass_cores": 39
+    },
+    {
+      "asic": 3,
+      "domain": 3,
+      "relative_share": 133.46,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 0,
+      "relative_share": 100.22,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 1,
+      "relative_share": 99.73,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 2,
+      "relative_share": 99.8,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 3,
+      "relative_share": 100.24,
+      "zero_pass_cores": 0
+    }
+  ],
+  "chip_ghs": [
+    373.37,
+    371.3,
+    557.45,
+    743.39
+  ]
+}

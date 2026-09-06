@@ -2,6 +2,22 @@
 
 Last updated: 2026-09-06
 
+## Warmup threshold lowered to 40 C (2026-09-06)
+
+At the user's request, the 300 MHz warmup now waits for **all four ASICs to
+reach at least 40 C for ten seconds**. This replaces the earlier hottest
+54.5 C / coldest 52 C condition. Existing upper-temperature limits, warm
+power cycle, unloaded ramp to the saved target and passive final qualification
+are unchanged. The log now announces `min_asic_temp=40C`.
+
+Boundary/production startup tests and the ESP-IDF build passed. The updated
+application was flashed once without changing NVS settings. This boot advanced
+from warmup around 41–42 C, then failed 600 MHz qualification at **2045.50 GH/s**:
+A1 D0/D2, A2 D0/D2 and A3 D2 each had 39/39 zero-PASS cores. A4 remained
+healthy. ASIC power was shut off; the requested 40 C setting remains installed.
+One such outcome does not establish a causal temperature effect. Validation record:
+`local/experiments/2026-09-06-1103-warmup-40c/README.md`.
+
 ## Production reset failure reproduced with serial logging (2026-09-06)
 
 After the successful production hold, the user reported failures after both

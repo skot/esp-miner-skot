@@ -393,7 +393,7 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
     float coldest, hottest;
     mc3_qualification_result_t result = {0};
     global->SYSTEM_MODULE.asic_status = "Warming ASICs";
-    ESP_LOGI(TAG, "PROTO STARTUP BEGIN target=%u voltage=%u; warmup=%u then full supply cycle; sampled voltage report-only",
+    ESP_LOGI(TAG, "PROTO STARTUP BEGIN target=%u voltage=%u; warmup=%u min_asic_temp=40C then full supply cycle; sampled voltage report-only",
         target, voltage_mv, warm_frequency);
     for (unsigned f = 100; f <= warm_frequency; f += 25) {
         FAN_CONTROLLER_set_startup_percent(20);
@@ -406,7 +406,8 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
         bool warm = false;
         while (esp_timer_get_time() - start < 600000000) {
             if (!proto_startup_temperature(&guard, esp_timer_get_time() - start, &coldest, &hottest)) goto done;
-            if (hottest >= 54.5f && hottest <= 60 && coldest >= 52) {
+            // All four ASICs must reach 40 C for the existing ten-second dwell.
+            if (coldest >= 40.0f && hottest <= 60.0f) {
                 if (!ready_since) ready_since = esp_timer_get_time();
                 if (esp_timer_get_time() - ready_since >= 10000000) {warm = true; break;}
             } else ready_since = 0;

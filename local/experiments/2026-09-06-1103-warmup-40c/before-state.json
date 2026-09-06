@@ -1,0 +1,29 @@
+{
+  "macAddr": "28:84:85:BA:96:08",
+  "boardVersion": "1103",
+  "version": "v2.14.0-49-gbc8ab6e-dirty",
+  "uptimeSeconds": 3637,
+  "frequency": 600,
+  "actualFrequency": 600,
+  "coreVoltage": 1160,
+  "regulatorVoltage": 32,
+  "domainVoltages": [
+    21,
+    11
+  ],
+  "asicTemps": [
+    57.47959518432617,
+    55.99509811401367,
+    56.6548728942871,
+    55.99509811401367
+  ],
+  "hashRate": 0,
+  "sharesAccepted": 0,
+  "sharesRejected": 0,
+  "miningPaused": false,
+  "power_fault": "Power Fault Detected.",
+  "autofanspeed": 1,
+  "minFanSpeed": 99,
+  "fanspeed": 99,
+  "fanrpm": 3599
+}
