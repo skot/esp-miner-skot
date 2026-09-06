@@ -2,6 +2,35 @@
 
 Last updated: 2026-09-06
 
+## Production reset failure reproduced with serial logging (2026-09-06)
+
+After the successful production hold, the user reported failures after both
+an AxeOS restart and an input power cycle. No firmware/settings changes were
+made for the requested diagnosis. One API restart was captured on USB serial;
+the persistent HTTP log buffer also retained the preceding failed boot.
+
+- Preceding user failure: **A1 D0 and A2 D2**, each 39/39 zero-PASS cores;
+  total **2595.44 GH/s**, qualification failed before pool handoff.
+- Requested monitored restart: **A3 D2**, 39/39 zero-PASS cores; A3 at
+  **557.17 GH/s (74.41%)**, other ASICs near 99%; total **2778.77 GH/s**.
+- Both passed warm 300 MHz qualification and reported all four PLLs locked
+  at 600 MHz. Final PLL-to-first-work delays were 1596 and 1601 ms; the earlier
+  successful run used 1599 ms. The monitored failure's maximum fresh ASIC
+  temperature during the qualification was 57.48 C.
+
+**Startup is still intermittent, and failures also occur with logging attached.**
+The failed domain changes between boots. This is a zero-PASS domain failure
+found after first work, not a logged PLL-lock failure or temperature abort.
+The present logs cannot distinguish the underlying clock-delivery, work-launch
+or electrical cause. No scope was connected.
+
+The qualification guard powered ASICs off before pool mining. Final measured
+rail was 34 mV; settings retained, same production ELF prefix `f9cd78d96`.
+The subsequent generic API power-fault banner coincides with intentional
+shutdown; the TPS status handler treats regulator OFF as a fault flag.
+
+Record: `local/experiments/2026-09-06-1103-reset-failure/README.md`.
+
 ## Production startup cleanup for manual boot tests (2026-09-06)
 
 Removed the firmware's experimental restart/recovery holds, passive-reset probe,

@@ -1,0 +1,50 @@
+{
+  "earlier_success": {
+    "reinit_ms": 332262,
+    "pll600_ms": 350290,
+    "first_work_ms": 351889,
+    "qualify_ms": 364155,
+    "pre_work_temps": [
+      "56.32",
+      "54.68",
+      "55.50",
+      "55.01"
+    ],
+    "pll600_locked": true,
+    "final_300": "PROTO STARTUP QUALIFY frequency=300 total=1493.22 result=PASS",
+    "final_pll_to_first_work_ms": 1599,
+    "first_work_to_qualification_ms": 12266
+  },
+  "user_previous_failure": {
+    "reinit_ms": 256927,
+    "pll600_ms": 274948,
+    "first_work_ms": 276544,
+    "qualify_ms": 288789,
+    "pre_work_temps": [
+      "55.67",
+      "54.35",
+      "55.17",
+      "54.84"
+    ],
+    "pll600_locked": true,
+    "final_300": "PROTO STARTUP QUALIFY frequency=300 total=1487.93 result=PASS",
+    "final_pll_to_first_work_ms": 1596,
+    "first_work_to_qualification_ms": 12245
+  },
+  "monitored_restart_failure": {
+    "reinit_ms": 297054,
+    "pll600_ms": 315061,
+    "first_work_ms": 316662,
+    "qualify_ms": 328927,
+    "pre_work_temps": [
+      56.16,
+      54.68,
+      55.67,
+      55.34
+    ],
+    "pll600_locked": true,
+    "final_300": "PROTO STARTUP QUALIFY frequency=300 total=1486.04 result=PASS",
+    "final_pll_to_first_work_ms": 1601,
+    "first_work_to_qualification_ms": 12265
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "total_ghs": 2595.44,
+  "result": "FAIL",
+  "pool_handoff": false,
+  "chip_results": [
+    {
+      "asic": 1,
+      "frequency": 600.0,
+      "ghs": 553.79,
+      "percent_ideal": 73.96,
+      "pass_percent": 92.84
+    },
+    {
+      "asic": 2,
+      "frequency": 600.0,
+      "ghs": 555.97,
+      "percent_ideal": 74.25,
+      "pass_percent": 94.24
+    },
+    {
+      "asic": 3,
+      "frequency": 600.0,
+      "ghs": 742.24,
+      "percent_ideal": 99.12,
+      "pass_percent": 99.38
+    },
+    {
+      "asic": 4,
+      "frequency": 600.0,
+      "ghs": 743.44,
+      "percent_ideal": 99.28,
+      "pass_percent": 99.5
+    }
+  ],
+  "domains": [
+    {
+      "asic": 1,
+      "domain": 0,
+      "relative_share": 0.0,
+      "zero_pass_cores": 39
+    },
+    {
+      "asic": 1,
+      "domain": 1,
+      "relative_share": 134.11,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 1,
+      "domain": 2,
+      "relative_share": 130.65,
+      "zero_pass_cores": 1
+    },
+    {
+      "asic": 1,
+      "domain": 3,
+      "relative_share": 135.24,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 0,
+      "relative_share": 132.99,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 1,
+      "relative_share": 133.25,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 2,
+      "relative_share": 0.0,
+      "zero_pass_cores": 39
+    },
+    {
+      "asic": 2,
+      "domain": 3,
+      "relative_share": 133.76,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 0,
+      "relative_share": 99.94,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 1,
+      "relative_share": 99.8,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 2,
+      "relative_share": 100.22,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 3,
+      "relative_share": 100.04,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 0,
+      "relative_share": 100.26,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 1,
+      "relative_share": 99.72,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 2,
+      "relative_share": 99.75,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 3,
+      "relative_share": 100.27,
+      "zero_pass_cores": 0
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "restart_requested": true,
+  "boot_count": 1,
+  "elf_prefix": "f9cd78d96",
+  "ready": false,
+  "failure": "E (328963) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained",
+  "elapsed_seconds": 365.339360042,
+  "final_state": {
+    "macAddr": "28:84:85:BA:96:08",
+    "boardVersion": "1103",
+    "version": "v2.14.0-49-gbc8ab6e-dirty",
+    "uptimeSeconds": 359,
+    "frequency": 600,
+    "actualFrequency": 600,
+    "coreVoltage": 1160,
+    "regulatorVoltage": 34,
+    "domainVoltages": [
+      21,
+      13
+    ],
+    "asicTemps": [
+      57.47959518432617,
+      55.99509811401367,
+      56.6548728942871,
+      55.99509811401367
+    ],
+    "hashRate": 0,
+    "sharesAccepted": 0,
+    "sharesRejected": 0,
+    "miningPaused": false,
+    "power_fault": "Power Fault Detected.",
+    "autofanspeed": 1,
+    "minFanSpeed": 99,
+    "fanspeed": 99,
+    "fanrpm": 3603
+  }
+}

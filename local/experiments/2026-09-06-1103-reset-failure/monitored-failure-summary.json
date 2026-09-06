@@ -1,0 +1,141 @@
+{
+  "total_ghs": 2778.77,
+  "result": "FAIL",
+  "pool_handoff": false,
+  "chip_results": [
+    {
+      "asic": 1,
+      "frequency": 600.0,
+      "ghs": 738.48,
+      "percent_ideal": 98.62,
+      "pass_percent": 98.76
+    },
+    {
+      "asic": 2,
+      "frequency": 600.0,
+      "ghs": 740.23,
+      "percent_ideal": 98.86,
+      "pass_percent": 99.24
+    },
+    {
+      "asic": 3,
+      "frequency": 600.0,
+      "ghs": 557.17,
+      "percent_ideal": 74.41,
+      "pass_percent": 92.65
+    },
+    {
+      "asic": 4,
+      "frequency": 600.0,
+      "ghs": 742.89,
+      "percent_ideal": 99.21,
+      "pass_percent": 99.41
+    }
+  ],
+  "domains": [
+    {
+      "asic": 1,
+      "domain": 0,
+      "relative_share": 100.03,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 1,
+      "domain": 1,
+      "relative_share": 100.61,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 1,
+      "domain": 2,
+      "relative_share": 97.94,
+      "zero_pass_cores": 1
+    },
+    {
+      "asic": 1,
+      "domain": 3,
+      "relative_share": 101.42,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 0,
+      "relative_share": 99.71,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 1,
+      "relative_share": 99.87,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 2,
+      "relative_share": 100.22,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 3,
+      "relative_share": 100.21,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 0,
+      "relative_share": 133.38,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 1,
+      "relative_share": 133.17,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 2,
+      "relative_share": 0.0,
+      "zero_pass_cores": 39
+    },
+    {
+      "asic": 3,
+      "domain": 3,
+      "relative_share": 133.44,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 0,
+      "relative_share": 100.23,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 1,
+      "relative_share": 99.66,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 2,
+      "relative_share": 99.83,
+      "zero_pass_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 3,
+      "relative_share": 100.29,
+      "zero_pass_cores": 0
+    }
+  ],
+  "pll600_locked": true,
+  "pre_work_temps": [
+    56.16,
+    54.68,
+    55.67,
+    55.34
+  ],
+  "max_600_temp": 57.48
+}
