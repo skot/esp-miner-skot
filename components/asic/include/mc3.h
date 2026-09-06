@@ -58,47 +58,18 @@ bool MC3_start_qualification_work(void * GLOBAL_STATE);
 // Discard synthetic-work results and counters before releasing pool producers.
 // Caller keeps ASIC_initalized false; no PLL or ASIC work registers are changed.
 void MC3_prepare_pool_work(void * GLOBAL_STATE);
-bool MC3_refresh_qualification_work(void * GLOBAL_STATE);
-bool MC3_reapply_active_qualification_work(void);
-bool MC3_set_active_pll_running_preserve_config(void * GLOBAL_STATE,
-    bool running);
-// Bench-only 100 -> 125 MHz clock-delivery probe. The caller must independently
-// guard the rail and power off on return, including errors; no rollback occurs.
-bool MC3_probe_clock_delivery(void *global_state,
-    bool (*abort_requested)(void *), void *abort_context);
-// Bench-only broadcast +25 MHz launch to 375/400/425 with one long SPDLOG arm. Caller
-// supplies independent rail protection and powers off on any failure.
-bool MC3_start_broadcast_recovery_probe(void *global_state, float baseline_mhz, float test_mhz,
-    bool (*abort_requested)(void *), void *abort_context);
-// Fixed-PLL recovery actions: 1=FIFO reset, 2=SPD apply, 3=full identical work.
-// None reset/rearm SPDLOG; full work restores the logger's core-target setting.
-bool MC3_broadcast_recovery_action(unsigned action);
 bool MC3_qualify_frequency(void * GLOBAL_STATE, float frequency,
     mc3_qualification_result_t *result);
-bool MC3_qualify_chip_frequencies(void * GLOBAL_STATE,
-    const float *frequencies_mhz, uint8_t frequency_count,
-    mc3_qualification_result_t *result);
-bool MC3_set_chip_hash_frequency_live(void * GLOBAL_STATE, uint8_t chip_id,
-    float frequency_mhz, float *actual_frequency_mhz);
 // These counter-arm helpers apply SPD settings and reset the check FIFO via
 // WORK_CFG. They preserve PLL dividers/payload, but are not passive observation.
 bool MC3_measure_active_frequency_profile(void * GLOBAL_STATE,
     mc3_qualification_result_t *result);
-typedef struct {
-    uint32_t pll_cfg[4], pll_en[4];
-    unsigned writes, pll_writes, logger_writes, write_failures;
-} mc3_passive_launch_state_t;
-// Bench only: four ASICs at 600 MHz, no pool producers, external safety guard.
-// First launch arms counters before job 0; false repeats the identical work/config
-// reset without rearming counters. Neither writes PLL registers (including EN).
-bool MC3_passive_launch_work(bool first_launch);
-// Passive PLL readback and software write audit; never rearms the counter window.
-bool MC3_passive_launch_snapshot(mc3_passive_launch_state_t *state);
-bool MC3_start_active_spdlog_observation(uint32_t duration_ms);
+// First work at the final warm startup frequency. Arms counters before work,
+// without any PLL writes; caller passively checks counter growth and temperature.
+bool MC3_start_qualification_observation(void);
 bool MC3_read_core_domain_summary(uint8_t chip_id,
     mc3_core_domain_summary_t *summary);
 void MC3_set_frequency_step_callback(mc3_frequency_step_callback_t callback);
-void MC3_set_ping_pong_pll_experiment_enabled(bool enabled);
 task_result * MC3_process_work(void * GLOBAL_STATE);
 void MC3_read_registers(void * GLOBAL_STATE);
 void MC3_set_nonce_space(double nonce_percent, float frequency, uint16_t asic_count, uint16_t cores);

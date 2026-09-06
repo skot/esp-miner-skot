@@ -1,5 +1,10 @@
 # Unchanged-firmware cold resume versus reboot
 
+Historical record: the recent automated restart/cooldown runners and firmware
+probes were retired in the 2026-09-06 production cleanup. Their implementations
+remain available in Git history. See
+`../2026-09-06-1103-production-startup/README.md` for current firmware behavior.
+
 2026-09-05. User requested the clean comparison after the previous series mixed
 normal boot with recovery from a boot interrupted by pause.
 

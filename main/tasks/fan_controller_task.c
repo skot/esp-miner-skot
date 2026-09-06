@@ -20,19 +20,19 @@
 
 static const char * TAG = "fan_controller";
 static const char * prev_context = "";
-static atomic_int bench_percent = ATOMIC_VAR_INIT(-1);
-static atomic_uint bench_deadline = ATOMIC_VAR_INIT(0);
+static atomic_int startup_percent = ATOMIC_VAR_INIT(-1);
+static atomic_uint startup_deadline = ATOMIC_VAR_INIT(0);
 
-void FAN_CONTROLLER_set_bench_percent(int percent)
+void FAN_CONTROLLER_set_startup_percent(int percent)
 {
     if (percent < 0) {
-        atomic_store(&bench_percent, -1);
+        atomic_store(&startup_percent, -1);
         return;
     }
     if (percent < 10) percent = 10;
     if (percent > 100) percent = 100;
-    atomic_store(&bench_deadline, xTaskGetTickCount() + pdMS_TO_TICKS(5000));
-    atomic_store(&bench_percent, percent);
+    atomic_store(&startup_deadline, xTaskGetTickCount() + pdMS_TO_TICKS(5000));
+    atomic_store(&startup_percent, percent);
 }
 
 static void update_fan_speed(GlobalState * GLOBAL_STATE, float target_perc, const char * context)
@@ -76,29 +76,22 @@ void FAN_CONTROLLER_task(void * pvParameters)
 
     PowerManagementModule * power_management = &GLOBAL_STATE->POWER_MANAGEMENT_MODULE;
 
-    // Initialize PID controller with pid_d_startup and PID_REVERSE directly
+    // Initialize the fan PID controller with reverse direction.
     pid_init(&pid, &pid_input, &pid_output, &pid_setPoint, PID_P, PID_I, PID_D, PID_P_ON_E, PID_REVERSE);
     pid_set_sample_time(&pid, POLL_TIME_MS); // Sample time in ms
 
     TickType_t taskWakeTime = xTaskGetTickCount();
 
     while (1) {
-        int leased_percent = atomic_load(&bench_percent);
+        int leased_percent = atomic_load(&startup_percent);
         bool lease_valid = leased_percent >= 0 &&
-            (int32_t)(atomic_load(&bench_deadline) - xTaskGetTickCount()) > 0;
+            (int32_t)(atomic_load(&startup_deadline) - xTaskGetTickCount()) > 0;
         if (GLOBAL_STATE->SYSTEM_MODULE.hardware_fault || nvs_config_get_bool(NVS_CONFIG_OVERHEAT_MODE)) {
             update_fan_speed(GLOBAL_STATE, 100.0f, "Overheat");
         } else if (lease_valid) {
             update_fan_speed(GLOBAL_STATE, leased_percent, "ASIC warmup");
         } else if (GLOBAL_STATE->SYSTEM_MODULE.mining_paused) {
-            // Keep the normal idle floor, but allow deliberate cooling while
-            // ASIC power is off by honoring a higher manual fan setting.
-            float paused_percent = 30.0f;
-            if (!nvs_config_get_bool(NVS_CONFIG_AUTO_FAN_SPEED)) {
-                paused_percent = fmaxf(paused_percent,
-                    nvs_config_get_u16(NVS_CONFIG_MANUAL_FAN_SPEED));
-            }
-            update_fan_speed(GLOBAL_STATE, paused_percent, "Paused");
+            update_fan_speed(GLOBAL_STATE, 30.0f, "Paused");
         } else if (GLOBAL_STATE->SYSTEM_MODULE.pools_unavailable) {
             update_fan_speed(GLOBAL_STATE, 30.0f, "No pool");
         } else {

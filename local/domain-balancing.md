@@ -2,6 +2,38 @@
 
 Last updated: 2026-09-06
 
+## Production startup cleanup for manual boot tests (2026-09-06)
+
+Removed the firmware's experimental restart/recovery holds, passive-reset probe,
+voltage/frequency sweeps, alternate/addressed PLL paths, test selectors, and
+write-audit instrumentation. Retired the recent host cold/warm/reset/cooldown
+controllers; historical results remain in this log and Git history.
+
+The normal 1102/1103 startup keeps the established 300 MHz warmup, one short warm
+Vcore/VDDIO cycle and reinitialization, and the unloaded broadcast ramp to the
+saved target (600 MHz on the attached stock 1103). First-job counter setup now
+happens **before** payload submission and omits the redundant PLL EN write.
+A passive counter-growth check lasting at least ten seconds, with fresh thermal
+checks, replaces the extra post-job SPD/FIFO strobe. If qualification passes,
+firmware hands off to pool work and continues mining under normal protection.
+There is no experimental second job reset, timed power-off or cooldown afterward.
+
+Normal fan control returns after startup. The temporary 100% cooldown setting
+has been removed from the attached board by restoring automatic fan mode; the
+original configured minimum is retained. Ordinary paused-fan behavior is 30%.
+
+The production application was flashed once and passed 600 MHz qualification at
+**2960.91 GH/s**, then completed a **181-second pool hold at 2955.52 GH/s**
+(counter-derived mean), with **19 accepted / 0 rejected shares during the hold**.
+All four ASICs contributed normally; maximum hold temperature was 55.17 C.
+The monitor exited and a separate API read confirmed the board **still mining
+at 600 MHz**. Installed application SHA256
+`e7578ef533d1498bf37a98e951fc540d8433baa377e0f3ee9db94388f41a9bf5`, ELF
+prefix `f9cd78d96`. This is one successful startup, not a repeatability result.
+ The
+user will perform the subsequent manual cold and warm boot tests. Current
+record: `local/experiments/2026-09-06-1103-production-startup/README.md`.
+
 ## Passive first launch and delayed identical-work reset (2026-09-06)
 
 Completed the requested comparison on cold stock 1103 with the same 1160 mV

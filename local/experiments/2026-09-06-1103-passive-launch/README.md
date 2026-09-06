@@ -1,5 +1,10 @@
 # Passive first-launch / delayed identical-work comparison
 
+Historical record: the recent automated restart/cooldown runners and firmware
+probes were retired in the 2026-09-06 production cleanup. Their implementations
+remain available in Git history. See
+`../2026-09-06-1103-production-startup/README.md` for current firmware behavior.
+
 Stock 1103, MAC 28:84:85:BA:96:08; no scope probes. Branch `1103x-support`.
 
 Question: after the usual 300 MHz thermal warmup, warm supply cycle, reinitialization,

@@ -2,7 +2,7 @@
 from pathlib import Path
 import re,subprocess,tempfile
 root=Path(__file__).resolve().parents[3]
-s=(root/'components/asic/mc3.c').read_text()
+s=subprocess.check_output(['git','show','bc8ab6e:components/asic/mc3.c'],cwd=root,text=True)
 def function(name):
  m=re.search(r'^(?:static )?(?:bool|void) '+name+r'\([^;]*?\)\n\{',s,re.M);assert m,name
  level=1;i=m.end()

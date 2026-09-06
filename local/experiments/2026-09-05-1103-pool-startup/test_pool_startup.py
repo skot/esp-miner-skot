@@ -28,11 +28,12 @@ typedef void *SemaphoreHandle_t;
 typedef struct {bool ASIC_initalized;struct {bool hardware_fault,mining_paused;const char *asic_status;} SYSTEM_MODULE;struct {struct {unsigned asic_count;struct {unsigned small_core_count;} asic;} family;bool domain_voltage_sense;} DEVICE_CONFIG;struct {float actual_frequency,frequency_value,expected_hashrate,asic_temps[4],chip_temp_avg;unsigned asic_temp_count;} POWER_MANAGEMENT_MODULE;} GlobalState;
 typedef struct {float temperature_c[4];} proto_bcast_observation_t;
 typedef struct {float frequency_mhz;unsigned chip_count;float chip_frequency_mhz[4];uint32_t passed[4],failed[4];float hashrate_ghs[4],total_hashrate_ghs;} mc3_qualification_result_t;
-typedef struct {uint64_t core_pass_sum;uint32_t domain_pass[4];unsigned domain_zero_cores[4];} mc3_core_domain_summary_t;
+typedef struct {uint64_t core_pass_sum;uint32_t domain_pass[4],domain_fail[4];unsigned domain_zero_cores[4];} mc3_core_domain_summary_t;
 static GlobalState g;
-static int64_t now,last_pll,stop_at;
+static int64_t now,last_pll,stop_at,first_job;
 static unsigned pll_steps,jobs,voltage_steps,init_calls,temp_after_reset;
 static int supply=2320,fail_pll,chain=4,last_fan,off_calls,adc_error;
+static bool post_start_collapse,counter_read_failure,late_hot,late_pause;
 static bool failed_read,discharge_failure,enable_failure,thermal_failure,warm_timeout,collapsed,weak_core,hot,guard_only;
 static void *guard_arg;
 static void (*delay_hook)(void);
@@ -56,20 +57,24 @@ static int asic_reset(void){return 0;}
 static void clear_asic_chain_error(void){}
 static int MC3_init(GlobalState *v){assert(supply==1600);init_calls++;v->POWER_MANAGEMENT_MODULE.actual_frequency=100;return chain;}
 static int set_proto_core_voltage(GlobalState *v,unsigned mv){assert(v->POWER_MANAGEMENT_MODULE.actual_frequency==100 && jobs==0 && mv==810+voltage_steps*10);voltage_steps++;supply=2*mv;return 0;}
-static void FAN_CONTROLLER_set_bench_percent(int p){last_fan=p;}
-static void proto_warm_fan(const proto_bcast_observation_t *o,int64_t elapsed){(void)o;(void)elapsed;last_fan=20;}
-static int MC3_read_temperatures(float *out,unsigned n){assert(n==4);if(init_calls){assert(g.POWER_MANAGEMENT_MODULE.actual_frequency==600 && now-last_pll>=1500000);temp_after_reset++;}for(unsigned i=0;i<4;i++)out[i]=warm_timeout?40:hot?71:55;if(thermal_failure && init_calls)out[2]=-1;return 4;}
+static void FAN_CONTROLLER_set_startup_percent(int p){last_fan=p;}
+static void proto_warm_fan(float hottest,int64_t elapsed){(void)hottest;(void)elapsed;last_fan=20;}
+static int MC3_read_temperatures(float *out,unsigned n){assert(n==4);if(init_calls){assert(g.POWER_MANAGEMENT_MODULE.actual_frequency==600 && now-last_pll>=1500000);temp_after_reset++;}for(unsigned i=0;i<4;i++)out[i]=warm_timeout?40:(hot || (late_hot && jobs))?71:55;if(thermal_failure && init_calls)out[2]=-1;return 4;}
 static void fill_result(GlobalState *v,mc3_qualification_result_t *r){memset(r,0,sizeof(*r));r->chip_count=4;r->frequency_mhz=v->POWER_MANAGEMENT_MODULE.actual_frequency;for(unsigned c=0;c<4;c++){r->chip_frequency_mhz[c]=r->frequency_mhz;r->passed[c]=9900;r->failed[c]=100;r->hashrate_ghs[c]=r->frequency_mhz*1.248f*.99f;r->total_hashrate_ghs+=r->hashrate_ghs[c];}}
 static bool MC3_qualify_frequency(GlobalState *v,unsigned f,mc3_qualification_result_t *r){assert(!init_calls);v->POWER_MANAGEMENT_MODULE.actual_frequency=f;now+=4200000;fill_result(v,r);return true;}
 static bool MC3_measure_active_frequency_profile(GlobalState *v,mc3_qualification_result_t *r){if(init_calls)assert(jobs==1 && v->POWER_MANAGEMENT_MODULE.actual_frequency==600);now+=4200000;fill_result(v,r);return true;}
-static bool MC3_read_core_domain_summary(unsigned c,mc3_core_domain_summary_t *d){(void)c;*d=(mc3_core_domain_summary_t){.core_pass_sum=40000,.domain_pass={10000,10000,10000,10000}};if(weak_core && c==0){d->domain_pass[2]=9700;d->core_pass_sum=39700;d->domain_zero_cores[2]=1;}if(collapsed){d->domain_pass[2]=0;d->core_pass_sum=30000;}return true;}
+static bool MC3_read_core_domain_summary(unsigned c,mc3_core_domain_summary_t *d){(void)c;*d=(mc3_core_domain_summary_t){.core_pass_sum=40000,.domain_pass={10000,10000,10000,10000}};if(init_calls && jobs){if(counter_read_failure)return false;now+=100000;uint32_t count=(uint32_t)((now-first_job-50000)*185.0/16777.216);d->core_pass_sum=(uint64_t)count*4;for(unsigned k=0;k<4;k++)d->domain_pass[k]=count;}if(weak_core && c==0){d->core_pass_sum-=d->domain_pass[2]*3/100;d->domain_pass[2]-=d->domain_pass[2]*3/100;d->domain_zero_cores[2]=1;}if(collapsed || (post_start_collapse && jobs)){d->core_pass_sum-=d->domain_pass[2];d->domain_pass[2]=0;}return true;}
 static float MC3_send_hash_frequency(float f){assert(init_calls==1 && jobs==0 && temp_after_reset==0 && voltage_steps==36);assert(f==125+25*pll_steps);if(pll_steps)assert(now-last_pll>=((f-25)>500?1000000:500000));pll_steps++;last_pll=now;return f==fail_pll?0:f;}
-static bool MC3_start_qualification_work(GlobalState *v){assert(init_calls==1 && temp_after_reset==1 && now-last_pll>=1500000 && v->POWER_MANAGEMENT_MODULE.actual_frequency==600);jobs++;return true;}
+static bool MC3_start_qualification_observation(void){GlobalState *v=&g;assert(init_calls==1 && temp_after_reset==1 && now-last_pll>=1500000 && v->POWER_MANAGEMENT_MODULE.actual_frequency==600);jobs++;first_job=now;if(late_pause)stop_at=now+5000000;return true;}
 '''+helpers+r'''
 static void stop_guard(void){atomic_store(&((proto_startup_guard_t*)guard_arg)->stop,true);}
-static void setup(void){g=(GlobalState){.DEVICE_CONFIG={.family={.asic_count=4,.asic={1248}},.domain_voltage_sense=true},.POWER_MANAGEMENT_MODULE={.frequency_value=600,.actual_frequency=100}};now=last_pll=stop_at=0;pll_steps=jobs=voltage_steps=init_calls=temp_after_reset=0;supply=2320;fail_pll=0;chain=4;last_fan=off_calls=adc_error=0;failed_read=discharge_failure=enable_failure=thermal_failure=warm_timeout=collapsed=weak_core=hot=guard_only=false;delay_hook=NULL;}
+static void setup(void){g=(GlobalState){.DEVICE_CONFIG={.family={.asic_count=4,.asic={1248}},.domain_voltage_sense=true},.POWER_MANAGEMENT_MODULE={.frequency_value=600,.actual_frequency=100}};now=last_pll=stop_at=0;pll_steps=jobs=voltage_steps=init_calls=temp_after_reset=0;supply=2320;fail_pll=0;chain=4;last_fan=off_calls=adc_error=0;failed_read=discharge_failure=enable_failure=thermal_failure=warm_timeout=collapsed=weak_core=hot=guard_only=false;delay_hook=NULL;post_start_collapse=counter_read_failure=late_hot=late_pause=false;}
 int main(void){
- setup();weak_core=true;assert(run_proto_pool_startup(&g,1160));assert(pll_steps==20 && jobs==1 && voltage_steps==36 && temp_after_reset==2 && last_fan==-1 && off_calls==1 && supply==2320 && !g.ASIC_initalized);
+ setup();weak_core=true;assert(run_proto_pool_startup(&g,1160));assert(pll_steps==20 && jobs==1 && voltage_steps==36 && temp_after_reset==12 && last_fan==-1 && off_calls==1 && supply==2320 && !g.ASIC_initalized);
+ setup();post_start_collapse=true;assert(!run_proto_pool_startup(&g,1160));assert(jobs==1 && supply==0 && last_fan==-1);
+ setup();counter_read_failure=true;assert(!run_proto_pool_startup(&g,1160));assert(jobs==1 && supply==0);
+ setup();late_hot=true;assert(!run_proto_pool_startup(&g,1160));assert(jobs==1 && supply==0);
+ setup();late_pause=true;assert(!run_proto_pool_startup(&g,1160));assert(jobs==1 && supply==0 && now-first_job<6000000);
  setup();fail_pll=475;assert(!run_proto_pool_startup(&g,1160));assert(jobs==0 && supply==0 && last_fan==-1);
  setup();thermal_failure=true;assert(!run_proto_pool_startup(&g,1160));assert(jobs==0 && supply==0);
  setup();chain=3;assert(!run_proto_pool_startup(&g,1160));assert(jobs==0 && pll_steps==0 && supply==0);

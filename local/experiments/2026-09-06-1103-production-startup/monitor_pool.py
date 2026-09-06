@@ -1,11 +1,11 @@
 """Bounded live mining observation. Uses existing pool settings; never prints account data."""
 import argparse,json,re,time,threading,urllib.request,serial
 from pathlib import Path
-ap=argparse.ArgumentParser();ap.add_argument('--run',required=True);ap.add_argument('--seconds',type=int,default=1800);ap.add_argument('--restart',action='store_true');ap.add_argument('--resume',action='store_true');args=ap.parse_args()
+ap=argparse.ArgumentParser();ap.add_argument('--run',required=True);ap.add_argument('--seconds',type=int,default=1800);args=ap.parse_args()
 p=Path(__file__).resolve().parent/args.run;p.mkdir(exist_ok=True)
 url='http://192.168.30.9';mac='28:84:85:BA:96:08'
-keys=['macAddr','boardVersion','version','uptimeSeconds','frequency','actualFrequency','coreVoltage','regulatorVoltage','domainVoltages','asicTemps','temp','vrTemp','hashRate','hashRate_1m','hashRate_10m','sharesAccepted','sharesRejected','poolDifficulty','miningPaused','hardware_fault','power','fanSpeed','fanspeed','fanrpm','minFanSpeed','autofanspeed','manualFanSpeed']
-state={'ready':False,'failed':None,'spd':[],'boots':0,'elf_sha256_prefix':None};done=threading.Event();started=time.monotonic();samples=[];hold_start=None;low_since=None;accepted_baseline=0
+keys=['macAddr','boardVersion','version','uptimeSeconds','frequency','actualFrequency','coreVoltage','regulatorVoltage','domainVoltages','asicTemps','temp','vrTemp','hashRate','hashRate_1m','hashRate_10m','sharesAccepted','sharesRejected','poolDifficulty','miningPaused','hardware_fault','power','fanSpeed','fanspeed','fanrpm','minFanSpeed','autofanspeed']
+state={'ready':False,'failed':None,'spd':[],'boots':0};done=threading.Event();started=time.monotonic();samples=[];hold_start=None;low_since=None;accepted_baseline=0
 
 def request(path,method='GET'):
  with urllib.request.urlopen(urllib.request.Request(url+path,method=method),timeout=5) as r:
@@ -24,8 +24,6 @@ def capture(port):
    if 'PROTO STARTUP READY' in line:state['ready']=True
    if any(x in line for x in ['PROTO STARTUP FAILED','PROTO STARTUP STOP','Guru Meditation','THERMAL invalid after','Proto temperature read failed']):state['failed']=line.strip()
    if 'app_init: App version:' in line:state['boots']+=1
-   if 'ELF file SHA256:' in line:
-    state['elf_sha256_prefix']=line.split('ELF file SHA256:',1)[1].strip().rstrip('.')
    m=re.search(r'SPDLOG:.*total=([\d.]+) GH/s',line)
    if m:state['spd'].append({'host_seconds':time.monotonic()-started,'total_ghs':float(m[1]),'chips_ghs':[float(x) for x in re.findall(r'chip\d=([\d.]+) GH/s',line)]})
    if ('PROTO STARTUP ' in line and ' TEMP ' not in line and ' DOMAIN ' not in line and ' CHIP ' not in line) or 'ASIC initialized successfully' in line:print(line.strip(),flush=True)
@@ -34,10 +32,6 @@ result={'run':args.run,'target_seconds':args.seconds,'scope_used':False,'success
 try:
  with serial.Serial('/dev/cu.usbmodem11434201',115200,timeout=.2) as port:
   th=threading.Thread(target=capture,args=(port,),daemon=True);th.start()
-  if args.restart:request('/api/system/restart','POST')
-  if args.resume:
-   accepted_baseline=request('/api/system/info').get('sharesAccepted',0)
-   request('/api/system/resume','POST')
   api_errors=0
   with (p/'api-samples.jsonl').open('w',buffering=1) as f:
    while time.monotonic()-started<args.seconds+1000:
@@ -73,7 +67,6 @@ except BaseException as e:
  except Exception:result['pause_requested']=False
  done.set()
 finally:
- result['elf_sha256_prefix']=state['elf_sha256_prefix']
  result['elapsed_host_seconds']=time.monotonic()-started;result['boots']=state['boots'];result['samples']=len(samples)
  hold_rows=[r for r in samples if hold_start and r['host_seconds']>=hold_start-started]
  result['first_sample']=samples[0] if samples else None;result['last_sample']=samples[-1] if samples else None

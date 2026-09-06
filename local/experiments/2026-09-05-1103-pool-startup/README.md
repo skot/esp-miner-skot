@@ -1,5 +1,10 @@
 # Stock 1103 production pool startup
 
+Historical record: the recent automated restart/cooldown runners and firmware
+probes were retired in the 2026-09-06 production cleanup. Their implementations
+remain available in Git history. See
+`../2026-09-06-1103-production-startup/README.md` for current firmware behavior.
+
 2026-09-05, on `1103x-support` after fast-forwarding `1103x-balancing`
 through `c91844e`. Stock board 1103, MAC 28:84:85:BA:96:08,
 USB `/dev/cu.usbmodem11434201`, IP 192.168.30.9. No scope attached or used.
