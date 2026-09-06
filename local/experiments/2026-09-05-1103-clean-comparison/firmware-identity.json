@@ -1,0 +1,6 @@
+{
+  "source_commit": "3c59e6a",
+  "application_sha256": "826a43260f8bf1cfac837c1b07650e76124cdd5279d47c93fd217f6e6041edcd",
+  "elf_sha256": "c384d5ce49d05e4f04a1d50258ee0ad323e49de3460dcabda058e6f312f6aeac",
+  "flashing_during_comparison": false
+}

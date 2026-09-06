@@ -2,6 +2,36 @@
 
 Last updated: 2026-09-05
 
+## Clean unchanged-firmware control: normal boot also loses a domain (2026-09-05)
+
+The user requested a clean comparison: establish mining on one unchanged
+firmware, then pause / cool at 100% fan / resume, and compare with a similarly
+cooled software reboot. No firmware was built or flashed during this series.
+Both boot logs matched the installed recovery-task build's ELF prefix
+`c384d5ce4` (application SHA256
+`826a43260f8bf1cfac837c1b07650e76124cdd5279d47c93fd217f6e6041edcd`).
+
+The prerequisite uninterrupted normal boot failed at 600 MHz: **A3 D2 had
+all 39 cores at zero PASS**, total 2781.86 GH/s. A2 was healthy. The single
+planned retry, after a verified 180-second 100% fan / ASIC-off cooldown, also
+failed normal boot: **A2 D0 had all 39 cores at zero PASS**, total 2776.05 GH/s.
+Neither initialization was interrupted by pause. Both passed warm 300 MHz
+qualification and completed discharge/reinitialization and the unloaded ramp.
+Final PLL-to-first-work intervals were 1.599 and 1.601 seconds, with no logged
+pool-work writes during the unloaded ramp. Pre-first-work temperatures were
+56.16/54.68/55.50/55.34°C and 56.00/54.68/55.67/55.67°C respectively.
+
+**The domain-loss failure is not confined to resume.** The clean baseline
+itself cannot reliably establish mining on this binary. The paired
+established-mining resume/reboot tests were not run because both baseline
+attempts failed. Earlier successful holds used different build revisions;
+the underlying cause is still unisolated. A matched normal-boot comparison
+with the saved known-passing build is the next useful control.
+
+ASIC power was left OFF (34 mV), mining paused, saved 600 MHz / 1160 mV and
+automatic fan settings retained. No scope was used. Full record:
+`local/experiments/2026-09-05-1103-clean-comparison/README.md`.
+
 ## Production pool startup on 1103x-support (2026-09-05)
 
 Fast-forwarded `1103x-balancing` through `c91844e` into `1103x-support`.

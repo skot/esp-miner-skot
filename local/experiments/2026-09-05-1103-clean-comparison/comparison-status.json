@@ -1,0 +1,18 @@
+{
+  "stage": "stopped",
+  "finished": true,
+  "success": false,
+  "runs": [
+    {
+      "name": "run-01-baseline-boot",
+      "success": false,
+      "error": "E (346101) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained"
+    },
+    {
+      "name": "run-01b-baseline-retry",
+      "success": false,
+      "error": "E (319801) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained"
+    }
+  ],
+  "error": "Could not establish pool mining on the unchanged build; resume comparison not run"
+}

@@ -1,0 +1,30 @@
+{
+  "macAddr": "28:84:85:BA:96:08",
+  "boardVersion": "1103",
+  "version": "v2.14.0-46-gc91844e-dirty",
+  "uptimeSeconds": 346,
+  "frequency": 600,
+  "actualFrequency": 600,
+  "coreVoltage": 1160,
+  "miningPaused": true,
+  "regulatorVoltage": 36,
+  "domainVoltages": [
+    21,
+    15
+  ],
+  "asicTemps": [
+    56.16004180908203,
+    54.6755485534668,
+    55.5002670288086,
+    55.335323333740234
+  ],
+  "fanspeed": 30,
+  "fanrpm": 1172,
+  "autofanspeed": 1,
+  "manualFanSpeed": 100,
+  "minFanSpeed": 99,
+  "hashRate": 0,
+  "sharesAccepted": 0,
+  "sharesRejected": 0,
+  "hardware_fault": null
+}

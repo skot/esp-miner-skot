@@ -1,0 +1,326 @@
+[
+  {
+    "run": "run-01-baseline-boot",
+    "initialization_to_ready_seconds": null,
+    "reinitialized_to_first_work_seconds": 19.729,
+    "final_pll_to_first_work_seconds": 1.599,
+    "first_fresh_temperatures_c": [
+      25.98,
+      25.48,
+      25.48,
+      25.81
+    ],
+    "last_warmup_temperatures_c": [
+      54.84,
+      54.02,
+      54.51,
+      54.51
+    ],
+    "pre_first_work_temperatures_c": [
+      56.16,
+      54.68,
+      55.5,
+      55.34
+    ],
+    "pll_steps": [
+      {
+        "boot_ms": 327760,
+        "mhz": 125,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 328296,
+        "mhz": 150,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 328833,
+        "mhz": 175,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 329370,
+        "mhz": 200,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 329908,
+        "mhz": 225,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 330445,
+        "mhz": 250,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 330983,
+        "mhz": 275,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 331520,
+        "mhz": 300,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 332058,
+        "mhz": 325,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 332595,
+        "mhz": 350,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 333132,
+        "mhz": 375,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 333669,
+        "mhz": 400,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 334206,
+        "mhz": 425,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 334743,
+        "mhz": 450,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 335280,
+        "mhz": 475,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 335817,
+        "mhz": 500,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 336354,
+        "mhz": 525,
+        "settle_ms": 1000
+      },
+      {
+        "boot_ms": 337408,
+        "mhz": 550,
+        "settle_ms": 1000
+      },
+      {
+        "boot_ms": 338446,
+        "mhz": 575,
+        "settle_ms": 1000
+      },
+      {
+        "boot_ms": 339482,
+        "mhz": 600,
+        "settle_ms": 1500
+      }
+    ],
+    "final_qualification": "I (346062) asic_init: PROTO STARTUP QUALIFY frequency=600 total=2781.86 result=FAIL",
+    "final_chips": [
+      "I (345700) asic_init: PROTO STARTUP CHIP A1 frequency=600 GHs=740.30 throughput=98.86 pass_rate=98.68",
+      "I (345817) asic_init: PROTO STARTUP CHIP A2 frequency=600 GHs=740.47 throughput=98.89 pass_rate=99.22",
+      "I (345935) asic_init: PROTO STARTUP CHIP A3 frequency=600 GHs=557.86 throughput=74.50 pass_rate=92.71",
+      "I (346052) asic_init: PROTO STARTUP CHIP A4 frequency=600 GHs=743.23 throughput=99.26 pass_rate=99.39"
+    ],
+    "final_domains": [
+      "I (345678) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=100.58 zero=0",
+      "I (345680) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=100.02 zero=0",
+      "I (345685) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.99 zero=1",
+      "I (345692) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.41 zero=0",
+      "I (345797) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=99.74 zero=0",
+      "I (345798) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.09 zero=0",
+      "I (345802) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=99.79 zero=0",
+      "I (345810) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=100.37 zero=0",
+      "I (345914) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=133.84 zero=0",
+      "I (345915) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=133.56 zero=0",
+      "I (345919) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=0.00 zero=39",
+      "I (345927) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=132.60 zero=0",
+      "I (346031) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=100.74 zero=0",
+      "I (346032) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=99.79 zero=0",
+      "I (346037) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=99.38 zero=0",
+      "I (346044) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=100.09 zero=0"
+    ],
+    "logged_pool_work_writes_during_unloaded_ramp": 0,
+    "pool_hold": {
+      "success": false,
+      "error": "E (346101) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained",
+      "hold_seconds": null,
+      "mean_spd_ghs": null,
+      "accepted_during_hold": null,
+      "rejected_during_hold": null,
+      "max_asic_c": null,
+      "elf_sha256_prefix": "c384d5ce4"
+    }
+  },
+  {
+    "run": "run-01b-baseline-retry",
+    "initialization_to_ready_seconds": null,
+    "reinitialized_to_first_work_seconds": 19.631,
+    "final_pll_to_first_work_seconds": 1.601,
+    "first_fresh_temperatures_c": [
+      28.45,
+      27.95,
+      27.79,
+      28.28
+    ],
+    "last_warmup_temperatures_c": [
+      54.84,
+      54.18,
+      54.51,
+      54.68
+    ],
+    "pre_first_work_temperatures_c": [
+      56.0,
+      54.68,
+      55.67,
+      55.67
+    ],
+    "pll_steps": [
+      {
+        "boot_ms": 301514,
+        "mhz": 125,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 302051,
+        "mhz": 150,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 302581,
+        "mhz": 175,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 303119,
+        "mhz": 200,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 303656,
+        "mhz": 225,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 304192,
+        "mhz": 250,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 304729,
+        "mhz": 275,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 305267,
+        "mhz": 300,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 305804,
+        "mhz": 325,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 306341,
+        "mhz": 350,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 306879,
+        "mhz": 375,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 307411,
+        "mhz": 400,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 307947,
+        "mhz": 425,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 308484,
+        "mhz": 450,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 309011,
+        "mhz": 475,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 309548,
+        "mhz": 500,
+        "settle_ms": 500
+      },
+      {
+        "boot_ms": 310086,
+        "mhz": 525,
+        "settle_ms": 1000
+      },
+      {
+        "boot_ms": 311123,
+        "mhz": 550,
+        "settle_ms": 1000
+      },
+      {
+        "boot_ms": 312161,
+        "mhz": 575,
+        "settle_ms": 1000
+      },
+      {
+        "boot_ms": 313192,
+        "mhz": 600,
+        "settle_ms": 1500
+      }
+    ],
+    "final_qualification": "I (319758) asic_init: PROTO STARTUP QUALIFY frequency=600 total=2776.05 result=FAIL",
+    "final_chips": [
+      "I (319395) asic_init: PROTO STARTUP CHIP A1 frequency=600 GHs=732.71 throughput=97.85 pass_rate=97.73",
+      "I (319514) asic_init: PROTO STARTUP CHIP A2 frequency=600 GHs=557.35 throughput=74.43 pass_rate=93.48",
+      "I (319631) asic_init: PROTO STARTUP CHIP A3 frequency=600 GHs=742.55 throughput=99.16 pass_rate=99.31",
+      "I (319748) asic_init: PROTO STARTUP CHIP A4 frequency=600 GHs=743.44 throughput=99.28 pass_rate=99.46"
+    ],
+    "final_domains": [
+      "I (319374) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=100.46 zero=0",
+      "I (319375) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=99.96 zero=0",
+      "I (319380) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.85 zero=1",
+      "I (319387) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.73 zero=0",
+      "I (319491) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=0.00 zero=39",
+      "I (319494) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=133.18 zero=0",
+      "I (319498) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=132.95 zero=0",
+      "I (319506) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=133.86 zero=0",
+      "I (319610) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.42 zero=0",
+      "I (319611) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.14 zero=0",
+      "I (319615) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=99.89 zero=0",
+      "I (319624) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.54 zero=0",
+      "I (319727) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=100.81 zero=0",
+      "I (319728) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=99.91 zero=0",
+      "I (319733) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=99.48 zero=0",
+      "I (319740) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.80 zero=0"
+    ],
+    "logged_pool_work_writes_during_unloaded_ramp": 0,
+    "pool_hold": {
+      "success": false,
+      "error": "E (319801) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained",
+      "hold_seconds": null,
+      "mean_spd_ghs": null,
+      "accepted_during_hold": null,
+      "rejected_during_hold": null,
+      "max_asic_c": null,
+      "elf_sha256_prefix": "c384d5ce4"
+    }
+  }
+]
