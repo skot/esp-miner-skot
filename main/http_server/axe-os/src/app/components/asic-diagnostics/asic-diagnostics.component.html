@@ -1,0 +1,52 @@
+<section class="card mt-3" aria-label="ASIC core and domain diagnostics">
+  <div class="heading">
+    <h2>Core &amp; domain health</h2>
+    <span class="state" [class.failed]="snapshot?.startupResult === 'failed'">
+      {{ snapshot?.source === 'mining' ? 'Mining counters' : 'Startup qualification' }}
+      <ng-container *ngIf="snapshot?.source === 'startup'"> · {{ snapshot?.startupResult || 'waiting' }}</ng-container>
+    </span>
+  </div>
+  <p class="text-color-secondary" *ngIf="snapshot">{{ snapshot.status }} · {{ snapshot.source === 'startup' && snapshot.startupResult === 'pending' ? 'Startup measurements' : retained ? 'Retained measurement' : 'Live measurements' }}</p>
+  <p *ngIf="error" role="status" class="failed">Unable to refresh counters. Showing the last received measurement; its age is from the last successful refresh.</p>
+  <p *ngIf="!chips.length" class="text-color-secondary">Waiting for the first core counter window. No PASS data yet.</p>
+  <div class="chips">
+    <article *ngFor="let chip of chips; trackBy: trackChip" class="chip">
+      <div class="heading">
+        <h3>A{{ chip.data.chipId + 1 }}</h3>
+        <strong *ngIf="chip.domains.length">{{ chip.ghs | number:'1.1-1' }} GH/s</strong>
+      </div>
+      <p class="text-color-secondary measurement" *ngIf="chip.domains.length">
+        {{ chip.data.frequency | number:'1.0-0' }} MHz · {{ chip.data.windowSeconds | number:'1.2-2' }} s window · {{ chip.data.ageSeconds | number:'1.0-0' }} s ago
+      </p>
+      <p *ngIf="!chip.domains.length" class="text-color-secondary">Counters unavailable for this window.</p>
+      <table *ngIf="chip.domains.length">
+        <thead><tr><th>Domain</th><th>PASS</th><th>FAIL</th><th>GH/s</th><th>No PASS</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let domain of chip.domains; trackBy: trackDomain" [class.silent]="domain.pass === 0" [class.low]="domain.pass > 0 && domain.ghs < chip.data.frequency * .312 * .9">
+            <th scope="row">D{{ domain.id }}</th>
+            <td>{{ domain.pass | number }}</td><td>{{ domain.fail | number }}</td>
+            <td>{{ domain.ghs | number:'1.1-1' }}</td><td>{{ domain.zero }}/39</td>
+          </tr>
+        </tbody>
+      </table>
+      <details *ngIf="chip.domains.length">
+        <summary>Individual cores · A{{ chip.data.chipId + 1 }}</summary>
+        <p class="text-color-secondary">Each cell: core ID, PASS count, GH/s. Focus or hover for FAIL count.</p>
+        <div *ngFor="let domain of chip.domains; trackBy: trackDomain" class="core-domain">
+          <h4>D{{ domain.id }} · cores {{ domain.id * 39 }}–{{ domain.id * 39 + 38 }}</h4>
+          <div class="cores">
+            <div *ngFor="let core of domain.cores; trackBy: trackCore" class="core" [class.silent]="core.pass === 0" tabindex="0"
+              [attr.title]="'A' + (chip.data.chipId + 1) + ' D' + domain.id + ' core ' + core.id + ': ' + core.pass + ' PASS, ' + core.fail + ' FAIL, ' + (core.ghs | number:'1.2-2') + ' GH/s'">
+              <span class="core-id">C{{ core.id }}</span><strong>{{ core.pass }}</strong><span>{{ core.ghs | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </details>
+    </article>
+  </div>
+  <p class="text-color-secondary footnote" *ngIf="chips.length">
+    PASS/FAIL are hardware counter counts for each window, not pool shares. Red means no PASS; amber means domain hashrate below 90% of ideal.
+    D0–D3 are the four internal domains within each ASIC (39 cores each). Readings survive ASIC shutdown, but clear on reinitialization or reboot.
+    Startup rates use counter growth between reads; the first read establishes a baseline.
+  </p>
+</section>

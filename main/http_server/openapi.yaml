@@ -17,6 +17,66 @@ servers:
 
 components:
   schemas:
+    AsicDiagnosticsChip:
+      type: object
+      required: [chipId, valid, frequency, windowSeconds, ageSeconds, corePassCounts, coreFailCounts]
+      properties:
+        chipId:
+          type: integer
+          description: Zero-based ASIC index; displayed as A1 through A4 on Proto.
+        valid:
+          type: integer
+          enum: [0, 1]
+        frequency:
+          type: number
+          description: Measurement frequency in MHz.
+        windowSeconds:
+          type: number
+          description: Counter exposure time; frozen timer duration or elapsed time between first-work baseline and final reads.
+        ageSeconds:
+          type: number
+          description: Age of this cached reading. Data is retained after shutdown until ASIC reinitialization.
+        corePassCounts:
+          type: array
+          description: Window PASS counts in logical core order, 13 cores per slice, three slices per internal domain. Empty if unavailable.
+          maxItems: 156
+          items:
+            type: integer
+        coreFailCounts:
+          type: array
+          maxItems: 156
+          items:
+            type: integer
+    AsicDiagnostics:
+      type: object
+      required: [supported, mining, source, startupResult, status, epoch, leadingZeros, chips]
+      properties:
+        supported:
+          type: integer
+          enum: [0, 1]
+        mining:
+          type: integer
+          enum: [0, 1]
+          description: Whether ASIC initialization completed and mining is enabled. Does not imply data freshness.
+        source:
+          type: string
+          enum: [startup, mining]
+        startupResult:
+          type: string
+          enum: [pending, passed, failed]
+        status:
+          type: string
+        epoch:
+          type: integer
+          description: Counter window identifier. Chips in one response never mix epochs.
+        leadingZeros:
+          type: integer
+          description: Hashes per PASS equals 2 raised to this power. GH/s equals PASS times 2^leadingZeros divided by windowSeconds and 1e9.
+        chips:
+          type: array
+          maxItems: 8
+          items:
+            $ref: '#/components/schemas/AsicDiagnosticsChip'
     GenericResponse:
       type: object
       required:
@@ -1115,6 +1175,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SystemScoreboardEntry'
+
+  /api/system/diagnostics:
+    get:
+      summary: Get cached MC3 core and internal domain diagnostics
+      description: Read-only cache of existing startup and mining windows. Does not start a scan, reset work, or access ASIC registers.
+      operationId: getAsicDiagnostics
+      tags: [system]
+      responses:
+        '200':
+          description: Cached counters, including retained startup failure data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsicDiagnostics'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
 
   /api/system/tuning:
     get:

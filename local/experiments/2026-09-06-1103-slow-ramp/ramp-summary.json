@@ -1,0 +1,197 @@
+{
+  "pll_300_to_600_ms": 24380,
+  "pll_600_to_first_work_ms": 1592,
+  "last_warmup_temperatures_c": [
+    42.47,
+    41.48,
+    41.81,
+    42.14
+  ],
+  "before_first_work_temperatures_c": [
+    47.25,
+    45.11,
+    46.59,
+    46.76
+  ],
+  "qualification": [
+    {
+      "mhz": 100,
+      "ghs": 491.83,
+      "result": "PASS"
+    },
+    {
+      "mhz": 125,
+      "ghs": 615.77,
+      "result": "PASS"
+    },
+    {
+      "mhz": 150,
+      "ghs": 740.73,
+      "result": "PASS"
+    },
+    {
+      "mhz": 175,
+      "ghs": 864.04,
+      "result": "PASS"
+    },
+    {
+      "mhz": 200,
+      "ghs": 987.78,
+      "result": "PASS"
+    },
+    {
+      "mhz": 225,
+      "ghs": 1111.76,
+      "result": "PASS"
+    },
+    {
+      "mhz": 250,
+      "ghs": 1233.7,
+      "result": "PASS"
+    },
+    {
+      "mhz": 275,
+      "ghs": 1357.5,
+      "result": "PASS"
+    },
+    {
+      "mhz": 300,
+      "ghs": 1479.92,
+      "result": "PASS"
+    },
+    {
+      "mhz": 300,
+      "ghs": 1487.16,
+      "result": "PASS"
+    },
+    {
+      "mhz": 600,
+      "ghs": 2044.74,
+      "result": "FAIL"
+    }
+  ],
+  "chips": [
+    {
+      "asic": 1,
+      "ghs": 373.42,
+      "throughput_percent": 49.87,
+      "pass_rate_percent": 84.64
+    },
+    {
+      "asic": 2,
+      "ghs": 371.42,
+      "throughput_percent": 49.6,
+      "pass_rate_percent": 83.78
+    },
+    {
+      "asic": 3,
+      "ghs": 557.52,
+      "throughput_percent": 74.46,
+      "pass_rate_percent": 92.15
+    },
+    {
+      "asic": 4,
+      "ghs": 742.38,
+      "throughput_percent": 99.14,
+      "pass_rate_percent": 99.48
+    }
+  ],
+  "domains": [
+    {
+      "asic": 1,
+      "domain": 0,
+      "relative_share_percent": 0.0,
+      "zero_cores": 39
+    },
+    {
+      "asic": 1,
+      "domain": 1,
+      "relative_share_percent": 199.08,
+      "zero_cores": 0
+    },
+    {
+      "asic": 1,
+      "domain": 2,
+      "relative_share_percent": 0.0,
+      "zero_cores": 39
+    },
+    {
+      "asic": 1,
+      "domain": 3,
+      "relative_share_percent": 200.92,
+      "zero_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 0,
+      "relative_share_percent": 0.0,
+      "zero_cores": 39
+    },
+    {
+      "asic": 2,
+      "domain": 1,
+      "relative_share_percent": 199.49,
+      "zero_cores": 0
+    },
+    {
+      "asic": 2,
+      "domain": 2,
+      "relative_share_percent": 0.0,
+      "zero_cores": 39
+    },
+    {
+      "asic": 2,
+      "domain": 3,
+      "relative_share_percent": 200.51,
+      "zero_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 0,
+      "relative_share_percent": 133.26,
+      "zero_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 1,
+      "relative_share_percent": 133.29,
+      "zero_cores": 0
+    },
+    {
+      "asic": 3,
+      "domain": 2,
+      "relative_share_percent": 0.0,
+      "zero_cores": 39
+    },
+    {
+      "asic": 3,
+      "domain": 3,
+      "relative_share_percent": 133.45,
+      "zero_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 0,
+      "relative_share_percent": 100.08,
+      "zero_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 1,
+      "relative_share_percent": 99.93,
+      "zero_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 2,
+      "relative_share_percent": 99.8,
+      "zero_cores": 0
+    },
+    {
+      "asic": 4,
+      "domain": 3,
+      "relative_share_percent": 100.19,
+      "zero_cores": 0
+    }
+  ]
+}

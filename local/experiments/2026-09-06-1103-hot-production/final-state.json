@@ -1,0 +1,70 @@
+{
+  "version": "v2.14.0-52-g381ed6e-dirty",
+  "axeOSVersion": "v2.14.0-52-g381ed6e-dirty",
+  "regulatorVoltage": 2323,
+  "actualFrequency": 600,
+  "asicTemps": [
+    52.3663330078125,
+    50.881839752197266,
+    51.70655822753906,
+    51.376670837402344
+  ],
+  "hashRate": 2955.1801758,
+  "hashrateMonitor": {
+    "asics": [
+      {
+        "total": 737.739990234375,
+        "errorCount": 0,
+        "domains": [
+          737.739990234375,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "total": 732.8200073242188,
+        "errorCount": 0,
+        "domains": [
+          732.8200073242188,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "total": 745.280029296875,
+        "errorCount": 0,
+        "domains": [
+          745.280029296875,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "total": 739.3400268554688,
+        "errorCount": 0,
+        "domains": [
+          739.3400268554688,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "sharesAccepted": 48,
+  "sharesRejected": 0,
+  "freeHeap": 7689560,
+  "freeHeapInternal": 76239,
+  "miningPaused": false,
+  "power": 46.4997559,
+  "temp": 52.366333,
+  "temp2": -1,
+  "fanspeed": 99,
+  "fanrpm": 3569,
+  "autofanspeed": 1,
+  "frequency": 600,
+  "coreVoltage": 1160
+}

@@ -1,0 +1,23 @@
+{
+  "baseline_300_to_600_ms": 7907,
+  "slow_300_to_600_ms": 24380,
+  "baseline_600_to_first_work_ms": 1591,
+  "slow_600_to_first_work_ms": 1592,
+  "baseline_ghs": 2044.51,
+  "slow_ghs": 2044.74,
+  "zero_pass_domains": [
+    "A1 D0",
+    "A1 D2",
+    "A2 D0",
+    "A2 D2",
+    "A3 D2"
+  ],
+  "first_work_temperature_change_c": [
+    0.99,
+    0.66,
+    0.99,
+    1.32
+  ],
+  "improved_this_trial": false,
+  "scope_used": false
+}

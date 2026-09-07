@@ -1,0 +1,6 @@
+{
+  "autofanspeed": 1,
+  "fanspeed": 100,
+  "manual_value_source": "saved-image serial: WARM FAN saved manual=100",
+  "initial_measured_percent": 70
+}

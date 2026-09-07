@@ -6,6 +6,7 @@
 #include "global_state.h"
 
 void tuning_api_init(GlobalState *global_state);
+esp_err_t GET_system_diagnostics(httpd_req_t *req);
 esp_err_t GET_system_tuning(httpd_req_t *req);
 esp_err_t POST_system_tuning(httpd_req_t *req);
 

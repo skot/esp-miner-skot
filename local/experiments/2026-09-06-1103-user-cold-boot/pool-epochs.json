@@ -1,0 +1,6987 @@
+[
+  {
+    "epoch": 13,
+    "host_elapsed": 368.27931779200003,
+    "ghs": 2954.92,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 731.0200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.70726495726497
+          },
+          {
+            "domain": 1,
+            "ghs": 184.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.37606837606839
+          },
+          {
+            "domain": 2,
+            "ghs": 177.5,
+            "zero_cores": 1,
+            "percent_ideal": 94.81837606837608
+          },
+          {
+            "domain": 3,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 738.26,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.32264957264958
+          },
+          {
+            "domain": 1,
+            "ghs": 183.1,
+            "zero_cores": 0,
+            "percent_ideal": 97.80982905982907
+          },
+          {
+            "domain": 2,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 3,
+            "ghs": 185.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.01709401709404
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 744.0200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.38034188034189
+          },
+          {
+            "domain": 1,
+            "ghs": 186.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.86111111111111
+          },
+          {
+            "domain": 2,
+            "ghs": 184.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.79273504273505
+          },
+          {
+            "domain": 3,
+            "ghs": 186.1,
+            "zero_cores": 0,
+            "percent_ideal": 99.41239316239316
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 741.62,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.82,
+            "zero_cores": 0,
+            "percent_ideal": 100.86538461538461
+          },
+          {
+            "domain": 1,
+            "ghs": 187.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.93589743589745
+          },
+          {
+            "domain": 2,
+            "ghs": 182.74,
+            "zero_cores": 0,
+            "percent_ideal": 97.61752136752138
+          },
+          {
+            "domain": 3,
+            "ghs": 182.98,
+            "zero_cores": 0,
+            "percent_ideal": 97.74572649572649
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 14,
+    "host_elapsed": 373.34575729200003,
+    "ghs": 2939.9400000000005,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 729.14,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 97.02991452991454
+          },
+          {
+            "domain": 1,
+            "ghs": 180.48,
+            "zero_cores": 0,
+            "percent_ideal": 96.41025641025641
+          },
+          {
+            "domain": 2,
+            "ghs": 179.74,
+            "zero_cores": 1,
+            "percent_ideal": 96.01495726495727
+          },
+          {
+            "domain": 3,
+            "ghs": 187.28,
+            "zero_cores": 0,
+            "percent_ideal": 100.04273504273505
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 737.3600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.11965811965813
+          },
+          {
+            "domain": 1,
+            "ghs": 184.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.37606837606839
+          },
+          {
+            "domain": 2,
+            "ghs": 184.72,
+            "zero_cores": 0,
+            "percent_ideal": 98.67521367521368
+          },
+          {
+            "domain": 3,
+            "ghs": 184.8,
+            "zero_cores": 0,
+            "percent_ideal": 98.71794871794873
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 736.6800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          },
+          {
+            "domain": 1,
+            "ghs": 183.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.25854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 185.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.96367521367522
+          },
+          {
+            "domain": 3,
+            "ghs": 182.8,
+            "zero_cores": 0,
+            "percent_ideal": 97.64957264957266
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 736.76,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.00213675213676
+          },
+          {
+            "domain": 1,
+            "ghs": 182.16,
+            "zero_cores": 0,
+            "percent_ideal": 97.30769230769232
+          },
+          {
+            "domain": 2,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 3,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 15,
+    "host_elapsed": 378.418311042,
+    "ghs": 2966.9400000000005,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 738.2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.93589743589745
+          },
+          {
+            "domain": 1,
+            "ghs": 186.76,
+            "zero_cores": 0,
+            "percent_ideal": 99.76495726495726
+          },
+          {
+            "domain": 2,
+            "ghs": 180.66,
+            "zero_cores": 1,
+            "percent_ideal": 96.50641025641026
+          },
+          {
+            "domain": 3,
+            "ghs": 183.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.1303418803419
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 743.5600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.24786324786326
+          },
+          {
+            "domain": 1,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 2,
+            "ghs": 187.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.09615384615384
+          },
+          {
+            "domain": 3,
+            "ghs": 186.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.70085470085472
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 740.9000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.1,
+            "zero_cores": 0,
+            "percent_ideal": 98.87820512820514
+          },
+          {
+            "domain": 1,
+            "ghs": 182.54,
+            "zero_cores": 0,
+            "percent_ideal": 97.51068376068376
+          },
+          {
+            "domain": 2,
+            "ghs": 185.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.07051282051283
+          },
+          {
+            "domain": 3,
+            "ghs": 187.8,
+            "zero_cores": 0,
+            "percent_ideal": 100.32051282051285
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 744.28,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.46581196581198
+          },
+          {
+            "domain": 1,
+            "ghs": 189.32,
+            "zero_cores": 0,
+            "percent_ideal": 101.13247863247862
+          },
+          {
+            "domain": 2,
+            "ghs": 183.66,
+            "zero_cores": 0,
+            "percent_ideal": 98.10897435897436
+          },
+          {
+            "domain": 3,
+            "ghs": 185.1,
+            "zero_cores": 0,
+            "percent_ideal": 98.87820512820514
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 18,
+    "host_elapsed": 393.626181167,
+    "ghs": 2973.1400000000003,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 742.86,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 1,
+            "ghs": 189.02,
+            "zero_cores": 0,
+            "percent_ideal": 100.97222222222224
+          },
+          {
+            "domain": 2,
+            "ghs": 182.76,
+            "zero_cores": 1,
+            "percent_ideal": 97.62820512820512
+          },
+          {
+            "domain": 3,
+            "ghs": 185.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.24145299145299
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 745.14,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.08,
+            "zero_cores": 0,
+            "percent_ideal": 97.79914529914531
+          },
+          {
+            "domain": 1,
+            "ghs": 187.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.06410256410257
+          },
+          {
+            "domain": 2,
+            "ghs": 188.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.75854700854703
+          },
+          {
+            "domain": 3,
+            "ghs": 186.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.42307692307693
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.72,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.36538461538463
+          },
+          {
+            "domain": 1,
+            "ghs": 183.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.09829059829062
+          },
+          {
+            "domain": 2,
+            "ghs": 186.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.42307692307693
+          },
+          {
+            "domain": 3,
+            "ghs": 187.82,
+            "zero_cores": 0,
+            "percent_ideal": 100.33119658119658
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 743.4200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.24145299145299
+          },
+          {
+            "domain": 1,
+            "ghs": 184.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.37606837606839
+          },
+          {
+            "domain": 2,
+            "ghs": 186.3,
+            "zero_cores": 0,
+            "percent_ideal": 99.51923076923079
+          },
+          {
+            "domain": 3,
+            "ghs": 187.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.98931623931625
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 21,
+    "host_elapsed": 398.700241792,
+    "ghs": 2960.84,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.08,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.59615384615387
+          },
+          {
+            "domain": 1,
+            "ghs": 184.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.76068376068376
+          },
+          {
+            "domain": 2,
+            "ghs": 178.84,
+            "zero_cores": 1,
+            "percent_ideal": 95.53418803418803
+          },
+          {
+            "domain": 3,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 743.7600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.70085470085472
+          },
+          {
+            "domain": 1,
+            "ghs": 186.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.86111111111111
+          },
+          {
+            "domain": 2,
+            "ghs": 184.6,
+            "zero_cores": 0,
+            "percent_ideal": 98.61111111111111
+          },
+          {
+            "domain": 3,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 740.1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          },
+          {
+            "domain": 1,
+            "ghs": 187.24,
+            "zero_cores": 0,
+            "percent_ideal": 100.02136752136752
+          },
+          {
+            "domain": 2,
+            "ghs": 183.1,
+            "zero_cores": 0,
+            "percent_ideal": 97.80982905982907
+          },
+          {
+            "domain": 3,
+            "ghs": 183.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.26923076923077
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 744.9000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.63247863247865
+          },
+          {
+            "domain": 1,
+            "ghs": 186.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.45512820512822
+          },
+          {
+            "domain": 2,
+            "ghs": 186.52,
+            "zero_cores": 0,
+            "percent_ideal": 99.63675213675215
+          },
+          {
+            "domain": 3,
+            "ghs": 187.56,
+            "zero_cores": 0,
+            "percent_ideal": 100.1923076923077
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 22,
+    "host_elapsed": 403.7695575,
+    "ghs": 2959.4,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 736.04,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          },
+          {
+            "domain": 1,
+            "ghs": 187.98,
+            "zero_cores": 0,
+            "percent_ideal": 100.41666666666667
+          },
+          {
+            "domain": 2,
+            "ghs": 175.24,
+            "zero_cores": 1,
+            "percent_ideal": 93.61111111111113
+          },
+          {
+            "domain": 3,
+            "ghs": 186.32,
+            "zero_cores": 0,
+            "percent_ideal": 99.52991452991454
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 742.96,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.85042735042737
+          },
+          {
+            "domain": 1,
+            "ghs": 185.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.88888888888889
+          },
+          {
+            "domain": 2,
+            "ghs": 186.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.7863247863248
+          },
+          {
+            "domain": 3,
+            "ghs": 184.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.35470085470087
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 739.04,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.96367521367522
+          },
+          {
+            "domain": 1,
+            "ghs": 186.24,
+            "zero_cores": 0,
+            "percent_ideal": 99.4871794871795
+          },
+          {
+            "domain": 2,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          },
+          {
+            "domain": 3,
+            "ghs": 182.0,
+            "zero_cores": 0,
+            "percent_ideal": 97.22222222222223
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 741.3600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.1,
+            "zero_cores": 0,
+            "percent_ideal": 98.3440170940171
+          },
+          {
+            "domain": 1,
+            "ghs": 185.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.93162393162395
+          },
+          {
+            "domain": 2,
+            "ghs": 187.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.95726495726497
+          },
+          {
+            "domain": 3,
+            "ghs": 184.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.79273504273505
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 24,
+    "host_elapsed": 408.843262083,
+    "ghs": 2959.6199999999994,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.88,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          },
+          {
+            "domain": 1,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          },
+          {
+            "domain": 2,
+            "ghs": 175.94,
+            "zero_cores": 1,
+            "percent_ideal": 93.98504273504274
+          },
+          {
+            "domain": 3,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 738.3599999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 1,
+            "ghs": 183.1,
+            "zero_cores": 0,
+            "percent_ideal": 97.80982905982907
+          },
+          {
+            "domain": 2,
+            "ghs": 185.56,
+            "zero_cores": 0,
+            "percent_ideal": 99.12393162393163
+          },
+          {
+            "domain": 3,
+            "ghs": 184.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.45085470085472
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 737.3599999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.4,
+            "zero_cores": 0,
+            "percent_ideal": 97.43589743589745
+          },
+          {
+            "domain": 1,
+            "ghs": 186.24,
+            "zero_cores": 0,
+            "percent_ideal": 99.4871794871795
+          },
+          {
+            "domain": 2,
+            "ghs": 182.66,
+            "zero_cores": 0,
+            "percent_ideal": 97.57478632478633
+          },
+          {
+            "domain": 3,
+            "ghs": 186.06,
+            "zero_cores": 0,
+            "percent_ideal": 99.39102564102565
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 751.02,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 1,
+            "ghs": 188.0,
+            "zero_cores": 0,
+            "percent_ideal": 100.42735042735043
+          },
+          {
+            "domain": 2,
+            "ghs": 188.48,
+            "zero_cores": 0,
+            "percent_ideal": 100.68376068376068
+          },
+          {
+            "domain": 3,
+            "ghs": 189.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 101.0363247863248
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 25,
+    "host_elapsed": 413.912292792,
+    "ghs": 2939.22,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 728.5999999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          },
+          {
+            "domain": 1,
+            "ghs": 185.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.96367521367522
+          },
+          {
+            "domain": 2,
+            "ghs": 177.96,
+            "zero_cores": 1,
+            "percent_ideal": 95.06410256410257
+          },
+          {
+            "domain": 3,
+            "ghs": 181.94,
+            "zero_cores": 0,
+            "percent_ideal": 97.19017094017094
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 736.8199999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.22649572649573
+          },
+          {
+            "domain": 1,
+            "ghs": 183.06,
+            "zero_cores": 0,
+            "percent_ideal": 97.78846153846155
+          },
+          {
+            "domain": 2,
+            "ghs": 183.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.26923076923077
+          },
+          {
+            "domain": 3,
+            "ghs": 185.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.31623931623933
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 733.74,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.78,
+            "zero_cores": 0,
+            "percent_ideal": 97.6388888888889
+          },
+          {
+            "domain": 1,
+            "ghs": 180.78,
+            "zero_cores": 0,
+            "percent_ideal": 96.57051282051282
+          },
+          {
+            "domain": 2,
+            "ghs": 185.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.97435897435898
+          },
+          {
+            "domain": 3,
+            "ghs": 184.9,
+            "zero_cores": 0,
+            "percent_ideal": 98.77136752136752
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 740.06,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.06,
+            "zero_cores": 0,
+            "percent_ideal": 97.25427350427351
+          },
+          {
+            "domain": 1,
+            "ghs": 185.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.91025641025641
+          },
+          {
+            "domain": 2,
+            "ghs": 186.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.38034188034189
+          },
+          {
+            "domain": 3,
+            "ghs": 186.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.7863247863248
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 26,
+    "host_elapsed": 418.98120279200003,
+    "ghs": 2966.5400000000004,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 738.6600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.85683760683762
+          },
+          {
+            "domain": 1,
+            "ghs": 185.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.05982905982907
+          },
+          {
+            "domain": 2,
+            "ghs": 179.20000000000002,
+            "zero_cores": 1,
+            "percent_ideal": 95.72649572649574
+          },
+          {
+            "domain": 3,
+            "ghs": 188.96,
+            "zero_cores": 0,
+            "percent_ideal": 100.94017094017096
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 737.94,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.4,
+            "zero_cores": 0,
+            "percent_ideal": 98.50427350427351
+          },
+          {
+            "domain": 1,
+            "ghs": 184.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.5363247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 3,
+            "ghs": 183.06,
+            "zero_cores": 0,
+            "percent_ideal": 97.78846153846155
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 743.46,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 1,
+            "ghs": 185.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.86752136752138
+          },
+          {
+            "domain": 2,
+            "ghs": 186.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.70085470085472
+          },
+          {
+            "domain": 3,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 746.48,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.8,
+            "zero_cores": 0,
+            "percent_ideal": 98.71794871794873
+          },
+          {
+            "domain": 1,
+            "ghs": 186.9,
+            "zero_cores": 0,
+            "percent_ideal": 99.8397435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 188.12,
+            "zero_cores": 0,
+            "percent_ideal": 100.49145299145299
+          },
+          {
+            "domain": 3,
+            "ghs": 186.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.71153846153847
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 28,
+    "host_elapsed": 424.056280667,
+    "ghs": 2978.36,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 739.56,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          },
+          {
+            "domain": 1,
+            "ghs": 188.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.75854700854703
+          },
+          {
+            "domain": 2,
+            "ghs": 182.68,
+            "zero_cores": 1,
+            "percent_ideal": 97.58547008547009
+          },
+          {
+            "domain": 3,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 746.32,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.68589743589745
+          },
+          {
+            "domain": 1,
+            "ghs": 189.24,
+            "zero_cores": 0,
+            "percent_ideal": 101.0897435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 184.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.36538461538463
+          },
+          {
+            "domain": 3,
+            "ghs": 188.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.53418803418805
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 745.52,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.68,
+            "zero_cores": 0,
+            "percent_ideal": 99.18803418803421
+          },
+          {
+            "domain": 1,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 2,
+            "ghs": 186.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.75427350427351
+          },
+          {
+            "domain": 3,
+            "ghs": 187.48,
+            "zero_cores": 0,
+            "percent_ideal": 100.14957264957265
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 746.96,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.06,
+            "zero_cores": 0,
+            "percent_ideal": 99.92521367521368
+          },
+          {
+            "domain": 1,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 2,
+            "ghs": 186.32,
+            "zero_cores": 0,
+            "percent_ideal": 99.52991452991454
+          },
+          {
+            "domain": 3,
+            "ghs": 188.28,
+            "zero_cores": 0,
+            "percent_ideal": 100.57692307692308
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 29,
+    "host_elapsed": 429.122099875,
+    "ghs": 2945.98,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 736.64,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 1,
+            "ghs": 186.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.77564102564104
+          },
+          {
+            "domain": 2,
+            "ghs": 177.54,
+            "zero_cores": 1,
+            "percent_ideal": 94.83974358974359
+          },
+          {
+            "domain": 3,
+            "ghs": 187.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.90384615384616
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 736.2800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.3,
+            "zero_cores": 0,
+            "percent_ideal": 97.91666666666667
+          },
+          {
+            "domain": 1,
+            "ghs": 182.18,
+            "zero_cores": 0,
+            "percent_ideal": 97.31837606837608
+          },
+          {
+            "domain": 2,
+            "ghs": 187.46,
+            "zero_cores": 0,
+            "percent_ideal": 100.13888888888889
+          },
+          {
+            "domain": 3,
+            "ghs": 183.34,
+            "zero_cores": 0,
+            "percent_ideal": 97.9380341880342
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 731.68,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.82478632478633
+          },
+          {
+            "domain": 1,
+            "ghs": 180.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 96.37820512820514
+          },
+          {
+            "domain": 2,
+            "ghs": 184.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.75000000000001
+          },
+          {
+            "domain": 3,
+            "ghs": 181.4,
+            "zero_cores": 0,
+            "percent_ideal": 96.90170940170941
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 741.3800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.37606837606839
+          },
+          {
+            "domain": 1,
+            "ghs": 187.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.06410256410257
+          },
+          {
+            "domain": 2,
+            "ghs": 185.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.27350427350427
+          },
+          {
+            "domain": 3,
+            "ghs": 184.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.32264957264958
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 30,
+    "host_elapsed": 434.191660542,
+    "ghs": 2964.4,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 734.54,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.72,
+            "zero_cores": 0,
+            "percent_ideal": 97.60683760683762
+          },
+          {
+            "domain": 1,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          },
+          {
+            "domain": 2,
+            "ghs": 180.16,
+            "zero_cores": 1,
+            "percent_ideal": 96.23931623931624
+          },
+          {
+            "domain": 3,
+            "ghs": 186.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.59401709401709
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 744.0799999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.44,
+            "zero_cores": 0,
+            "percent_ideal": 98.52564102564104
+          },
+          {
+            "domain": 1,
+            "ghs": 186.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.59401709401709
+          },
+          {
+            "domain": 2,
+            "ghs": 187.26,
+            "zero_cores": 0,
+            "percent_ideal": 100.03205128205128
+          },
+          {
+            "domain": 3,
+            "ghs": 185.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.32692307692308
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 744.8,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          },
+          {
+            "domain": 1,
+            "ghs": 184.54,
+            "zero_cores": 0,
+            "percent_ideal": 98.57905982905983
+          },
+          {
+            "domain": 2,
+            "ghs": 188.0,
+            "zero_cores": 0,
+            "percent_ideal": 100.42735042735043
+          },
+          {
+            "domain": 3,
+            "ghs": 185.76,
+            "zero_cores": 0,
+            "percent_ideal": 99.23076923076923
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 740.98,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.19871794871796
+          },
+          {
+            "domain": 1,
+            "ghs": 183.4,
+            "zero_cores": 0,
+            "percent_ideal": 97.97008547008548
+          },
+          {
+            "domain": 2,
+            "ghs": 187.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.09615384615384
+          },
+          {
+            "domain": 3,
+            "ghs": 184.5,
+            "zero_cores": 0,
+            "percent_ideal": 98.5576923076923
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 31,
+    "host_elapsed": 439.260445792,
+    "ghs": 2958.16,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 733.7,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.5,
+            "zero_cores": 0,
+            "percent_ideal": 98.02350427350429
+          },
+          {
+            "domain": 1,
+            "ghs": 185.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.85683760683762
+          },
+          {
+            "domain": 2,
+            "ghs": 180.92000000000002,
+            "zero_cores": 1,
+            "percent_ideal": 96.64529914529916
+          },
+          {
+            "domain": 3,
+            "ghs": 184.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.40811965811966
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 741.36,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 1,
+            "ghs": 181.88,
+            "zero_cores": 0,
+            "percent_ideal": 97.15811965811966
+          },
+          {
+            "domain": 2,
+            "ghs": 188.9,
+            "zero_cores": 0,
+            "percent_ideal": 100.90811965811967
+          },
+          {
+            "domain": 3,
+            "ghs": 185.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.97435897435898
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 734.88,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.54,
+            "zero_cores": 0,
+            "percent_ideal": 96.97649572649573
+          },
+          {
+            "domain": 1,
+            "ghs": 185.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.88888888888889
+          },
+          {
+            "domain": 2,
+            "ghs": 183.32,
+            "zero_cores": 0,
+            "percent_ideal": 97.92735042735043
+          },
+          {
+            "domain": 3,
+            "ghs": 184.9,
+            "zero_cores": 0,
+            "percent_ideal": 98.77136752136752
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 748.2199999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.1,
+            "zero_cores": 0,
+            "percent_ideal": 99.94658119658119
+          },
+          {
+            "domain": 1,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          },
+          {
+            "domain": 2,
+            "ghs": 187.74,
+            "zero_cores": 0,
+            "percent_ideal": 100.28846153846156
+          },
+          {
+            "domain": 3,
+            "ghs": 188.16,
+            "zero_cores": 0,
+            "percent_ideal": 100.51282051282051
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 33,
+    "host_elapsed": 444.329525792,
+    "ghs": 2952.36,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 730.8199999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.02,
+            "zero_cores": 0,
+            "percent_ideal": 96.69871794871796
+          },
+          {
+            "domain": 1,
+            "ghs": 184.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.63247863247865
+          },
+          {
+            "domain": 2,
+            "ghs": 178.84,
+            "zero_cores": 1,
+            "percent_ideal": 95.53418803418803
+          },
+          {
+            "domain": 3,
+            "ghs": 186.32,
+            "zero_cores": 0,
+            "percent_ideal": 99.52991452991454
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 740.3199999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.74,
+            "zero_cores": 0,
+            "percent_ideal": 97.61752136752138
+          },
+          {
+            "domain": 1,
+            "ghs": 184.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.76068376068376
+          },
+          {
+            "domain": 2,
+            "ghs": 187.16,
+            "zero_cores": 0,
+            "percent_ideal": 99.97863247863248
+          },
+          {
+            "domain": 3,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 738.7,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.33333333333336
+          },
+          {
+            "domain": 1,
+            "ghs": 184.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.46153846153847
+          },
+          {
+            "domain": 2,
+            "ghs": 185.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.07051282051283
+          },
+          {
+            "domain": 3,
+            "ghs": 184.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.73931623931624
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 742.52,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.95726495726497
+          },
+          {
+            "domain": 1,
+            "ghs": 183.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.00213675213676
+          },
+          {
+            "domain": 2,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          },
+          {
+            "domain": 3,
+            "ghs": 186.28,
+            "zero_cores": 0,
+            "percent_ideal": 99.50854700854701
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 34,
+    "host_elapsed": 454.464919875,
+    "ghs": 2946.2200000000003,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 726.1800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.9,
+            "zero_cores": 0,
+            "percent_ideal": 97.70299145299145
+          },
+          {
+            "domain": 1,
+            "ghs": 181.62,
+            "zero_cores": 0,
+            "percent_ideal": 97.01923076923077
+          },
+          {
+            "domain": 2,
+            "ghs": 179.86,
+            "zero_cores": 1,
+            "percent_ideal": 96.07905982905984
+          },
+          {
+            "domain": 3,
+            "ghs": 181.8,
+            "zero_cores": 0,
+            "percent_ideal": 97.11538461538463
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 741.84,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.80341880341882
+          },
+          {
+            "domain": 1,
+            "ghs": 184.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.35470085470087
+          },
+          {
+            "domain": 2,
+            "ghs": 184.38,
+            "zero_cores": 0,
+            "percent_ideal": 98.49358974358975
+          },
+          {
+            "domain": 3,
+            "ghs": 188.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.63034188034187
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 739.46,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.6,
+            "zero_cores": 0,
+            "percent_ideal": 100.21367521367522
+          },
+          {
+            "domain": 1,
+            "ghs": 181.86,
+            "zero_cores": 0,
+            "percent_ideal": 97.14743589743591
+          },
+          {
+            "domain": 2,
+            "ghs": 184.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.33333333333336
+          },
+          {
+            "domain": 3,
+            "ghs": 185.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.31623931623933
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 738.74,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.01709401709404
+          },
+          {
+            "domain": 1,
+            "ghs": 183.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.17307692307693
+          },
+          {
+            "domain": 2,
+            "ghs": 184.98,
+            "zero_cores": 0,
+            "percent_ideal": 98.81410256410257
+          },
+          {
+            "domain": 3,
+            "ghs": 184.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.62179487179488
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 37,
+    "host_elapsed": 459.535544875,
+    "ghs": 2956.0000000000005,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 734.52,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.34,
+            "zero_cores": 0,
+            "percent_ideal": 97.9380341880342
+          },
+          {
+            "domain": 1,
+            "ghs": 184.44,
+            "zero_cores": 0,
+            "percent_ideal": 98.52564102564104
+          },
+          {
+            "domain": 2,
+            "ghs": 183.84,
+            "zero_cores": 1,
+            "percent_ideal": 98.2051282051282
+          },
+          {
+            "domain": 3,
+            "ghs": 182.9,
+            "zero_cores": 0,
+            "percent_ideal": 97.70299145299145
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 740.84,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.54,
+            "zero_cores": 0,
+            "percent_ideal": 100.18162393162393
+          },
+          {
+            "domain": 1,
+            "ghs": 184.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.51495726495727
+          },
+          {
+            "domain": 2,
+            "ghs": 185.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.91025641025641
+          },
+          {
+            "domain": 3,
+            "ghs": 183.72,
+            "zero_cores": 0,
+            "percent_ideal": 98.14102564102565
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 737.8000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          },
+          {
+            "domain": 1,
+            "ghs": 181.6,
+            "zero_cores": 0,
+            "percent_ideal": 97.00854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 185.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.86752136752138
+          },
+          {
+            "domain": 3,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 742.84,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.53418803418805
+          },
+          {
+            "domain": 1,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          },
+          {
+            "domain": 2,
+            "ghs": 187.76,
+            "zero_cores": 0,
+            "percent_ideal": 100.2991452991453
+          },
+          {
+            "domain": 3,
+            "ghs": 181.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 97.02991452991454
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 40,
+    "host_elapsed": 469.676233375,
+    "ghs": 2961.74,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 736.28,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.59401709401709
+          },
+          {
+            "domain": 1,
+            "ghs": 183.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.09829059829062
+          },
+          {
+            "domain": 2,
+            "ghs": 178.54,
+            "zero_cores": 1,
+            "percent_ideal": 95.37393162393163
+          },
+          {
+            "domain": 3,
+            "ghs": 187.66,
+            "zero_cores": 0,
+            "percent_ideal": 100.2457264957265
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 743.5,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.73290598290599
+          },
+          {
+            "domain": 1,
+            "ghs": 187.22,
+            "zero_cores": 0,
+            "percent_ideal": 100.01068376068376
+          },
+          {
+            "domain": 2,
+            "ghs": 183.32,
+            "zero_cores": 0,
+            "percent_ideal": 97.92735042735043
+          },
+          {
+            "domain": 3,
+            "ghs": 186.26,
+            "zero_cores": 0,
+            "percent_ideal": 99.49786324786325
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 739.9399999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.70085470085472
+          },
+          {
+            "domain": 1,
+            "ghs": 184.36,
+            "zero_cores": 0,
+            "percent_ideal": 98.482905982906
+          },
+          {
+            "domain": 2,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          },
+          {
+            "domain": 3,
+            "ghs": 183.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 97.8311965811966
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 742.02,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.07051282051283
+          },
+          {
+            "domain": 1,
+            "ghs": 186.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.71153846153847
+          },
+          {
+            "domain": 2,
+            "ghs": 182.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.45726495726497
+          },
+          {
+            "domain": 3,
+            "ghs": 187.46,
+            "zero_cores": 0,
+            "percent_ideal": 100.13888888888889
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 41,
+    "host_elapsed": 474.743849333,
+    "ghs": 2965.0200000000004,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 737.5,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          },
+          {
+            "domain": 1,
+            "ghs": 186.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.5405982905983
+          },
+          {
+            "domain": 2,
+            "ghs": 180.28,
+            "zero_cores": 1,
+            "percent_ideal": 96.30341880341881
+          },
+          {
+            "domain": 3,
+            "ghs": 186.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.55128205128206
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 741.0800000000002,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.32264957264958
+          },
+          {
+            "domain": 1,
+            "ghs": 186.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.4337606837607
+          },
+          {
+            "domain": 2,
+            "ghs": 186.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.86111111111111
+          },
+          {
+            "domain": 3,
+            "ghs": 183.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.25854700854701
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 743.36,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.91025641025641
+          },
+          {
+            "domain": 1,
+            "ghs": 186.6,
+            "zero_cores": 0,
+            "percent_ideal": 99.67948717948718
+          },
+          {
+            "domain": 2,
+            "ghs": 187.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.95726495726497
+          },
+          {
+            "domain": 3,
+            "ghs": 184.48,
+            "zero_cores": 0,
+            "percent_ideal": 98.54700854700855
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 743.0800000000002,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.98931623931625
+          },
+          {
+            "domain": 1,
+            "ghs": 185.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.01709401709404
+          },
+          {
+            "domain": 2,
+            "ghs": 186.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.55128205128206
+          },
+          {
+            "domain": 3,
+            "ghs": 184.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.38675213675214
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 42,
+    "host_elapsed": 479.81758,
+    "ghs": 2956.6000000000004,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 737.94,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.82478632478633
+          },
+          {
+            "domain": 1,
+            "ghs": 188.34,
+            "zero_cores": 0,
+            "percent_ideal": 100.60897435897435
+          },
+          {
+            "domain": 2,
+            "ghs": 182.06,
+            "zero_cores": 1,
+            "percent_ideal": 97.25427350427351
+          },
+          {
+            "domain": 3,
+            "ghs": 182.54,
+            "zero_cores": 0,
+            "percent_ideal": 97.51068376068376
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 732.9,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.82,
+            "zero_cores": 0,
+            "percent_ideal": 97.12606837606837
+          },
+          {
+            "domain": 1,
+            "ghs": 184.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.75000000000001
+          },
+          {
+            "domain": 2,
+            "ghs": 181.88,
+            "zero_cores": 0,
+            "percent_ideal": 97.15811965811966
+          },
+          {
+            "domain": 3,
+            "ghs": 184.34,
+            "zero_cores": 0,
+            "percent_ideal": 98.47222222222223
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 738.72,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.68,
+            "zero_cores": 0,
+            "percent_ideal": 97.58547008547009
+          },
+          {
+            "domain": 1,
+            "ghs": 185.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.86752136752138
+          },
+          {
+            "domain": 2,
+            "ghs": 185.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.96367521367522
+          },
+          {
+            "domain": 3,
+            "ghs": 185.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.19871794871796
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 747.0400000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.02,
+            "zero_cores": 0,
+            "percent_ideal": 100.97222222222224
+          },
+          {
+            "domain": 1,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 185.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.32692307692308
+          },
+          {
+            "domain": 3,
+            "ghs": 186.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.40170940170941
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 44,
+    "host_elapsed": 484.88865400000003,
+    "ghs": 2959.2,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 737.3999999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.80769230769232
+          },
+          {
+            "domain": 1,
+            "ghs": 184.8,
+            "zero_cores": 0,
+            "percent_ideal": 98.71794871794873
+          },
+          {
+            "domain": 2,
+            "ghs": 180.94,
+            "zero_cores": 1,
+            "percent_ideal": 96.65598290598291
+          },
+          {
+            "domain": 3,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 740.96,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.16666666666669
+          },
+          {
+            "domain": 1,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          },
+          {
+            "domain": 2,
+            "ghs": 182.84,
+            "zero_cores": 0,
+            "percent_ideal": 97.67094017094018
+          },
+          {
+            "domain": 3,
+            "ghs": 186.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.86111111111111
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 737.54,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.24,
+            "zero_cores": 0,
+            "percent_ideal": 97.88461538461539
+          },
+          {
+            "domain": 1,
+            "ghs": 184.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.44017094017094
+          },
+          {
+            "domain": 2,
+            "ghs": 183.38,
+            "zero_cores": 0,
+            "percent_ideal": 97.95940170940172
+          },
+          {
+            "domain": 3,
+            "ghs": 186.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.70085470085472
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 743.3000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.86752136752138
+          },
+          {
+            "domain": 1,
+            "ghs": 188.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.63034188034187
+          },
+          {
+            "domain": 2,
+            "ghs": 182.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.59615384615387
+          },
+          {
+            "domain": 3,
+            "ghs": 187.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.96794871794873
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 45,
+    "host_elapsed": 489.955293083,
+    "ghs": 2960.3,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 739.44,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.77564102564104
+          },
+          {
+            "domain": 1,
+            "ghs": 186.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.71153846153847
+          },
+          {
+            "domain": 2,
+            "ghs": 180.66,
+            "zero_cores": 1,
+            "percent_ideal": 96.50641025641026
+          },
+          {
+            "domain": 3,
+            "ghs": 185.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.00641025641026
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 742.12,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.32,
+            "zero_cores": 0,
+            "percent_ideal": 96.85897435897436
+          },
+          {
+            "domain": 1,
+            "ghs": 185.88,
+            "zero_cores": 0,
+            "percent_ideal": 99.2948717948718
+          },
+          {
+            "domain": 2,
+            "ghs": 187.44,
+            "zero_cores": 0,
+            "percent_ideal": 100.12820512820512
+          },
+          {
+            "domain": 3,
+            "ghs": 187.48,
+            "zero_cores": 0,
+            "percent_ideal": 100.14957264957265
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 739.2800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 1,
+            "ghs": 181.58,
+            "zero_cores": 0,
+            "percent_ideal": 96.99786324786326
+          },
+          {
+            "domain": 2,
+            "ghs": 186.48,
+            "zero_cores": 0,
+            "percent_ideal": 99.61538461538461
+          },
+          {
+            "domain": 3,
+            "ghs": 185.48,
+            "zero_cores": 0,
+            "percent_ideal": 99.08119658119658
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 739.46,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.9957264957265
+          },
+          {
+            "domain": 1,
+            "ghs": 189.36,
+            "zero_cores": 0,
+            "percent_ideal": 101.15384615384617
+          },
+          {
+            "domain": 2,
+            "ghs": 183.02,
+            "zero_cores": 0,
+            "percent_ideal": 97.76709401709402
+          },
+          {
+            "domain": 3,
+            "ghs": 181.76,
+            "zero_cores": 0,
+            "percent_ideal": 97.09401709401709
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 46,
+    "host_elapsed": 495.023295333,
+    "ghs": 2957.3599999999997,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 728.9,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.45726495726497
+          },
+          {
+            "domain": 1,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 2,
+            "ghs": 178.64000000000001,
+            "zero_cores": 1,
+            "percent_ideal": 95.42735042735045
+          },
+          {
+            "domain": 3,
+            "ghs": 182.24,
+            "zero_cores": 0,
+            "percent_ideal": 97.35042735042737
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 742.7,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.4,
+            "zero_cores": 0,
+            "percent_ideal": 98.50427350427351
+          },
+          {
+            "domain": 1,
+            "ghs": 186.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.40170940170941
+          },
+          {
+            "domain": 2,
+            "ghs": 184.36,
+            "zero_cores": 0,
+            "percent_ideal": 98.482905982906
+          },
+          {
+            "domain": 3,
+            "ghs": 187.86,
+            "zero_cores": 0,
+            "percent_ideal": 100.35256410256412
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 737.6800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.91452991452991
+          },
+          {
+            "domain": 1,
+            "ghs": 180.9,
+            "zero_cores": 0,
+            "percent_ideal": 96.6346153846154
+          },
+          {
+            "domain": 2,
+            "ghs": 183.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.15170940170941
+          },
+          {
+            "domain": 3,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 748.0799999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.11752136752139
+          },
+          {
+            "domain": 1,
+            "ghs": 186.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.5405982905983
+          },
+          {
+            "domain": 2,
+            "ghs": 189.02,
+            "zero_cores": 0,
+            "percent_ideal": 100.97222222222224
+          },
+          {
+            "domain": 3,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 47,
+    "host_elapsed": 500.088575458,
+    "ghs": 2962.88,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 738.0200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.33760683760686
+          },
+          {
+            "domain": 1,
+            "ghs": 186.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.75427350427351
+          },
+          {
+            "domain": 2,
+            "ghs": 181.98,
+            "zero_cores": 1,
+            "percent_ideal": 97.21153846153847
+          },
+          {
+            "domain": 3,
+            "ghs": 183.34,
+            "zero_cores": 0,
+            "percent_ideal": 97.9380341880342
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 743.42,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.9,
+            "zero_cores": 0,
+            "percent_ideal": 99.30555555555557
+          },
+          {
+            "domain": 1,
+            "ghs": 187.24,
+            "zero_cores": 0,
+            "percent_ideal": 100.02136752136752
+          },
+          {
+            "domain": 2,
+            "ghs": 184.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.6965811965812
+          },
+          {
+            "domain": 3,
+            "ghs": 185.52,
+            "zero_cores": 0,
+            "percent_ideal": 99.10256410256412
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.44,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.22649572649573
+          },
+          {
+            "domain": 1,
+            "ghs": 185.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.91025641025641
+          },
+          {
+            "domain": 2,
+            "ghs": 186.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.85042735042737
+          },
+          {
+            "domain": 3,
+            "ghs": 185.48,
+            "zero_cores": 0,
+            "percent_ideal": 99.08119658119658
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 740.0,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.72,
+            "zero_cores": 0,
+            "percent_ideal": 99.74358974358975
+          },
+          {
+            "domain": 1,
+            "ghs": 184.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.41880341880342
+          },
+          {
+            "domain": 2,
+            "ghs": 187.36,
+            "zero_cores": 0,
+            "percent_ideal": 100.0854700854701
+          },
+          {
+            "domain": 3,
+            "ghs": 181.68,
+            "zero_cores": 0,
+            "percent_ideal": 97.05128205128206
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 49,
+    "host_elapsed": 505.153425625,
+    "ghs": 2956.12,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.56,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.66,
+            "zero_cores": 0,
+            "percent_ideal": 97.57478632478633
+          },
+          {
+            "domain": 1,
+            "ghs": 186.26,
+            "zero_cores": 0,
+            "percent_ideal": 99.49786324786325
+          },
+          {
+            "domain": 2,
+            "ghs": 178.36,
+            "zero_cores": 1,
+            "percent_ideal": 95.2777777777778
+          },
+          {
+            "domain": 3,
+            "ghs": 185.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.97435897435898
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 743.8,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.38,
+            "zero_cores": 0,
+            "percent_ideal": 101.16452991452991
+          },
+          {
+            "domain": 1,
+            "ghs": 183.06,
+            "zero_cores": 0,
+            "percent_ideal": 97.78846153846155
+          },
+          {
+            "domain": 2,
+            "ghs": 184.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.38675213675214
+          },
+          {
+            "domain": 3,
+            "ghs": 187.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.98931623931625
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.26,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 1,
+            "ghs": 184.66,
+            "zero_cores": 0,
+            "percent_ideal": 98.6431623931624
+          },
+          {
+            "domain": 2,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          },
+          {
+            "domain": 3,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 738.5,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.82478632478633
+          },
+          {
+            "domain": 1,
+            "ghs": 184.1,
+            "zero_cores": 0,
+            "percent_ideal": 98.3440170940171
+          },
+          {
+            "domain": 2,
+            "ghs": 184.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.40811965811966
+          },
+          {
+            "domain": 3,
+            "ghs": 185.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.92094017094018
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 50,
+    "host_elapsed": 510.224368667,
+    "ghs": 2951.38,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 733.88,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.19444444444446
+          },
+          {
+            "domain": 1,
+            "ghs": 188.08,
+            "zero_cores": 0,
+            "percent_ideal": 100.4700854700855
+          },
+          {
+            "domain": 2,
+            "ghs": 180.34,
+            "zero_cores": 1,
+            "percent_ideal": 96.33547008547009
+          },
+          {
+            "domain": 3,
+            "ghs": 181.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 97.02991452991454
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 739.26,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.72,
+            "zero_cores": 0,
+            "percent_ideal": 97.60683760683762
+          },
+          {
+            "domain": 1,
+            "ghs": 186.6,
+            "zero_cores": 0,
+            "percent_ideal": 99.67948717948718
+          },
+          {
+            "domain": 2,
+            "ghs": 183.8,
+            "zero_cores": 0,
+            "percent_ideal": 98.1837606837607
+          },
+          {
+            "domain": 3,
+            "ghs": 186.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.4337606837607
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 736.8000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.63247863247865
+          },
+          {
+            "domain": 1,
+            "ghs": 181.46,
+            "zero_cores": 0,
+            "percent_ideal": 96.9337606837607
+          },
+          {
+            "domain": 2,
+            "ghs": 187.86,
+            "zero_cores": 0,
+            "percent_ideal": 100.35256410256412
+          },
+          {
+            "domain": 3,
+            "ghs": 182.84,
+            "zero_cores": 0,
+            "percent_ideal": 97.67094017094018
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 741.44,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          },
+          {
+            "domain": 1,
+            "ghs": 186.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.56196581196582
+          },
+          {
+            "domain": 2,
+            "ghs": 183.3,
+            "zero_cores": 0,
+            "percent_ideal": 97.91666666666667
+          },
+          {
+            "domain": 3,
+            "ghs": 186.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.6474358974359
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 52,
+    "host_elapsed": 515.2962861670001,
+    "ghs": 2950.94,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 735.06,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.94,
+            "zero_cores": 0,
+            "percent_ideal": 97.72435897435898
+          },
+          {
+            "domain": 1,
+            "ghs": 184.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.40811965811966
+          },
+          {
+            "domain": 2,
+            "ghs": 181.48,
+            "zero_cores": 1,
+            "percent_ideal": 96.94444444444444
+          },
+          {
+            "domain": 3,
+            "ghs": 186.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.58333333333334
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 734.9399999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.21581196581198
+          },
+          {
+            "domain": 1,
+            "ghs": 181.78,
+            "zero_cores": 0,
+            "percent_ideal": 97.10470085470087
+          },
+          {
+            "domain": 2,
+            "ghs": 185.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.8354700854701
+          },
+          {
+            "domain": 3,
+            "ghs": 184.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.44017094017094
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.42,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 1,
+            "ghs": 182.52,
+            "zero_cores": 0,
+            "percent_ideal": 97.50000000000001
+          },
+          {
+            "domain": 2,
+            "ghs": 189.28,
+            "zero_cores": 0,
+            "percent_ideal": 101.11111111111111
+          },
+          {
+            "domain": 3,
+            "ghs": 184.04,
+            "zero_cores": 0,
+            "percent_ideal": 98.31196581196582
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 739.52,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.85042735042737
+          },
+          {
+            "domain": 1,
+            "ghs": 182.04,
+            "zero_cores": 0,
+            "percent_ideal": 97.24358974358974
+          },
+          {
+            "domain": 2,
+            "ghs": 184.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.6965811965812
+          },
+          {
+            "domain": 3,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 54,
+    "host_elapsed": 520.363714125,
+    "ghs": 2949.48,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 734.32,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.88,
+            "zero_cores": 0,
+            "percent_ideal": 97.69230769230771
+          },
+          {
+            "domain": 1,
+            "ghs": 184.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.42948717948718
+          },
+          {
+            "domain": 2,
+            "ghs": 181.46,
+            "zero_cores": 1,
+            "percent_ideal": 96.9337606837607
+          },
+          {
+            "domain": 3,
+            "ghs": 185.72,
+            "zero_cores": 0,
+            "percent_ideal": 99.20940170940172
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 734.4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.22649572649573
+          },
+          {
+            "domain": 1,
+            "ghs": 181.78,
+            "zero_cores": 0,
+            "percent_ideal": 97.10470085470087
+          },
+          {
+            "domain": 2,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          },
+          {
+            "domain": 3,
+            "ghs": 183.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.03418803418805
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.5800000000002,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.33760683760686
+          },
+          {
+            "domain": 1,
+            "ghs": 182.96,
+            "zero_cores": 0,
+            "percent_ideal": 97.73504273504274
+          },
+          {
+            "domain": 2,
+            "ghs": 188.24,
+            "zero_cores": 0,
+            "percent_ideal": 100.55555555555557
+          },
+          {
+            "domain": 3,
+            "ghs": 184.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.51495726495727
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 739.18,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.58333333333334
+          },
+          {
+            "domain": 1,
+            "ghs": 183.34,
+            "zero_cores": 0,
+            "percent_ideal": 97.9380341880342
+          },
+          {
+            "domain": 2,
+            "ghs": 184.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.45085470085472
+          },
+          {
+            "domain": 3,
+            "ghs": 185.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.88888888888889
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 55,
+    "host_elapsed": 525.432085583,
+    "ghs": 2948.6800000000003,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 730.3000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.00213675213676
+          },
+          {
+            "domain": 1,
+            "ghs": 182.48,
+            "zero_cores": 0,
+            "percent_ideal": 97.47863247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 181.26,
+            "zero_cores": 1,
+            "percent_ideal": 96.82692307692308
+          },
+          {
+            "domain": 3,
+            "ghs": 183.1,
+            "zero_cores": 0,
+            "percent_ideal": 97.80982905982907
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 737.5799999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.8,
+            "zero_cores": 0,
+            "percent_ideal": 97.11538461538463
+          },
+          {
+            "domain": 1,
+            "ghs": 183.34,
+            "zero_cores": 0,
+            "percent_ideal": 97.9380341880342
+          },
+          {
+            "domain": 2,
+            "ghs": 187.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.22435897435898
+          },
+          {
+            "domain": 3,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.2800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.39743589743591
+          },
+          {
+            "domain": 1,
+            "ghs": 184.4,
+            "zero_cores": 0,
+            "percent_ideal": 98.50427350427351
+          },
+          {
+            "domain": 2,
+            "ghs": 187.58,
+            "zero_cores": 0,
+            "percent_ideal": 100.20299145299147
+          },
+          {
+            "domain": 3,
+            "ghs": 185.1,
+            "zero_cores": 0,
+            "percent_ideal": 98.87820512820514
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 739.52,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.8,
+            "zero_cores": 0,
+            "percent_ideal": 97.64957264957266
+          },
+          {
+            "domain": 1,
+            "ghs": 185.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.8354700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 184.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.63247863247865
+          },
+          {
+            "domain": 3,
+            "ghs": 187.06,
+            "zero_cores": 0,
+            "percent_ideal": 99.92521367521368
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 57,
+    "host_elapsed": 530.500130958,
+    "ghs": 2949.78,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.78,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.98,
+            "zero_cores": 0,
+            "percent_ideal": 98.27991452991452
+          },
+          {
+            "domain": 1,
+            "ghs": 185.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.00641025641026
+          },
+          {
+            "domain": 2,
+            "ghs": 180.42000000000002,
+            "zero_cores": 1,
+            "percent_ideal": 96.37820512820514
+          },
+          {
+            "domain": 3,
+            "ghs": 183.04,
+            "zero_cores": 0,
+            "percent_ideal": 97.77777777777777
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 736.08,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.02777777777779
+          },
+          {
+            "domain": 1,
+            "ghs": 183.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.00213675213676
+          },
+          {
+            "domain": 2,
+            "ghs": 182.66,
+            "zero_cores": 0,
+            "percent_ideal": 97.57478632478633
+          },
+          {
+            "domain": 3,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 743.56,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.95726495726497
+          },
+          {
+            "domain": 1,
+            "ghs": 184.54,
+            "zero_cores": 0,
+            "percent_ideal": 98.57905982905983
+          },
+          {
+            "domain": 2,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 3,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 737.36,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 1,
+            "ghs": 184.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.30128205128206
+          },
+          {
+            "domain": 2,
+            "ghs": 183.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.00213675213676
+          },
+          {
+            "domain": 3,
+            "ghs": 184.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.42948717948718
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 58,
+    "host_elapsed": 535.571815333,
+    "ghs": 2948.5,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 730.6800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 180.54,
+            "zero_cores": 0,
+            "percent_ideal": 96.4423076923077
+          },
+          {
+            "domain": 1,
+            "ghs": 186.1,
+            "zero_cores": 0,
+            "percent_ideal": 99.41239316239316
+          },
+          {
+            "domain": 2,
+            "ghs": 181.36,
+            "zero_cores": 1,
+            "percent_ideal": 96.88034188034189
+          },
+          {
+            "domain": 3,
+            "ghs": 182.68,
+            "zero_cores": 0,
+            "percent_ideal": 97.58547008547009
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 735.9,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.05982905982907
+          },
+          {
+            "domain": 1,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          },
+          {
+            "domain": 2,
+            "ghs": 180.28,
+            "zero_cores": 0,
+            "percent_ideal": 96.30341880341881
+          },
+          {
+            "domain": 3,
+            "ghs": 185.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.09188034188034
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 739.0,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.22,
+            "zero_cores": 0,
+            "percent_ideal": 100.5448717948718
+          },
+          {
+            "domain": 1,
+            "ghs": 184.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.35470085470087
+          },
+          {
+            "domain": 2,
+            "ghs": 182.6,
+            "zero_cores": 0,
+            "percent_ideal": 97.54273504273505
+          },
+          {
+            "domain": 3,
+            "ghs": 184.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.32264957264958
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 742.92,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.4,
+            "zero_cores": 0,
+            "percent_ideal": 97.43589743589745
+          },
+          {
+            "domain": 1,
+            "ghs": 186.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.42307692307693
+          },
+          {
+            "domain": 2,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 3,
+            "ghs": 188.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.63034188034187
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 59,
+    "host_elapsed": 540.655880917,
+    "ghs": 2955.76,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 739.2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.6,
+            "zero_cores": 0,
+            "percent_ideal": 99.14529914529915
+          },
+          {
+            "domain": 1,
+            "ghs": 184.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.6965811965812
+          },
+          {
+            "domain": 2,
+            "ghs": 181.56,
+            "zero_cores": 1,
+            "percent_ideal": 96.9871794871795
+          },
+          {
+            "domain": 3,
+            "ghs": 187.28,
+            "zero_cores": 0,
+            "percent_ideal": 100.04273504273505
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 735.9,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.26,
+            "zero_cores": 0,
+            "percent_ideal": 97.36111111111111
+          },
+          {
+            "domain": 1,
+            "ghs": 185.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.09188034188034
+          },
+          {
+            "domain": 2,
+            "ghs": 184.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.45085470085472
+          },
+          {
+            "domain": 3,
+            "ghs": 183.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.2051282051282
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.5600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 97.02991452991454
+          },
+          {
+            "domain": 1,
+            "ghs": 184.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.80341880341882
+          },
+          {
+            "domain": 2,
+            "ghs": 187.76,
+            "zero_cores": 0,
+            "percent_ideal": 100.2991452991453
+          },
+          {
+            "domain": 3,
+            "ghs": 187.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.00000000000003
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 739.1000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.68589743589745
+          },
+          {
+            "domain": 1,
+            "ghs": 184.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.79273504273505
+          },
+          {
+            "domain": 2,
+            "ghs": 183.5,
+            "zero_cores": 0,
+            "percent_ideal": 98.02350427350429
+          },
+          {
+            "domain": 3,
+            "ghs": 185.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.31623931623933
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 61,
+    "host_elapsed": 545.724907875,
+    "ghs": 2945.76,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 725.6,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.03418803418805
+          },
+          {
+            "domain": 1,
+            "ghs": 179.6,
+            "zero_cores": 0,
+            "percent_ideal": 95.94017094017094
+          },
+          {
+            "domain": 2,
+            "ghs": 177.76,
+            "zero_cores": 1,
+            "percent_ideal": 94.95726495726495
+          },
+          {
+            "domain": 3,
+            "ghs": 184.72,
+            "zero_cores": 0,
+            "percent_ideal": 98.67521367521368
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 735.4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.16,
+            "zero_cores": 0,
+            "percent_ideal": 97.30769230769232
+          },
+          {
+            "domain": 1,
+            "ghs": 184.36,
+            "zero_cores": 0,
+            "percent_ideal": 98.482905982906
+          },
+          {
+            "domain": 2,
+            "ghs": 183.72,
+            "zero_cores": 0,
+            "percent_ideal": 98.14102564102565
+          },
+          {
+            "domain": 3,
+            "ghs": 185.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.91025641025641
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.94,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.85683760683762
+          },
+          {
+            "domain": 1,
+            "ghs": 184.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.70726495726497
+          },
+          {
+            "domain": 2,
+            "ghs": 188.54,
+            "zero_cores": 0,
+            "percent_ideal": 100.71581196581197
+          },
+          {
+            "domain": 3,
+            "ghs": 183.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.05555555555556
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 742.82,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.75854700854703
+          },
+          {
+            "domain": 1,
+            "ghs": 183.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.98076923076925
+          },
+          {
+            "domain": 2,
+            "ghs": 185.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.31623931623933
+          },
+          {
+            "domain": 3,
+            "ghs": 184.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.75000000000001
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 62,
+    "host_elapsed": 550.802415417,
+    "ghs": 2954.7400000000002,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 736.88,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.9957264957265
+          },
+          {
+            "domain": 1,
+            "ghs": 185.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.88888888888889
+          },
+          {
+            "domain": 2,
+            "ghs": 178.1,
+            "zero_cores": 1,
+            "percent_ideal": 95.1388888888889
+          },
+          {
+            "domain": 3,
+            "ghs": 188.34,
+            "zero_cores": 0,
+            "percent_ideal": 100.60897435897435
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 741.84,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.1,
+            "zero_cores": 0,
+            "percent_ideal": 99.41239316239316
+          },
+          {
+            "domain": 1,
+            "ghs": 189.52,
+            "zero_cores": 0,
+            "percent_ideal": 101.23931623931625
+          },
+          {
+            "domain": 2,
+            "ghs": 183.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.09829059829062
+          },
+          {
+            "domain": 3,
+            "ghs": 182.58,
+            "zero_cores": 0,
+            "percent_ideal": 97.53205128205128
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 735.54,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.70726495726497
+          },
+          {
+            "domain": 1,
+            "ghs": 183.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.17307692307693
+          },
+          {
+            "domain": 2,
+            "ghs": 183.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.05555555555556
+          },
+          {
+            "domain": 3,
+            "ghs": 183.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.98076923076925
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 740.48,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.15170940170941
+          },
+          {
+            "domain": 1,
+            "ghs": 182.48,
+            "zero_cores": 0,
+            "percent_ideal": 97.47863247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 189.88,
+            "zero_cores": 0,
+            "percent_ideal": 101.43162393162393
+          },
+          {
+            "domain": 3,
+            "ghs": 184.38,
+            "zero_cores": 0,
+            "percent_ideal": 98.49358974358975
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 63,
+    "host_elapsed": 555.873051875,
+    "ghs": 2947.6,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.58,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.06196581196582
+          },
+          {
+            "domain": 1,
+            "ghs": 183.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.24786324786326
+          },
+          {
+            "domain": 2,
+            "ghs": 179.76,
+            "zero_cores": 1,
+            "percent_ideal": 96.02564102564102
+          },
+          {
+            "domain": 3,
+            "ghs": 187.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.00000000000003
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 739.24,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.76068376068376
+          },
+          {
+            "domain": 1,
+            "ghs": 186.82,
+            "zero_cores": 0,
+            "percent_ideal": 99.79700854700855
+          },
+          {
+            "domain": 2,
+            "ghs": 183.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.21581196581198
+          },
+          {
+            "domain": 3,
+            "ghs": 183.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.11965811965813
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 740.18,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.09188034188034
+          },
+          {
+            "domain": 1,
+            "ghs": 184.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.58974358974359
+          },
+          {
+            "domain": 2,
+            "ghs": 183.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.15170940170941
+          },
+          {
+            "domain": 3,
+            "ghs": 186.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.56196581196582
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 735.5999999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 96.91239316239317
+          },
+          {
+            "domain": 1,
+            "ghs": 185.88,
+            "zero_cores": 0,
+            "percent_ideal": 99.2948717948718
+          },
+          {
+            "domain": 2,
+            "ghs": 182.0,
+            "zero_cores": 0,
+            "percent_ideal": 97.22222222222223
+          },
+          {
+            "domain": 3,
+            "ghs": 186.3,
+            "zero_cores": 0,
+            "percent_ideal": 99.51923076923079
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 64,
+    "host_elapsed": 560.955781208,
+    "ghs": 2959.66,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 738.52,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.59401709401709
+          },
+          {
+            "domain": 1,
+            "ghs": 188.18,
+            "zero_cores": 0,
+            "percent_ideal": 100.5235042735043
+          },
+          {
+            "domain": 2,
+            "ghs": 179.62,
+            "zero_cores": 1,
+            "percent_ideal": 95.9508547008547
+          },
+          {
+            "domain": 3,
+            "ghs": 184.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.44017094017094
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 740.94,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.36,
+            "zero_cores": 0,
+            "percent_ideal": 98.482905982906
+          },
+          {
+            "domain": 1,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 181.32,
+            "zero_cores": 0,
+            "percent_ideal": 96.85897435897436
+          },
+          {
+            "domain": 3,
+            "ghs": 190.44,
+            "zero_cores": 0,
+            "percent_ideal": 101.73076923076924
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 735.4200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.37606837606839
+          },
+          {
+            "domain": 1,
+            "ghs": 184.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.2905982905983
+          },
+          {
+            "domain": 2,
+            "ghs": 184.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.73931623931624
+          },
+          {
+            "domain": 3,
+            "ghs": 182.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.4465811965812
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 744.78,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.98,
+            "zero_cores": 0,
+            "percent_ideal": 100.41666666666667
+          },
+          {
+            "domain": 1,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 2,
+            "ghs": 186.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.56196581196582
+          },
+          {
+            "domain": 3,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 66,
+    "host_elapsed": 566.027855333,
+    "ghs": 2954.7400000000007,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.0400000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.2905982905983
+          },
+          {
+            "domain": 1,
+            "ghs": 181.82,
+            "zero_cores": 0,
+            "percent_ideal": 97.12606837606837
+          },
+          {
+            "domain": 2,
+            "ghs": 179.86,
+            "zero_cores": 1,
+            "percent_ideal": 96.07905982905984
+          },
+          {
+            "domain": 3,
+            "ghs": 186.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.55128205128206
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 745.7400000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.46581196581198
+          },
+          {
+            "domain": 1,
+            "ghs": 187.78,
+            "zero_cores": 0,
+            "percent_ideal": 100.30982905982906
+          },
+          {
+            "domain": 2,
+            "ghs": 187.68,
+            "zero_cores": 0,
+            "percent_ideal": 100.25641025641025
+          },
+          {
+            "domain": 3,
+            "ghs": 184.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.33333333333336
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 735.82,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.51495726495727
+          },
+          {
+            "domain": 1,
+            "ghs": 183.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.05555555555556
+          },
+          {
+            "domain": 2,
+            "ghs": 182.22,
+            "zero_cores": 0,
+            "percent_ideal": 97.3397435897436
+          },
+          {
+            "domain": 3,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 741.1400000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.81837606837608
+          },
+          {
+            "domain": 1,
+            "ghs": 184.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.73931623931624
+          },
+          {
+            "domain": 2,
+            "ghs": 182.98,
+            "zero_cores": 0,
+            "percent_ideal": 97.74572649572649
+          },
+          {
+            "domain": 3,
+            "ghs": 186.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.60470085470087
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 67,
+    "host_elapsed": 571.105320042,
+    "ghs": 2962.72,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 738.1600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 180.72,
+            "zero_cores": 0,
+            "percent_ideal": 96.53846153846153
+          },
+          {
+            "domain": 1,
+            "ghs": 186.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.75427350427351
+          },
+          {
+            "domain": 2,
+            "ghs": 185.08,
+            "zero_cores": 1,
+            "percent_ideal": 98.86752136752138
+          },
+          {
+            "domain": 3,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 736.42,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.54,
+            "zero_cores": 0,
+            "percent_ideal": 98.57905982905983
+          },
+          {
+            "domain": 1,
+            "ghs": 182.84,
+            "zero_cores": 0,
+            "percent_ideal": 97.67094017094018
+          },
+          {
+            "domain": 2,
+            "ghs": 184.04,
+            "zero_cores": 0,
+            "percent_ideal": 98.31196581196582
+          },
+          {
+            "domain": 3,
+            "ghs": 185.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.82478632478633
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 740.54,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.72,
+            "zero_cores": 0,
+            "percent_ideal": 99.20940170940172
+          },
+          {
+            "domain": 1,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          },
+          {
+            "domain": 2,
+            "ghs": 185.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.92094017094018
+          },
+          {
+            "domain": 3,
+            "ghs": 185.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.85683760683762
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 747.6,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.34,
+            "zero_cores": 0,
+            "percent_ideal": 100.60897435897435
+          },
+          {
+            "domain": 1,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          },
+          {
+            "domain": 2,
+            "ghs": 185.72,
+            "zero_cores": 0,
+            "percent_ideal": 99.20940170940172
+          },
+          {
+            "domain": 3,
+            "ghs": 187.74,
+            "zero_cores": 0,
+            "percent_ideal": 100.28846153846156
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 69,
+    "host_elapsed": 576.172842792,
+    "ghs": 2958.86,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.6800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.37606837606839
+          },
+          {
+            "domain": 1,
+            "ghs": 183.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.09829059829062
+          },
+          {
+            "domain": 2,
+            "ghs": 178.20000000000002,
+            "zero_cores": 1,
+            "percent_ideal": 95.19230769230771
+          },
+          {
+            "domain": 3,
+            "ghs": 186.68,
+            "zero_cores": 0,
+            "percent_ideal": 99.72222222222223
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 737.16,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.08,
+            "zero_cores": 0,
+            "percent_ideal": 97.79914529914531
+          },
+          {
+            "domain": 1,
+            "ghs": 186.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.56196581196582
+          },
+          {
+            "domain": 2,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          },
+          {
+            "domain": 3,
+            "ghs": 182.04,
+            "zero_cores": 0,
+            "percent_ideal": 97.24358974358974
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.45512820512822
+          },
+          {
+            "domain": 1,
+            "ghs": 181.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.17948717948718
+          },
+          {
+            "domain": 2,
+            "ghs": 187.24,
+            "zero_cores": 0,
+            "percent_ideal": 100.02136752136752
+          },
+          {
+            "domain": 3,
+            "ghs": 185.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.28418803418805
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 747.8200000000002,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.76,
+            "zero_cores": 0,
+            "percent_ideal": 99.23076923076923
+          },
+          {
+            "domain": 1,
+            "ghs": 188.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.53418803418805
+          },
+          {
+            "domain": 2,
+            "ghs": 189.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 101.18589743589746
+          },
+          {
+            "domain": 3,
+            "ghs": 184.44,
+            "zero_cores": 0,
+            "percent_ideal": 98.52564102564104
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 71,
+    "host_elapsed": 581.237620042,
+    "ghs": 2954.64,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 731.6800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.30128205128206
+          },
+          {
+            "domain": 1,
+            "ghs": 182.8,
+            "zero_cores": 0,
+            "percent_ideal": 97.64957264957266
+          },
+          {
+            "domain": 2,
+            "ghs": 178.86,
+            "zero_cores": 1,
+            "percent_ideal": 95.54487179487181
+          },
+          {
+            "domain": 3,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 736.0999999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.12,
+            "zero_cores": 0,
+            "percent_ideal": 97.2863247863248
+          },
+          {
+            "domain": 1,
+            "ghs": 185.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.24145299145299
+          },
+          {
+            "domain": 2,
+            "ghs": 186.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.38034188034189
+          },
+          {
+            "domain": 3,
+            "ghs": 182.16,
+            "zero_cores": 0,
+            "percent_ideal": 97.30769230769232
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 739.8399999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.79273504273505
+          },
+          {
+            "domain": 1,
+            "ghs": 181.46,
+            "zero_cores": 0,
+            "percent_ideal": 96.9337606837607
+          },
+          {
+            "domain": 2,
+            "ghs": 187.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 100.23504273504275
+          },
+          {
+            "domain": 3,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 747.02,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.02777777777779
+          },
+          {
+            "domain": 1,
+            "ghs": 188.48,
+            "zero_cores": 0,
+            "percent_ideal": 100.68376068376068
+          },
+          {
+            "domain": 2,
+            "ghs": 189.04,
+            "zero_cores": 0,
+            "percent_ideal": 100.98290598290598
+          },
+          {
+            "domain": 3,
+            "ghs": 184.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.35470085470087
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 73,
+    "host_elapsed": 586.30823625,
+    "ghs": 2949.5,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.2800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.58,
+            "zero_cores": 0,
+            "percent_ideal": 97.53205128205128
+          },
+          {
+            "domain": 1,
+            "ghs": 184.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.75000000000001
+          },
+          {
+            "domain": 2,
+            "ghs": 181.76,
+            "zero_cores": 1,
+            "percent_ideal": 97.09401709401709
+          },
+          {
+            "domain": 3,
+            "ghs": 183.08,
+            "zero_cores": 0,
+            "percent_ideal": 97.79914529914531
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 739.34,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.56,
+            "zero_cores": 0,
+            "percent_ideal": 99.12393162393163
+          },
+          {
+            "domain": 1,
+            "ghs": 185.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.89957264957266
+          },
+          {
+            "domain": 2,
+            "ghs": 183.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.22649572649573
+          },
+          {
+            "domain": 3,
+            "ghs": 184.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.6965811965812
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 742.1000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.36,
+            "zero_cores": 0,
+            "percent_ideal": 97.94871794871797
+          },
+          {
+            "domain": 1,
+            "ghs": 185.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.04914529914531
+          },
+          {
+            "domain": 2,
+            "ghs": 185.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.01709401709404
+          },
+          {
+            "domain": 3,
+            "ghs": 187.96,
+            "zero_cores": 0,
+            "percent_ideal": 100.40598290598292
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 735.78,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          },
+          {
+            "domain": 1,
+            "ghs": 183.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.05555555555556
+          },
+          {
+            "domain": 2,
+            "ghs": 183.6,
+            "zero_cores": 0,
+            "percent_ideal": 98.07692307692308
+          },
+          {
+            "domain": 3,
+            "ghs": 183.4,
+            "zero_cores": 0,
+            "percent_ideal": 97.97008547008548
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 74,
+    "host_elapsed": 591.376947875,
+    "ghs": 2935.8799999999997,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 728.86,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 179.62,
+            "zero_cores": 0,
+            "percent_ideal": 95.9508547008547
+          },
+          {
+            "domain": 1,
+            "ghs": 186.9,
+            "zero_cores": 0,
+            "percent_ideal": 99.8397435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 179.36,
+            "zero_cores": 1,
+            "percent_ideal": 95.81196581196582
+          },
+          {
+            "domain": 3,
+            "ghs": 182.98,
+            "zero_cores": 0,
+            "percent_ideal": 97.74572649572649
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 736.64,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.45512820512822
+          },
+          {
+            "domain": 1,
+            "ghs": 181.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.06196581196582
+          },
+          {
+            "domain": 2,
+            "ghs": 187.24,
+            "zero_cores": 0,
+            "percent_ideal": 100.02136752136752
+          },
+          {
+            "domain": 3,
+            "ghs": 181.52,
+            "zero_cores": 0,
+            "percent_ideal": 96.96581196581198
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 733.3599999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          },
+          {
+            "domain": 1,
+            "ghs": 180.04,
+            "zero_cores": 0,
+            "percent_ideal": 96.17521367521368
+          },
+          {
+            "domain": 2,
+            "ghs": 183.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.05555555555556
+          },
+          {
+            "domain": 3,
+            "ghs": 183.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.16239316239317
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 737.02,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.36538461538463
+          },
+          {
+            "domain": 1,
+            "ghs": 185.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.82478632478633
+          },
+          {
+            "domain": 2,
+            "ghs": 183.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.03418803418805
+          },
+          {
+            "domain": 3,
+            "ghs": 184.36,
+            "zero_cores": 0,
+            "percent_ideal": 98.482905982906
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 75,
+    "host_elapsed": 596.447807958,
+    "ghs": 2951.5,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 735.1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.06,
+            "zero_cores": 0,
+            "percent_ideal": 99.39102564102565
+          },
+          {
+            "domain": 1,
+            "ghs": 186.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.87179487179489
+          },
+          {
+            "domain": 2,
+            "ghs": 179.92000000000002,
+            "zero_cores": 1,
+            "percent_ideal": 96.11111111111113
+          },
+          {
+            "domain": 3,
+            "ghs": 182.16,
+            "zero_cores": 0,
+            "percent_ideal": 97.30769230769232
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 738.9200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.98,
+            "zero_cores": 0,
+            "percent_ideal": 98.27991452991452
+          },
+          {
+            "domain": 1,
+            "ghs": 183.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 97.8311965811966
+          },
+          {
+            "domain": 2,
+            "ghs": 189.0,
+            "zero_cores": 0,
+            "percent_ideal": 100.96153846153845
+          },
+          {
+            "domain": 3,
+            "ghs": 182.8,
+            "zero_cores": 0,
+            "percent_ideal": 97.64957264957266
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 735.5600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          },
+          {
+            "domain": 1,
+            "ghs": 184.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.62179487179488
+          },
+          {
+            "domain": 2,
+            "ghs": 184.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.7820512820513
+          },
+          {
+            "domain": 3,
+            "ghs": 181.34,
+            "zero_cores": 0,
+            "percent_ideal": 96.86965811965813
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 741.9200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.6,
+            "zero_cores": 0,
+            "percent_ideal": 99.67948717948718
+          },
+          {
+            "domain": 1,
+            "ghs": 187.4,
+            "zero_cores": 0,
+            "percent_ideal": 100.1068376068376
+          },
+          {
+            "domain": 2,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 3,
+            "ghs": 182.34,
+            "zero_cores": 0,
+            "percent_ideal": 97.40384615384616
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 78,
+    "host_elapsed": 606.582047625,
+    "ghs": 2963.92,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 733.9200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.08,
+            "zero_cores": 0,
+            "percent_ideal": 97.79914529914531
+          },
+          {
+            "domain": 1,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          },
+          {
+            "domain": 2,
+            "ghs": 180.3,
+            "zero_cores": 1,
+            "percent_ideal": 96.31410256410258
+          },
+          {
+            "domain": 3,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 745.96,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.96367521367522
+          },
+          {
+            "domain": 1,
+            "ghs": 186.48,
+            "zero_cores": 0,
+            "percent_ideal": 99.61538461538461
+          },
+          {
+            "domain": 2,
+            "ghs": 188.3,
+            "zero_cores": 0,
+            "percent_ideal": 100.58760683760686
+          },
+          {
+            "domain": 3,
+            "ghs": 185.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.31623931623933
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 742.36,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.22435897435898
+          },
+          {
+            "domain": 1,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 2,
+            "ghs": 185.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.85683760683762
+          },
+          {
+            "domain": 3,
+            "ghs": 183.66,
+            "zero_cores": 0,
+            "percent_ideal": 98.10897435897436
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 741.6800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.42307692307693
+          },
+          {
+            "domain": 1,
+            "ghs": 182.12,
+            "zero_cores": 0,
+            "percent_ideal": 97.2863247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 187.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.98931623931625
+          },
+          {
+            "domain": 3,
+            "ghs": 186.26,
+            "zero_cores": 0,
+            "percent_ideal": 99.49786324786325
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 79,
+    "host_elapsed": 611.653940583,
+    "ghs": 2947.6400000000003,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 737.26,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.87179487179489
+          },
+          {
+            "domain": 1,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 2,
+            "ghs": 179.08,
+            "zero_cores": 1,
+            "percent_ideal": 95.66239316239317
+          },
+          {
+            "domain": 3,
+            "ghs": 185.82,
+            "zero_cores": 0,
+            "percent_ideal": 99.26282051282051
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 731.1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 1,
+            "ghs": 182.72,
+            "zero_cores": 0,
+            "percent_ideal": 97.60683760683762
+          },
+          {
+            "domain": 2,
+            "ghs": 182.74,
+            "zero_cores": 0,
+            "percent_ideal": 97.61752136752138
+          },
+          {
+            "domain": 3,
+            "ghs": 179.9,
+            "zero_cores": 0,
+            "percent_ideal": 96.10042735042737
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 741.1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.19871794871796
+          },
+          {
+            "domain": 1,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          },
+          {
+            "domain": 2,
+            "ghs": 185.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.16666666666669
+          },
+          {
+            "domain": 3,
+            "ghs": 184.1,
+            "zero_cores": 0,
+            "percent_ideal": 98.3440170940171
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 738.1800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.02,
+            "zero_cores": 0,
+            "percent_ideal": 97.76709401709402
+          },
+          {
+            "domain": 1,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 2,
+            "ghs": 183.4,
+            "zero_cores": 0,
+            "percent_ideal": 97.97008547008548
+          },
+          {
+            "domain": 3,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 80,
+    "host_elapsed": 616.726759292,
+    "ghs": 2953.24,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 731.6800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          },
+          {
+            "domain": 1,
+            "ghs": 182.02,
+            "zero_cores": 0,
+            "percent_ideal": 97.23290598290599
+          },
+          {
+            "domain": 2,
+            "ghs": 182.12,
+            "zero_cores": 1,
+            "percent_ideal": 97.2863247863248
+          },
+          {
+            "domain": 3,
+            "ghs": 183.02,
+            "zero_cores": 0,
+            "percent_ideal": 97.76709401709402
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 739.96,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.08760683760684
+          },
+          {
+            "domain": 1,
+            "ghs": 187.82,
+            "zero_cores": 0,
+            "percent_ideal": 100.33119658119658
+          },
+          {
+            "domain": 2,
+            "ghs": 187.34,
+            "zero_cores": 0,
+            "percent_ideal": 100.07478632478633
+          },
+          {
+            "domain": 3,
+            "ghs": 181.18,
+            "zero_cores": 0,
+            "percent_ideal": 96.78418803418805
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 734.9000000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.86324786324788
+          },
+          {
+            "domain": 1,
+            "ghs": 183.98,
+            "zero_cores": 0,
+            "percent_ideal": 98.27991452991452
+          },
+          {
+            "domain": 2,
+            "ghs": 182.24,
+            "zero_cores": 0,
+            "percent_ideal": 97.35042735042737
+          },
+          {
+            "domain": 3,
+            "ghs": 185.48,
+            "zero_cores": 0,
+            "percent_ideal": 99.08119658119658
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 746.6999999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.38034188034189
+          },
+          {
+            "domain": 1,
+            "ghs": 187.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.09615384615384
+          },
+          {
+            "domain": 2,
+            "ghs": 188.0,
+            "zero_cores": 0,
+            "percent_ideal": 100.42735042735043
+          },
+          {
+            "domain": 3,
+            "ghs": 185.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.97435897435898
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 82,
+    "host_elapsed": 621.793128333,
+    "ghs": 2963.36,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 731.6999999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.26,
+            "zero_cores": 0,
+            "percent_ideal": 97.89529914529915
+          },
+          {
+            "domain": 1,
+            "ghs": 185.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.01709401709404
+          },
+          {
+            "domain": 2,
+            "ghs": 178.54,
+            "zero_cores": 1,
+            "percent_ideal": 95.37393162393163
+          },
+          {
+            "domain": 3,
+            "ghs": 184.54,
+            "zero_cores": 0,
+            "percent_ideal": 98.57905982905983
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 740.1400000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 97.8311965811966
+          },
+          {
+            "domain": 1,
+            "ghs": 185.52,
+            "zero_cores": 0,
+            "percent_ideal": 99.10256410256412
+          },
+          {
+            "domain": 2,
+            "ghs": 183.16,
+            "zero_cores": 0,
+            "percent_ideal": 97.84188034188035
+          },
+          {
+            "domain": 3,
+            "ghs": 188.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.59829059829059
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 745.0799999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.4337606837607
+          },
+          {
+            "domain": 1,
+            "ghs": 188.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.63034188034187
+          },
+          {
+            "domain": 2,
+            "ghs": 187.16,
+            "zero_cores": 0,
+            "percent_ideal": 99.97863247863248
+          },
+          {
+            "domain": 3,
+            "ghs": 183.4,
+            "zero_cores": 0,
+            "percent_ideal": 97.97008547008548
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 746.44,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 1,
+            "ghs": 186.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.73290598290599
+          },
+          {
+            "domain": 2,
+            "ghs": 184.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.58974358974359
+          },
+          {
+            "domain": 3,
+            "ghs": 189.6,
+            "zero_cores": 0,
+            "percent_ideal": 101.28205128205127
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 83,
+    "host_elapsed": 626.860825042,
+    "ghs": 2954.7200000000003,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 736.96,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.1,
+            "zero_cores": 0,
+            "percent_ideal": 98.3440170940171
+          },
+          {
+            "domain": 1,
+            "ghs": 189.06,
+            "zero_cores": 0,
+            "percent_ideal": 100.99358974358974
+          },
+          {
+            "domain": 2,
+            "ghs": 179.22,
+            "zero_cores": 1,
+            "percent_ideal": 95.73717948717949
+          },
+          {
+            "domain": 3,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 738.02,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.91452991452991
+          },
+          {
+            "domain": 1,
+            "ghs": 184.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.7820512820513
+          },
+          {
+            "domain": 2,
+            "ghs": 179.66,
+            "zero_cores": 0,
+            "percent_ideal": 95.97222222222223
+          },
+          {
+            "domain": 3,
+            "ghs": 186.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.57264957264958
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 742.0,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.32,
+            "zero_cores": 0,
+            "percent_ideal": 99.52991452991454
+          },
+          {
+            "domain": 1,
+            "ghs": 184.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.5363247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          },
+          {
+            "domain": 3,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 737.74,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.84,
+            "zero_cores": 0,
+            "percent_ideal": 100.87606837606837
+          },
+          {
+            "domain": 1,
+            "ghs": 182.4,
+            "zero_cores": 0,
+            "percent_ideal": 97.43589743589745
+          },
+          {
+            "domain": 2,
+            "ghs": 184.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.39743589743591
+          },
+          {
+            "domain": 3,
+            "ghs": 182.3,
+            "zero_cores": 0,
+            "percent_ideal": 97.38247863247864
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 84,
+    "host_elapsed": 631.926954625,
+    "ghs": 2942.3,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 732.0600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.3,
+            "zero_cores": 0,
+            "percent_ideal": 97.91666666666667
+          },
+          {
+            "domain": 1,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 2,
+            "ghs": 178.24,
+            "zero_cores": 1,
+            "percent_ideal": 95.21367521367522
+          },
+          {
+            "domain": 3,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 734.42,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.05982905982907
+          },
+          {
+            "domain": 1,
+            "ghs": 182.98,
+            "zero_cores": 0,
+            "percent_ideal": 97.74572649572649
+          },
+          {
+            "domain": 2,
+            "ghs": 182.74,
+            "zero_cores": 0,
+            "percent_ideal": 97.61752136752138
+          },
+          {
+            "domain": 3,
+            "ghs": 183.26,
+            "zero_cores": 0,
+            "percent_ideal": 97.89529914529915
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 736.68,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.62,
+            "zero_cores": 0,
+            "percent_ideal": 97.55341880341881
+          },
+          {
+            "domain": 1,
+            "ghs": 183.36,
+            "zero_cores": 0,
+            "percent_ideal": 97.94871794871797
+          },
+          {
+            "domain": 2,
+            "ghs": 185.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.9957264957265
+          },
+          {
+            "domain": 3,
+            "ghs": 185.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.02777777777779
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 739.1400000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.78,
+            "zero_cores": 0,
+            "percent_ideal": 97.10470085470087
+          },
+          {
+            "domain": 1,
+            "ghs": 183.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.1303418803419
+          },
+          {
+            "domain": 2,
+            "ghs": 186.98,
+            "zero_cores": 0,
+            "percent_ideal": 99.88247863247864
+          },
+          {
+            "domain": 3,
+            "ghs": 186.68,
+            "zero_cores": 0,
+            "percent_ideal": 99.72222222222223
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 86,
+    "host_elapsed": 636.997745458,
+    "ghs": 2938.9199999999996,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 731.66,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.26923076923077
+          },
+          {
+            "domain": 1,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 2,
+            "ghs": 177.66,
+            "zero_cores": 1,
+            "percent_ideal": 94.90384615384616
+          },
+          {
+            "domain": 3,
+            "ghs": 184.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.30128205128206
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 739.0799999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.26,
+            "zero_cores": 0,
+            "percent_ideal": 99.49786324786325
+          },
+          {
+            "domain": 1,
+            "ghs": 183.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 98.24786324786326
+          },
+          {
+            "domain": 2,
+            "ghs": 183.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.22649572649573
+          },
+          {
+            "domain": 3,
+            "ghs": 185.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.8354700854701
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 731.2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.04,
+            "zero_cores": 0,
+            "percent_ideal": 96.7094017094017
+          },
+          {
+            "domain": 1,
+            "ghs": 184.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.37606837606839
+          },
+          {
+            "domain": 2,
+            "ghs": 183.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.15170940170941
+          },
+          {
+            "domain": 3,
+            "ghs": 182.26,
+            "zero_cores": 0,
+            "percent_ideal": 97.36111111111111
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 736.98,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.05555555555556
+          },
+          {
+            "domain": 1,
+            "ghs": 183.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.09829059829062
+          },
+          {
+            "domain": 2,
+            "ghs": 183.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.05555555555556
+          },
+          {
+            "domain": 3,
+            "ghs": 186.22,
+            "zero_cores": 0,
+            "percent_ideal": 99.47649572649573
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 89,
+    "host_elapsed": 642.074960458,
+    "ghs": 2956.98,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 735.72,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.6,
+            "zero_cores": 0,
+            "percent_ideal": 97.54273504273505
+          },
+          {
+            "domain": 1,
+            "ghs": 184.6,
+            "zero_cores": 0,
+            "percent_ideal": 98.61111111111111
+          },
+          {
+            "domain": 2,
+            "ghs": 182.3,
+            "zero_cores": 1,
+            "percent_ideal": 97.38247863247864
+          },
+          {
+            "domain": 3,
+            "ghs": 186.22,
+            "zero_cores": 0,
+            "percent_ideal": 99.47649572649573
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 741.52,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          },
+          {
+            "domain": 1,
+            "ghs": 188.02,
+            "zero_cores": 0,
+            "percent_ideal": 100.43803418803421
+          },
+          {
+            "domain": 2,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          },
+          {
+            "domain": 3,
+            "ghs": 183.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.11965811965813
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 739.36,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.48,
+            "zero_cores": 0,
+            "percent_ideal": 98.54700854700855
+          },
+          {
+            "domain": 1,
+            "ghs": 185.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.85683760683762
+          },
+          {
+            "domain": 2,
+            "ghs": 185.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.33760683760686
+          },
+          {
+            "domain": 3,
+            "ghs": 183.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.21581196581198
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 740.38,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.79273504273505
+          },
+          {
+            "domain": 1,
+            "ghs": 183.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.06623931623933
+          },
+          {
+            "domain": 2,
+            "ghs": 186.20000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.46581196581198
+          },
+          {
+            "domain": 3,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 90,
+    "host_elapsed": 647.164772875,
+    "ghs": 2946.5,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 736.54,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.46153846153847
+          },
+          {
+            "domain": 1,
+            "ghs": 189.08,
+            "zero_cores": 0,
+            "percent_ideal": 101.00427350427353
+          },
+          {
+            "domain": 2,
+            "ghs": 177.84,
+            "zero_cores": 1,
+            "percent_ideal": 95.0
+          },
+          {
+            "domain": 3,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 740.9,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.9,
+            "zero_cores": 0,
+            "percent_ideal": 98.77136752136752
+          },
+          {
+            "domain": 1,
+            "ghs": 187.36,
+            "zero_cores": 0,
+            "percent_ideal": 100.0854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 184.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.32264957264958
+          },
+          {
+            "domain": 3,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 736.78,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.88,
+            "zero_cores": 0,
+            "percent_ideal": 97.69230769230771
+          },
+          {
+            "domain": 1,
+            "ghs": 181.6,
+            "zero_cores": 0,
+            "percent_ideal": 97.00854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 184.9,
+            "zero_cores": 0,
+            "percent_ideal": 98.77136752136752
+          },
+          {
+            "domain": 3,
+            "ghs": 187.4,
+            "zero_cores": 0,
+            "percent_ideal": 100.1068376068376
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 732.28,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.62179487179488
+          },
+          {
+            "domain": 1,
+            "ghs": 184.6,
+            "zero_cores": 0,
+            "percent_ideal": 98.61111111111111
+          },
+          {
+            "domain": 2,
+            "ghs": 183.24,
+            "zero_cores": 0,
+            "percent_ideal": 97.88461538461539
+          },
+          {
+            "domain": 3,
+            "ghs": 179.82,
+            "zero_cores": 0,
+            "percent_ideal": 96.0576923076923
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 91,
+    "host_elapsed": 652.255295917,
+    "ghs": 2948.2200000000003,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 736.9,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.26709401709404
+          },
+          {
+            "domain": 1,
+            "ghs": 186.16,
+            "zero_cores": 0,
+            "percent_ideal": 99.44444444444444
+          },
+          {
+            "domain": 2,
+            "ghs": 177.66,
+            "zero_cores": 1,
+            "percent_ideal": 94.90384615384616
+          },
+          {
+            "domain": 3,
+            "ghs": 185.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.02777777777779
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 739.5,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.27350427350427
+          },
+          {
+            "domain": 1,
+            "ghs": 181.62,
+            "zero_cores": 0,
+            "percent_ideal": 97.01923076923077
+          },
+          {
+            "domain": 2,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          },
+          {
+            "domain": 3,
+            "ghs": 186.24,
+            "zero_cores": 0,
+            "percent_ideal": 99.4871794871795
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 735.6400000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.88,
+            "zero_cores": 0,
+            "percent_ideal": 97.15811965811966
+          },
+          {
+            "domain": 1,
+            "ghs": 182.6,
+            "zero_cores": 0,
+            "percent_ideal": 97.54273504273505
+          },
+          {
+            "domain": 2,
+            "ghs": 188.74,
+            "zero_cores": 0,
+            "percent_ideal": 100.8226495726496
+          },
+          {
+            "domain": 3,
+            "ghs": 182.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 97.4465811965812
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 736.1800000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.02,
+            "zero_cores": 0,
+            "percent_ideal": 96.69871794871796
+          },
+          {
+            "domain": 1,
+            "ghs": 188.46,
+            "zero_cores": 0,
+            "percent_ideal": 100.67307692307695
+          },
+          {
+            "domain": 2,
+            "ghs": 184.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.42948717948718
+          },
+          {
+            "domain": 3,
+            "ghs": 182.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.45726495726497
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 92,
+    "host_elapsed": 657.331470208,
+    "ghs": 2976.54,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 739.56,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.70000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.80128205128207
+          },
+          {
+            "domain": 1,
+            "ghs": 185.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.92094017094018
+          },
+          {
+            "domain": 2,
+            "ghs": 179.38,
+            "zero_cores": 1,
+            "percent_ideal": 95.82264957264958
+          },
+          {
+            "domain": 3,
+            "ghs": 186.3,
+            "zero_cores": 0,
+            "percent_ideal": 99.51923076923079
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 745.0600000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.85683760683762
+          },
+          {
+            "domain": 1,
+            "ghs": 188.52,
+            "zero_cores": 0,
+            "percent_ideal": 100.70512820512822
+          },
+          {
+            "domain": 2,
+            "ghs": 185.82,
+            "zero_cores": 0,
+            "percent_ideal": 99.26282051282051
+          },
+          {
+            "domain": 3,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 749.98,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 99.4337606837607
+          },
+          {
+            "domain": 1,
+            "ghs": 187.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.09615384615384
+          },
+          {
+            "domain": 2,
+            "ghs": 188.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.75854700854703
+          },
+          {
+            "domain": 3,
+            "ghs": 187.84,
+            "zero_cores": 0,
+            "percent_ideal": 100.34188034188034
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 741.94,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.72,
+            "zero_cores": 0,
+            "percent_ideal": 100.27777777777777
+          },
+          {
+            "domain": 1,
+            "ghs": 185.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.91025641025641
+          },
+          {
+            "domain": 2,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 3,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 94,
+    "host_elapsed": 662.397452083,
+    "ghs": 2961.16,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 738.8399999999999,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.42000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 99.04914529914531
+          },
+          {
+            "domain": 1,
+            "ghs": 185.6,
+            "zero_cores": 0,
+            "percent_ideal": 99.14529914529915
+          },
+          {
+            "domain": 2,
+            "ghs": 179.32,
+            "zero_cores": 1,
+            "percent_ideal": 95.7905982905983
+          },
+          {
+            "domain": 3,
+            "ghs": 188.5,
+            "zero_cores": 0,
+            "percent_ideal": 100.69444444444444
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 743.54,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.6965811965812
+          },
+          {
+            "domain": 1,
+            "ghs": 187.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.98931623931625
+          },
+          {
+            "domain": 2,
+            "ghs": 186.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.60470085470087
+          },
+          {
+            "domain": 3,
+            "ghs": 185.14000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 98.89957264957266
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 738.02,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          },
+          {
+            "domain": 1,
+            "ghs": 186.28,
+            "zero_cores": 0,
+            "percent_ideal": 99.50854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 183.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.17307692307693
+          },
+          {
+            "domain": 3,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 740.76,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.04,
+            "zero_cores": 0,
+            "percent_ideal": 98.31196581196582
+          },
+          {
+            "domain": 1,
+            "ghs": 184.4,
+            "zero_cores": 0,
+            "percent_ideal": 98.50427350427351
+          },
+          {
+            "domain": 2,
+            "ghs": 187.92000000000002,
+            "zero_cores": 0,
+            "percent_ideal": 100.3846153846154
+          },
+          {
+            "domain": 3,
+            "ghs": 184.4,
+            "zero_cores": 0,
+            "percent_ideal": 98.50427350427351
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 95,
+    "host_elapsed": 667.464064208,
+    "ghs": 2949.38,
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 735.82,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.68,
+            "zero_cores": 0,
+            "percent_ideal": 101.32478632478634
+          },
+          {
+            "domain": 1,
+            "ghs": 182.9,
+            "zero_cores": 0,
+            "percent_ideal": 97.70299145299145
+          },
+          {
+            "domain": 2,
+            "ghs": 178.58,
+            "zero_cores": 1,
+            "percent_ideal": 95.39529914529916
+          },
+          {
+            "domain": 3,
+            "ghs": 184.66,
+            "zero_cores": 0,
+            "percent_ideal": 98.6431623931624
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 732.62,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.15170940170941
+          },
+          {
+            "domain": 1,
+            "ghs": 184.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.44017094017094
+          },
+          {
+            "domain": 2,
+            "ghs": 182.96,
+            "zero_cores": 0,
+            "percent_ideal": 97.73504273504274
+          },
+          {
+            "domain": 3,
+            "ghs": 181.64000000000001,
+            "zero_cores": 0,
+            "percent_ideal": 97.02991452991454
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 738.82,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.07051282051283
+          },
+          {
+            "domain": 1,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 2,
+            "ghs": 183.1,
+            "zero_cores": 0,
+            "percent_ideal": 97.80982905982907
+          },
+          {
+            "domain": 3,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 742.1200000000001,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.97435897435898
+          },
+          {
+            "domain": 1,
+            "ghs": 184.56,
+            "zero_cores": 0,
+            "percent_ideal": 98.58974358974359
+          },
+          {
+            "domain": 2,
+            "ghs": 184.48,
+            "zero_cores": 0,
+            "percent_ideal": 98.54700854700855
+          },
+          {
+            "domain": 3,
+            "ghs": 187.8,
+            "zero_cores": 0,
+            "percent_ideal": 100.32051282051285
+          }
+        ]
+      }
+    ]
+  }
+]

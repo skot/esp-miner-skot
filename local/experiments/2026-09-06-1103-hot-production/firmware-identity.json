@@ -1,0 +1,11 @@
+{
+  "sha256": {
+    "esp-miner.bin": "5ff03286d17a4979030ecf0840da8196538efdd8c12e2a7233d7ebeed78321e5",
+    "esp-miner.elf": "3ae5d9d69f91f823c9129b52123026dd6fd9580208e3c2e150a92cba2d4013fa",
+    "asic-init-source.c": "3ba18478334172dbc9ed3901a1931ef4ed5f709f63d3e8cbe31be92a2b66aca5",
+    "mc3-source.c": "5d28fd6c66a53131603ca4e786205a2f94888c0aa937c50d376a457e02d2784d"
+  },
+  "app_only": true,
+  "scope_used": false,
+  "first_work_source_unchanged": true
+}

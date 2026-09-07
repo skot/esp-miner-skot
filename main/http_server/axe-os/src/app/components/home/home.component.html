@@ -660,5 +660,7 @@
         </div>
     </div>
 
+    <app-asic-diagnostics *ngIf="info.ASICModel === 'MC3'"></app-asic-diagnostics>
+
     <app-confetti *ngIf="info.showNewBlock"></app-confetti>
 </ng-container>

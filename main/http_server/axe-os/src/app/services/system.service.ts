@@ -10,6 +10,7 @@ import {
   SystemAsic as ISystemASIC,
   SystemScoreboardEntry as ISystemScoreboardEntry,
   AsicTuningStatus,
+  AsicDiagnostics,
   Settings,
   GenericResponse
 } from '../generated/models';
@@ -276,6 +277,23 @@ export class SystemApiService {
         nonce: "00000001",
         version_bits: "20000000"
       }]).pipe(delay(1000));
+  }
+
+  public getDiagnostics(): Observable<AsicDiagnostics> {
+    if (!environment.mock) {
+      return this.api
+        ? from(this.api.invoke(functions.getAsicDiagnostics, {})).pipe(timeout(API_TIMEOUT))
+        : this.httpClient.get<AsicDiagnostics>('/api/system/diagnostics').pipe(timeout(API_TIMEOUT));
+    }
+    return of({
+      supported: 1, mining: 1, source: 'mining', startupResult: 'passed',
+      status: 'Mining', epoch: 1, leadingZeros: 24,
+      chips: Array.from({ length: 4 }, (_, chipId) => ({
+        chipId, valid: 1 as const, frequency: 600, windowSeconds: 4, ageSeconds: 1,
+        corePassCounts: Array.from({ length: 156 }, (_, core) => chipId === 0 && core === 78 ? 0 : 1130),
+        coreFailCounts: Array(156).fill(2)
+      }))
+    });
   }
 
   public getTuningStatus(uri: string = ''): Observable<AsicTuningStatus> {

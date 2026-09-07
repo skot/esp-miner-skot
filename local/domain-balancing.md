@@ -1,6 +1,181 @@
 # bitaxeProto 1103x domain-balancing investigation
 
-Last updated: 2026-09-06
+Last updated: 2026-09-07
+
+## Production fallback checkpoint (2026-09-07)
+
+The `1103x-support` checkpoint preserves the restored hot startup condition,
+slower unloaded PLL ramp, current first-work sequence, cached AxeOS core/domain
+diagnostics, and the regression matrix and successful pool observations below.
+The startup uses 1160 mV/half, 300 MHz warmup with coldest >=52 C and hottest
+>=54.5 C for ten seconds, the same temperature minimums before first work,
+and a 600 MHz target with normal continuous mining after qualification.
+
+The exact tested application remains archived locally at
+`local/experiments/2026-09-06-1103-hot-production/esp-miner.bin`, SHA-256
+`5ff03286d17a4979030ecf0840da8196538efdd8c12e2a7233d7ebeed78321e5`.
+Its ELF, application binary and current startup/MC3 source hashes were verified
+against `firmware-identity.json` before committing. Binaries and raw device logs
+remain ignored local artifacts; the source and sanitized experiment records
+are included in Git. A source checkout alone does not restore device NVS settings.
+
+Startup, first-work register sequence, pool handoff and diagnostic-cache host
+tests passed again before the checkpoint. The existing ESP-IDF build, 48-test
+AxeOS suite and hardware validation results are recorded in the experiment
+READMEs. No hardware reset, flash or setting change was made for this commit.
+Cold/warm repeatability remains to be established; the most recent serial
+capture's USB-reset limitation is recorded below.
+
+## Cold ASIC observation with hot production startup passed (2026-09-06)
+
+Following user power-on, the first fresh ASIC readings were **27.62–28.28 C**.
+The unchanged hot production image warmed at 300 MHz, completed its unloaded
+ramp, and qualified at **2960.18 GH/s / 600 MHz**. Before first work the chips
+were **55.83 / 54.35 / 55.17 / 54.68 C**. The subsequent **304.25-second** pool
+observation averaged **2955.34 GH/s**, with all 16 domains active and **59
+accepted / one rejected** shares. The low-difficulty rejection coincided with a
+pool difficulty increase; there was no accompanying domain dropout. No startup
+or thermal faults were logged. Mining continued after monitoring ended.
+
+**Capture caveat:** the boot banner reports `USB_UART_CHIP_RESET`, potentially
+caused by opening serial. This verifies startup from cold ASIC temperatures,
+but does not verify an uninterrupted input-power boot. No firmware/settings
+changes or intentional reset were made. Prefer HTTP logs for the next user
+power-cycle observation to avoid disturbing the boot via serial attachment.
+
+Record: `local/experiments/2026-09-06-1103-user-cold-boot/README.md`.
+
+## Hot production startup restored; pool hold passed (2026-09-06)
+
+Production warmup is restored to coldest >=52 C / hottest >=54.5 C for ten
+seconds at 300 MHz. The same minimums are checked using the existing fresh
+reading after the unloaded PLL ramp and before first work. A too-cool result
+uses normal shutdown; no automatic restart or cooling test loop was added.
+The current first-work sequence is unchanged, as is the recently slowed PLL
+cadence and 1160 mV/half setting.
+
+One app-flash boot from fresh ASIC readings of about 28–29 C qualified at
+**2960.90 GH/s / 600 MHz** and handed off to normal pool mining. Before first
+work temperatures were **55.83 / 54.35 / 55.67 / 54.84 C**. The subsequent
+**304.46-second pool hold averaged 2955.80 GH/s**, with **48 accepted shares,
+zero rejects and all 16 domains active**. Only the previously observed single
+A1 D2 core had zero PASS. No startup/thermal fault or temperature retry was
+logged; final ASIC temperatures were about 51–52 C without domain dropout.
+
+**This production image is now installed and the board remains mining at
+600 MHz**, replacing the experimental hot-then-cooled bench. Automatic fan
+settings were restored; the rail was approximately 2323 mV after monitoring.
+Build, startup-boundary/failure, first-work register-sequence and pool-handoff
+tests passed. Source changes remain uncommitted. One cold boot and five-minute
+hold do not establish warm/cold repeatability.
+
+Record: `local/experiments/2026-09-06-1103-hot-production/README.md`.
+
+## Controlled regression matrix: thermal startup condition (2026-09-06)
+
+The recent approximately 2.05 TH/s, five-domain regression follows cooler
+conditions through ASIC reinitialization, unloaded ramp and first work. Controlled
+variants of the archived successful bench gave:
+
+| Warmup / thermal condition | First-work sequence | First-work temperatures | GH/s |
+|---|---|---|---:|
+| Original hot warmup, saved image | Original | 55.5–57.0 C | 2964.49 |
+| Original hot warmup | Current passive | 55.8–57.2 C | 2964.54* |
+| 40 C warmup | Original | 44.5–46.4 C | 2046.61 |
+| 40 C warmup | Current passive | 44.9–46.8 C | 2046.67 |
+| Hot warmup, then cool before reset | Original | 44.1–46.1 C | 2046.75 |
+
+All deficient trials lost effectively all throughput from **A1 D0/D2, A2 D0/D2,
+and A3 D2**. None recovered sustained throughput over 120 seconds, even after
+subsequent heating near 60 C. Hot launches already passed their first ten-second
+windows. Thus restoring original launch strobes or extending observation alone
+did not repair the cooler startup failure.
+
+The final control first qualified at about 55 C, then cooled the unchanged
+300 MHz work to 41.6–42.5 C before the usual supply cycle/reinitialization/ramp.
+Its first-work temperatures matched the failed 40 C/original run within about
+0.33 C, and the same failure resulted. Prior hot warmup history is insufficient
+if the ASICs cool again before startup. We have **not** isolated the exact
+sensitive phase within reset, PLL ramp and first job, or the minimum reliable
+temperature. Earlier intermittent failures at hot startup remain unresolved.
+
+One new run per variant was performed, with fan 100% and ASIC power off between
+runs. Production source and its existing changes were preserved. The current
+installed image is the **hot-then-cooled experimental bench**, powered off at
+36 mV after completion; original fan settings were restored. This is synthetic
+work, with no pool handoff or scope capture. Sampled half-stack maxima in the
+new trials reached 1.203 V; these lack a waveform or duration measurement.
+
+Measurement note: the first hot/passive comparison retained a 120.04-second counter timer; its
+last two snapshots/chip near expiry were excluded from the reported live rate.
+Subsequent variants use the archived 180-second timer. Full details and limitations:
+`local/experiments/2026-09-06-1103-factorial/README.md`.
+
+## Exact saved binary reproduces full-rate startup (2026-09-06)
+
+One app-only flash of the archived successful stock1103 `probe.bin` reproduced
+**2964.49 GH/s at 600 MHz** over the two-minute observation, versus the original
+2964.58 GH/s. The final approximately 30 seconds measured **2965.21 GH/s**.
+All 16 domains remained active; only the previously observed single A1 D2 core
+had zero PASS. Per-ASIC rates were 737.75 / 741.16 / 742.57 / 743.01 GH/s.
+
+This used the exact saved image (SHA256 `fe782f3d7e70980c91719aeffeabaf8322779cd61155a8667627a5bc00295313`),
+including its roughly 55 C warmup, full warm supply cycle, unloaded ramp, and
+original first-job/configuration sequence. Before first work temperatures were
+56.98 / 55.50 / 56.49 / 56.00 C; maximum during the hold was 60.12 C, with no
+invalid thermal samples. No host recovery action was added.
+
+The sampled guard recorded separate lower/upper maxima of **1238/1177 mV**.
+This saved bench uses report-only voltage limits; no scope was connected, so
+transient duration and true peak remain unknown. Full hashrate does not establish
+that every voltage stayed below 1.20 V.
+
+The bench completed and automatically powered ASICs off (36 mV readback).
+**This archived bench is now installed**, replacing the slower production image;
+source changes, web assets and NVS were preserved. It does not hand off to pool
+mining or provide the new dashboard diagnostics endpoint. This positive control
+does not yet isolate temperature from first-work strobes or establish repeatability.
+
+Record: `local/experiments/2026-09-06-1103-saved-image-control/README.md`.
+
+## Slower high-frequency PLL ramp comparison (2026-09-06)
+
+At the user's request, the unloaded ramp now waits **2 seconds after each
+25 MHz PLL update from 300 through 575 MHz**. The final 600 MHz settling delay
+remains 1.5 seconds. The ramp deadline was extended to 45 seconds; 40 C warmup,
+1160 mV/half, warm supply cycle, broadcast PLL writes and first-work sequence
+are unchanged.
+
+One monitored app-flash boot increased measured 300–600 MHz time from **7.907
+to 24.380 seconds**, with nearly identical final PLL-to-work timing (1591 vs
+1592 ms). Qualification still failed at **2044.74 GH/s** versus **2044.51 GH/s**
+baseline. The same domains had 39/39 zero-PASS cores: **A1 D0/D2, A2 D0/D2,
+and A3 D2**. Before first work the ASICs were about 0.7–1.3 C warmer, not colder.
+Thus slowing this ramp did not improve this trial. The slower cadence remains
+installed, and failed counters remain visible in AxeOS after ASIC shutdown.
+
+Record: `local/experiments/2026-09-06-1103-slow-ramp/README.md`.
+
+## AxeOS core/domain diagnostics (2026-09-06)
+
+The MC3 dashboard now includes **Core & domain health**: A1–A4 each show
+D0–D3 PASS/FAIL counts, GH/s, and zero-PASS cores out of 39. Expand an ASIC
+for the 156 per-core PASS counts and GH/s. Zero domains/cores are highlighted;
+missing reads are explicitly unavailable. Measurement source, frequency,
+window duration, age, and the startup result distinguish startup, mining,
+and retained failure data.
+
+The HTTP endpoint `/api/system/diagnostics` only copies a cache. Startup uses
+its existing passive domain reads; normal mining collects frozen per-core
+counters before its existing logger rearm. No extra PLL, work, or configuration
+strobes were added. Final startup rates use per-core counter deltas, avoiding
+initial delivery and sequential-bank-read skew. The first read establishes a
+baseline rather than displaying a subsecond rate. Failure data survives ASIC
+power-off, but clears on ASIC reinitialization or ESP reboot. The warmup
+threshold remains all four ASICs at 40 C for ten seconds.
+
+Validation and hardware observations:
+`local/experiments/2026-09-06-1103-dashboard/README.md`.
 
 ## Warmup threshold lowered to 40 C (2026-09-06)
 

@@ -1,0 +1,17 @@
+{
+  "host_attached_unix": 1788738685.8434181,
+  "user_report": "User just plugged in stock1103 for a truly cold boot",
+  "serial_port": "/dev/cu.usbmodem11434201",
+  "reset_requested": false,
+  "settings_changed": false,
+  "firmware_flashed": false,
+  "observed_reset_reason": "0x15 USB_UART_CHIP_RESET",
+  "uninterrupted_power_on_capture": false,
+  "reset_causality": "May have been triggered by serial attachment; no reset command was intentionally sent. Cannot identify original input-power boot as uninterrupted.",
+  "first_fresh_asic_temperatures_c": [
+    28.28,
+    27.62,
+    27.62,
+    27.95
+  ]
+}

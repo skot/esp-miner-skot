@@ -1,6 +1,9 @@
 #include "tuning.h"
 
 #include "asic.h"
+#include "mc3_diagnostics.h"
+#include "esp_timer.h"
+#include <stdlib.h>
 #include "cJSON.h"
 #include "http_server.h"
 
@@ -103,4 +106,59 @@ esp_err_t POST_system_tuning(httpd_req_t *req)
 
     ASIC_start_tuning(GLOBAL_STATE);
     return send_tuning_status(req);
+}
+
+// Unlike the tuning endpoint, this only copies measurements already collected
+// by startup or the normal logger task. HTTP never touches the ASIC bus.
+esp_err_t GET_system_diagnostics(httpd_req_t *req)
+{
+    if (is_network_allowed(req) != ESP_OK) {
+        return httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized");
+    }
+    if (set_cors_headers(req) != ESP_OK) return httpd_resp_send_500(req);
+    mc3_diagnostics_t *snapshot = malloc(sizeof(*snapshot));
+    if (!snapshot) return httpd_resp_send_500(req);
+    mc3_diagnostics_copy(snapshot);
+    cJSON *root = cJSON_CreateObject();
+    if (!root) {free(snapshot); return httpd_resp_send_500(req);}
+    bool supported = GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3;
+    cJSON_AddNumberToObject(root, "supported", supported ? 1 : 0);
+    cJSON_AddNumberToObject(root, "mining", GLOBAL_STATE->ASIC_initalized &&
+        !GLOBAL_STATE->SYSTEM_MODULE.mining_paused ? 1 : 0);
+    cJSON_AddStringToObject(root, "source", snapshot->mining ? "mining" : "startup");
+    cJSON_AddStringToObject(root, "startupResult", snapshot->startup_result > 0 ? "passed" :
+        snapshot->startup_result < 0 ? "failed" : "pending");
+    cJSON_AddStringToObject(root, "status", GLOBAL_STATE->SYSTEM_MODULE.asic_status ?
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status : "Waiting for ASICs");
+    cJSON_AddNumberToObject(root, "epoch", snapshot->epoch);
+    cJSON_AddNumberToObject(root, "leadingZeros", snapshot->leading_zeros);
+    cJSON *chips = cJSON_AddArrayToObject(root, "chips");
+    int64_t now = esp_timer_get_time();
+    for (uint8_t c = 0; supported && c < snapshot->chip_count; c++) {
+        const mc3_diagnostic_chip_t *data = &snapshot->chips[c];
+        cJSON *chip = cJSON_CreateObject();
+        cJSON_AddItemToArray(chips, chip);
+        cJSON_AddNumberToObject(chip, "chipId", c);
+        cJSON_AddNumberToObject(chip, "valid", data->valid ? 1 : 0);
+        cJSON_AddNumberToObject(chip, "frequency", data->frequency_mhz);
+        cJSON_AddNumberToObject(chip, "windowSeconds", data->window_seconds);
+        cJSON_AddNumberToObject(chip, "ageSeconds", data->measured_us > 0 ?
+            (double)(now - data->measured_us) / 1000000.0 : 0);
+        cJSON *passes = cJSON_AddArrayToObject(chip, "corePassCounts");
+        cJSON *fails = cJSON_AddArrayToObject(chip, "coreFailCounts");
+        // Missing/failed reads are empty arrays, never 156 false zeroes.
+        if (data->valid) {
+            for (unsigned core = 0; core < ASIC_TUNING_MAX_CORES; core++) {
+                cJSON_AddItemToArray(passes, cJSON_CreateNumber(data->core_pass[core]));
+                cJSON_AddItemToArray(fails, cJSON_CreateNumber(data->core_fail[core]));
+            }
+        }
+    }
+    free(snapshot);
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_set_hdr(req, "Cache-Control", "no-store");
+    static int prebuffer_len = 8192;
+    esp_err_t result = HTTP_send_json(req, root, &prebuffer_len);
+    cJSON_Delete(root);
+    return result;
 }

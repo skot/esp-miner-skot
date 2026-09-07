@@ -1,0 +1,14 @@
+{
+  "boardVersion": "1103",
+  "macAddr": "28:84:85:BA:96:08",
+  "version": "v2.14.0-52-g381ed6e-dirty",
+  "regulatorVoltage": 32,
+  "hashRate": 0,
+  "frequency": 600,
+  "coreVoltage": 1160,
+  "temp": 49.7272339,
+  "temp2": 0,
+  "fanspeed": 99,
+  "fanrpm": 3629,
+  "miningPaused": false
+}

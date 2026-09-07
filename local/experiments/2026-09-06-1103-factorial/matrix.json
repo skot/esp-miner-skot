@@ -1,0 +1,134 @@
+{
+  "cases": [
+    {
+      "name": "saved-image-control",
+      "warmup": "hot",
+      "launch": "original",
+      "first_work_temperatures": [
+        56.98,
+        55.5,
+        56.49,
+        56.0
+      ],
+      "first10s_ghs": 2961.511382021726,
+      "whole_ghs": 2964.485122900492,
+      "last10s_ghs": null,
+      "failed_domains_under_1_percent": [],
+      "early_qualified": true,
+      "late_qualified": true,
+      "peak_temperature_c": 60.12,
+      "invalid_thermal_samples": 0,
+      "measurement_note": "Exact saved binary; full 120s observation",
+      "binary_sha256": "fe782f3d7e70980c91719aeffeabaf8322779cd61155a8667627a5bc00295313"
+    },
+    {
+      "name": "hot-passive-01",
+      "warmup": "hot",
+      "launch": "current",
+      "first_work_temperatures": [
+        57.15,
+        55.83,
+        56.98,
+        56.65
+      ],
+      "first10s_ghs": 2961.879711880859,
+      "whole_ghs": 2964.543306660761,
+      "last10s_ghs": 2962.5456827838416,
+      "failed_domains_under_1_percent": [],
+      "early_qualified": true,
+      "late_qualified": true,
+      "peak_temperature_c": 60.12,
+      "invalid_thermal_samples": 0,
+      "measurement_note": "Final two snapshots/chip excluded near 120.04s counter expiry",
+      "binary_sha256": "30357d62a8f9bc4a7dfe323905fd740014b340bcdea8cbc82ef7c26c56273935"
+    },
+    {
+      "name": "40c-original-01",
+      "warmup": "40C",
+      "launch": "original",
+      "first_work_temperatures": [
+        46.43,
+        44.45,
+        45.77,
+        45.77
+      ],
+      "first10s_ghs": 2044.8569144187259,
+      "whole_ghs": 2046.6137281815477,
+      "last10s_ghs": 2046.7061093003697,
+      "failed_domains_under_1_percent": [
+        "A1D0",
+        "A1D2",
+        "A2D0",
+        "A2D2",
+        "A3D2"
+      ],
+      "early_qualified": false,
+      "late_qualified": false,
+      "peak_temperature_c": 60.12,
+      "invalid_thermal_samples": 0,
+      "measurement_note": "Full 120s observation within 180s counter epoch",
+      "binary_sha256": "086c297cc830c9725b37c9390f5353ef87b825c6e1bec9b6ad4c6f22ebadd4b1"
+    },
+    {
+      "name": "40c-passive-01",
+      "warmup": "40C",
+      "launch": "current",
+      "first_work_temperatures": [
+        46.76,
+        44.94,
+        46.26,
+        46.43
+      ],
+      "first10s_ghs": 2046.0404107355732,
+      "whole_ghs": 2046.6652565728446,
+      "last10s_ghs": 2045.6928807712345,
+      "failed_domains_under_1_percent": [
+        "A1D0",
+        "A1D2",
+        "A2D0",
+        "A2D2",
+        "A3D2"
+      ],
+      "early_qualified": false,
+      "late_qualified": false,
+      "peak_temperature_c": 60.12,
+      "invalid_thermal_samples": 0,
+      "measurement_note": "Full 120s observation within 180s counter epoch",
+      "binary_sha256": "fc504c378c3b4d660c3ad264363c3c38021c38686d814ad791096ca0e179edee"
+    },
+    {
+      "name": "hot-cooled-original-01",
+      "warmup": "hot_then_cooled",
+      "launch": "original",
+      "first_work_temperatures": [
+        46.1,
+        44.12,
+        45.44,
+        45.44
+      ],
+      "first10s_ghs": 2045.0001062491808,
+      "whole_ghs": 2046.750943549006,
+      "last10s_ghs": 2046.1517131512137,
+      "failed_domains_under_1_percent": [
+        "A1D0",
+        "A1D2",
+        "A2D0",
+        "A2D2",
+        "A3D2"
+      ],
+      "early_qualified": false,
+      "late_qualified": false,
+      "peak_temperature_c": 60.12,
+      "invalid_thermal_samples": 0,
+      "measurement_note": "Full 120s observation within 180s counter epoch",
+      "binary_sha256": "c2a94fb8ad47cd2ccb99f72e2128a8d384ce693241be9cba3dd8f6c65774fbbf"
+    }
+  ],
+  "assessment": {
+    "supported": "Cooler thermal conditions through reinitialization, unloaded PLL ramp, and first work trigger the recent five-domain throughput failure. Prior hot warmup alone does not prevent it after cooling.",
+    "not_isolated": "Which exact phase is temperature-sensitive (power-on/reset, PLL ramp, or first job); minimum reliable threshold; ASIC electrical mechanism; residual intermittent hot-start failures.",
+    "first_work_sequence": "Both sequences succeeded hot and failed cool in this matrix; no sequence interaction required to explain the severe recent regression.",
+    "failure_observation": "All cool-start variants failed both initial and final ten-second windows; no sustained recovery over 120s even after subsequent heating near 60C.",
+    "limits": "One additional run per new condition; saved original image succeeded twice across days. This is not a reliability estimate or proof of all temperature/sequence interactions being absent."
+  }
+}

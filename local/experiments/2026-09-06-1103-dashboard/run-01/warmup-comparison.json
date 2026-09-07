@@ -1,0 +1,47 @@
+[
+  {
+    "frequency_mhz": 100,
+    "dashboard_ghs": 491.74,
+    "log_ghs": 491.74
+  },
+  {
+    "frequency_mhz": 125,
+    "dashboard_ghs": 615.43,
+    "log_ghs": 615.43
+  },
+  {
+    "frequency_mhz": 150,
+    "dashboard_ghs": 740.38,
+    "log_ghs": 740.38
+  },
+  {
+    "frequency_mhz": 175,
+    "dashboard_ghs": 863.83,
+    "log_ghs": 863.82
+  },
+  {
+    "frequency_mhz": 200,
+    "dashboard_ghs": 987.58,
+    "log_ghs": 987.58
+  },
+  {
+    "frequency_mhz": 225,
+    "dashboard_ghs": 1111.2,
+    "log_ghs": 1111.2
+  },
+  {
+    "frequency_mhz": 250,
+    "dashboard_ghs": 1233.52,
+    "log_ghs": 1233.52
+  },
+  {
+    "frequency_mhz": 275,
+    "dashboard_ghs": 1356.78,
+    "log_ghs": 1356.78
+  },
+  {
+    "frequency_mhz": 300,
+    "dashboard_ghs": 1479.44,
+    "log_ghs": 1479.44
+  }
+]

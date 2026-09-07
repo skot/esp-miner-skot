@@ -1,0 +1,22 @@
+{
+  "startup_qualification_ghs": 2044.51,
+  "dashboard_chip_ghs": [
+    373.19,
+    371.31,
+    557.44,
+    742.47
+  ],
+  "zero_pass_domains": [
+    "A1 D0",
+    "A1 D2",
+    "A2 D0",
+    "A2 D2",
+    "A3 D2"
+  ],
+  "retention_verified_seconds": 35.4,
+  "regulator_mv_after_shutdown": 34,
+  "live_pool_mining_verified": false,
+  "scope_used": false,
+  "ui_tests_passed": 48,
+  "warmup_threshold_c": 40
+}

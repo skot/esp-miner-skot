@@ -1,0 +1,25 @@
+{
+  "reproduced_full_hashrate": true,
+  "whole_hold_ghs": 2964.485122900492,
+  "original_ghs": 2964.584427492579,
+  "difference_ghs": -0.09930459208680986,
+  "difference_percent": -0.003349696880472486,
+  "last30s_ghs": 2965.208585976011,
+  "warm600_periodic_rail_ranges_mv": {
+    "lower": [
+      1154,
+      1157
+    ],
+    "upper": [
+      1166,
+      1169
+    ]
+  },
+  "guard_maxima_mv": {
+    "lower": 1238,
+    "upper": 1177,
+    "total": 2325
+  },
+  "final_pll_to_first_work_ms": 1594,
+  "scope_used": false
+}

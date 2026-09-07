@@ -1,3 +1,4 @@
+#include "mc3_diagnostics.h"
 #include "mc3.h"
 
 #include <stdbool.h>
@@ -158,6 +159,19 @@ static int64_t mc3_last_nonce_poll_us;
 static uint8_t mc3_next_nonce_chip;
 static bool mc3_spdlog_started;
 static int64_t mc3_spdlog_start_us;
+static uint32_t mc3_diagnostic_epoch;
+static int64_t mc3_diagnostic_start_us;
+static double mc3_diagnostic_runtime;
+static bool mc3_diagnostic_mining;
+static bool mc3_diagnostic_running;
+
+static void mc3_diagnostic_start_window(uint16_t count, bool running)
+{
+    ++mc3_diagnostic_epoch;
+    mc3_diagnostic_running = running;
+    mc3_diagnostic_start_us = esp_timer_get_time();
+    mc3_diagnostic_runtime = (double)count * 1048576.0 / MC3_SPDLOG_XCLK_HZ;
+}
 static uint8_t mc3_qualification_refresh_job_id;
 static mc3_frequency_step_callback_t mc3_frequency_step_callback;
 static task_result mc3_pending_results[MC3_PENDING_RESULTS_SIZE];
@@ -722,6 +736,7 @@ static bool mc3_start_spdlog_window(uint8_t start_chip_id, uint8_t chip_num,
     }
     mc3_spdlog_started = true;
     mc3_spdlog_start_us = esp_timer_get_time();
+    mc3_diagnostic_start_window(timer_count, false);
 
     pthread_mutex_lock(&mc3_core_scan_lock);
     if (mc3_core_scan_status.state == ASIC_TUNING_MEASURING) {
@@ -922,7 +937,7 @@ static bool mc3_read_core_pass_counts(uint8_t chip_id, uint32_t *pass_counts)
             MC3_CORE_SPDLOG_BANK_CORE_COUNT, pass_counts, NULL);
 }
 
-bool MC3_read_core_domain_summary(uint8_t chip_id,
+static bool mc3_read_core_domain_summary_locked(uint8_t chip_id,
     mc3_core_domain_summary_t *summary)
 {
     if (summary == NULL || chip_id >= mc3_chip_count) {
@@ -931,12 +946,20 @@ bool MC3_read_core_domain_summary(uint8_t chip_id,
 
     uint32_t core_pass_counts[ASIC_TUNING_MAX_CORES] = {0};
     uint32_t core_fail_counts[ASIC_TUNING_MAX_CORES] = {0};
-    pthread_mutex_lock(&mc3_work_lock);
+    int64_t before = esp_timer_get_time();
     bool read_ok = mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK0, 0,
         core_pass_counts, core_fail_counts) &&
         mc3_read_core_spdlog_bank(chip_id, MC3_CORE_SPDLOG_BANK1,
             MC3_CORE_SPDLOG_BANK_CORE_COUNT, core_pass_counts, core_fail_counts);
-    pthread_mutex_unlock(&mc3_work_lock);
+    int64_t measured = (before + esp_timer_get_time()) / 2;
+    double seconds = (measured - mc3_diagnostic_start_us) / 1000000.0;
+    if (seconds > mc3_diagnostic_runtime) seconds = mc3_diagnostic_runtime;
+    // Frozen windows use their programmed duration. First-work observation
+    // uses per-core deltas from the initial read, without extra register writes.
+    mc3_diagnostics_record(mc3_diagnostic_epoch, mc3_diagnostic_mining,
+        mc3_diagnostic_running, mc3_chip_count, chip_id, mc3_spdlog_leading_zeros(),
+        mc3_active_chip_frequency_mhz[chip_id], seconds, measured,
+        read_ok ? core_pass_counts : NULL, read_ok ? core_fail_counts : NULL);
     if (!read_ok) {
         return false;
     }
@@ -966,6 +989,14 @@ bool MC3_read_core_domain_summary(uint8_t chip_id,
     }
 
     return true;
+}
+
+bool MC3_read_core_domain_summary(uint8_t chip_id, mc3_core_domain_summary_t *summary)
+{
+    pthread_mutex_lock(&mc3_work_lock);
+    bool ok = mc3_read_core_domain_summary_locked(chip_id, summary);
+    pthread_mutex_unlock(&mc3_work_lock);
+    return ok;
 }
 
 static uint64_t mc3_sum_core_pass_counts(const uint32_t *pass_counts)
@@ -1553,6 +1584,8 @@ static bool mc3_read_register_block(uint8_t chip_id, uint32_t reg, uint32_t *val
 
 uint8_t MC3_init(void * pvParameters)
 {
+    mc3_diagnostics_reset();
+    mc3_diagnostic_mining = false;
     GlobalState *GLOBAL_STATE = (GlobalState *)pvParameters;
     uint8_t packet[MC3_INIT_RESPONSE_BYTES] = {0};
     uint8_t response[64] = {0};
@@ -1833,6 +1866,7 @@ void MC3_prepare_pool_work(void *pvParameters)
     GlobalState *global = pvParameters;
     pthread_mutex_lock(&mc3_work_lock);
     mc3_spdlog_started = false;
+    mc3_diagnostic_mining = true;
     pthread_mutex_lock(&mc3_pending_lock);
     mc3_pending_head = 0;
     mc3_pending_count = 0;
@@ -2011,8 +2045,11 @@ bool MC3_start_qualification_observation(void)
     // deltas over ten seconds and never rearms or resets work during that hold.
     if (!mc3_write_register(0, MC3_SPDLOG_RST, 1, MC3_CHIP_NUM_ALL) ||
         !mc3_write_register(0, MC3_SPDLOG_TIMER, mc3_spdlog_timer_value(1431), MC3_CHIP_NUM_ALL)) goto done;
-    ok = mc3_write_work_target(job.pool_diff, 4) &&
-        mc3_write_version_bases(&job, 4) && mc3_write_v_work(&job, 0);
+    ok = mc3_write_work_target(job.pool_diff, 4) && mc3_write_version_bases(&job, 4);
+    if (ok) {
+        mc3_diagnostic_start_window(1431, true);
+        ok = mc3_write_v_work(&job, 0);
+    }
 done:
     pthread_mutex_unlock(&mc3_work_lock);
     return ok;
@@ -2131,6 +2168,11 @@ void MC3_read_registers(void *pvParameters)
             size_t remaining = sizeof(summary) - summary_length;
             summary_length += appended < remaining ? appended : remaining - 1;
         }
+    }
+
+    for (uint8_t chip_id = 0; chip_id < chip_count; chip_id++) {
+        mc3_core_domain_summary_t domains;
+        mc3_read_core_domain_summary_locked(chip_id, &domains);
     }
 
     snprintf(summary + summary_length, sizeof(summary) - summary_length,

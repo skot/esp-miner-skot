@@ -1,0 +1,62 @@
+{
+  "version": "v2.14.0-52-g381ed6e-dirty",
+  "axeOSVersion": "v2.14.0-52-g381ed6e-dirty",
+  "regulatorVoltage": 34,
+  "actualFrequency": 600,
+  "asicTemps": [
+    49.06745910644531,
+    47.91284942626953,
+    49.72723388671875,
+    49.06745910644531
+  ],
+  "hashRate": 0,
+  "hashrateMonitor": {
+    "asics": [
+      {
+        "total": 0,
+        "errorCount": 0,
+        "domains": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "total": 0,
+        "errorCount": 0,
+        "domains": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "total": 0,
+        "errorCount": 0,
+        "domains": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "total": 0,
+        "errorCount": 0,
+        "domains": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "sharesAccepted": 0,
+  "sharesRejected": 0,
+  "freeHeap": 7698688,
+  "freeHeapInternal": 83491,
+  "miningPaused": false
+}

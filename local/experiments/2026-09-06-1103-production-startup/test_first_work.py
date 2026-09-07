@@ -31,6 +31,7 @@ static float mc3_active_chip_frequency_mhz[]={600,600,600,600};
 static struct {uint32_t reg,value;} recorded[100];
 static unsigned n,fail_at=9999;
 '''+r'''
+static void mc3_diagnostic_start_window(uint16_t count,bool running){assert(count==1431 && running);}
 static bool mc3_write_register(uint8_t c,uint32_t r,uint32_t v,uint8_t count){(void)c;(void)count;recorded[n].reg=r;recorded[n++].value=v;if(n==fail_at){return false;}return true;}
 
 static bool mc3_version_start_bit(uint32_t mask,uint8_t *start){*start=13;return mask!=0;}

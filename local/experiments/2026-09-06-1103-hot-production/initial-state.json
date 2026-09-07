@@ -1,0 +1,12 @@
+{
+  "boardVersion": "1103",
+  "macAddr": "28:84:85:BA:96:08",
+  "version": "v2.14.0-46-gc91844e-dirty",
+  "regulatorVoltage": 34,
+  "frequency": 600,
+  "coreVoltage": 1160,
+  "autofanspeed": 1,
+  "fanspeed": 70,
+  "fanrpm": 2672,
+  "hashRate": 0
+}

@@ -1431,7 +1431,7 @@ esp_err_t start_rest_server(void * pvParameters)
     config.uri_match_fn = httpd_uri_match_wildcard;
     config.stack_size = 8192;
     config.max_open_sockets = 20;
-    config.max_uri_handlers = 25;
+    config.max_uri_handlers = 26;
     config.close_fn = websocket_close_fn;
     config.lru_purge_enable = true;
 
@@ -1494,6 +1494,14 @@ esp_err_t start_rest_server(void * pvParameters)
         .user_ctx = rest_context
     };
     httpd_register_uri_handler(server, &scoreboard_get_uri);
+
+    httpd_uri_t system_diagnostics_uri = {
+        .uri = "/api/system/diagnostics",
+        .method = HTTP_GET,
+        .handler = GET_system_diagnostics,
+        .user_ctx = NULL
+    };
+    httpd_register_uri_handler(server, &system_diagnostics_uri);
 
     httpd_uri_t system_tuning_get_uri = {
         .uri = "/api/system/tuning",

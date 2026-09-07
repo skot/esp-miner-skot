@@ -1,3 +1,4 @@
+#include "mc3_diagnostics.h"
 #include "asic_init.h"
 #include <inttypes.h>
 #include <math.h>
@@ -370,6 +371,13 @@ static bool proto_startup_qualify_first_work(proto_startup_guard_t *guard,
     return !proto_startup_cancelled(guard);
 }
 
+// Temperature must remain adequate through the supply cycle and unloaded ramp;
+// prior warmup alone did not prevent cold-launch domain failures.
+static bool proto_startup_warm_enough(float coldest, float hottest)
+{
+    return coldest >= 52.0f && hottest >= 54.5f;
+}
+
 static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
 {
     float request = global->POWER_MANAGEMENT_MODULE.frequency_value;
@@ -393,7 +401,7 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
     float coldest, hottest;
     mc3_qualification_result_t result = {0};
     global->SYSTEM_MODULE.asic_status = "Warming ASICs";
-    ESP_LOGI(TAG, "PROTO STARTUP BEGIN target=%u voltage=%u; warmup=%u min_asic_temp=40C then full supply cycle; sampled voltage report-only",
+    ESP_LOGI(TAG, "PROTO STARTUP BEGIN target=%u voltage=%u; warmup=%u coldest>=52C hottest>=54.5C then full supply cycle; sampled voltage report-only",
         target, voltage_mv, warm_frequency);
     for (unsigned f = 100; f <= warm_frequency; f += 25) {
         FAN_CONTROLLER_set_startup_percent(20);
@@ -406,8 +414,8 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
         bool warm = false;
         while (esp_timer_get_time() - start < 600000000) {
             if (!proto_startup_temperature(&guard, esp_timer_get_time() - start, &coldest, &hottest)) goto done;
-            // All four ASICs must reach 40 C for the existing ten-second dwell.
-            if (coldest >= 40.0f && hottest <= 60.0f) {
+            // Restore the validated hot threshold and its ten-second dwell.
+            if (proto_startup_warm_enough(coldest, hottest) && hottest <= 60.0f) {
                 if (!ready_since) ready_since = esp_timer_get_time();
                 if (esp_timer_get_time() - ready_since >= 10000000) {warm = true; break;}
             } else ready_since = 0;
@@ -431,19 +439,26 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
         }
         // Do not trigger thermal conversions during the bounded unloaded ramp.
         FAN_CONTROLLER_set_startup_percent(70);
-        int64_t deadline = esp_timer_get_time() + 20000000;
+        int64_t deadline = esp_timer_get_time() + 45000000;
         if (!proto_startup_wait(&guard, 500)) goto done;
         for (unsigned f = 125; f <= target; f += 25) {
             if (proto_startup_cancelled(&guard) || esp_timer_get_time() >= deadline ||
                 MC3_send_hash_frequency(f) != f) goto done;
             global->POWER_MANAGEMENT_MODULE.actual_frequency = f;
-            uint32_t settle = f == target ? 1500 : f > 500 ? 1000 : 500;
+            // Slow the high-frequency step cadence while preserving the final
+            // first-work settling interval for a controlled comparison.
+            uint32_t settle = f == target ? 1500 : f >= 300 ? 2000 : 500;
             ESP_LOGI(TAG, "PROTO STARTUP PLL frequency=%u settle_ms=%u; no work sent", f, settle);
             FAN_CONTROLLER_set_startup_percent(70);
             if (!proto_startup_wait(&guard, settle)) goto done;
         }
         if (esp_timer_get_time() >= deadline ||
             !proto_startup_temperature(&guard, 0, &coldest, &hottest)) goto done;
+        if (!proto_startup_warm_enough(coldest, hottest)) {
+            ESP_LOGE(TAG, "PROTO STARTUP too cool before first work: coldest=%.2f hottest=%.2f; require 52/54.5C",
+                coldest, hottest);
+            goto done;
+        }
         ESP_LOGI(TAG, "PROTO STARTUP FIRST_WORK frequency=%u", target);
         if (!proto_startup_qualify_first_work(&guard, &result) ||
             !proto_startup_check_result(global, &result) ||
@@ -456,6 +471,7 @@ done:
     vSemaphoreDelete(guard.stopped);
     ok = ok && !proto_startup_cancelled(&guard);
     FAN_CONTROLLER_set_startup_percent(-1);
+    mc3_diagnostics_finish_startup(ok);
     if (ok) {
         global->POWER_MANAGEMENT_MODULE.expected_hashrate =
             global->POWER_MANAGEMENT_MODULE.actual_frequency *

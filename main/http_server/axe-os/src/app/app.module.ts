@@ -1,3 +1,4 @@
+import { AsicDiagnosticsComponent } from './components/asic-diagnostics/asic-diagnostics.component';
 import 'chartjs-adapter-moment';
 
 import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
@@ -75,6 +76,7 @@ const components = [
     DialogListComponent
   ],
   imports: [
+    AsicDiagnosticsComponent,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,

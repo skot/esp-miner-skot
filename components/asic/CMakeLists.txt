@@ -5,6 +5,7 @@ SRCS
     "bm1366.c"
     "bm1397.c"
     "mc3.c"
+    "mc3_diagnostics.c"
     "serial.c"
     "crc.c"
     "asic_common.c"

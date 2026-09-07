@@ -1,0 +1,14 @@
+{
+  "boardVersion": "1103",
+  "macAddr": "28:84:85:BA:96:08",
+  "version": "v2.14.0-45-gbe978c3-dirty",
+  "regulatorVoltage": 36,
+  "hashRate": 0,
+  "frequency": 600,
+  "coreVoltage": 1160,
+  "temp": 0,
+  "temp2": 0,
+  "fanspeed": 70,
+  "fanrpm": 2670,
+  "miningPaused": false
+}

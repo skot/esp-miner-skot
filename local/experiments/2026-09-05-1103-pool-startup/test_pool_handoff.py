@@ -14,13 +14,14 @@ static void pthread_mutex_lock(pthread_mutex_t *m){(void)m;locks++;}
 static void pthread_mutex_unlock(pthread_mutex_t *m){(void)m;locks--;}
 typedef struct {uint8_t *valid_jobs;pthread_mutex_t valid_jobs_lock;} GlobalState;
 static pthread_mutex_t mc3_work_lock,mc3_pending_lock;
-static bool mc3_spdlog_started=true;
+static bool mc3_spdlog_started=true,mc3_diagnostic_mining=false;
 static unsigned mc3_pending_head=4,mc3_pending_count=10;
 static uint32_t mc3_seen_nonce_words[4]={1,2,3,4};
 '''+s[a:b]+r'''
 int main(void){
  uint8_t valid[128];memset(valid,1,sizeof(valid));GlobalState g={.valid_jobs=valid};
  MC3_prepare_pool_work(&g);
+ assert(mc3_diagnostic_mining);
  assert(!mc3_spdlog_started && !mc3_pending_head && !mc3_pending_count && !locks);
  for(int i=0;i<128;i++)assert(!valid[i]);for(int i=0;i<4;i++)assert(!mc3_seen_nonce_words[i]);
  g.valid_jobs=NULL;MC3_prepare_pool_work(&g);assert(!locks);

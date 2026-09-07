@@ -1,0 +1,19 @@
+{
+  "version": "v2.14.0-52-g381ed6e-dirty",
+  "regulatorVoltage": 2323,
+  "hashRate": 2945.2797852,
+  "frequency": 600,
+  "coreVoltage": 1160,
+  "asicTemps": [
+    52.20138931274414,
+    50.7168960571289,
+    51.376670837402344,
+    51.211727142333984
+  ],
+  "sharesAccepted": 48,
+  "sharesRejected": 0,
+  "autofanspeed": 1,
+  "fanspeed": 99,
+  "fanrpm": 3572,
+  "miningPaused": false
+}

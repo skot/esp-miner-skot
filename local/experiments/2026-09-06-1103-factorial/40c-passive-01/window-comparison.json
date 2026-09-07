@@ -1,0 +1,1224 @@
+{
+  "first10s": {
+    "total_ghs": 2046.0404107355732,
+    "qualify": false,
+    "zero_domains": [
+      "A1D0",
+      "A1D2",
+      "A2D0",
+      "A2D2",
+      "A3D2"
+    ],
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 373.296851248485,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 19266,
+            "seconds": 8.367061,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.21431055516388,
+            "percent_ideal": 99.4734564931431,
+            "passed": 92868,
+            "failed": 259,
+            "seconds": 8.367061,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 13661,
+            "seconds": 8.367061,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 187.0825406933211,
+            "percent_ideal": 99.93725464386813,
+            "passed": 93301,
+            "failed": 350,
+            "seconds": 8.367061,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 370.743978396988,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 18817,
+            "seconds": 8.368833,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 185.41509080465582,
+            "percent_ideal": 99.04652286573496,
+            "passed": 92489,
+            "failed": 354,
+            "seconds": 8.368833,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 16322,
+            "seconds": 8.368833,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 185.32888759233217,
+            "percent_ideal": 99.00047414120309,
+            "passed": 92446,
+            "failed": 342,
+            "seconds": 8.368833,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 558.0785419982027,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.9201229420593,
+            "percent_ideal": 99.85049302460432,
+            "passed": 93257,
+            "failed": 413,
+            "seconds": 8.370382,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 185.13023403519696,
+            "percent_ideal": 98.89435578803257,
+            "passed": 92364,
+            "failed": 404,
+            "seconds": 8.370382,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 22614,
+            "seconds": 8.370382,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.02818502094647,
+            "percent_ideal": 99.3740304599073,
+            "passed": 92812,
+            "failed": 486,
+            "seconds": 8.370382,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 743.9210390918977,
+        "qualify": true,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.0679808296718,
+            "percent_ideal": 99.92947693892725,
+            "passed": 93343,
+            "failed": 528,
+            "seconds": 8.371479,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 185.39255972714022,
+            "percent_ideal": 99.03448703372875,
+            "passed": 92507,
+            "failed": 266,
+            "seconds": 8.371479,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 184.84343845669326,
+            "percent_ideal": 98.74115302173786,
+            "passed": 92233,
+            "failed": 714,
+            "seconds": 8.371479,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 3,
+            "ghs": 186.61706007839234,
+            "percent_ideal": 99.68860046922669,
+            "passed": 93118,
+            "failed": 436,
+            "seconds": 8.371479,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      }
+    ]
+  },
+  "10to30s": {
+    "total_ghs": 2047.4213696776642,
+    "qualify": false,
+    "zero_domains": [
+      "A1D0",
+      "A1D2",
+      "A2D0",
+      "A2D2",
+      "A3D2"
+    ],
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 373.32054879227735,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 46554,
+            "seconds": 20.308347,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.97502769910324,
+            "percent_ideal": 99.8798224888372,
+            "passed": 226328,
+            "failed": 520,
+            "seconds": 20.308347,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 32886,
+            "seconds": 20.308347,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.34552109317414,
+            "percent_ideal": 99.54354759250757,
+            "passed": 225566,
+            "failed": 783,
+            "seconds": 20.308347,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 372.8073601710771,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 46432,
+            "seconds": 20.308041,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.37806985085365,
+            "percent_ideal": 99.56093474938764,
+            "passed": 225602,
+            "failed": 668,
+            "seconds": 20.308041,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 40564,
+            "seconds": 20.308041,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.42929032022343,
+            "percent_ideal": 99.58829611123046,
+            "passed": 225664,
+            "failed": 673,
+            "seconds": 20.308041,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 558.6470032168389,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.9785103626887,
+            "percent_ideal": 99.88168288605166,
+            "passed": 226316,
+            "failed": 1025,
+            "seconds": 20.306892,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 185.51038255504585,
+            "percent_ideal": 99.09742657855014,
+            "passed": 224539,
+            "failed": 790,
+            "seconds": 20.306892,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 54658,
+            "seconds": 20.306892,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.15811029910438,
+            "percent_ideal": 99.44343498883782,
+            "passed": 225323,
+            "failed": 1043,
+            "seconds": 20.306892,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 742.6464574974707,
+        "qualify": true,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.32018529596232,
+            "percent_ideal": 98.99582547861236,
+            "passed": 224303,
+            "failed": 1104,
+            "seconds": 20.306368,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 185.87869965047418,
+            "percent_ideal": 99.29417716371485,
+            "passed": 224979,
+            "failed": 669,
+            "seconds": 20.306368,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 185.73741865251333,
+            "percent_ideal": 99.21870654514602,
+            "passed": 224808,
+            "failed": 1494,
+            "seconds": 20.306368,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 3,
+            "ghs": 185.7101538985209,
+            "percent_ideal": 99.20414203980818,
+            "passed": 224775,
+            "failed": 1087,
+            "seconds": 20.306368,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      }
+    ]
+  },
+  "30to60s": {
+    "total_ghs": 2045.9450034995411,
+    "qualify": false,
+    "zero_domains": [
+      "A1D0",
+      "A1D2",
+      "A2D0",
+      "A2D2",
+      "A3D2"
+    ],
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 372.5712647585685,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 38288,
+            "seconds": 29.866108,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.32607821012365,
+            "percent_ideal": 99.53316143703186,
+            "passed": 331690,
+            "failed": 719,
+            "seconds": 29.866108,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 47089,
+            "seconds": 29.866108,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.24518654844482,
+            "percent_ideal": 99.48995007929746,
+            "passed": 331546,
+            "failed": 1121,
+            "seconds": 29.866108,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 371.84210805878735,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 43411,
+            "seconds": 29.867372,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 185.745234455847,
+            "percent_ideal": 99.22288165376443,
+            "passed": 330670,
+            "failed": 861,
+            "seconds": 29.867372,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 59650,
+            "seconds": 29.867372,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.09687360294035,
+            "percent_ideal": 99.41072307849377,
+            "passed": 331296,
+            "failed": 868,
+            "seconds": 29.867372,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 558.5619121006278,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.79393468438164,
+            "percent_ideal": 99.7830847672979,
+            "passed": 332554,
+            "failed": 1508,
+            "seconds": 29.868905,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 186.0249741649384,
+            "percent_ideal": 99.3723152590483,
+            "passed": 331185,
+            "failed": 1097,
+            "seconds": 29.868905,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 62655,
+            "seconds": 29.868905,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 185.74300325130767,
+            "percent_ideal": 99.22168977099768,
+            "passed": 330683,
+            "failed": 1517,
+            "seconds": 29.868905,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 742.9697185815576,
+        "qualify": true,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.43899249727227,
+            "percent_ideal": 99.0592908639275,
+            "passed": 330162,
+            "failed": 1571,
+            "seconds": 29.870736,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 186.17420624439922,
+            "percent_ideal": 99.45203325021326,
+            "passed": 331471,
+            "failed": 908,
+            "seconds": 29.870736,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 185.77374222476473,
+            "percent_ideal": 99.23811016280168,
+            "passed": 330758,
+            "failed": 2222,
+            "seconds": 29.870736,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 3,
+            "ghs": 185.58277761512136,
+            "percent_ideal": 99.1360991533768,
+            "passed": 330418,
+            "failed": 1657,
+            "seconds": 29.870736,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      }
+    ]
+  },
+  "last30s": {
+    "total_ghs": 2047.0401645942216,
+    "qualify": false,
+    "zero_domains": [
+      "A1D0",
+      "A1D2",
+      "A2D0",
+      "A2D2",
+      "A3D2"
+    ],
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 372.66053341180464,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 20197,
+            "seconds": 29.863996,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.09319243251974,
+            "percent_ideal": 99.40875664130328,
+            "passed": 331252,
+            "failed": 644,
+            "seconds": 29.863996,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 21201,
+            "seconds": 29.863996,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.5673409792849,
+            "percent_ideal": 99.66204112141288,
+            "passed": 332096,
+            "failed": 1103,
+            "seconds": 29.863996,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 372.72656622963564,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 21610,
+            "seconds": 29.861496,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.5880168789936,
+            "percent_ideal": 99.67308593963334,
+            "passed": 332105,
+            "failed": 810,
+            "seconds": 29.861496,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 26488,
+            "seconds": 29.861496,
+            "max_zero_cores": 38,
+            "min_zero_cores": 38
+          },
+          {
+            "domain": 3,
+            "ghs": 186.13854935064205,
+            "percent_ideal": 99.43298576423187,
+            "passed": 331305,
+            "failed": 871,
+            "seconds": 29.861496,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 557.8129952722375,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.16426153308552,
+            "percent_ideal": 98.912532870238,
+            "passed": 342842,
+            "failed": 1506,
+            "seconds": 31.063955,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 186.32544704214257,
+            "percent_ideal": 99.53282427464882,
+            "passed": 344992,
+            "failed": 1174,
+            "seconds": 31.063955,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 40319,
+            "seconds": 31.063955,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.32328669700945,
+            "percent_ideal": 99.53167024412899,
+            "passed": 344988,
+            "failed": 1527,
+            "seconds": 31.063955,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 743.8400696805439,
+        "qualify": true,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.04913072167997,
+            "percent_ideal": 99.38521940260682,
+            "passed": 344484,
+            "failed": 1625,
+            "seconds": 31.064281,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 186.55410609709588,
+            "percent_ideal": 99.65497120571362,
+            "passed": 345419,
+            "failed": 965,
+            "seconds": 31.064281,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 185.547935910572,
+            "percent_ideal": 99.1174871317158,
+            "passed": 343556,
+            "failed": 2295,
+            "seconds": 31.064281,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 3,
+            "ghs": 185.68889695119614,
+            "percent_ideal": 99.19278683290392,
+            "passed": 343817,
+            "failed": 1636,
+            "seconds": 31.064281,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      }
+    ]
+  },
+  "last10s": {
+    "total_ghs": 2045.6928807712345,
+    "qualify": false,
+    "zero_domains": [
+      "A1D0",
+      "A1D2",
+      "A2D0",
+      "A2D2",
+      "A3D2"
+    ],
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 372.6922614405147,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 7321,
+            "seconds": 10.753712,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 185.67449366246743,
+            "percent_ideal": 99.18509276841209,
+            "passed": 119012,
+            "failed": 248,
+            "seconds": 10.753712,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 7595,
+            "seconds": 10.753712,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 187.01776777804724,
+            "percent_ideal": 99.90265372758934,
+            "passed": 119873,
+            "failed": 413,
+            "seconds": 10.753712,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 372.97270622119606,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 7867,
+            "seconds": 10.753543,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.84596931225363,
+            "percent_ideal": 99.81088104287053,
+            "passed": 119761,
+            "failed": 304,
+            "seconds": 10.753543,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 9434,
+            "seconds": 10.753543,
+            "max_zero_cores": 38,
+            "min_zero_cores": 38
+          },
+          {
+            "domain": 3,
+            "ghs": 186.12673690894246,
+            "percent_ideal": 99.4266756992214,
+            "passed": 119300,
+            "failed": 312,
+            "seconds": 10.753543,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 556.8190656866935,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.22956814847507,
+            "percent_ideal": 98.94741888273242,
+            "passed": 118804,
+            "failed": 495,
+            "seconds": 10.760703,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 185.70198119137754,
+            "percent_ideal": 99.19977627744527,
+            "passed": 119107,
+            "failed": 392,
+            "seconds": 10.760703,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 13985,
+            "seconds": 10.760703,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 185.8875163468409,
+            "percent_ideal": 99.29888693741502,
+            "passed": 119226,
+            "failed": 526,
+            "seconds": 10.760703,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 743.2088474228301,
+        "qualify": true,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.68604697906426,
+            "percent_ideal": 99.19126441189331,
+            "passed": 119086,
+            "failed": 546,
+            "seconds": 10.759729,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 186.67773639577726,
+            "percent_ideal": 99.7210130319323,
+            "passed": 119722,
+            "failed": 392,
+            "seconds": 10.759729,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 185.0732577640199,
+            "percent_ideal": 98.86391974573712,
+            "passed": 118693,
+            "failed": 796,
+            "seconds": 10.759729,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 3,
+            "ghs": 185.7718062839687,
+            "percent_ideal": 99.23707600639354,
+            "passed": 119141,
+            "failed": 553,
+            "seconds": 10.759729,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      }
+    ]
+  },
+  "whole": {
+    "total_ghs": 2046.6652565728446,
+    "qualify": false,
+    "zero_domains": [
+      "A1D0",
+      "A1D2",
+      "A2D0",
+      "A3D2"
+    ],
+    "chips": [
+      {
+        "asic": 1,
+        "ghs": 372.70161363549556,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 145641,
+            "seconds": 119.569985,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.32239344761982,
+            "percent_ideal": 99.53119308099349,
+            "passed": 1327906,
+            "failed": 2883,
+            "seconds": 119.569985,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 152095,
+            "seconds": 119.569985,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 186.37922018787575,
+            "percent_ideal": 99.56154924566013,
+            "passed": 1328311,
+            "failed": 4497,
+            "seconds": 119.569985,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "ghs": 372.4624422785747,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 152606,
+            "seconds": 119.570956,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 1,
+            "ghs": 186.33561311808865,
+            "percent_ideal": 99.53825487077386,
+            "passed": 1328011,
+            "failed": 3507,
+            "seconds": 119.570956,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.00014031179946407722,
+            "percent_ideal": 7.495288432910109e-05,
+            "passed": 1,
+            "failed": 172243,
+            "seconds": 119.570956,
+            "max_zero_cores": 39,
+            "min_zero_cores": 38
+          },
+          {
+            "domain": 3,
+            "ghs": 186.12668884868663,
+            "percent_ideal": 99.42665002600782,
+            "passed": 1326522,
+            "failed": 3641,
+            "seconds": 119.570956,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "ghs": 558.2852366689901,
+        "qualify": false,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.21704797412224,
+            "percent_ideal": 99.47491878959522,
+            "passed": 1327260,
+            "failed": 5839,
+            "seconds": 119.579426,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 186.12080089750557,
+            "percent_ideal": 99.42350475294101,
+            "passed": 1326574,
+            "failed": 4583,
+            "seconds": 119.579426,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 0.0,
+            "percent_ideal": 0.0,
+            "passed": 0,
+            "failed": 219125,
+            "seconds": 119.579426,
+            "max_zero_cores": 39,
+            "min_zero_cores": 39
+          },
+          {
+            "domain": 3,
+            "ghs": 185.94738779736238,
+            "percent_ideal": 99.33086954987307,
+            "passed": 1325338,
+            "failed": 6066,
+            "seconds": 119.579426,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "ghs": 743.2159639897841,
+        "qualify": true,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.64331324058568,
+            "percent_ideal": 99.16843656014193,
+            "passed": 1323195,
+            "failed": 6414,
+            "seconds": 119.581621,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 1,
+            "ghs": 186.2320090430619,
+            "percent_ideal": 99.48291081360145,
+            "passed": 1327391,
+            "failed": 3750,
+            "seconds": 119.581621,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 2,
+            "ghs": 185.55955456706846,
+            "percent_ideal": 99.12369367898957,
+            "passed": 1322598,
+            "failed": 9043,
+            "seconds": 119.581621,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          },
+          {
+            "domain": 3,
+            "ghs": 185.78108713906798,
+            "percent_ideal": 99.2420337281346,
+            "passed": 1324177,
+            "failed": 6453,
+            "seconds": 119.581621,
+            "max_zero_cores": 0,
+            "min_zero_cores": 0
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "launch_ms": 168052,
+    "excluded_rows_near_timer_expiry": 0,
+    "first_work_temperature_line": "W (167874) asic_init: DEFER TEMP freq=600 A1=46.76 A2=44.94 A3=46.26 A4=46.43; no work sent",
+    "warm_qualified_temperatures": [
+      42.63,
+      41.81,
+      42.14,
+      42.47
+    ],
+    "completion": [
+      "W (289127) asic_init: DEFER END observed_seconds=121.075 healthy_all=0; powering off",
+      "W (289143) asic_init: WARM END result=COMPLETE frequency=600 max_PCB=1191/1203 mV PCB_sense=1 max_total=2329 mV ASIC_power=OFF"
+    ],
+    "config": "#define PROTO_COMPARE_LOW_WARMUP 1\n#define PROTO_COMPARE_PASSIVE_LAUNCH 1\n",
+    "interpretation": "Qualification is calculated from interval rates using production thresholds; sampling cadence differs from production. No actual shutdown or rearm at ten seconds."
+  }
+}

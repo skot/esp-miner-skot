@@ -1,0 +1,290 @@
+[
+  {
+    "window": "first30s",
+    "asic": 1,
+    "domain": 0,
+    "seconds": 29.825228,
+    "pass_percent": 99.09084265528442,
+    "fail_fraction_percent": 0.6100280902262891,
+    "mean_temperature_c": 37.57639999999999
+  },
+  {
+    "window": "first30s",
+    "asic": 1,
+    "domain": 1,
+    "seconds": 29.825228,
+    "pass_percent": 99.86730927208085,
+    "fail_fraction_percent": 0.43021834479783333,
+    "mean_temperature_c": 37.57639999999999
+  },
+  {
+    "window": "first30s",
+    "asic": 1,
+    "domain": 2,
+    "seconds": 29.825228,
+    "pass_percent": 96.05709383052566,
+    "fail_fraction_percent": 3.524412547608844,
+    "mean_temperature_c": 37.57639999999999
+  },
+  {
+    "window": "first30s",
+    "asic": 1,
+    "domain": 3,
+    "seconds": 29.825228,
+    "pass_percent": 99.6197053664151,
+    "fail_fraction_percent": 0.6097890022125088,
+    "mean_temperature_c": 37.57639999999999
+  },
+  {
+    "window": "first30s",
+    "asic": 2,
+    "domain": 0,
+    "seconds": 29.829221,
+    "pass_percent": 98.43040895638349,
+    "fail_fraction_percent": 1.2395921886398853,
+    "mean_temperature_c": 36.513600000000004
+  },
+  {
+    "window": "first30s",
+    "asic": 2,
+    "domain": 1,
+    "seconds": 29.829221,
+    "pass_percent": 98.58784473152204,
+    "fail_fraction_percent": 0.9651950309659194,
+    "mean_temperature_c": 36.513600000000004
+  },
+  {
+    "window": "first30s",
+    "asic": 2,
+    "domain": 2,
+    "seconds": 29.829221,
+    "pass_percent": 98.9177387794269,
+    "fail_fraction_percent": 1.170707107092684,
+    "mean_temperature_c": 36.513600000000004
+  },
+  {
+    "window": "first30s",
+    "asic": 2,
+    "domain": 3,
+    "seconds": 29.829221,
+    "pass_percent": 99.42249469971848,
+    "fail_fraction_percent": 0.4859741134581148,
+    "mean_temperature_c": 36.513600000000004
+  },
+  {
+    "window": "first30s",
+    "asic": 3,
+    "domain": 0,
+    "seconds": 28.636549,
+    "pass_percent": 99.66753501337254,
+    "fail_fraction_percent": 0.4625809516665416,
+    "mean_temperature_c": 36.855
+  },
+  {
+    "window": "first30s",
+    "asic": 3,
+    "domain": 1,
+    "seconds": 28.636549,
+    "pass_percent": 98.80563416609677,
+    "fail_fraction_percent": 0.9083376228798132,
+    "mean_temperature_c": 36.855
+  },
+  {
+    "window": "first30s",
+    "asic": 3,
+    "domain": 2,
+    "seconds": 28.636549,
+    "pass_percent": 99.55862379519826,
+    "fail_fraction_percent": 0.4138518272716458,
+    "mean_temperature_c": 36.855
+  },
+  {
+    "window": "first30s",
+    "asic": 3,
+    "domain": 3,
+    "seconds": 28.636549,
+    "pass_percent": 99.33829765268479,
+    "fail_fraction_percent": 0.7597501266250211,
+    "mean_temperature_c": 36.855
+  },
+  {
+    "window": "first30s",
+    "asic": 4,
+    "domain": 0,
+    "seconds": 28.63905,
+    "pass_percent": 99.5004856297384,
+    "fail_fraction_percent": 0.48574379518637917,
+    "mean_temperature_c": 37.12291666666666
+  },
+  {
+    "window": "first30s",
+    "asic": 4,
+    "domain": 1,
+    "seconds": 28.63905,
+    "pass_percent": 99.5636986896306,
+    "fail_fraction_percent": 0.37138401608286936,
+    "mean_temperature_c": 37.12291666666666
+  },
+  {
+    "window": "first30s",
+    "asic": 4,
+    "domain": 2,
+    "seconds": 28.63905,
+    "pass_percent": 99.3239897595443,
+    "fail_fraction_percent": 0.4940903533247641,
+    "mean_temperature_c": 37.12291666666666
+  },
+  {
+    "window": "first30s",
+    "asic": 4,
+    "domain": 3,
+    "seconds": 28.63905,
+    "pass_percent": 99.71515968461985,
+    "fail_fraction_percent": 0.3951135951586081,
+    "mean_temperature_c": 37.12291666666666
+  },
+  {
+    "window": "last30s",
+    "asic": 1,
+    "domain": 0,
+    "seconds": 29.847681,
+    "pass_percent": 99.31416331593392,
+    "fail_fraction_percent": 0.3873004017564043,
+    "mean_temperature_c": 54.4664
+  },
+  {
+    "window": "last30s",
+    "asic": 1,
+    "domain": 1,
+    "seconds": 29.847681,
+    "pass_percent": 99.14061064751183,
+    "fail_fraction_percent": 0.24170790807848255,
+    "mean_temperature_c": 54.4664
+  },
+  {
+    "window": "last30s",
+    "asic": 1,
+    "domain": 2,
+    "seconds": 29.847681,
+    "pass_percent": 96.7889419639796,
+    "fail_fraction_percent": 2.946418893692869,
+    "mean_temperature_c": 54.4664
+  },
+  {
+    "window": "last30s",
+    "asic": 1,
+    "domain": 3,
+    "seconds": 29.847681,
+    "pass_percent": 99.99876553739121,
+    "fail_fraction_percent": 0.3935971670574724,
+    "mean_temperature_c": 54.4664
+  },
+  {
+    "window": "last30s",
+    "asic": 2,
+    "domain": 0,
+    "seconds": 29.847044,
+    "pass_percent": 99.34630994745464,
+    "fail_fraction_percent": 0.6038465929232785,
+    "mean_temperature_c": 53.622
+  },
+  {
+    "window": "last30s",
+    "asic": 2,
+    "domain": 1,
+    "seconds": 29.847044,
+    "pass_percent": 99.25923149070984,
+    "fail_fraction_percent": 0.4732972439166852,
+    "mean_temperature_c": 53.622
+  },
+  {
+    "window": "last30s",
+    "asic": 2,
+    "domain": 2,
+    "seconds": 29.847044,
+    "pass_percent": 99.24902229233284,
+    "fail_fraction_percent": 0.4895260689190084,
+    "mean_temperature_c": 53.622
+  },
+  {
+    "window": "last30s",
+    "asic": 2,
+    "domain": 3,
+    "seconds": 29.847044,
+    "pass_percent": 99.36973104961359,
+    "fail_fraction_percent": 0.3270887295946027,
+    "mean_temperature_c": 53.622
+  },
+  {
+    "window": "last30s",
+    "asic": 3,
+    "domain": 0,
+    "seconds": 31.052647,
+    "pass_percent": 99.19560490203489,
+    "fail_fraction_percent": 0.24090930200157898,
+    "mean_temperature_c": 53.915769230769236
+  },
+  {
+    "window": "last30s",
+    "asic": 3,
+    "domain": 1,
+    "seconds": 31.052647,
+    "pass_percent": 99.47151863527264,
+    "fail_fraction_percent": 0.5689128917046038,
+    "mean_temperature_c": 53.915769230769236
+  },
+  {
+    "window": "last30s",
+    "asic": 3,
+    "domain": 2,
+    "seconds": 31.052647,
+    "pass_percent": 99.451892972239,
+    "fail_fraction_percent": 0.3187845687440698,
+    "mean_temperature_c": 53.915769230769236
+  },
+  {
+    "window": "last30s",
+    "asic": 3,
+    "domain": 3,
+    "seconds": 31.052647,
+    "pass_percent": 99.33587067018715,
+    "fail_fraction_percent": 0.4799851956373394,
+    "mean_temperature_c": 53.915769230769236
+  },
+  {
+    "window": "last30s",
+    "asic": 4,
+    "domain": 0,
+    "seconds": 31.049964,
+    "pass_percent": 99.6019189614993,
+    "fail_fraction_percent": 0.2756986388463428,
+    "mean_temperature_c": 54.093461538461526
+  },
+  {
+    "window": "last30s",
+    "asic": 4,
+    "domain": 1,
+    "seconds": 31.049964,
+    "pass_percent": 100.05508004128912,
+    "fail_fraction_percent": 0.1756629115119681,
+    "mean_temperature_c": 54.093461538461526
+  },
+  {
+    "window": "last30s",
+    "asic": 4,
+    "domain": 2,
+    "seconds": 31.049964,
+    "pass_percent": 99.10661678766533,
+    "fail_fraction_percent": 0.44131036122499867,
+    "mean_temperature_c": 54.093461538461526
+  },
+  {
+    "window": "last30s",
+    "asic": 4,
+    "domain": 3,
+    "seconds": 31.049964,
+    "pass_percent": 99.38717256445238,
+    "fail_fraction_percent": 0.23526412164198132,
+    "mean_temperature_c": 54.093461538461526
+  }
+]

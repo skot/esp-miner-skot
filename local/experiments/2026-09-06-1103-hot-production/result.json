@@ -1,0 +1,305 @@
+{
+  "startup_qualifications": [
+    {
+      "boot_ms": 36373,
+      "frequency": 100.0,
+      "ghs": 492.41,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 41460,
+      "frequency": 125.0,
+      "ghs": 616.17,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 46569,
+      "frequency": 150.0,
+      "ghs": 741.21,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 51707,
+      "frequency": 175.0,
+      "ghs": 864.74,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 56825,
+      "frequency": 200.0,
+      "ghs": 988.69,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 61912,
+      "frequency": 225.0,
+      "ghs": 1112.38,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 67019,
+      "frequency": 250.0,
+      "ghs": 1234.47,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 72122,
+      "frequency": 275.0,
+      "ghs": 1358.1,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 77218,
+      "frequency": 300.0,
+      "ghs": 1480.72,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 298770,
+      "frequency": 300.0,
+      "ghs": 1486.01,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 348283,
+      "frequency": 600.0,
+      "ghs": 2960.9,
+      "result": "PASS"
+    }
+  ],
+  "first_temperature": {
+    "boot_ms": 36458,
+    "frequency": 100.0,
+    "temperatures": [
+      28.94,
+      28.45,
+      28.28,
+      28.78
+    ]
+  },
+  "temperature_before_first_work": {
+    "boot_ms": 336023,
+    "frequency": 600.0,
+    "temperatures": [
+      55.83,
+      54.35,
+      55.67,
+      54.84
+    ]
+  },
+  "ready_boot_ms": 348441,
+  "final_pll_to_first_work_ms": 1596,
+  "pool_observed_seconds": 304.45614525,
+  "pool_epochs": 55,
+  "pool_ghs": {
+    "min": 2938.24,
+    "mean": 2955.302545454546,
+    "max": 2979.04,
+    "last": {
+      "epoch": 94,
+      "host_elapsed": 657.702865125,
+      "ghs": 2955.1800000000003,
+      "chips": [
+        {
+          "asic": 1,
+          "ghs": 737.74,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 183.62,
+              "zero_cores": 0,
+              "percent_ideal": 98.08760683760684
+            },
+            {
+              "domain": 1,
+              "ghs": 187.22,
+              "zero_cores": 0,
+              "percent_ideal": 100.01068376068376
+            },
+            {
+              "domain": 2,
+              "ghs": 180.22,
+              "zero_cores": 1,
+              "percent_ideal": 96.27136752136752
+            },
+            {
+              "domain": 3,
+              "ghs": 186.68,
+              "zero_cores": 0,
+              "percent_ideal": 99.72222222222223
+            }
+          ]
+        },
+        {
+          "asic": 2,
+          "ghs": 732.82,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 186.5,
+              "zero_cores": 0,
+              "percent_ideal": 99.62606837606837
+            },
+            {
+              "domain": 1,
+              "ghs": 183.56,
+              "zero_cores": 0,
+              "percent_ideal": 98.05555555555556
+            },
+            {
+              "domain": 2,
+              "ghs": 181.62,
+              "zero_cores": 0,
+              "percent_ideal": 97.01923076923077
+            },
+            {
+              "domain": 3,
+              "ghs": 181.14000000000001,
+              "zero_cores": 0,
+              "percent_ideal": 96.76282051282053
+            }
+          ]
+        },
+        {
+          "asic": 3,
+          "ghs": 745.2800000000001,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.84,
+              "zero_cores": 0,
+              "percent_ideal": 99.27350427350427
+            },
+            {
+              "domain": 1,
+              "ghs": 186.36,
+              "zero_cores": 0,
+              "percent_ideal": 99.55128205128206
+            },
+            {
+              "domain": 2,
+              "ghs": 185.36,
+              "zero_cores": 0,
+              "percent_ideal": 99.01709401709404
+            },
+            {
+              "domain": 3,
+              "ghs": 187.72,
+              "zero_cores": 0,
+              "percent_ideal": 100.27777777777777
+            }
+          ]
+        },
+        {
+          "asic": 4,
+          "ghs": 739.3399999999999,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 189.56,
+              "zero_cores": 0,
+              "percent_ideal": 101.26068376068378
+            },
+            {
+              "domain": 1,
+              "ghs": 185.22,
+              "zero_cores": 0,
+              "percent_ideal": 98.9423076923077
+            },
+            {
+              "domain": 2,
+              "ghs": 180.28,
+              "zero_cores": 0,
+              "percent_ideal": 96.30341880341881
+            },
+            {
+              "domain": 3,
+              "ghs": 184.28,
+              "zero_cores": 0,
+              "percent_ideal": 98.44017094017094
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "mining_peak_temperature_c": 56.48992919921875,
+  "mining_min_domain_percent": 94.79700854700856,
+  "final_info": {
+    "version": "v2.14.0-52-g381ed6e-dirty",
+    "axeOSVersion": "v2.14.0-52-g381ed6e-dirty",
+    "regulatorVoltage": 2323,
+    "actualFrequency": 600,
+    "asicTemps": [
+      52.3663330078125,
+      50.881839752197266,
+      51.70655822753906,
+      51.376670837402344
+    ],
+    "hashRate": 2955.1801758,
+    "hashrateMonitor": {
+      "asics": [
+        {
+          "total": 737.739990234375,
+          "errorCount": 0,
+          "domains": [
+            737.739990234375,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "total": 732.8200073242188,
+          "errorCount": 0,
+          "domains": [
+            732.8200073242188,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "total": 745.280029296875,
+          "errorCount": 0,
+          "domains": [
+            745.280029296875,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "total": 739.3400268554688,
+          "errorCount": 0,
+          "domains": [
+            739.3400268554688,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "sharesAccepted": 48,
+    "sharesRejected": 0,
+    "freeHeap": 7689560,
+    "freeHeapInternal": 76239,
+    "miningPaused": false,
+    "power": 46.4997559,
+    "temp": 52.366333,
+    "temp2": -1,
+    "fanspeed": 99,
+    "fanrpm": 3569,
+    "autofanspeed": 1,
+    "frequency": 600,
+    "coreVoltage": 1160
+  },
+  "log_faults": [],
+  "pool_global_spdlog": {
+    "windows": 71,
+    "min_ghs": 2938.24,
+    "mean_ghs": 2955.799154929577,
+    "max_ghs": 2979.04
+  }
+}

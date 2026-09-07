@@ -1,0 +1,13 @@
+{
+  "sha256": {
+    "probe.bin": "086c297cc830c9725b37c9390f5353ef87b825c6e1bec9b6ad4c6f22ebadd4b1",
+    "probe.elf": "7069d7868e280d411022d6ae8fad899ff92f9d6c01d23f207ae2176a60f1398f",
+    "asic-init-source.c": "b7b33e6a56cad65ea8ead6046b24efaad316f3215937f970b2676fcab7ce8df9",
+    "mc3-source.c": "cbf452381e02a99bd86c64d94bf40e99d150f31e6951de3873396068d237a64a",
+    "proto_compare.h": "a702f0d4a2f86d8a9eef8238ef393ca5d88e0ba70c1a2864415acde66cbe5d0f",
+    "sdkconfig-snapshot": "a84ab70dbbe34e3343b78d5bf0030a7efa7963a3846de4c16793d40af9017015"
+  },
+  "app_only": true,
+  "scope_used": false,
+  "config": "#define PROTO_COMPARE_LOW_WARMUP 1\n#define PROTO_COMPARE_PASSIVE_LAUNCH 0\n"
+}

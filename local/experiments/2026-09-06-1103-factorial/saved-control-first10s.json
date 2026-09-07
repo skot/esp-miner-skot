@@ -1,0 +1,110 @@
+{
+  "source": "local/experiments/2026-09-06-1103-saved-image-control",
+  "first10s_ghs": 2961.511382021726,
+  "chips": [
+    {
+      "asic": 1,
+      "ghs": 737.682322072567,
+      "domains": [
+        {
+          "domain": 0,
+          "ghs": 184.66243533166292,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 1,
+          "ghs": 185.66404611863624,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 2,
+          "ghs": 180.77264564891914,
+          "max_zero_cores": 1
+        },
+        {
+          "domain": 3,
+          "ghs": 186.5831949733487,
+          "max_zero_cores": 0
+        }
+      ]
+    },
+    {
+      "asic": 2,
+      "ghs": 738.8399234770941,
+      "domains": [
+        {
+          "domain": 0,
+          "ghs": 184.7934521973409,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 1,
+          "ghs": 184.86183834563707,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 2,
+          "ghs": 184.90407684899645,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 3,
+          "ghs": 184.2805560851197,
+          "max_zero_cores": 0
+        }
+      ]
+    },
+    {
+      "asic": 3,
+      "ghs": 741.1059344976072,
+      "domains": [
+        {
+          "domain": 0,
+          "ghs": 185.73504895512653,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 1,
+          "ghs": 184.44181427242472,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 2,
+          "ghs": 185.5882275992366,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 3,
+          "ghs": 185.3408436708193,
+          "max_zero_cores": 0
+        }
+      ]
+    },
+    {
+      "asic": 4,
+      "ghs": 743.8832019744582,
+      "domains": [
+        {
+          "domain": 0,
+          "ghs": 187.05112879523722,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 1,
+          "ghs": 185.30973408289617,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 2,
+          "ghs": 184.82511961906917,
+          "max_zero_cores": 0
+        },
+        {
+          "domain": 3,
+          "ghs": 186.69721947725566,
+          "max_zero_cores": 0
+        }
+      ]
+    }
+  ]
+}

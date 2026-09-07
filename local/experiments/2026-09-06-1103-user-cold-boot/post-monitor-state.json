@@ -1,0 +1,18 @@
+{
+  "version": "v2.14.0-52-g381ed6e-dirty",
+  "actualFrequency": 600,
+  "asicTemps": [
+    53.52094268798828,
+    52.3663330078125,
+    52.86116409301758,
+    52.69622039794922
+  ],
+  "hashRate": 2965.5600586,
+  "sharesAccepted": 63,
+  "sharesRejected": 1,
+  "miningPaused": false,
+  "uptimeSeconds": 729,
+  "regulatorVoltage": 2323,
+  "fanspeed": 99,
+  "uptime_monotonic_after_monitor": true
+}

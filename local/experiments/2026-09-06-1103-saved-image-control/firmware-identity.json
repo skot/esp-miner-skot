@@ -1,0 +1,8 @@
+{
+  "source_binary": "/Users/skot/Bitcoin/ESP-Miner/esp-miner-proto/local/experiments/2026-09-05-1103-scale-before-limits/probe.bin",
+  "sha256": "fe782f3d7e70980c91719aeffeabaf8322779cd61155a8667627a5bc00295313",
+  "flash_offset": "0x10000",
+  "app_only": true,
+  "nvs_preserved": true,
+  "scope_used": false
+}

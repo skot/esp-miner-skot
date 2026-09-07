@@ -1,0 +1,348 @@
+{
+  "startup_qualifications": [
+    {
+      "boot_ms": 36403,
+      "frequency": 100.0,
+      "ghs": 492.11,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 41510,
+      "frequency": 125.0,
+      "ghs": 616.06,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 46624,
+      "frequency": 150.0,
+      "ghs": 740.92,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 51730,
+      "frequency": 175.0,
+      "ghs": 864.39,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 56832,
+      "frequency": 200.0,
+      "ghs": 988.26,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 61926,
+      "frequency": 225.0,
+      "ghs": 1111.95,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 67018,
+      "frequency": 250.0,
+      "ghs": 1234.24,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 72124,
+      "frequency": 275.0,
+      "ghs": 1357.68,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 77210,
+      "frequency": 300.0,
+      "ghs": 1480.41,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 309640,
+      "frequency": 300.0,
+      "ghs": 1488.57,
+      "result": "PASS"
+    },
+    {
+      "boot_ms": 359133,
+      "frequency": 600.0,
+      "ghs": 2960.18,
+      "result": "PASS"
+    }
+  ],
+  "first_temperature": {
+    "boot_ms": 36495,
+    "frequency": 100.0,
+    "temperatures": [
+      28.28,
+      27.62,
+      27.62,
+      27.95
+    ]
+  },
+  "temperature_before_first_work": {
+    "boot_ms": 346854,
+    "frequency": 600.0,
+    "temperatures": [
+      55.83,
+      54.35,
+      55.17,
+      54.68
+    ]
+  },
+  "ready_boot_ms": 359237,
+  "final_pll_to_first_work_ms": 1596,
+  "pool_observed_seconds": 304.25122254099995,
+  "pool_epochs": 55,
+  "pool_ghs": {
+    "min": 2935.8799999999997,
+    "mean": 2955.1683636363637,
+    "max": 2978.36,
+    "last": {
+      "epoch": 95,
+      "host_elapsed": 667.464064208,
+      "ghs": 2949.38,
+      "chips": [
+        {
+          "asic": 1,
+          "ghs": 735.82,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 189.68,
+              "zero_cores": 0,
+              "percent_ideal": 101.32478632478634
+            },
+            {
+              "domain": 1,
+              "ghs": 182.9,
+              "zero_cores": 0,
+              "percent_ideal": 97.70299145299145
+            },
+            {
+              "domain": 2,
+              "ghs": 178.58,
+              "zero_cores": 1,
+              "percent_ideal": 95.39529914529916
+            },
+            {
+              "domain": 3,
+              "ghs": 184.66,
+              "zero_cores": 0,
+              "percent_ideal": 98.6431623931624
+            }
+          ]
+        },
+        {
+          "asic": 2,
+          "ghs": 732.62,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 183.74,
+              "zero_cores": 0,
+              "percent_ideal": 98.15170940170941
+            },
+            {
+              "domain": 1,
+              "ghs": 184.28,
+              "zero_cores": 0,
+              "percent_ideal": 98.44017094017094
+            },
+            {
+              "domain": 2,
+              "ghs": 182.96,
+              "zero_cores": 0,
+              "percent_ideal": 97.73504273504274
+            },
+            {
+              "domain": 3,
+              "ghs": 181.64000000000001,
+              "zero_cores": 0,
+              "percent_ideal": 97.02991452991454
+            }
+          ]
+        },
+        {
+          "asic": 3,
+          "ghs": 738.82,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.46,
+              "zero_cores": 0,
+              "percent_ideal": 99.07051282051283
+            },
+            {
+              "domain": 1,
+              "ghs": 185.74,
+              "zero_cores": 0,
+              "percent_ideal": 99.22008547008548
+            },
+            {
+              "domain": 2,
+              "ghs": 183.1,
+              "zero_cores": 0,
+              "percent_ideal": 97.80982905982907
+            },
+            {
+              "domain": 3,
+              "ghs": 184.52,
+              "zero_cores": 0,
+              "percent_ideal": 98.56837606837608
+            }
+          ]
+        },
+        {
+          "asic": 4,
+          "ghs": 742.1200000000001,
+          "domains": [
+            {
+              "domain": 0,
+              "ghs": 185.28,
+              "zero_cores": 0,
+              "percent_ideal": 98.97435897435898
+            },
+            {
+              "domain": 1,
+              "ghs": 184.56,
+              "zero_cores": 0,
+              "percent_ideal": 98.58974358974359
+            },
+            {
+              "domain": 2,
+              "ghs": 184.48,
+              "zero_cores": 0,
+              "percent_ideal": 98.54700854700855
+            },
+            {
+              "domain": 3,
+              "ghs": 187.8,
+              "zero_cores": 0,
+              "percent_ideal": 100.32051282051285
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "mining_peak_temperature_c": 56.3249855041504,
+  "mining_min_domain_percent": 93.61111111111113,
+  "final_info": {
+    "version": "v2.14.0-52-g381ed6e-dirty",
+    "axeOSVersion": "v2.14.0-52-g381ed6e-dirty",
+    "regulatorVoltage": 2323,
+    "actualFrequency": 600,
+    "asicTemps": [
+      53.52094268798828,
+      52.20138931274414,
+      52.86116409301758,
+      52.53127670288086
+    ],
+    "hashRate": 2949.3798828,
+    "hashrateMonitor": {
+      "asics": [
+        {
+          "total": 735.8200073242188,
+          "errorCount": 0,
+          "domains": [
+            735.8200073242188,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "total": 732.6199951171875,
+          "errorCount": 0,
+          "domains": [
+            732.6199951171875,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "total": 738.8200073242188,
+          "errorCount": 0,
+          "domains": [
+            738.8200073242188,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "total": 742.1199951171875,
+          "errorCount": 0,
+          "domains": [
+            742.1199951171875,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "sharesAccepted": 59,
+    "sharesRejected": 1,
+    "freeHeap": 7690612,
+    "freeHeapInternal": 76775,
+    "miningPaused": false,
+    "power": 46.7163696,
+    "temp": 53.5209427,
+    "temp2": -1,
+    "fanspeed": 99,
+    "fanrpm": 3572,
+    "autofanspeed": 1,
+    "frequency": 600,
+    "coreVoltage": 1160,
+    "uptimeSeconds": 666,
+    "boardVersion": "1103",
+    "macAddr": "28:84:85:BA:96:08"
+  },
+  "log_faults": [],
+  "pool_global_spdlog": {
+    "windows": 73,
+    "min_ghs": 2935.88,
+    "mean_ghs": 2955.3391780821926,
+    "max_ghs": 2978.36
+  },
+  "boot_observation": {
+    "host_attached_unix": 1788738685.8434181,
+    "user_report": "User just plugged in stock1103 for a truly cold boot",
+    "serial_port": "/dev/cu.usbmodem11434201",
+    "reset_requested": false,
+    "settings_changed": false,
+    "firmware_flashed": false,
+    "observed_reset_reason": "0x15 USB_UART_CHIP_RESET",
+    "uninterrupted_power_on_capture": false,
+    "reset_causality": "May have been triggered by serial attachment; no reset command was intentionally sent. Cannot identify original input-power boot as uninterrupted.",
+    "first_fresh_asic_temperatures_c": [
+      28.28,
+      27.62,
+      27.62,
+      27.95
+    ]
+  },
+  "captured_reset_banners": [
+    "rst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)"
+  ],
+  "pool_rejections": [
+    {
+      "boot_ms": 419897,
+      "reason": "Difficulty too low"
+    }
+  ],
+  "pool_difficulty_updates": [
+    {
+      "boot_ms": 359563,
+      "difficulty": 100000.0
+    },
+    {
+      "boot_ms": 359753,
+      "difficulty": 1000.0
+    },
+    {
+      "boot_ms": 419523,
+      "difficulty": 16384.0
+    }
+  ]
+}
