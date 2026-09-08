@@ -51,6 +51,7 @@ interface ISystemInfoError {
 
 const HOME_CHART_DATA_SOURCES = 'HOME_CHART_DATA_SOURCES';
 const DASHBOARD_LAYOUT_KEY = 'DASHBOARD_LAYOUT_V1';
+const PERFORMANCE_LAYOUT_KEY = 'DASHBOARD_ASIC_PERFORMANCE_V1';
 const HIDDEN_WIDGETS_KEY = 'DASHBOARD_HIDDEN_WIDGETS';
 const DEFAULT_CELL_HEIGHT = 40;
 
@@ -340,6 +341,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initGridStack(): void {
+    if (this.latestInfo?.ASICModel === 'MC3') {
+      this.widgetDefs = WIDGET_DEFAULTS.map(widget => widget.id === 'registers'
+        ? { ...widget, label: 'ASIC Performance' } : widget);
+      this.dashboardEditService.widgetDefs = this.widgetDefs;
+    }
     // Load hidden widgets before grid init
     const savedHidden = this.storageService.getObject(HIDDEN_WIDGETS_KEY);
     if (Array.isArray(savedHidden)) {
@@ -376,7 +382,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }, this.gridStackEl!.nativeElement);
 
     const savedLayout = this.storageService.getObject(DASHBOARD_LAYOUT_KEY);
-    this.grid.load(savedLayout ?? this.getInitialLayout());
+    // Expand the old compact MC3 register widget once without discarding other custom positions.
+    const layout = savedLayout ?? this.getInitialLayout();
+    if (this.latestInfo?.ASICModel === 'MC3' && !this.storageService.getObject(PERFORMANCE_LAYOUT_KEY)) {
+      const registers = layout.find((widget: WidgetDef) => widget.id === 'registers');
+      if (registers) Object.assign(registers, { x: 0, w: 12, h: 24, minW: 4, minH: 12 });
+      this.storageService.setObject(PERFORMANCE_LAYOUT_KEY, { migrated: true });
+    }
+    this.grid.load(layout);
+    this.saveLayout();
 
     setTimeout(() => this.chart?.chart?.resize(), 100);
 
@@ -422,7 +436,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     return WIDGET_DEFAULTS.map(widget => {
       const w = { ...widget };
-      if (w.id === chartDef.id) {
+      if (w.id === 'registers' && this.latestInfo?.ASICModel === 'MC3') {
+        Object.assign(w, { label: 'ASIC Performance', x: 0, y: 18 + chartH, w: 12, h: 24, minW: 4, minH: 12 });
+      } else if (w.id === chartDef.id) {
         w.h = chartH;
       } else if (w.y >= chartDef.y) {
         // Shift everything at or below the chart position
@@ -940,8 +956,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         formatted.voltage = parseFloat(formatted.voltage.toFixed(1));
         formatted.current = parseFloat(formatted.current.toFixed(1));
         formatted.coreVoltageActual = parseFloat(formatted.coreVoltageActual.toFixed(2));
-        formatted.regulatorVoltage = parseFloat(formatted.regulatorVoltage.toFixed(2));
-        formatted.asicVoltages = (formatted.asicVoltages || []).map(voltage => parseFloat(voltage.toFixed(2)));
+        formatted.regulatorVoltage = parseFloat(formatted.regulatorVoltage.toFixed(3));
+        formatted.asicVoltages = (formatted.asicVoltages || []).map(voltage => parseFloat(voltage.toFixed(3)));
         formatted.coreVoltage = parseFloat(formatted.coreVoltage.toFixed(2));
         formatted.temp = parseFloat(formatted.temp.toFixed(1));
         formatted.temp2 = parseFloat(formatted.temp2.toFixed(1));

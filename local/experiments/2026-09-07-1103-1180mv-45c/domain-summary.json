@@ -1,0 +1,203 @@
+{
+  "mean_counter_ghs": 2963.851428571429,
+  "min_counter_ghs": 2948.5,
+  "max_counter_ghs": 2977.4599999999996,
+  "qualifications": [
+    {
+      "MHz": 100,
+      "ghs": 493.67,
+      "result": "PASS"
+    },
+    {
+      "MHz": 125,
+      "ghs": 617.81,
+      "result": "PASS"
+    },
+    {
+      "MHz": 150,
+      "ghs": 743.14,
+      "result": "PASS"
+    },
+    {
+      "MHz": 175,
+      "ghs": 866.63,
+      "result": "PASS"
+    },
+    {
+      "MHz": 200,
+      "ghs": 990.61,
+      "result": "PASS"
+    },
+    {
+      "MHz": 225,
+      "ghs": 1114.87,
+      "result": "PASS"
+    },
+    {
+      "MHz": 250,
+      "ghs": 1237.16,
+      "result": "PASS"
+    },
+    {
+      "MHz": 275,
+      "ghs": 1360.61,
+      "result": "PASS"
+    },
+    {
+      "MHz": 300,
+      "ghs": 1483.23,
+      "result": "PASS"
+    },
+    {
+      "MHz": 300,
+      "ghs": 1491.0,
+      "result": "PASS"
+    },
+    {
+      "MHz": 600,
+      "ghs": 2962.43,
+      "result": "PASS"
+    }
+  ],
+  "first_temperatures": [
+    "100",
+    "28.61",
+    "28.12",
+    "27.95",
+    "28.45"
+  ],
+  "first_600_temperatures": [
+    "600",
+    "50.06",
+    "48.57",
+    "49.56",
+    "49.40"
+  ],
+  "complete_mining_epochs": 42,
+  "zero_domains_observed": 0,
+  "min_domain_percent": 94.36965811965813,
+  "sampled_max_halfstack_mv": 1192,
+  "sampled_halfstack_readings_above_1200mv": 0,
+  "pool_peak_temperature": 51.87150192260742,
+  "last_domain_window": {
+    "epoch": 92,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.22435897435898
+          },
+          {
+            "domain": 1,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          },
+          {
+            "domain": 2,
+            "ghs": 176.66,
+            "zero_cores": 1,
+            "percent_ideal": 94.36965811965813
+          },
+          {
+            "domain": 3,
+            "ghs": 186.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.56196581196582
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.40811965811966
+          },
+          {
+            "domain": 1,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          },
+          {
+            "domain": 2,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          },
+          {
+            "domain": 3,
+            "ghs": 187.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.06410256410257
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.44,
+            "zero_cores": 0,
+            "percent_ideal": 98.52564102564104
+          },
+          {
+            "domain": 1,
+            "ghs": 182.64,
+            "zero_cores": 0,
+            "percent_ideal": 97.56410256410255
+          },
+          {
+            "domain": 2,
+            "ghs": 186.7,
+            "zero_cores": 0,
+            "percent_ideal": 99.73290598290599
+          },
+          {
+            "domain": 3,
+            "ghs": 183.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.19444444444446
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          },
+          {
+            "domain": 1,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          },
+          {
+            "domain": 2,
+            "ghs": 191.12,
+            "zero_cores": 0,
+            "percent_ideal": 102.0940170940171
+          },
+          {
+            "domain": 3,
+            "ghs": 188.16,
+            "zero_cores": 0,
+            "percent_ideal": 100.51282051282051
+          }
+        ]
+      }
+    ]
+  }
+}

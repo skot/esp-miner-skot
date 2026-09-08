@@ -1,0 +1,206 @@
+{
+  "complete": true,
+  "frequency_mhz": 600,
+  "requested_half_mv": 1200,
+  "regulator_total_mv": 2403,
+  "first_600_work_sent": false,
+  "temperatures": [
+    {
+      "phase": "before",
+      "asic": 1,
+      "valid": true,
+      "temperature_c": 48.24
+    },
+    {
+      "phase": "before",
+      "asic": 2,
+      "valid": true,
+      "temperature_c": 46.59
+    },
+    {
+      "phase": "before",
+      "asic": 3,
+      "valid": false,
+      "temperature_c": null
+    },
+    {
+      "phase": "before",
+      "asic": 4,
+      "valid": false,
+      "temperature_c": null
+    },
+    {
+      "phase": "after",
+      "asic": 1,
+      "valid": true,
+      "temperature_c": 48.57
+    },
+    {
+      "phase": "after",
+      "asic": 2,
+      "valid": true,
+      "temperature_c": 46.92
+    },
+    {
+      "phase": "after",
+      "asic": 3,
+      "valid": true,
+      "temperature_c": 47.75
+    },
+    {
+      "phase": "after",
+      "asic": 4,
+      "valid": true,
+      "temperature_c": 47.75
+    }
+  ],
+  "voltages": [
+    {
+      "phase": "before",
+      "asic": 1,
+      "done": "0x00000001",
+      "status": "0x00000000",
+      "raw13": "0x00002169",
+      "raw14": "0x00002171",
+      "completed": 12,
+      "fresh": true,
+      "decoded_mv": 1183.8
+    },
+    {
+      "phase": "before",
+      "asic": 2,
+      "done": "0x00000001",
+      "status": "0x00000000",
+      "raw13": "0x0000216C",
+      "raw14": "0x00002173",
+      "completed": 12,
+      "fresh": true,
+      "decoded_mv": 1184.31
+    },
+    {
+      "phase": "before",
+      "asic": 3,
+      "done": "0x00000000",
+      "status": "0x00000003",
+      "raw13": "0x00000000",
+      "raw14": "0x00000000",
+      "completed": 0,
+      "fresh": false,
+      "decoded_mv": null
+    },
+    {
+      "phase": "before",
+      "asic": 4,
+      "done": "0x00000000",
+      "status": "0x00000003",
+      "raw13": "0x00000000",
+      "raw14": "0x00000000",
+      "completed": 0,
+      "fresh": false,
+      "decoded_mv": null
+    },
+    {
+      "phase": "after",
+      "asic": 1,
+      "done": "0x00000001",
+      "status": "0x00000000",
+      "raw13": "0x0000216A",
+      "raw14": "0x00002171",
+      "completed": 12,
+      "fresh": true,
+      "decoded_mv": 1183.9
+    },
+    {
+      "phase": "after",
+      "asic": 2,
+      "done": "0x00000001",
+      "status": "0x00000000",
+      "raw13": "0x0000216E",
+      "raw14": "0x00002174",
+      "completed": 12,
+      "fresh": true,
+      "decoded_mv": 1184.61
+    },
+    {
+      "phase": "after",
+      "asic": 3,
+      "done": "0x00000001",
+      "status": "0x00000000",
+      "raw13": "0x000021BF",
+      "raw14": "0x000021CB",
+      "completed": 12,
+      "fresh": true,
+      "decoded_mv": 1201.68
+    },
+    {
+      "phase": "after",
+      "asic": 4,
+      "done": "0x00000001",
+      "status": "0x00000000",
+      "raw13": "0x000021DF",
+      "raw14": "0x000021E6",
+      "completed": 12,
+      "fresh": true,
+      "decoded_mv": 1207.67
+    }
+  ],
+  "pvt_readback": [
+    "I (192568) mc3: PVT_REINIT A1 voltage_status_read=1 voltage_status=0x00000000 thermal_status_read=1 thermal_status=0x00000000 voltage_clock_read=1 voltage_clock=0x01010000 thermal_clock_read=1 thermal_clock=0x01010000 pll_read=1 pll_en=0x00000007",
+    "I (192598) mc3: PVT_REINIT A2 voltage_status_read=1 voltage_status=0x00000000 thermal_status_read=1 thermal_status=0x00000000 voltage_clock_read=1 voltage_clock=0x01010000 thermal_clock_read=1 thermal_clock=0x01010000 pll_read=1 pll_en=0x00000007",
+    "I (192631) mc3: PVT_REINIT A3 voltage_status_read=1 voltage_status=0x00000000 thermal_status_read=1 thermal_status=0x00000000 voltage_clock_read=1 voltage_clock=0x01010000 thermal_clock_read=1 thermal_clock=0x01010000 pll_read=1 pll_en=0x00000007",
+    "I (192664) mc3: PVT_REINIT A4 voltage_status_read=1 voltage_status=0x00000000 thermal_status_read=1 thermal_status=0x00000000 voltage_clock_read=1 voltage_clock=0x01010000 thermal_clock_read=1 thermal_clock=0x01010000 pll_read=1 pll_en=0x00000007"
+  ],
+  "qualification": [
+    [
+      "100",
+      "492.10",
+      "PASS"
+    ],
+    [
+      "125",
+      "615.86",
+      "PASS"
+    ],
+    [
+      "150",
+      "741.00",
+      "PASS"
+    ],
+    [
+      "175",
+      "864.25",
+      "PASS"
+    ],
+    [
+      "200",
+      "987.84",
+      "PASS"
+    ],
+    [
+      "225",
+      "1111.52",
+      "PASS"
+    ],
+    [
+      "250",
+      "1233.83",
+      "PASS"
+    ],
+    [
+      "275",
+      "1357.48",
+      "PASS"
+    ],
+    [
+      "300",
+      "1480.03",
+      "PASS"
+    ],
+    [
+      "300",
+      "1486.45",
+      "PASS"
+    ]
+  ],
+  "first_temperatures": "I (29508) asic_init: PROTO STARTUP TEMP freq=100 A1=27.79 A2=27.13 A3=27.13 A4=27.79"
+}

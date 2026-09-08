@@ -1,0 +1,19 @@
+{
+  "coreVoltage": 1160,
+  "frequency": 600,
+  "actualFrequency": 600,
+  "regulatorVoltage": 34,
+  "fanspeed": 99,
+  "autofanspeed": 1,
+  "manualFanSpeed": 100,
+  "minFanSpeed": 99,
+  "sharesAccepted": 0,
+  "sharesRejected": 0,
+  "uptimeSeconds": 223,
+  "diagnostics": {
+    "mining": 0,
+    "source": "startup",
+    "startupResult": "failed",
+    "status": "Warm ASIC startup failed"
+  }
+}

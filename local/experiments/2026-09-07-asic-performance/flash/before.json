@@ -1,0 +1,33 @@
+{
+  "version": "v2.14.0-52-g381ed6e-dirty",
+  "axeOSVersion": "v2.14.0-52-g381ed6e-dirty",
+  "boardVersion": "1103",
+  "macAddr": "28:84:85:BA:96:08",
+  "actualFrequency": 600,
+  "hashRate": 2952.9199219,
+  "asicTemps": [
+    52.03644561767578,
+    50.881839752197266,
+    51.5416145324707,
+    51.211727142333984
+  ],
+  "asicVoltages": [
+    1151.185791015625,
+    1151.4906005859375,
+    1153.2177734375,
+    1159.7200927734375
+  ],
+  "domainVoltages": [
+    1157,
+    1166
+  ],
+  "regulatorVoltage": 2323,
+  "miningPaused": false,
+  "uptimeSeconds": 1185,
+  "sharesAccepted": 70,
+  "sharesRejected": 0,
+  "power": 46.5719604,
+  "fanspeed": 99,
+  "coreVoltage": 1160,
+  "frequency": 600
+}

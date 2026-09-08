@@ -1,0 +1,10 @@
+[
+  "I (72078) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1484.54 result=PASS",
+  "I (149533) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1487.45 result=PASS",
+  "I (186013) asic_init: PROTO STARTUP PLL frequency=600 settle_ms=1500; no work sent",
+  "I (188898) mc3: THERMAL attempt=3 A1 fresh=1 trigger=1 done=0x00000001 status=0x00000000 status_read=1 raw=0x000007FA data_read=1 temp=47.91 valid=1",
+  "I (188911) mc3: THERMAL attempt=3 A2 fresh=1 trigger=1 done=0x00000001 status=0x00000000 status_read=1 raw=0x000007F1 data_read=1 temp=46.43 valid=1",
+  "I (189398) mc3: THERMAL attempt=3 A3 fresh=1 trigger=1 done=0x00000000 status=0x00000003 status_read=1 raw=0x00000000 data_read=1 temp=-288.90 valid=0",
+  "I (189420) mc3: THERMAL attempt=3 A4 fresh=1 trigger=1 done=0x00000000 status=0x00000003 status_read=1 raw=0x00000000 data_read=1 temp=-288.90 valid=0",
+  "E (189449) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained"
+]

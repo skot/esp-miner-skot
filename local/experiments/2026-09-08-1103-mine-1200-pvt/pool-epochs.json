@@ -1,0 +1,5084 @@
+[
+  {
+    "epoch": 12,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 1,
+            "ghs": 187.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.8931623931624
+          },
+          {
+            "domain": 2,
+            "ghs": 179.04,
+            "zero_cores": 1,
+            "percent_ideal": 95.64102564102565
+          },
+          {
+            "domain": 3,
+            "ghs": 187.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.98931623931625
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.97435897435898
+          },
+          {
+            "domain": 1,
+            "ghs": 185.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.24145299145299
+          },
+          {
+            "domain": 2,
+            "ghs": 184.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.42948717948718
+          },
+          {
+            "domain": 3,
+            "ghs": 182.1,
+            "zero_cores": 0,
+            "percent_ideal": 97.27564102564102
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.16,
+            "zero_cores": 0,
+            "percent_ideal": 99.44444444444444
+          },
+          {
+            "domain": 1,
+            "ghs": 185.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.24145299145299
+          },
+          {
+            "domain": 2,
+            "ghs": 184.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.6965811965812
+          },
+          {
+            "domain": 3,
+            "ghs": 186.56,
+            "zero_cores": 0,
+            "percent_ideal": 99.65811965811967
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.01709401709404
+          },
+          {
+            "domain": 1,
+            "ghs": 187.14,
+            "zero_cores": 0,
+            "percent_ideal": 99.96794871794872
+          },
+          {
+            "domain": 2,
+            "ghs": 187.34,
+            "zero_cores": 0,
+            "percent_ideal": 100.07478632478633
+          },
+          {
+            "domain": 3,
+            "ghs": 186.64,
+            "zero_cores": 0,
+            "percent_ideal": 99.7008547008547
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 17,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.76,
+            "zero_cores": 0,
+            "percent_ideal": 97.62820512820512
+          },
+          {
+            "domain": 1,
+            "ghs": 184.38,
+            "zero_cores": 0,
+            "percent_ideal": 98.49358974358975
+          },
+          {
+            "domain": 2,
+            "ghs": 181.46,
+            "zero_cores": 1,
+            "percent_ideal": 96.9337606837607
+          },
+          {
+            "domain": 3,
+            "ghs": 186.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.75427350427351
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.98,
+            "zero_cores": 0,
+            "percent_ideal": 99.88247863247864
+          },
+          {
+            "domain": 1,
+            "ghs": 186.92,
+            "zero_cores": 0,
+            "percent_ideal": 99.85042735042735
+          },
+          {
+            "domain": 2,
+            "ghs": 187.44,
+            "zero_cores": 0,
+            "percent_ideal": 100.12820512820512
+          },
+          {
+            "domain": 3,
+            "ghs": 187.4,
+            "zero_cores": 0,
+            "percent_ideal": 100.1068376068376
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.98,
+            "zero_cores": 0,
+            "percent_ideal": 99.88247863247864
+          },
+          {
+            "domain": 1,
+            "ghs": 187.42,
+            "zero_cores": 0,
+            "percent_ideal": 100.11752136752136
+          },
+          {
+            "domain": 2,
+            "ghs": 182.0,
+            "zero_cores": 0,
+            "percent_ideal": 97.22222222222223
+          },
+          {
+            "domain": 3,
+            "ghs": 186.98,
+            "zero_cores": 0,
+            "percent_ideal": 99.88247863247864
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.8931623931624
+          },
+          {
+            "domain": 1,
+            "ghs": 185.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.27350427350427
+          },
+          {
+            "domain": 2,
+            "ghs": 188.28,
+            "zero_cores": 0,
+            "percent_ideal": 100.57692307692308
+          },
+          {
+            "domain": 3,
+            "ghs": 187.1,
+            "zero_cores": 0,
+            "percent_ideal": 99.94658119658119
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 18,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.74,
+            "zero_cores": 0,
+            "percent_ideal": 100.28846153846156
+          },
+          {
+            "domain": 1,
+            "ghs": 187.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.90384615384616
+          },
+          {
+            "domain": 2,
+            "ghs": 176.58,
+            "zero_cores": 0,
+            "percent_ideal": 94.32692307692308
+          },
+          {
+            "domain": 3,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.2051282051282
+          },
+          {
+            "domain": 1,
+            "ghs": 184.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.75000000000001
+          },
+          {
+            "domain": 2,
+            "ghs": 186.24,
+            "zero_cores": 0,
+            "percent_ideal": 99.4871794871795
+          },
+          {
+            "domain": 3,
+            "ghs": 187.46,
+            "zero_cores": 0,
+            "percent_ideal": 100.13888888888889
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.28,
+            "zero_cores": 0,
+            "percent_ideal": 97.90598290598291
+          },
+          {
+            "domain": 1,
+            "ghs": 185.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.28418803418805
+          },
+          {
+            "domain": 2,
+            "ghs": 183.28,
+            "zero_cores": 0,
+            "percent_ideal": 97.90598290598291
+          },
+          {
+            "domain": 3,
+            "ghs": 182.14,
+            "zero_cores": 0,
+            "percent_ideal": 97.29700854700855
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.66,
+            "zero_cores": 0,
+            "percent_ideal": 101.31410256410255
+          },
+          {
+            "domain": 1,
+            "ghs": 184.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.38675213675214
+          },
+          {
+            "domain": 2,
+            "ghs": 185.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.00641025641026
+          },
+          {
+            "domain": 3,
+            "ghs": 182.84,
+            "zero_cores": 0,
+            "percent_ideal": 97.67094017094018
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 21,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.07051282051283
+          },
+          {
+            "domain": 1,
+            "ghs": 185.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.01709401709404
+          },
+          {
+            "domain": 2,
+            "ghs": 183.9,
+            "zero_cores": 1,
+            "percent_ideal": 98.23717948717949
+          },
+          {
+            "domain": 3,
+            "ghs": 187.5,
+            "zero_cores": 0,
+            "percent_ideal": 100.16025641025641
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.28418803418805
+          },
+          {
+            "domain": 1,
+            "ghs": 187.64,
+            "zero_cores": 0,
+            "percent_ideal": 100.23504273504274
+          },
+          {
+            "domain": 2,
+            "ghs": 179.62,
+            "zero_cores": 0,
+            "percent_ideal": 95.9508547008547
+          },
+          {
+            "domain": 3,
+            "ghs": 188.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.59829059829059
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 190.14,
+            "zero_cores": 0,
+            "percent_ideal": 101.57051282051282
+          },
+          {
+            "domain": 1,
+            "ghs": 185.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.82478632478633
+          },
+          {
+            "domain": 2,
+            "ghs": 182.26,
+            "zero_cores": 0,
+            "percent_ideal": 97.36111111111111
+          },
+          {
+            "domain": 3,
+            "ghs": 187.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.06410256410257
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 1,
+            "ghs": 191.76,
+            "zero_cores": 0,
+            "percent_ideal": 102.43589743589743
+          },
+          {
+            "domain": 2,
+            "ghs": 186.64,
+            "zero_cores": 0,
+            "percent_ideal": 99.7008547008547
+          },
+          {
+            "domain": 3,
+            "ghs": 188.64,
+            "zero_cores": 0,
+            "percent_ideal": 100.76923076923077
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 23,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.5363247863248
+          },
+          {
+            "domain": 1,
+            "ghs": 188.74,
+            "zero_cores": 0,
+            "percent_ideal": 100.8226495726496
+          },
+          {
+            "domain": 2,
+            "ghs": 183.76,
+            "zero_cores": 1,
+            "percent_ideal": 98.16239316239317
+          },
+          {
+            "domain": 3,
+            "ghs": 188.12,
+            "zero_cores": 0,
+            "percent_ideal": 100.49145299145299
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.7,
+            "zero_cores": 0,
+            "percent_ideal": 99.19871794871796
+          },
+          {
+            "domain": 1,
+            "ghs": 185.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.28418803418805
+          },
+          {
+            "domain": 2,
+            "ghs": 186.14,
+            "zero_cores": 0,
+            "percent_ideal": 99.43376068376068
+          },
+          {
+            "domain": 3,
+            "ghs": 185.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.9957264957265
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.57264957264958
+          },
+          {
+            "domain": 1,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          },
+          {
+            "domain": 2,
+            "ghs": 189.88,
+            "zero_cores": 0,
+            "percent_ideal": 101.43162393162393
+          },
+          {
+            "domain": 3,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.80341880341882
+          },
+          {
+            "domain": 1,
+            "ghs": 185.7,
+            "zero_cores": 0,
+            "percent_ideal": 99.19871794871796
+          },
+          {
+            "domain": 2,
+            "ghs": 183.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.26923076923077
+          },
+          {
+            "domain": 3,
+            "ghs": 184.72,
+            "zero_cores": 0,
+            "percent_ideal": 98.67521367521368
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 24,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.6,
+            "zero_cores": 0,
+            "percent_ideal": 101.28205128205127
+          },
+          {
+            "domain": 1,
+            "ghs": 185.04,
+            "zero_cores": 0,
+            "percent_ideal": 98.84615384615385
+          },
+          {
+            "domain": 2,
+            "ghs": 180.8,
+            "zero_cores": 1,
+            "percent_ideal": 96.5811965811966
+          },
+          {
+            "domain": 3,
+            "ghs": 185.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.07051282051283
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.7,
+            "zero_cores": 0,
+            "percent_ideal": 97.59615384615384
+          },
+          {
+            "domain": 1,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          },
+          {
+            "domain": 2,
+            "ghs": 189.3,
+            "zero_cores": 0,
+            "percent_ideal": 101.12179487179489
+          },
+          {
+            "domain": 3,
+            "ghs": 188.92,
+            "zero_cores": 0,
+            "percent_ideal": 100.91880341880342
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.48,
+            "zero_cores": 0,
+            "percent_ideal": 100.68376068376068
+          },
+          {
+            "domain": 1,
+            "ghs": 181.76,
+            "zero_cores": 0,
+            "percent_ideal": 97.09401709401709
+          },
+          {
+            "domain": 2,
+            "ghs": 187.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.22435897435898
+          },
+          {
+            "domain": 3,
+            "ghs": 188.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.75854700854703
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.16,
+            "zero_cores": 0,
+            "percent_ideal": 99.44444444444444
+          },
+          {
+            "domain": 1,
+            "ghs": 188.18,
+            "zero_cores": 0,
+            "percent_ideal": 100.5235042735043
+          },
+          {
+            "domain": 2,
+            "ghs": 185.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.28418803418805
+          },
+          {
+            "domain": 3,
+            "ghs": 185.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.92094017094018
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 26,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.77564102564104
+          },
+          {
+            "domain": 1,
+            "ghs": 184.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.70726495726497
+          },
+          {
+            "domain": 2,
+            "ghs": 183.08,
+            "zero_cores": 1,
+            "percent_ideal": 97.79914529914531
+          },
+          {
+            "domain": 3,
+            "ghs": 186.56,
+            "zero_cores": 0,
+            "percent_ideal": 99.65811965811967
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.32692307692308
+          },
+          {
+            "domain": 1,
+            "ghs": 186.22,
+            "zero_cores": 0,
+            "percent_ideal": 99.47649572649573
+          },
+          {
+            "domain": 2,
+            "ghs": 186.56,
+            "zero_cores": 0,
+            "percent_ideal": 99.65811965811967
+          },
+          {
+            "domain": 3,
+            "ghs": 186.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.38034188034189
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 1,
+            "ghs": 186.26,
+            "zero_cores": 0,
+            "percent_ideal": 99.49786324786325
+          },
+          {
+            "domain": 2,
+            "ghs": 186.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.6474358974359
+          },
+          {
+            "domain": 3,
+            "ghs": 188.94,
+            "zero_cores": 0,
+            "percent_ideal": 100.92948717948718
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.88,
+            "zero_cores": 0,
+            "percent_ideal": 99.2948717948718
+          },
+          {
+            "domain": 1,
+            "ghs": 182.22,
+            "zero_cores": 0,
+            "percent_ideal": 97.3397435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 182.78,
+            "zero_cores": 0,
+            "percent_ideal": 97.6388888888889
+          },
+          {
+            "domain": 3,
+            "ghs": 183.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.2051282051282
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 27,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.32692307692308
+          },
+          {
+            "domain": 1,
+            "ghs": 187.2,
+            "zero_cores": 0,
+            "percent_ideal": 100.0
+          },
+          {
+            "domain": 2,
+            "ghs": 181.64,
+            "zero_cores": 1,
+            "percent_ideal": 97.02991452991454
+          },
+          {
+            "domain": 3,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.7,
+            "zero_cores": 0,
+            "percent_ideal": 100.26709401709401
+          },
+          {
+            "domain": 1,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 183.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.25854700854701
+          },
+          {
+            "domain": 3,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.22,
+            "zero_cores": 0,
+            "percent_ideal": 99.47649572649573
+          },
+          {
+            "domain": 1,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 2,
+            "ghs": 186.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.71153846153847
+          },
+          {
+            "domain": 3,
+            "ghs": 182.74,
+            "zero_cores": 0,
+            "percent_ideal": 97.61752136752138
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          },
+          {
+            "domain": 1,
+            "ghs": 189.24,
+            "zero_cores": 0,
+            "percent_ideal": 101.0897435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 183.1,
+            "zero_cores": 0,
+            "percent_ideal": 97.80982905982907
+          },
+          {
+            "domain": 3,
+            "ghs": 188.8,
+            "zero_cores": 0,
+            "percent_ideal": 100.85470085470088
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 30,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.12,
+            "zero_cores": 0,
+            "percent_ideal": 101.02564102564105
+          },
+          {
+            "domain": 1,
+            "ghs": 184.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.38675213675214
+          },
+          {
+            "domain": 2,
+            "ghs": 180.32,
+            "zero_cores": 1,
+            "percent_ideal": 96.32478632478633
+          },
+          {
+            "domain": 3,
+            "ghs": 187.94,
+            "zero_cores": 0,
+            "percent_ideal": 100.39529914529915
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 180.76,
+            "zero_cores": 0,
+            "percent_ideal": 96.55982905982906
+          },
+          {
+            "domain": 1,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          },
+          {
+            "domain": 2,
+            "ghs": 185.04,
+            "zero_cores": 0,
+            "percent_ideal": 98.84615384615385
+          },
+          {
+            "domain": 3,
+            "ghs": 188.0,
+            "zero_cores": 0,
+            "percent_ideal": 100.42735042735043
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.2,
+            "zero_cores": 0,
+            "percent_ideal": 97.86324786324786
+          },
+          {
+            "domain": 1,
+            "ghs": 186.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.87179487179489
+          },
+          {
+            "domain": 2,
+            "ghs": 189.26,
+            "zero_cores": 0,
+            "percent_ideal": 101.10042735042735
+          },
+          {
+            "domain": 3,
+            "ghs": 184.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.6965811965812
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          },
+          {
+            "domain": 1,
+            "ghs": 189.18,
+            "zero_cores": 0,
+            "percent_ideal": 101.05769230769232
+          },
+          {
+            "domain": 2,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          },
+          {
+            "domain": 3,
+            "ghs": 190.28,
+            "zero_cores": 0,
+            "percent_ideal": 101.64529914529916
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 31,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.2905982905983
+          },
+          {
+            "domain": 1,
+            "ghs": 186.2,
+            "zero_cores": 0,
+            "percent_ideal": 99.46581196581197
+          },
+          {
+            "domain": 2,
+            "ghs": 184.36,
+            "zero_cores": 1,
+            "percent_ideal": 98.482905982906
+          },
+          {
+            "domain": 3,
+            "ghs": 183.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.11965811965813
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.42,
+            "zero_cores": 0,
+            "percent_ideal": 101.18589743589743
+          },
+          {
+            "domain": 1,
+            "ghs": 187.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.95726495726497
+          },
+          {
+            "domain": 2,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 3,
+            "ghs": 183.66,
+            "zero_cores": 0,
+            "percent_ideal": 98.10897435897436
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.9957264957265
+          },
+          {
+            "domain": 1,
+            "ghs": 183.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.08760683760684
+          },
+          {
+            "domain": 2,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          },
+          {
+            "domain": 3,
+            "ghs": 188.66,
+            "zero_cores": 0,
+            "percent_ideal": 100.77991452991452
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.22,
+            "zero_cores": 0,
+            "percent_ideal": 101.07905982905983
+          },
+          {
+            "domain": 1,
+            "ghs": 187.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.95726495726497
+          },
+          {
+            "domain": 2,
+            "ghs": 184.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.62179487179488
+          },
+          {
+            "domain": 3,
+            "ghs": 189.88,
+            "zero_cores": 0,
+            "percent_ideal": 101.43162393162393
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 34,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.88888888888889
+          },
+          {
+            "domain": 1,
+            "ghs": 185.82,
+            "zero_cores": 0,
+            "percent_ideal": 99.26282051282051
+          },
+          {
+            "domain": 2,
+            "ghs": 179.98,
+            "zero_cores": 1,
+            "percent_ideal": 96.1431623931624
+          },
+          {
+            "domain": 3,
+            "ghs": 184.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.40811965811966
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.52,
+            "zero_cores": 0,
+            "percent_ideal": 100.1709401709402
+          },
+          {
+            "domain": 1,
+            "ghs": 184.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.62179487179488
+          },
+          {
+            "domain": 2,
+            "ghs": 185.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.33760683760686
+          },
+          {
+            "domain": 3,
+            "ghs": 190.56,
+            "zero_cores": 0,
+            "percent_ideal": 101.79487179487181
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.68589743589745
+          },
+          {
+            "domain": 1,
+            "ghs": 183.5,
+            "zero_cores": 0,
+            "percent_ideal": 98.02350427350429
+          },
+          {
+            "domain": 2,
+            "ghs": 186.24,
+            "zero_cores": 0,
+            "percent_ideal": 99.4871794871795
+          },
+          {
+            "domain": 3,
+            "ghs": 182.04,
+            "zero_cores": 0,
+            "percent_ideal": 97.24358974358974
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.59401709401709
+          },
+          {
+            "domain": 1,
+            "ghs": 186.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.6474358974359
+          },
+          {
+            "domain": 2,
+            "ghs": 187.7,
+            "zero_cores": 0,
+            "percent_ideal": 100.26709401709401
+          },
+          {
+            "domain": 3,
+            "ghs": 184.42,
+            "zero_cores": 0,
+            "percent_ideal": 98.51495726495726
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 35,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.28,
+            "zero_cores": 0,
+            "percent_ideal": 99.50854700854701
+          },
+          {
+            "domain": 1,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 2,
+            "ghs": 179.46,
+            "zero_cores": 1,
+            "percent_ideal": 95.86538461538463
+          },
+          {
+            "domain": 3,
+            "ghs": 185.92,
+            "zero_cores": 0,
+            "percent_ideal": 99.31623931623932
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.66,
+            "zero_cores": 0,
+            "percent_ideal": 98.6431623931624
+          },
+          {
+            "domain": 1,
+            "ghs": 187.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.06410256410257
+          },
+          {
+            "domain": 2,
+            "ghs": 188.34,
+            "zero_cores": 0,
+            "percent_ideal": 100.60897435897435
+          },
+          {
+            "domain": 3,
+            "ghs": 184.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.46153846153847
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.06,
+            "zero_cores": 0,
+            "percent_ideal": 100.4594017094017
+          },
+          {
+            "domain": 1,
+            "ghs": 189.22,
+            "zero_cores": 0,
+            "percent_ideal": 101.07905982905983
+          },
+          {
+            "domain": 2,
+            "ghs": 183.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.08760683760684
+          },
+          {
+            "domain": 3,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.52,
+            "zero_cores": 0,
+            "percent_ideal": 99.63675213675215
+          },
+          {
+            "domain": 1,
+            "ghs": 188.3,
+            "zero_cores": 0,
+            "percent_ideal": 100.58760683760686
+          },
+          {
+            "domain": 2,
+            "ghs": 183.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.17307692307693
+          },
+          {
+            "domain": 3,
+            "ghs": 187.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.90384615384616
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 38,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.86752136752138
+          },
+          {
+            "domain": 1,
+            "ghs": 189.52,
+            "zero_cores": 0,
+            "percent_ideal": 101.23931623931625
+          },
+          {
+            "domain": 2,
+            "ghs": 181.02,
+            "zero_cores": 1,
+            "percent_ideal": 96.69871794871796
+          },
+          {
+            "domain": 3,
+            "ghs": 186.92,
+            "zero_cores": 0,
+            "percent_ideal": 99.85042735042735
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 190.08,
+            "zero_cores": 0,
+            "percent_ideal": 101.53846153846156
+          },
+          {
+            "domain": 1,
+            "ghs": 183.48,
+            "zero_cores": 0,
+            "percent_ideal": 98.01282051282051
+          },
+          {
+            "domain": 2,
+            "ghs": 187.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.90384615384616
+          },
+          {
+            "domain": 3,
+            "ghs": 186.14,
+            "zero_cores": 0,
+            "percent_ideal": 99.43376068376068
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.76,
+            "zero_cores": 0,
+            "percent_ideal": 100.2991452991453
+          },
+          {
+            "domain": 1,
+            "ghs": 189.6,
+            "zero_cores": 0,
+            "percent_ideal": 101.28205128205127
+          },
+          {
+            "domain": 2,
+            "ghs": 184.48,
+            "zero_cores": 0,
+            "percent_ideal": 98.54700854700855
+          },
+          {
+            "domain": 3,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.12,
+            "zero_cores": 0,
+            "percent_ideal": 100.49145299145299
+          },
+          {
+            "domain": 1,
+            "ghs": 187.72,
+            "zero_cores": 0,
+            "percent_ideal": 100.27777777777777
+          },
+          {
+            "domain": 2,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 3,
+            "ghs": 186.26,
+            "zero_cores": 0,
+            "percent_ideal": 99.49786324786325
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 39,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.02,
+            "zero_cores": 0,
+            "percent_ideal": 100.43803418803421
+          },
+          {
+            "domain": 1,
+            "ghs": 185.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.8354700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 174.76,
+            "zero_cores": 1,
+            "percent_ideal": 93.35470085470085
+          },
+          {
+            "domain": 3,
+            "ghs": 189.72,
+            "zero_cores": 0,
+            "percent_ideal": 101.34615384615384
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.3,
+            "zero_cores": 0,
+            "percent_ideal": 99.51923076923079
+          },
+          {
+            "domain": 1,
+            "ghs": 183.08,
+            "zero_cores": 0,
+            "percent_ideal": 97.79914529914531
+          },
+          {
+            "domain": 2,
+            "ghs": 183.7,
+            "zero_cores": 0,
+            "percent_ideal": 98.13034188034187
+          },
+          {
+            "domain": 3,
+            "ghs": 184.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.2905982905983
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.9,
+            "zero_cores": 0,
+            "percent_ideal": 97.16880341880344
+          },
+          {
+            "domain": 1,
+            "ghs": 186.9,
+            "zero_cores": 0,
+            "percent_ideal": 99.8397435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 184.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.73931623931624
+          },
+          {
+            "domain": 3,
+            "ghs": 184.34,
+            "zero_cores": 0,
+            "percent_ideal": 98.47222222222223
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.2,
+            "zero_cores": 0,
+            "percent_ideal": 100.0
+          },
+          {
+            "domain": 1,
+            "ghs": 191.3,
+            "zero_cores": 0,
+            "percent_ideal": 102.19017094017096
+          },
+          {
+            "domain": 2,
+            "ghs": 188.64,
+            "zero_cores": 0,
+            "percent_ideal": 100.76923076923077
+          },
+          {
+            "domain": 3,
+            "ghs": 183.54,
+            "zero_cores": 0,
+            "percent_ideal": 98.0448717948718
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 41,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.16,
+            "zero_cores": 0,
+            "percent_ideal": 97.30769230769232
+          },
+          {
+            "domain": 1,
+            "ghs": 185.42,
+            "zero_cores": 0,
+            "percent_ideal": 99.04914529914531
+          },
+          {
+            "domain": 2,
+            "ghs": 182.76,
+            "zero_cores": 1,
+            "percent_ideal": 97.62820512820512
+          },
+          {
+            "domain": 3,
+            "ghs": 185.68,
+            "zero_cores": 0,
+            "percent_ideal": 99.18803418803421
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 1,
+            "ghs": 186.76,
+            "zero_cores": 0,
+            "percent_ideal": 99.76495726495726
+          },
+          {
+            "domain": 2,
+            "ghs": 187.74,
+            "zero_cores": 0,
+            "percent_ideal": 100.28846153846156
+          },
+          {
+            "domain": 3,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.22,
+            "zero_cores": 0,
+            "percent_ideal": 100.01068376068376
+          },
+          {
+            "domain": 1,
+            "ghs": 183.3,
+            "zero_cores": 0,
+            "percent_ideal": 97.91666666666667
+          },
+          {
+            "domain": 2,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          },
+          {
+            "domain": 3,
+            "ghs": 187.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.90384615384616
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.94,
+            "zero_cores": 0,
+            "percent_ideal": 97.19017094017094
+          },
+          {
+            "domain": 1,
+            "ghs": 187.3,
+            "zero_cores": 0,
+            "percent_ideal": 100.05341880341882
+          },
+          {
+            "domain": 2,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          },
+          {
+            "domain": 3,
+            "ghs": 183.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.08760683760684
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 42,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.98,
+            "zero_cores": 0,
+            "percent_ideal": 99.3482905982906
+          },
+          {
+            "domain": 1,
+            "ghs": 187.66,
+            "zero_cores": 0,
+            "percent_ideal": 100.2457264957265
+          },
+          {
+            "domain": 2,
+            "ghs": 181.1,
+            "zero_cores": 1,
+            "percent_ideal": 96.74145299145299
+          },
+          {
+            "domain": 3,
+            "ghs": 186.3,
+            "zero_cores": 0,
+            "percent_ideal": 99.51923076923079
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.24,
+            "zero_cores": 0,
+            "percent_ideal": 99.4871794871795
+          },
+          {
+            "domain": 1,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 186.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.80769230769232
+          },
+          {
+            "domain": 3,
+            "ghs": 187.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.8931623931624
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.40170940170941
+          },
+          {
+            "domain": 1,
+            "ghs": 188.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.75854700854703
+          },
+          {
+            "domain": 2,
+            "ghs": 183.22,
+            "zero_cores": 0,
+            "percent_ideal": 97.87393162393163
+          },
+          {
+            "domain": 3,
+            "ghs": 186.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.55128205128206
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.81837606837608
+          },
+          {
+            "domain": 1,
+            "ghs": 186.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.87179487179489
+          },
+          {
+            "domain": 2,
+            "ghs": 184.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.75000000000001
+          },
+          {
+            "domain": 3,
+            "ghs": 181.06,
+            "zero_cores": 0,
+            "percent_ideal": 96.72008547008548
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 44,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.28,
+            "zero_cores": 0,
+            "percent_ideal": 99.50854700854701
+          },
+          {
+            "domain": 1,
+            "ghs": 185.68,
+            "zero_cores": 0,
+            "percent_ideal": 99.18803418803421
+          },
+          {
+            "domain": 2,
+            "ghs": 182.26,
+            "zero_cores": 1,
+            "percent_ideal": 97.36111111111111
+          },
+          {
+            "domain": 3,
+            "ghs": 182.06,
+            "zero_cores": 0,
+            "percent_ideal": 97.25427350427351
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.56,
+            "zero_cores": 0,
+            "percent_ideal": 101.26068376068378
+          },
+          {
+            "domain": 1,
+            "ghs": 186.28,
+            "zero_cores": 0,
+            "percent_ideal": 99.50854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 187.64,
+            "zero_cores": 0,
+            "percent_ideal": 100.23504273504274
+          },
+          {
+            "domain": 3,
+            "ghs": 188.06,
+            "zero_cores": 0,
+            "percent_ideal": 100.4594017094017
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.48,
+            "zero_cores": 0,
+            "percent_ideal": 98.01282051282051
+          },
+          {
+            "domain": 1,
+            "ghs": 184.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.30128205128206
+          },
+          {
+            "domain": 2,
+            "ghs": 186.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.40170940170941
+          },
+          {
+            "domain": 3,
+            "ghs": 182.46,
+            "zero_cores": 0,
+            "percent_ideal": 97.46794871794873
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.14,
+            "zero_cores": 0,
+            "percent_ideal": 99.96794871794872
+          },
+          {
+            "domain": 1,
+            "ghs": 184.2,
+            "zero_cores": 0,
+            "percent_ideal": 98.3974358974359
+          },
+          {
+            "domain": 2,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          },
+          {
+            "domain": 3,
+            "ghs": 186.76,
+            "zero_cores": 0,
+            "percent_ideal": 99.76495726495726
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 47,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.72,
+            "zero_cores": 0,
+            "percent_ideal": 99.74358974358975
+          },
+          {
+            "domain": 1,
+            "ghs": 185.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.91025641025641
+          },
+          {
+            "domain": 2,
+            "ghs": 183.82,
+            "zero_cores": 1,
+            "percent_ideal": 98.19444444444446
+          },
+          {
+            "domain": 3,
+            "ghs": 186.9,
+            "zero_cores": 0,
+            "percent_ideal": 99.8397435897436
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.11965811965813
+          },
+          {
+            "domain": 1,
+            "ghs": 185.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.86752136752138
+          },
+          {
+            "domain": 2,
+            "ghs": 184.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.5363247863248
+          },
+          {
+            "domain": 3,
+            "ghs": 182.6,
+            "zero_cores": 0,
+            "percent_ideal": 97.54273504273505
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.14,
+            "zero_cores": 0,
+            "percent_ideal": 99.96794871794872
+          },
+          {
+            "domain": 1,
+            "ghs": 185.72,
+            "zero_cores": 0,
+            "percent_ideal": 99.20940170940172
+          },
+          {
+            "domain": 2,
+            "ghs": 181.56,
+            "zero_cores": 0,
+            "percent_ideal": 96.9871794871795
+          },
+          {
+            "domain": 3,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.68,
+            "zero_cores": 0,
+            "percent_ideal": 99.72222222222223
+          },
+          {
+            "domain": 1,
+            "ghs": 183.64,
+            "zero_cores": 0,
+            "percent_ideal": 98.09829059829059
+          },
+          {
+            "domain": 2,
+            "ghs": 182.14,
+            "zero_cores": 0,
+            "percent_ideal": 97.29700854700855
+          },
+          {
+            "domain": 3,
+            "ghs": 190.14,
+            "zero_cores": 0,
+            "percent_ideal": 101.57051282051282
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 51,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.28,
+            "zero_cores": 0,
+            "percent_ideal": 100.04273504273505
+          },
+          {
+            "domain": 1,
+            "ghs": 185.8,
+            "zero_cores": 0,
+            "percent_ideal": 99.25213675213676
+          },
+          {
+            "domain": 2,
+            "ghs": 181.9,
+            "zero_cores": 1,
+            "percent_ideal": 97.16880341880344
+          },
+          {
+            "domain": 3,
+            "ghs": 186.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.5405982905983
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.76,
+            "zero_cores": 0,
+            "percent_ideal": 100.83333333333333
+          },
+          {
+            "domain": 1,
+            "ghs": 188.82,
+            "zero_cores": 0,
+            "percent_ideal": 100.86538461538461
+          },
+          {
+            "domain": 2,
+            "ghs": 183.06,
+            "zero_cores": 0,
+            "percent_ideal": 97.78846153846155
+          },
+          {
+            "domain": 3,
+            "ghs": 183.3,
+            "zero_cores": 0,
+            "percent_ideal": 97.91666666666667
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.6,
+            "zero_cores": 0,
+            "percent_ideal": 99.67948717948718
+          },
+          {
+            "domain": 1,
+            "ghs": 186.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.6474358974359
+          },
+          {
+            "domain": 2,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          },
+          {
+            "domain": 3,
+            "ghs": 184.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.32264957264958
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.38034188034189
+          },
+          {
+            "domain": 1,
+            "ghs": 186.82,
+            "zero_cores": 0,
+            "percent_ideal": 99.79700854700855
+          },
+          {
+            "domain": 2,
+            "ghs": 187.48,
+            "zero_cores": 0,
+            "percent_ideal": 100.14957264957265
+          },
+          {
+            "domain": 3,
+            "ghs": 183.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.19444444444446
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 52,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.06,
+            "zero_cores": 0,
+            "percent_ideal": 98.85683760683762
+          },
+          {
+            "domain": 1,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          },
+          {
+            "domain": 2,
+            "ghs": 183.72,
+            "zero_cores": 1,
+            "percent_ideal": 98.14102564102565
+          },
+          {
+            "domain": 3,
+            "ghs": 186.14,
+            "zero_cores": 0,
+            "percent_ideal": 99.43376068376068
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.76,
+            "zero_cores": 0,
+            "percent_ideal": 99.76495726495726
+          },
+          {
+            "domain": 1,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          },
+          {
+            "domain": 2,
+            "ghs": 186.24,
+            "zero_cores": 0,
+            "percent_ideal": 99.4871794871795
+          },
+          {
+            "domain": 3,
+            "ghs": 183.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.26923076923077
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 190.02,
+            "zero_cores": 0,
+            "percent_ideal": 101.50641025641028
+          },
+          {
+            "domain": 1,
+            "ghs": 183.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.08760683760684
+          },
+          {
+            "domain": 2,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 3,
+            "ghs": 184.7,
+            "zero_cores": 0,
+            "percent_ideal": 98.66452991452992
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.36,
+            "zero_cores": 0,
+            "percent_ideal": 97.94871794871797
+          },
+          {
+            "domain": 1,
+            "ghs": 185.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.27350427350427
+          },
+          {
+            "domain": 2,
+            "ghs": 183.36,
+            "zero_cores": 0,
+            "percent_ideal": 97.94871794871797
+          },
+          {
+            "domain": 3,
+            "ghs": 185.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.32692307692308
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 56,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.62179487179488
+          },
+          {
+            "domain": 1,
+            "ghs": 184.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.30128205128206
+          },
+          {
+            "domain": 2,
+            "ghs": 180.52,
+            "zero_cores": 1,
+            "percent_ideal": 96.43162393162395
+          },
+          {
+            "domain": 3,
+            "ghs": 184.66,
+            "zero_cores": 0,
+            "percent_ideal": 98.6431623931624
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.2,
+            "zero_cores": 0,
+            "percent_ideal": 97.86324786324786
+          },
+          {
+            "domain": 1,
+            "ghs": 183.3,
+            "zero_cores": 0,
+            "percent_ideal": 97.91666666666667
+          },
+          {
+            "domain": 2,
+            "ghs": 183.42,
+            "zero_cores": 0,
+            "percent_ideal": 97.98076923076923
+          },
+          {
+            "domain": 3,
+            "ghs": 188.8,
+            "zero_cores": 0,
+            "percent_ideal": 100.85470085470088
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.92,
+            "zero_cores": 0,
+            "percent_ideal": 99.85042735042735
+          },
+          {
+            "domain": 1,
+            "ghs": 182.4,
+            "zero_cores": 0,
+            "percent_ideal": 97.43589743589745
+          },
+          {
+            "domain": 2,
+            "ghs": 186.46,
+            "zero_cores": 0,
+            "percent_ideal": 99.60470085470087
+          },
+          {
+            "domain": 3,
+            "ghs": 186.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.75427350427351
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.46,
+            "zero_cores": 0,
+            "percent_ideal": 98.00213675213676
+          },
+          {
+            "domain": 1,
+            "ghs": 185.7,
+            "zero_cores": 0,
+            "percent_ideal": 99.19871794871796
+          },
+          {
+            "domain": 2,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          },
+          {
+            "domain": 3,
+            "ghs": 185.16,
+            "zero_cores": 0,
+            "percent_ideal": 98.91025641025641
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 58,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 1,
+            "ghs": 188.02,
+            "zero_cores": 0,
+            "percent_ideal": 100.43803418803421
+          },
+          {
+            "domain": 2,
+            "ghs": 179.46,
+            "zero_cores": 1,
+            "percent_ideal": 95.86538461538463
+          },
+          {
+            "domain": 3,
+            "ghs": 188.66,
+            "zero_cores": 0,
+            "percent_ideal": 100.77991452991452
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.34,
+            "zero_cores": 0,
+            "percent_ideal": 100.07478632478633
+          },
+          {
+            "domain": 1,
+            "ghs": 187.8,
+            "zero_cores": 0,
+            "percent_ideal": 100.32051282051285
+          },
+          {
+            "domain": 2,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 3,
+            "ghs": 187.88,
+            "zero_cores": 0,
+            "percent_ideal": 100.36324786324786
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          },
+          {
+            "domain": 1,
+            "ghs": 186.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.59401709401709
+          },
+          {
+            "domain": 2,
+            "ghs": 187.84,
+            "zero_cores": 0,
+            "percent_ideal": 100.34188034188034
+          },
+          {
+            "domain": 3,
+            "ghs": 187.38,
+            "zero_cores": 0,
+            "percent_ideal": 100.09615384615384
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          },
+          {
+            "domain": 1,
+            "ghs": 185.68,
+            "zero_cores": 0,
+            "percent_ideal": 99.18803418803421
+          },
+          {
+            "domain": 2,
+            "ghs": 190.0,
+            "zero_cores": 0,
+            "percent_ideal": 101.49572649572652
+          },
+          {
+            "domain": 3,
+            "ghs": 187.1,
+            "zero_cores": 0,
+            "percent_ideal": 99.94658119658119
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 60,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.0,
+            "zero_cores": 0,
+            "percent_ideal": 97.75641025641026
+          },
+          {
+            "domain": 1,
+            "ghs": 188.86,
+            "zero_cores": 0,
+            "percent_ideal": 100.88675213675215
+          },
+          {
+            "domain": 2,
+            "ghs": 183.32,
+            "zero_cores": 1,
+            "percent_ideal": 97.92735042735043
+          },
+          {
+            "domain": 3,
+            "ghs": 184.42,
+            "zero_cores": 0,
+            "percent_ideal": 98.51495726495726
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.54,
+            "zero_cores": 0,
+            "percent_ideal": 100.71581196581197
+          },
+          {
+            "domain": 1,
+            "ghs": 185.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.05982905982907
+          },
+          {
+            "domain": 2,
+            "ghs": 186.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.56196581196582
+          },
+          {
+            "domain": 3,
+            "ghs": 187.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.95726495726497
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.41880341880342
+          },
+          {
+            "domain": 1,
+            "ghs": 185.64,
+            "zero_cores": 0,
+            "percent_ideal": 99.16666666666667
+          },
+          {
+            "domain": 2,
+            "ghs": 185.66,
+            "zero_cores": 0,
+            "percent_ideal": 99.17735042735043
+          },
+          {
+            "domain": 3,
+            "ghs": 187.16,
+            "zero_cores": 0,
+            "percent_ideal": 99.97863247863248
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 1,
+            "ghs": 186.68,
+            "zero_cores": 0,
+            "percent_ideal": 99.72222222222223
+          },
+          {
+            "domain": 2,
+            "ghs": 184.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.73931623931624
+          },
+          {
+            "domain": 3,
+            "ghs": 186.22,
+            "zero_cores": 0,
+            "percent_ideal": 99.47649572649573
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 61,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.3,
+            "zero_cores": 0,
+            "percent_ideal": 98.98504273504275
+          },
+          {
+            "domain": 1,
+            "ghs": 184.2,
+            "zero_cores": 0,
+            "percent_ideal": 98.3974358974359
+          },
+          {
+            "domain": 2,
+            "ghs": 180.64,
+            "zero_cores": 1,
+            "percent_ideal": 96.4957264957265
+          },
+          {
+            "domain": 3,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.34,
+            "zero_cores": 0,
+            "percent_ideal": 101.14316239316241
+          },
+          {
+            "domain": 1,
+            "ghs": 188.46,
+            "zero_cores": 0,
+            "percent_ideal": 100.67307692307695
+          },
+          {
+            "domain": 2,
+            "ghs": 185.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.33760683760686
+          },
+          {
+            "domain": 3,
+            "ghs": 184.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.38675213675214
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.6474358974359
+          },
+          {
+            "domain": 1,
+            "ghs": 182.02,
+            "zero_cores": 0,
+            "percent_ideal": 97.23290598290599
+          },
+          {
+            "domain": 2,
+            "ghs": 183.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.11965811965813
+          },
+          {
+            "domain": 3,
+            "ghs": 182.8,
+            "zero_cores": 0,
+            "percent_ideal": 97.64957264957266
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.14,
+            "zero_cores": 0,
+            "percent_ideal": 98.36538461538461
+          },
+          {
+            "domain": 1,
+            "ghs": 183.16,
+            "zero_cores": 0,
+            "percent_ideal": 97.84188034188035
+          },
+          {
+            "domain": 2,
+            "ghs": 190.6,
+            "zero_cores": 0,
+            "percent_ideal": 101.8162393162393
+          },
+          {
+            "domain": 3,
+            "ghs": 186.64,
+            "zero_cores": 0,
+            "percent_ideal": 99.7008547008547
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 63,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.34,
+            "zero_cores": 0,
+            "percent_ideal": 97.9380341880342
+          },
+          {
+            "domain": 1,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 2,
+            "ghs": 182.92,
+            "zero_cores": 1,
+            "percent_ideal": 97.71367521367522
+          },
+          {
+            "domain": 3,
+            "ghs": 182.28,
+            "zero_cores": 0,
+            "percent_ideal": 97.37179487179488
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.38,
+            "zero_cores": 0,
+            "percent_ideal": 98.49358974358975
+          },
+          {
+            "domain": 1,
+            "ghs": 182.36,
+            "zero_cores": 0,
+            "percent_ideal": 97.41452991452992
+          },
+          {
+            "domain": 2,
+            "ghs": 183.7,
+            "zero_cores": 0,
+            "percent_ideal": 98.13034188034187
+          },
+          {
+            "domain": 3,
+            "ghs": 184.58,
+            "zero_cores": 0,
+            "percent_ideal": 98.60042735042737
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.14,
+            "zero_cores": 0,
+            "percent_ideal": 98.89957264957265
+          },
+          {
+            "domain": 1,
+            "ghs": 184.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.68589743589745
+          },
+          {
+            "domain": 2,
+            "ghs": 184.04,
+            "zero_cores": 0,
+            "percent_ideal": 98.31196581196582
+          },
+          {
+            "domain": 3,
+            "ghs": 188.64,
+            "zero_cores": 0,
+            "percent_ideal": 100.76923076923077
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.4,
+            "zero_cores": 0,
+            "percent_ideal": 98.50427350427351
+          },
+          {
+            "domain": 1,
+            "ghs": 187.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.06410256410257
+          },
+          {
+            "domain": 2,
+            "ghs": 185.96,
+            "zero_cores": 0,
+            "percent_ideal": 99.33760683760686
+          },
+          {
+            "domain": 3,
+            "ghs": 190.4,
+            "zero_cores": 0,
+            "percent_ideal": 101.70940170940173
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 64,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.48,
+            "zero_cores": 0,
+            "percent_ideal": 99.08119658119658
+          },
+          {
+            "domain": 1,
+            "ghs": 186.3,
+            "zero_cores": 0,
+            "percent_ideal": 99.51923076923079
+          },
+          {
+            "domain": 2,
+            "ghs": 180.04,
+            "zero_cores": 1,
+            "percent_ideal": 96.17521367521368
+          },
+          {
+            "domain": 3,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.00641025641026
+          },
+          {
+            "domain": 1,
+            "ghs": 185.64,
+            "zero_cores": 0,
+            "percent_ideal": 99.16666666666667
+          },
+          {
+            "domain": 2,
+            "ghs": 187.5,
+            "zero_cores": 0,
+            "percent_ideal": 100.16025641025641
+          },
+          {
+            "domain": 3,
+            "ghs": 186.98,
+            "zero_cores": 0,
+            "percent_ideal": 99.88247863247864
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.03846153846155
+          },
+          {
+            "domain": 1,
+            "ghs": 189.98,
+            "zero_cores": 0,
+            "percent_ideal": 101.48504273504273
+          },
+          {
+            "domain": 2,
+            "ghs": 187.42,
+            "zero_cores": 0,
+            "percent_ideal": 100.11752136752136
+          },
+          {
+            "domain": 3,
+            "ghs": 187.6,
+            "zero_cores": 0,
+            "percent_ideal": 100.21367521367522
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.86,
+            "zero_cores": 0,
+            "percent_ideal": 101.42094017094018
+          },
+          {
+            "domain": 1,
+            "ghs": 184.68,
+            "zero_cores": 0,
+            "percent_ideal": 98.65384615384616
+          },
+          {
+            "domain": 2,
+            "ghs": 184.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.73931623931624
+          },
+          {
+            "domain": 3,
+            "ghs": 187.82,
+            "zero_cores": 0,
+            "percent_ideal": 100.33119658119658
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 66,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.46,
+            "zero_cores": 0,
+            "percent_ideal": 100.13888888888889
+          },
+          {
+            "domain": 1,
+            "ghs": 185.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.00641025641026
+          },
+          {
+            "domain": 2,
+            "ghs": 185.48,
+            "zero_cores": 1,
+            "percent_ideal": 99.08119658119658
+          },
+          {
+            "domain": 3,
+            "ghs": 186.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.75427350427351
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.42307692307693
+          },
+          {
+            "domain": 1,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 3,
+            "ghs": 187.32,
+            "zero_cores": 0,
+            "percent_ideal": 100.06410256410257
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.06,
+            "zero_cores": 0,
+            "percent_ideal": 100.99358974358974
+          },
+          {
+            "domain": 1,
+            "ghs": 186.28,
+            "zero_cores": 0,
+            "percent_ideal": 99.50854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 181.34,
+            "zero_cores": 0,
+            "percent_ideal": 96.86965811965813
+          },
+          {
+            "domain": 3,
+            "ghs": 186.24,
+            "zero_cores": 0,
+            "percent_ideal": 99.4871794871795
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.2,
+            "zero_cores": 0,
+            "percent_ideal": 100.53418803418803
+          },
+          {
+            "domain": 1,
+            "ghs": 188.86,
+            "zero_cores": 0,
+            "percent_ideal": 100.88675213675215
+          },
+          {
+            "domain": 2,
+            "ghs": 187.88,
+            "zero_cores": 0,
+            "percent_ideal": 100.36324786324786
+          },
+          {
+            "domain": 3,
+            "ghs": 186.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.80769230769232
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 67,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          },
+          {
+            "domain": 1,
+            "ghs": 187.52,
+            "zero_cores": 0,
+            "percent_ideal": 100.1709401709402
+          },
+          {
+            "domain": 2,
+            "ghs": 180.96,
+            "zero_cores": 1,
+            "percent_ideal": 96.66666666666669
+          },
+          {
+            "domain": 3,
+            "ghs": 187.84,
+            "zero_cores": 0,
+            "percent_ideal": 100.34188034188034
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.02,
+            "zero_cores": 0,
+            "percent_ideal": 97.76709401709402
+          },
+          {
+            "domain": 1,
+            "ghs": 186.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.55128205128206
+          },
+          {
+            "domain": 2,
+            "ghs": 188.16,
+            "zero_cores": 0,
+            "percent_ideal": 100.51282051282051
+          },
+          {
+            "domain": 3,
+            "ghs": 189.1,
+            "zero_cores": 0,
+            "percent_ideal": 101.01495726495726
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.88,
+            "zero_cores": 0,
+            "percent_ideal": 99.2948717948718
+          },
+          {
+            "domain": 1,
+            "ghs": 187.06,
+            "zero_cores": 0,
+            "percent_ideal": 99.92521367521368
+          },
+          {
+            "domain": 2,
+            "ghs": 186.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.77564102564104
+          },
+          {
+            "domain": 3,
+            "ghs": 187.56,
+            "zero_cores": 0,
+            "percent_ideal": 100.1923076923077
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.8,
+            "zero_cores": 0,
+            "percent_ideal": 100.32051282051285
+          },
+          {
+            "domain": 1,
+            "ghs": 187.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.22435897435898
+          },
+          {
+            "domain": 2,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          },
+          {
+            "domain": 3,
+            "ghs": 188.0,
+            "zero_cores": 0,
+            "percent_ideal": 100.42735042735043
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 69,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.92,
+            "zero_cores": 0,
+            "percent_ideal": 99.85042735042735
+          },
+          {
+            "domain": 1,
+            "ghs": 187.36,
+            "zero_cores": 0,
+            "percent_ideal": 100.0854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 179.32,
+            "zero_cores": 1,
+            "percent_ideal": 95.7905982905983
+          },
+          {
+            "domain": 3,
+            "ghs": 186.64,
+            "zero_cores": 0,
+            "percent_ideal": 99.7008547008547
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.98,
+            "zero_cores": 0,
+            "percent_ideal": 99.3482905982906
+          },
+          {
+            "domain": 1,
+            "ghs": 184.64,
+            "zero_cores": 0,
+            "percent_ideal": 98.63247863247862
+          },
+          {
+            "domain": 2,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          },
+          {
+            "domain": 3,
+            "ghs": 186.14,
+            "zero_cores": 0,
+            "percent_ideal": 99.43376068376068
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.68589743589745
+          },
+          {
+            "domain": 1,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          },
+          {
+            "domain": 2,
+            "ghs": 185.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.9957264957265
+          },
+          {
+            "domain": 3,
+            "ghs": 184.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.46153846153847
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.4,
+            "zero_cores": 0,
+            "percent_ideal": 100.1068376068376
+          },
+          {
+            "domain": 1,
+            "ghs": 180.94,
+            "zero_cores": 0,
+            "percent_ideal": 96.65598290598291
+          },
+          {
+            "domain": 2,
+            "ghs": 187.58,
+            "zero_cores": 0,
+            "percent_ideal": 100.20299145299147
+          },
+          {
+            "domain": 3,
+            "ghs": 183.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.22649572649573
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 72,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.22,
+            "zero_cores": 0,
+            "percent_ideal": 97.3397435897436
+          },
+          {
+            "domain": 1,
+            "ghs": 186.2,
+            "zero_cores": 0,
+            "percent_ideal": 99.46581196581197
+          },
+          {
+            "domain": 2,
+            "ghs": 181.22,
+            "zero_cores": 1,
+            "percent_ideal": 96.80555555555556
+          },
+          {
+            "domain": 3,
+            "ghs": 183.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.19444444444446
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.28,
+            "zero_cores": 0,
+            "percent_ideal": 100.04273504273505
+          },
+          {
+            "domain": 1,
+            "ghs": 184.14,
+            "zero_cores": 0,
+            "percent_ideal": 98.36538461538461
+          },
+          {
+            "domain": 2,
+            "ghs": 186.82,
+            "zero_cores": 0,
+            "percent_ideal": 99.79700854700855
+          },
+          {
+            "domain": 3,
+            "ghs": 182.92,
+            "zero_cores": 0,
+            "percent_ideal": 97.71367521367522
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.24145299145299
+          },
+          {
+            "domain": 1,
+            "ghs": 185.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.9957264957265
+          },
+          {
+            "domain": 2,
+            "ghs": 187.74,
+            "zero_cores": 0,
+            "percent_ideal": 100.28846153846156
+          },
+          {
+            "domain": 3,
+            "ghs": 185.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.28418803418805
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.38,
+            "zero_cores": 0,
+            "percent_ideal": 99.02777777777779
+          },
+          {
+            "domain": 1,
+            "ghs": 185.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.9423076923077
+          },
+          {
+            "domain": 2,
+            "ghs": 186.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.6474358974359
+          },
+          {
+            "domain": 3,
+            "ghs": 187.2,
+            "zero_cores": 0,
+            "percent_ideal": 100.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 74,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.44,
+            "zero_cores": 0,
+            "percent_ideal": 98.52564102564104
+          },
+          {
+            "domain": 1,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 2,
+            "ghs": 181.42,
+            "zero_cores": 1,
+            "percent_ideal": 96.91239316239316
+          },
+          {
+            "domain": 3,
+            "ghs": 184.92,
+            "zero_cores": 0,
+            "percent_ideal": 98.78205128205128
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          },
+          {
+            "domain": 1,
+            "ghs": 185.08,
+            "zero_cores": 0,
+            "percent_ideal": 98.86752136752138
+          },
+          {
+            "domain": 2,
+            "ghs": 184.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.30128205128206
+          },
+          {
+            "domain": 3,
+            "ghs": 182.74,
+            "zero_cores": 0,
+            "percent_ideal": 97.61752136752138
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.92,
+            "zero_cores": 0,
+            "percent_ideal": 99.31623931623932
+          },
+          {
+            "domain": 1,
+            "ghs": 184.14,
+            "zero_cores": 0,
+            "percent_ideal": 98.36538461538461
+          },
+          {
+            "domain": 2,
+            "ghs": 189.42,
+            "zero_cores": 0,
+            "percent_ideal": 101.18589743589743
+          },
+          {
+            "domain": 3,
+            "ghs": 185.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.32692307692308
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.04,
+            "zero_cores": 0,
+            "percent_ideal": 99.38034188034189
+          },
+          {
+            "domain": 1,
+            "ghs": 185.12,
+            "zero_cores": 0,
+            "percent_ideal": 98.88888888888889
+          },
+          {
+            "domain": 2,
+            "ghs": 186.16,
+            "zero_cores": 0,
+            "percent_ideal": 99.44444444444444
+          },
+          {
+            "domain": 3,
+            "ghs": 189.56,
+            "zero_cores": 0,
+            "percent_ideal": 101.26068376068378
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 75,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.96,
+            "zero_cores": 0,
+            "percent_ideal": 97.73504273504274
+          },
+          {
+            "domain": 1,
+            "ghs": 184.84,
+            "zero_cores": 0,
+            "percent_ideal": 98.73931623931624
+          },
+          {
+            "domain": 2,
+            "ghs": 181.96,
+            "zero_cores": 1,
+            "percent_ideal": 97.2008547008547
+          },
+          {
+            "domain": 3,
+            "ghs": 185.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.01709401709404
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 1,
+            "ghs": 185.14,
+            "zero_cores": 0,
+            "percent_ideal": 98.89957264957265
+          },
+          {
+            "domain": 2,
+            "ghs": 185.42,
+            "zero_cores": 0,
+            "percent_ideal": 99.04914529914531
+          },
+          {
+            "domain": 3,
+            "ghs": 188.16,
+            "zero_cores": 0,
+            "percent_ideal": 100.51282051282051
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.26,
+            "zero_cores": 0,
+            "percent_ideal": 99.49786324786325
+          },
+          {
+            "domain": 1,
+            "ghs": 187.82,
+            "zero_cores": 0,
+            "percent_ideal": 100.33119658119658
+          },
+          {
+            "domain": 2,
+            "ghs": 186.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.80769230769232
+          },
+          {
+            "domain": 3,
+            "ghs": 182.92,
+            "zero_cores": 0,
+            "percent_ideal": 97.71367521367522
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.9,
+            "zero_cores": 0,
+            "percent_ideal": 99.8397435897436
+          },
+          {
+            "domain": 1,
+            "ghs": 186.36,
+            "zero_cores": 0,
+            "percent_ideal": 99.55128205128206
+          },
+          {
+            "domain": 2,
+            "ghs": 182.84,
+            "zero_cores": 0,
+            "percent_ideal": 97.67094017094018
+          },
+          {
+            "domain": 3,
+            "ghs": 185.64,
+            "zero_cores": 0,
+            "percent_ideal": 99.16666666666667
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 77,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 1,
+            "ghs": 188.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.75854700854703
+          },
+          {
+            "domain": 2,
+            "ghs": 183.48,
+            "zero_cores": 1,
+            "percent_ideal": 98.01282051282051
+          },
+          {
+            "domain": 3,
+            "ghs": 187.24,
+            "zero_cores": 0,
+            "percent_ideal": 100.02136752136752
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.69017094017096
+          },
+          {
+            "domain": 1,
+            "ghs": 184.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.40811965811966
+          },
+          {
+            "domain": 2,
+            "ghs": 182.7,
+            "zero_cores": 0,
+            "percent_ideal": 97.59615384615384
+          },
+          {
+            "domain": 3,
+            "ghs": 187.86,
+            "zero_cores": 0,
+            "percent_ideal": 100.35256410256412
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          },
+          {
+            "domain": 1,
+            "ghs": 188.1,
+            "zero_cores": 0,
+            "percent_ideal": 100.48076923076923
+          },
+          {
+            "domain": 2,
+            "ghs": 187.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.90384615384616
+          },
+          {
+            "domain": 3,
+            "ghs": 185.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.97435897435898
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 1,
+            "ghs": 186.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.40170940170941
+          },
+          {
+            "domain": 2,
+            "ghs": 183.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.15170940170941
+          },
+          {
+            "domain": 3,
+            "ghs": 182.6,
+            "zero_cores": 0,
+            "percent_ideal": 97.54273504273505
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 80,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.96,
+            "zero_cores": 0,
+            "percent_ideal": 97.73504273504274
+          },
+          {
+            "domain": 1,
+            "ghs": 184.02,
+            "zero_cores": 0,
+            "percent_ideal": 98.30128205128206
+          },
+          {
+            "domain": 2,
+            "ghs": 181.52,
+            "zero_cores": 1,
+            "percent_ideal": 96.96581196581198
+          },
+          {
+            "domain": 3,
+            "ghs": 187.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.93589743589745
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.66,
+            "zero_cores": 0,
+            "percent_ideal": 98.6431623931624
+          },
+          {
+            "domain": 1,
+            "ghs": 186.9,
+            "zero_cores": 0,
+            "percent_ideal": 99.8397435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 184.04,
+            "zero_cores": 0,
+            "percent_ideal": 98.31196581196582
+          },
+          {
+            "domain": 3,
+            "ghs": 189.38,
+            "zero_cores": 0,
+            "percent_ideal": 101.16452991452991
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.32,
+            "zero_cores": 0,
+            "percent_ideal": 99.52991452991454
+          },
+          {
+            "domain": 1,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          },
+          {
+            "domain": 2,
+            "ghs": 184.72,
+            "zero_cores": 0,
+            "percent_ideal": 98.67521367521368
+          },
+          {
+            "domain": 3,
+            "ghs": 183.62,
+            "zero_cores": 0,
+            "percent_ideal": 98.08760683760684
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.7,
+            "zero_cores": 0,
+            "percent_ideal": 100.26709401709401
+          },
+          {
+            "domain": 1,
+            "ghs": 185.82,
+            "zero_cores": 0,
+            "percent_ideal": 99.26282051282051
+          },
+          {
+            "domain": 2,
+            "ghs": 181.94,
+            "zero_cores": 0,
+            "percent_ideal": 97.19017094017094
+          },
+          {
+            "domain": 3,
+            "ghs": 184.98,
+            "zero_cores": 0,
+            "percent_ideal": 98.81410256410257
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 82,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.76,
+            "zero_cores": 0,
+            "percent_ideal": 98.6965811965812
+          },
+          {
+            "domain": 1,
+            "ghs": 185.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.09188034188034
+          },
+          {
+            "domain": 2,
+            "ghs": 181.3,
+            "zero_cores": 1,
+            "percent_ideal": 96.8482905982906
+          },
+          {
+            "domain": 3,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.68,
+            "zero_cores": 0,
+            "percent_ideal": 100.25641025641025
+          },
+          {
+            "domain": 1,
+            "ghs": 182.74,
+            "zero_cores": 0,
+            "percent_ideal": 97.61752136752138
+          },
+          {
+            "domain": 2,
+            "ghs": 186.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.5405982905983
+          },
+          {
+            "domain": 3,
+            "ghs": 187.58,
+            "zero_cores": 0,
+            "percent_ideal": 100.20299145299147
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.90384615384616
+          },
+          {
+            "domain": 1,
+            "ghs": 183.18,
+            "zero_cores": 0,
+            "percent_ideal": 97.85256410256412
+          },
+          {
+            "domain": 2,
+            "ghs": 186.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.5405982905983
+          },
+          {
+            "domain": 3,
+            "ghs": 185.24,
+            "zero_cores": 0,
+            "percent_ideal": 98.95299145299147
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 182.78,
+            "zero_cores": 0,
+            "percent_ideal": 97.6388888888889
+          },
+          {
+            "domain": 1,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 182.5,
+            "zero_cores": 0,
+            "percent_ideal": 97.48931623931625
+          },
+          {
+            "domain": 3,
+            "ghs": 185.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.27350427350427
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 84,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.57264957264958
+          },
+          {
+            "domain": 1,
+            "ghs": 187.84,
+            "zero_cores": 0,
+            "percent_ideal": 100.34188034188034
+          },
+          {
+            "domain": 2,
+            "ghs": 182.58,
+            "zero_cores": 1,
+            "percent_ideal": 97.53205128205128
+          },
+          {
+            "domain": 3,
+            "ghs": 187.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.22435897435898
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.70726495726497
+          },
+          {
+            "domain": 1,
+            "ghs": 184.96,
+            "zero_cores": 0,
+            "percent_ideal": 98.80341880341882
+          },
+          {
+            "domain": 2,
+            "ghs": 184.22,
+            "zero_cores": 0,
+            "percent_ideal": 98.40811965811966
+          },
+          {
+            "domain": 3,
+            "ghs": 187.7,
+            "zero_cores": 0,
+            "percent_ideal": 100.26709401709401
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.56,
+            "zero_cores": 0,
+            "percent_ideal": 99.12393162393163
+          },
+          {
+            "domain": 1,
+            "ghs": 189.2,
+            "zero_cores": 0,
+            "percent_ideal": 101.06837606837607
+          },
+          {
+            "domain": 2,
+            "ghs": 185.92,
+            "zero_cores": 0,
+            "percent_ideal": 99.31623931623932
+          },
+          {
+            "domain": 3,
+            "ghs": 184.78,
+            "zero_cores": 0,
+            "percent_ideal": 98.70726495726497
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.40170940170941
+          },
+          {
+            "domain": 1,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          },
+          {
+            "domain": 2,
+            "ghs": 182.9,
+            "zero_cores": 0,
+            "percent_ideal": 97.70299145299145
+          },
+          {
+            "domain": 3,
+            "ghs": 183.86,
+            "zero_cores": 0,
+            "percent_ideal": 98.21581196581198
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 85,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.04,
+            "zero_cores": 0,
+            "percent_ideal": 98.84615384615385
+          },
+          {
+            "domain": 1,
+            "ghs": 184.82,
+            "zero_cores": 0,
+            "percent_ideal": 98.72863247863248
+          },
+          {
+            "domain": 2,
+            "ghs": 181.88,
+            "zero_cores": 1,
+            "percent_ideal": 97.15811965811966
+          },
+          {
+            "domain": 3,
+            "ghs": 184.6,
+            "zero_cores": 0,
+            "percent_ideal": 98.61111111111111
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.95726495726497
+          },
+          {
+            "domain": 1,
+            "ghs": 186.48,
+            "zero_cores": 0,
+            "percent_ideal": 99.61538461538461
+          },
+          {
+            "domain": 2,
+            "ghs": 185.18,
+            "zero_cores": 0,
+            "percent_ideal": 98.92094017094018
+          },
+          {
+            "domain": 3,
+            "ghs": 188.4,
+            "zero_cores": 0,
+            "percent_ideal": 100.64102564102566
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.6474358974359
+          },
+          {
+            "domain": 1,
+            "ghs": 185.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.96367521367522
+          },
+          {
+            "domain": 2,
+            "ghs": 184.74,
+            "zero_cores": 0,
+            "percent_ideal": 98.68589743589745
+          },
+          {
+            "domain": 3,
+            "ghs": 185.56,
+            "zero_cores": 0,
+            "percent_ideal": 99.12393162393163
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.06,
+            "zero_cores": 0,
+            "percent_ideal": 99.39102564102565
+          },
+          {
+            "domain": 1,
+            "ghs": 188.62,
+            "zero_cores": 0,
+            "percent_ideal": 100.75854700854703
+          },
+          {
+            "domain": 2,
+            "ghs": 185.58,
+            "zero_cores": 0,
+            "percent_ideal": 99.1346153846154
+          },
+          {
+            "domain": 3,
+            "ghs": 183.26,
+            "zero_cores": 0,
+            "percent_ideal": 97.89529914529915
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 87,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.28,
+            "zero_cores": 0,
+            "percent_ideal": 99.50854700854701
+          },
+          {
+            "domain": 1,
+            "ghs": 181.46,
+            "zero_cores": 0,
+            "percent_ideal": 96.9337606837607
+          },
+          {
+            "domain": 2,
+            "ghs": 182.02,
+            "zero_cores": 1,
+            "percent_ideal": 97.23290598290599
+          },
+          {
+            "domain": 3,
+            "ghs": 187.26,
+            "zero_cores": 0,
+            "percent_ideal": 100.03205128205128
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.4,
+            "zero_cores": 0,
+            "percent_ideal": 99.57264957264958
+          },
+          {
+            "domain": 1,
+            "ghs": 186.0,
+            "zero_cores": 0,
+            "percent_ideal": 99.35897435897436
+          },
+          {
+            "domain": 2,
+            "ghs": 184.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.56837606837608
+          },
+          {
+            "domain": 3,
+            "ghs": 188.08,
+            "zero_cores": 0,
+            "percent_ideal": 100.4700854700855
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.56,
+            "zero_cores": 0,
+            "percent_ideal": 99.12393162393163
+          },
+          {
+            "domain": 1,
+            "ghs": 184.38,
+            "zero_cores": 0,
+            "percent_ideal": 98.49358974358975
+          },
+          {
+            "domain": 2,
+            "ghs": 183.44,
+            "zero_cores": 0,
+            "percent_ideal": 97.991452991453
+          },
+          {
+            "domain": 3,
+            "ghs": 185.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.09188034188034
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.44,
+            "zero_cores": 0,
+            "percent_ideal": 98.52564102564104
+          },
+          {
+            "domain": 1,
+            "ghs": 183.52,
+            "zero_cores": 0,
+            "percent_ideal": 98.03418803418805
+          },
+          {
+            "domain": 2,
+            "ghs": 185.82,
+            "zero_cores": 0,
+            "percent_ideal": 99.26282051282051
+          },
+          {
+            "domain": 3,
+            "ghs": 186.44,
+            "zero_cores": 0,
+            "percent_ideal": 99.59401709401709
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 88,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.92,
+            "zero_cores": 0,
+            "percent_ideal": 99.85042735042735
+          },
+          {
+            "domain": 1,
+            "ghs": 183.94,
+            "zero_cores": 0,
+            "percent_ideal": 98.25854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 179.88,
+            "zero_cores": 1,
+            "percent_ideal": 96.08974358974359
+          },
+          {
+            "domain": 3,
+            "ghs": 187.5,
+            "zero_cores": 0,
+            "percent_ideal": 100.16025641025641
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 188.24,
+            "zero_cores": 0,
+            "percent_ideal": 100.55555555555557
+          },
+          {
+            "domain": 1,
+            "ghs": 187.36,
+            "zero_cores": 0,
+            "percent_ideal": 100.0854700854701
+          },
+          {
+            "domain": 2,
+            "ghs": 185.54,
+            "zero_cores": 0,
+            "percent_ideal": 99.11324786324786
+          },
+          {
+            "domain": 3,
+            "ghs": 183.42,
+            "zero_cores": 0,
+            "percent_ideal": 97.98076923076923
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.84,
+            "zero_cores": 0,
+            "percent_ideal": 99.27350427350427
+          },
+          {
+            "domain": 1,
+            "ghs": 186.18,
+            "zero_cores": 0,
+            "percent_ideal": 99.45512820512822
+          },
+          {
+            "domain": 2,
+            "ghs": 186.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.69017094017096
+          },
+          {
+            "domain": 3,
+            "ghs": 184.64,
+            "zero_cores": 0,
+            "percent_ideal": 98.63247863247862
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.74,
+            "zero_cores": 0,
+            "percent_ideal": 99.22008547008548
+          },
+          {
+            "domain": 1,
+            "ghs": 183.3,
+            "zero_cores": 0,
+            "percent_ideal": 97.91666666666667
+          },
+          {
+            "domain": 2,
+            "ghs": 185.1,
+            "zero_cores": 0,
+            "percent_ideal": 98.87820512820514
+          },
+          {
+            "domain": 3,
+            "ghs": 186.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.86111111111111
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 90,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.32,
+            "zero_cores": 0,
+            "percent_ideal": 99.52991452991454
+          },
+          {
+            "domain": 1,
+            "ghs": 189.66,
+            "zero_cores": 0,
+            "percent_ideal": 101.31410256410255
+          },
+          {
+            "domain": 2,
+            "ghs": 183.76,
+            "zero_cores": 1,
+            "percent_ideal": 98.16239316239317
+          },
+          {
+            "domain": 3,
+            "ghs": 182.84,
+            "zero_cores": 0,
+            "percent_ideal": 97.67094017094018
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 189.56,
+            "zero_cores": 0,
+            "percent_ideal": 101.26068376068378
+          },
+          {
+            "domain": 1,
+            "ghs": 188.24,
+            "zero_cores": 0,
+            "percent_ideal": 100.55555555555557
+          },
+          {
+            "domain": 2,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 3,
+            "ghs": 186.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.40170940170941
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.06,
+            "zero_cores": 0,
+            "percent_ideal": 99.39102564102565
+          },
+          {
+            "domain": 1,
+            "ghs": 183.88,
+            "zero_cores": 0,
+            "percent_ideal": 98.22649572649573
+          },
+          {
+            "domain": 2,
+            "ghs": 189.3,
+            "zero_cores": 0,
+            "percent_ideal": 101.12179487179489
+          },
+          {
+            "domain": 3,
+            "ghs": 186.34,
+            "zero_cores": 0,
+            "percent_ideal": 99.5405982905983
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.2905982905983
+          },
+          {
+            "domain": 1,
+            "ghs": 187.34,
+            "zero_cores": 0,
+            "percent_ideal": 100.07478632478633
+          },
+          {
+            "domain": 2,
+            "ghs": 186.78,
+            "zero_cores": 0,
+            "percent_ideal": 99.77564102564104
+          },
+          {
+            "domain": 3,
+            "ghs": 188.02,
+            "zero_cores": 0,
+            "percent_ideal": 100.43803418803421
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 93,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 181.28,
+            "zero_cores": 0,
+            "percent_ideal": 96.83760683760684
+          },
+          {
+            "domain": 1,
+            "ghs": 187.28,
+            "zero_cores": 0,
+            "percent_ideal": 100.04273504273505
+          },
+          {
+            "domain": 2,
+            "ghs": 183.66,
+            "zero_cores": 1,
+            "percent_ideal": 98.10897435897436
+          },
+          {
+            "domain": 3,
+            "ghs": 185.26,
+            "zero_cores": 0,
+            "percent_ideal": 98.96367521367522
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.62,
+            "zero_cores": 0,
+            "percent_ideal": 99.15598290598291
+          },
+          {
+            "domain": 1,
+            "ghs": 184.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.2905982905983
+          },
+          {
+            "domain": 2,
+            "ghs": 186.5,
+            "zero_cores": 0,
+            "percent_ideal": 99.62606837606837
+          },
+          {
+            "domain": 3,
+            "ghs": 186.02,
+            "zero_cores": 0,
+            "percent_ideal": 99.36965811965813
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.2,
+            "zero_cores": 0,
+            "percent_ideal": 98.93162393162393
+          },
+          {
+            "domain": 1,
+            "ghs": 188.36,
+            "zero_cores": 0,
+            "percent_ideal": 100.61965811965814
+          },
+          {
+            "domain": 2,
+            "ghs": 187.46,
+            "zero_cores": 0,
+            "percent_ideal": 100.13888888888889
+          },
+          {
+            "domain": 3,
+            "ghs": 182.0,
+            "zero_cores": 0,
+            "percent_ideal": 97.22222222222223
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 186.86,
+            "zero_cores": 0,
+            "percent_ideal": 99.81837606837608
+          },
+          {
+            "domain": 1,
+            "ghs": 184.9,
+            "zero_cores": 0,
+            "percent_ideal": 98.77136752136752
+          },
+          {
+            "domain": 2,
+            "ghs": 183.7,
+            "zero_cores": 0,
+            "percent_ideal": 98.13034188034187
+          },
+          {
+            "domain": 3,
+            "ghs": 188.5,
+            "zero_cores": 0,
+            "percent_ideal": 100.69444444444444
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "epoch": 95,
+    "chips": [
+      {
+        "asic": 1,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 187.4,
+            "zero_cores": 0,
+            "percent_ideal": 100.1068376068376
+          },
+          {
+            "domain": 1,
+            "ghs": 184.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.2905982905983
+          },
+          {
+            "domain": 2,
+            "ghs": 178.84,
+            "zero_cores": 1,
+            "percent_ideal": 95.53418803418803
+          },
+          {
+            "domain": 3,
+            "ghs": 186.08,
+            "zero_cores": 0,
+            "percent_ideal": 99.40170940170941
+          }
+        ]
+      },
+      {
+        "asic": 2,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 185.94,
+            "zero_cores": 0,
+            "percent_ideal": 99.32692307692308
+          },
+          {
+            "domain": 1,
+            "ghs": 188.3,
+            "zero_cores": 0,
+            "percent_ideal": 100.58760683760686
+          },
+          {
+            "domain": 2,
+            "ghs": 190.1,
+            "zero_cores": 0,
+            "percent_ideal": 101.5491452991453
+          },
+          {
+            "domain": 3,
+            "ghs": 185.28,
+            "zero_cores": 0,
+            "percent_ideal": 98.97435897435898
+          }
+        ]
+      },
+      {
+        "asic": 3,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.2,
+            "zero_cores": 0,
+            "percent_ideal": 98.3974358974359
+          },
+          {
+            "domain": 1,
+            "ghs": 184.92,
+            "zero_cores": 0,
+            "percent_ideal": 98.78205128205128
+          },
+          {
+            "domain": 2,
+            "ghs": 183.06,
+            "zero_cores": 0,
+            "percent_ideal": 97.78846153846155
+          },
+          {
+            "domain": 3,
+            "ghs": 187.06,
+            "zero_cores": 0,
+            "percent_ideal": 99.92521367521368
+          }
+        ]
+      },
+      {
+        "asic": 4,
+        "domains": [
+          {
+            "domain": 0,
+            "ghs": 184.32,
+            "zero_cores": 0,
+            "percent_ideal": 98.46153846153847
+          },
+          {
+            "domain": 1,
+            "ghs": 185.0,
+            "zero_cores": 0,
+            "percent_ideal": 98.82478632478633
+          },
+          {
+            "domain": 2,
+            "ghs": 189.7,
+            "zero_cores": 0,
+            "percent_ideal": 101.33547008547008
+          },
+          {
+            "domain": 3,
+            "ghs": 186.12,
+            "zero_cores": 0,
+            "percent_ideal": 99.42307692307693
+          }
+        ]
+      }
+    ]
+  }
+]

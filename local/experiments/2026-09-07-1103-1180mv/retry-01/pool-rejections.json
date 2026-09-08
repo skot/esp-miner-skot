@@ -1,0 +1,11 @@
+[
+  "I (369650) stratum_api: Set pool difficulty: 100000.00",
+  "I (369656) stratum_v1_task: Set pool difficulty: 100000.00",
+  "I (372568) stratum_api: Set pool difficulty: 1000.00",
+  "I (372571) stratum_v1_task: Set pool difficulty: 1000.00",
+  "I (489768) stratum_api: Set pool difficulty: 16384.00",
+  "I (489771) stratum_v1_task: Set pool difficulty: 16384.00",
+  "W (489989) stratum_v1_task: message result rejected: Difficulty too low",
+  "W (490068) stratum_v1_task: message result rejected: Difficulty too low",
+  "W (490107) stratum_v1_task: message result rejected: Difficulty too low"
+]

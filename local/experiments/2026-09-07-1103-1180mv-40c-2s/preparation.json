@@ -1,0 +1,27 @@
+{
+  "original_fan": {
+    "autofanspeed": 1,
+    "manualFanSpeed": 100
+  },
+  "before": {
+    "coreVoltage": 1180,
+    "actualFrequency": 600,
+    "hashRate": 0,
+    "asicTemps": [
+      48.90251159667969,
+      47.58296203613281,
+      48.90251159667969,
+      48.4076805114746
+    ],
+    "regulatorVoltage": 32,
+    "uptimeSeconds": 777,
+    "power": 0.0046873,
+    "sharesAccepted": 0,
+    "sharesRejected": 0
+  },
+  "mc3_sha256": "5d28fd6c66a53131603ca4e786205a2f94888c0aa937c50d376a457e02d2784d",
+  "cooling_started_unix": 1788825445.366703,
+  "off_regulator_mv": 32,
+  "fan_percent": 100,
+  "cooling_method": "Existing failed-start power-off state; API manual fan 100%; voltage remains 1180 mV"
+}

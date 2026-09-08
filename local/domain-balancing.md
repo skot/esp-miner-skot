@@ -1,6 +1,407 @@
 # bitaxeProto 1103x domain-balancing investigation
 
-Last updated: 2026-09-07
+Last updated: 2026-09-08
+
+## Checkpoint before voltage-efficiency tuning (2026-09-08)
+
+The user reports a couple of additional manual restarts with the current
+1200 mV / 600 MHz firmware working well. These are user-observed successes;
+reset type, exact count, and per-run counters were not captured by the agent.
+Together with the recorded cold startup and five-minute 2.970 TH/s hold below,
+this is the fallback checkpoint before attempting lower mining voltage.
+
+Checkpoint includes the unified ASIC Performance dashboard, startup/PVT
+recovery firmware, host tests, and the voltage/ramp/sensor comparison records.
+Firmware source is unchanged from the successful flashed application with
+SHA256 `216b1d8c616570d7fa2f38c742a77a5190f3f2f0282ab8affe75a94fa2c9f643`.
+The saved binary remains in the local experiment archive; manifests identify
+it independently of the older dirty version string. No new flash, reset, or
+voltage adjustment was performed when preparing this checkpoint.
+
+## 1200 mV mining after PVT recovery: 2.970 TH/s five-minute hold (2026-09-08)
+
+User requested keeping1200 mV after recovery and establishing healthy mining
+before any efficiency reduction. Saved target is now1200 mV/600 MHz. For this
+1103 operating point, retain1160 mV warmup (measured2323 mV total), all-chip
+40 C ten-second dwell, full supply cycle,1200 mV unloaded ramp with2 s PLL
+steps, and paired PVT readings/reinitialization at fixed600 MHz. Require valid
+post-reinit temperatures, then run first-work qualification and normal pool
+handoff. The prior deliberate diagnostic stop is removed. MC3 setup/PLL/work
+commands unchanged. Host sequence/failure tests and ESP-IDF build passed.
+
+Initial temperatures26.47-27.29 C. A3/A4 PVT failed before reinit and recovered
+afterward at1200 mV: all four temperatures valid, all four12/12 fresh voltage
+conversions. First600 MHz job at196.505 s; qualification **PASS2964.41 GH/s**
+with all16 domains active,623 cores contributing. No voltage reduction.
+
+The **303.86-second pool hold** contained42 complete counter epochs:
+**2969.55 GH/s mean**,2954.60-2984.44 range, **zero dropped domains**.
+Only A1 D2 logical core105 remained essentially inactive (zero41/42 epochs,
+0.02 GH/s in one); do not interpret the occasional624-active count as recovery.
+All48 API samples had four temperatures and four chip voltage readings, with
+values updating on every ASIC and no logged post-handoff PVT failures.
+Peak temperature **54.35 C**. Mean regulator-output power50.12 W,
+approximately16.88 J/TH (not wall efficiency).
+
+Hold ended40 accepted/1 rejected share; reject was `Difficulty too low`
+immediately after the pool difficulty increase. Final live check at uptime565 s
+confirmed continued1200 mV/600 MHz mining,2401 mV regulator total,51.87-53.36 C,
+and41 accepted/1 rejected. Fan automatic99%. **Left mining at1200/600.**
+This is one successful cold startup and five-minute hold, not repeatability or
+long-term qualification. No subsequent voltage reduction or restart.
+
+Record: `local/experiments/2026-09-08-1103-mine-1200-pvt/README.md`.
+
+## PVT-only reinitialization also works at 1200 mV (2026-09-08)
+
+Repeated the sensor-only recovery comparison with **no voltage reduction**:
+keep 1160 mV / 300 MHz / 40 C warmup from the full boosted test, perform the
+established full supply cycle and unloaded 1200 mV ramp to600 MHz, then collect
+PVT before/after the identical nine sensor-only setup writes. PLLs stay fixed,
+no work is sent, and every chip gets STATUS/CLOCK/PLL readback plus independent
+fresh thermal/voltage checks. Setup code and MC3 source unchanged. Host tests
+and ESP-IDF build passed; flashed after ASIC-off/fan100 cooling.
+
+The initial27.13-27.79 C chips warmed and passed300 MHz at1486.45 GH/s.
+Fresh TPS546 total was **2403 mV**. Before reinit, A1/A2 had valid temperatures
+48.24/46.59 C and12/12 fresh voltage conversions; A3/A4 had invalid temperatures,
+0/12 conversions, DONE=0, STATUS=3 and raw zero. After178 ms sensor setup and
+100 ms settling, **all four temperatures were valid:48.57/46.92/47.75/47.75 C**.
+All four completed **12/12 fresh voltage conversions**, with chip VDD
+**1183.90/1184.61/1201.68/1207.67 mV**. Sensor status readback was0,
+clock0x01010000, PLL0_EN0x7 on every ASIC.
+
+**Dropping to1160 mV is not required for sensor recovery in this state.**
+A simple steady1200 mV PVT cutoff is inconsistent with these results. Focus
+on initialization or a supply/clock disturbance leaving PVT state stuck;
+which write or mechanism fixes it is still unknown. This was not a long-term
+reliability test or a600 MHz mining test. Baseline measurements add settling
+time, so further isolation needs a timing control.
+
+Diagnostic completed and deliberately shut ASIC power off (34 mV confirmed).
+Saved1160 mV/600 MHz and original automatic fan99% remain. Installed temporary
+firmware runs this no-drop diagnostic and stops for that1103 operating point;
+AxeOS startup-failed status is expected even when PVT recovers. No retry.
+
+Record: `local/experiments/2026-09-08-1103-pvt-reinit-1200/README.md`.
+
+## Full 1160 → 1200 → 1160 mV startup: valid temperatures, five failed domains (2026-09-08)
+
+Implemented and flashed the requested full sequence on stock 1103: warm at
+300 MHz / 1160 mV until every ASIC is >=40 C for ten seconds, retain the
+established full Vcore/VDDIO cycle, reinitialize at 800 mV / 100 MHz, raise to
+1200 mV and ramp unloaded to 600 MHz with two-second steps, then lower to
+1160 mV, settle one second, confirm fresh regulator voltage and reinitialize
+PVT only before first work. Normal pool handoff replaces the prior deliberate
+diagnostic stop. Boost applies only to 1103 at saved 1160 mV / target 600 MHz.
+Sequence/failure host tests, PVT-only write tests and ESP-IDF build passed.
+
+After ASIC-off/fan-100% cooling, initial temperatures were 26.80–27.79 C.
+Final warm 300 MHz qualification passed at **1486.28 GH/s**, all 16 domains
+active. Following the boosted unloaded ramp, the voltage drop measured
+**2323 mV total**. PVT setup took 138 ms, with sensor STATUS=0 and PLL0_EN=0x7
+on all four ASICs. Fresh temperatures immediately afterward were **47.58 /
+46.10 / 46.92 / 46.76 C**, remaining valid throughout qualification. This run
+confirms thermal functionality; it did not repeat the separate VDD conversion
+sweep from the preceding diagnostic.
+
+The first 600 MHz work at 1160 mV failed qualification: **2045.08 GH/s**,
+**429/624 active cores**, **11/16 active domains**. All 39 cores were zero-PASS
+in **A1 D0/D2, A2 D0/D2 and A3 D2**. ASIC rates were **373.42 / 371.34 /
+557.79 / 742.52 GH/s**. Sampled half-stack peak was 1209 mV (report-only;
+no scope connected). The throughput failure powered ASICs off; final regulator
+readback was 32 mV, saved settings 1160 mV / 600 MHz, automatic fan 99%.
+No pool mining, efficiency hold or automatic retry occurred.
+
+The higher voltage was present during the unloaded PLL ramp, but **no work
+was sent at 1200 mV**. Consequently this test does not distinguish a ramp
+failure from failure during voltage reduction/PVT setup or starting work at
+1160 mV. A test of lowering voltage after successful stabilization would need
+to first establish healthy mining at 1200 mV with valid temperature monitoring.
+
+Record: `local/experiments/2026-09-08-1103-boost-startup-1160/README.md`.
+
+## PVT-only reinitialization at 1160 mV recovers all sensors (2026-09-08)
+
+Extended the paired sensor test with a third stage: reapply only the voltage
+and thermal sensor setup at 1160 mV, wait 100 ms, then retry fresh conversions.
+ASIC PLLs remain at 600 MHz throughout. No ASIC reset, additional supply cycle,
+PLL writes or first work occur between the three stages. Exact-command host
+tests verify sensor-only writes and all-chip readback; integration and bounded
+voltage diagnostic tests and ESP-IDF build passed. Flashed after ASIC-off /
+fan-100% cooling, retaining 40 C / ten-second warmup and the 2-second ramp.
+
+A3/A4 had invalid thermal conversions and 0/12 voltage conversions at 1200 mV,
+and again after dropping to 1160 mV (fresh regulator total **2323 mV**). After
+PVT-only setup, **all four thermal readings were valid on the first attempt**:
+**47.58 / 46.10 / 47.09 / 46.76 C**. All four completed **12/12 voltage
+conversions**, with fresh VDD readings **1141.64 / 1142.35 / 1166.02 / 1171.81
+mV**. Sensor STATUS readback was 0, sensor CLOCK was 0x01010000, and PLL0_EN
+was 0x7 (lock bit set) on every ASIC. Setup took 141 ms, and the final voltage
+sweep took 980 ms.
+
+This demonstrates sensor recovery without full ASIC reset at fixed 600 MHz,
+following PVT-only setup at 1160 mV. It does not isolate the necessary setup
+write, prove that dropping voltage is required, or establish mining-core health.
+Warm 300 MHz qualification passed at 1488.68 GH/s; no 600 MHz job or hashrate
+qualification was performed. The test deliberately powered ASICs off afterward
+(34 mV confirmed), leaving NVS at 1200 mV / 600 MHz and automatic fan 99%.
+The installed diagnostic still stops each 1200 mV / 600 MHz startup after the
+three-stage test even if sensors recover. No subsequent reset or scope capture.
+
+Record: `local/experiments/2026-09-08-1103-pvt-reinit-1160/README.md`.
+
+## PVT voltage-drop test: 1200 to 1160 mV does not recover A3/A4 (2026-09-07)
+
+Added a temporary paired diagnostic after the 1200 mV / 40 C / 2-second-step
+ramp to 600 MHz. It measures thermal/voltage conversions at 1200 mV, commands
+1160 mV, waits 1000 ms and confirms fresh regulator total, then repeats the
+same conversions. No ASIC reset, sensor reinitialization, PLL update or work
+is sent between readings. It shuts power off afterward regardless of outcome.
+Host sequence/failure tests and ESP-IDF build passed; flashed after cooling.
+
+Warm 300 MHz qualification passed at 1494.68 GH/s. At 1200 mV, A1/A2 temperatures
+were **47.91 / 46.26 C** and fresh voltages **1184.51 / 1184.82 mV**. A3/A4
+failed three thermal attempts and all twelve voltage conversions. After the
+drop, fresh TPS546 total was **2323 mV**, verifying the lower supply. A1/A2 then
+reported **47.42 / 45.77 C** and **1140.11 / 1140.72 mV**. A3/A4 remained invalid:
+voltage `DONE=0`, `STATUS=3`, raw data zero, 0/12 completed conversions each.
+
+No PVT recovery occurred during roughly five seconds after the voltage drop,
+including one-second settling and both diagnostic conversion sequences. This
+shows lowering voltage alone was insufficient in the observed state; it does
+not prove permanent failure or rule out longer settling/PVT reinitialization.
+The next specific recovery probe could reinitialize only PVT at 1160 mV,
+keeping PLLs at 600 MHz and without work.
+
+The paired experiment completed, then shut ASIC power off (34 mV confirmed).
+Saved settings remain 1200 mV / 600 MHz; NVS was not changed to 1160. **The
+installed temporary diagnostic stops every 1200 mV / 600 MHz startup after
+this paired test, even if readings are healthy.** No hashrate/efficiency result
+or subsequent reset. No scope was used.
+
+Record: `local/experiments/2026-09-07-1103-pvt-1200-to-1160/README.md`.
+
+## Failure-path probe: A3/A4 voltage conversions fail too (2026-09-07)
+
+Added a bounded voltage diagnostic only after an invalid pre-work temperature
+read, before normal shutdown. No changes to 1200 mV / 40 C / 2-second startup
+sequence before failure. The probe uses existing voltage configuration, checks
+DONE independently on all four ASICs for twelve conversion rounds, and logs
+raw VDD channels 13/14 with explicit freshness. It sends no work, PLL writes or
+sensor reinitialization. A credible hot reading or tripped guard skips it.
+Host diagnostic/integration tests and ESP-IDF build passed; flashed after
+ASIC-off / fan-100% cooling.
+
+The thermal failure repeated. Voltage diagnostic completed twelve rounds in
+**1973 ms**: A1/A2 finished **12/12** each and returned fresh **1183.39 / 1183.80
+mV**. A3/A4 finished **0/12**, with `DONE=0`, `STATUS=3`, and raw13/raw14 zero.
+All status/data reads returned valid transport responses. This establishes
+that the on-chip voltage conversion path also fails on A3/A4 in this state,
+not just the thermal conversion path; it does not establish why.
+
+Before any diagnostic trigger, A1/A2 retained their approximately 802 mV
+pre-ramp voltage data, while A3/A4 raw13/raw14 were already zero. Earlier
+800 mV initialization had reported A3/A4 **803.0 / 806.4 mV**. The intervening
+interval includes thermal sensor setup, voltage ramp, PLL ramp and thermal
+conversion attempts; the exact transition remains unlocalized. Initial voltage
+reads used the older A1-only DONE check, so their freshness is less strongly
+verified than the new per-ASIC diagnostic.
+
+Warm 300 MHz qualification passed at 1487.05 GH/s. No first 600 MHz work or
+throughput measurement occurred. Final ASIC power is off (32 mV), diagnostic
+firmware remains installed with **1200 mV / 40 C / 2-second steps**, no retry.
+Sampled peak half-stack was 1213 mV; no scope was used.
+
+Record: `local/experiments/2026-09-07-1103-1200mv-sensor-diagnostic/README.md`.
+
+## Three more 1200 mV boots: A3/A4 conversion failure repeats (2026-09-07)
+
+Observed three additional startups with the same **1200 mV / 40 C / 2-second
+steps** firmware. Attempt 01 was already underway when first inspected (uptime
+35 s); it was observed without interruption and its reset/cooling trigger was
+not controlled here. Attempts 02/03 were API restarts after at least two minutes
+with ASIC power off and fan confirmed 100%, restoring automatic fan control
+before reboot. No source, flash, register/work sequence or guard changes.
+
+Fresh starting ranges were **26.64–27.29 / 27.13–28.12 / 26.31–26.96 C**.
+Warm 300 MHz qualifications passed at **1487.16 / 1490.02 / 1487.45 GH/s**.
+All three then failed A3/A4 temperature conversions after the unloaded 600 MHz
+ramp: three attempts each, `done=0`, `status=3`, `raw=0`, while A1/A2 remained
+valid. No first 600 MHz work was sent. There is no current core/domain
+throughput or steady efficiency measurement from any of these boots.
+
+Including the original run, **4/4 observed 1200 mV / 40 C boots** have now
+aborted with the same conversion symptom. This strengthens the association
+with this operating/startup configuration, but does not isolate voltage from
+initialization/PLL/conversion sequencing. A similar failure occurred once at
+hot 1180 mV before a successful identical retry. The two preceding 40 C / 1180
+mV tests had valid post-ramp temperatures, followed by domain throughput loss.
+
+Sampled peak half-stack values were 1214, 1217 and 1216 mV; no scope was used.
+Final state is ASIC power off (32 mV), saved **1200 mV / 600 MHz**, startup
+failure retained with epoch 0 and automatic fan output 99%. No further restart
+or background recovery was scheduled.
+
+Record: `local/experiments/2026-09-07-1103-1200mv-restarts/README.md`.
+
+## 1200 mV / 40 C: pre-work thermal conversion abort (2026-09-07)
+
+Raised the supported startup ceiling and device setting to **1200 mV/half**,
+retaining every-ASIC 40 C gates, ten-second dwell and 2-second PLL steps. The
+existing TPS546 2.4 V total maximum and compensation configuration are
+unchanged, as are sampled-voltage reporting and thermal/fault/throughput checks.
+Build and host tests passed, including the full 800-to-1200 mV ramp and 1201 mV
+rejection. Cooled with ASIC power off / fan 100%, then application-only OTA.
+
+Fresh starting temperatures were **25.98–26.64 C**. Warm 300 MHz qualification
+passed at **1489.57 GH/s**, with end-of-dwell readings **41.48–42.47 C**. The
+unloaded ramp reached 600 MHz at uptime **187.441 s**, but **A3/A4 temperature
+conversions failed all three pre-work attempts** (`done=0`, `status=3`, `raw=0`,
+invalid decoded -288.90 C). A1/A2 readings were valid around 46–48 C. This
+matches the earlier first hot-1180 attempt's conversion symptom.
+
+No first 600 MHz job or throughput qualification occurred. Consequently this
+attempt does not establish whether 1200 mV prevents domain dropouts at 40 C,
+and it provides no sustained efficiency result. Firmware shut ASIC power off
+at 190.864 s; a later HTTP check confirmed 32 mV, no mining, retained startup
+failure with diagnostic epoch 0. No retry was performed. Installed state is
+**40 C / 2 s / 1200 mV**, ASIC power off.
+
+Peak sampled halves were **1213 / 1190 mV**, total 2403 mV, during the unloaded
+ramp. Twenty-five sampled half-stack readings exceeded 1200 mV. Voltage remained
+report-only; thermal conversion failure triggered shutdown. No scope was used.
+
+Record: `local/experiments/2026-09-07-1103-1200mv-40c-2s/README.md`.
+
+## 40 C with restored 2-second steps: still fails (2026-09-07)
+
+Restored 2000 ms settling per 25 MHz step from 300 through 575 MHz, retaining
+40 C warmup/pre-work minimums, ten-second dwell, final 1500 ms settling and
+1180 mV. Build and exact-cadence host tests passed. ASIC power was already off;
+manual API fan 100% cooled it for at least two minutes before app-only OTA.
+Fresh initial temperatures were **26.80–27.62 C**. Warm 300 MHz qualification
+passed at **1484.98 GH/s** with end-of-dwell temperatures **41.32–42.30 C**.
+
+The slower 300-to-600 MHz updates took **24.444 s**. First work began at
+184.463 s uptime with valid temperatures **47.58 / 45.77 / 47.09 / 47.09 C**.
+600 MHz qualification failed at **2595.75 GH/s**: **A1 D0 and A2 D2** had zero
+PASS on all 39 cores. Fourteen domains / 545 cores were active, with the known
+A1 D2 core 105 also zero. This differs from the faster run's A2 D0 / A3 D2,
+but loses a similar amount of throughput.
+
+During first work, sampled halves reached **1157 / 1207 mV**, with total
+2364 mV. Two samples exceeded 1200 mV; telemetry stayed report-only and failed
+throughput caused shutdown. Sampling cannot establish whether the imbalance
+preceded or followed inactive cores. No scope was used. Confirmed ASIC power
+off at 34 mV after the test; failure counters and **40 C / 2 s / 1180 mV**
+firmware remain installed. No retry or sustained efficiency measurement.
+
+Both 40 C attempts failed while the preceding 45 C / 2 s attempt passed.
+Restoring the slower cadence alone was insufficient on this boot, supporting
+more warmup as the next direction without proving a reliable boundary or
+excluding a cadence effect. Each condition still needs repeatability testing.
+
+Record: `local/experiments/2026-09-07-1103-1180mv-40c-2s/README.md`.
+
+## 40 C plus faster ramp at 1180 mV: two domains fail (2026-09-07)
+
+Lowered both temperature minimums to 40 C, retaining the ten-second 300 MHz
+warmup dwell, and shortened 300–575 MHz PLL settling from 2000 to 1500 ms per
+25 MHz step. Final 600 MHz settling remains 1500 ms. Kept 1180 mV throughout;
+no higher startup voltage or subsequent undervolt was implemented. Build and
+host boundary/failure tests passed; flashed application-only OTA after cooling
+with ASIC power off and fan 100%.
+
+Initial fresh temperatures were 28.28–29.11 C. Warm 300 MHz qualification
+passed at 1486.66 GH/s. First 600 MHz work began at uptime **164.557 s**, about
+59.6 seconds earlier than the preceding 45 C / slower test. Pre-work readings
+were valid at **46.76 / 45.27 / 46.26 / 46.43 C**. Qualification then failed at
+**2593.80 GH/s**, with **A2 D0 and A3 D2** each showing 39 zero-PASS cores.
+Fourteen domains and 545/624 cores were active; the known A1 D2 core 105 was
+also zero PASS. No invalid temperature reading caused this failure.
+
+Firmware shut ASIC power off (34 mV confirmed), retained the failure counters,
+and did not enter pool mining. No retry was performed, so no sustained J/TH
+result exists. Maximum sampled half-stack voltage was 1192 mV; no scope was
+used. The combined change failed on this boot but does not isolate warmup
+from ramp cadence. A clean next comparison is 40 C / 1180 mV with the previous
+2-second cadence restored. Current installed settings remain 40 C / faster
+ramp / 1180 mV, with ASIC power off following the failure.
+
+Record: `local/experiments/2026-09-07-1103-1180mv-40c-faster/README.md`.
+
+## 45 C warmup at 1180 mV: first cooled startup passed (2026-09-07)
+
+Lowered the warmup gate to **every ASIC >=45 C for ten seconds at 300 MHz**,
+with the same 45 C minimum before first work. Kept 1180 mV per board half,
+600 MHz, the supply cycle, PLL cadence, settling and work sequence unchanged.
+Host boundary/failure tests and the ESP-IDF build passed. Flashed app-only OTA
+after cooling with ASIC power off and fan at 100%; first fresh temperatures
+were **27.95–28.61 C**. The preparation workaround for the paused-mode fan
+override is documented in the experiment record.
+
+Before first 600 MHz work, ASIC temperatures were **50.06 / 48.57 / 49.56 /
+49.40 C**. Qualification passed on the first attempt at **2962.43 GH/s**.
+The following **300.88-second** pool hold averaged **2963.85 GH/s** over
+42 complete counter epochs, with **43 accepted / 0 rejected shares**. All
+**16 domains** stayed active and **623/624 cores** produced PASS in every
+epoch. The sole zero-PASS core remained **A1 D2 logical core 105**.
+
+Peak pool temperature was 51.87 C. Maximum sampled half-stack voltage was
+1192 mV, with no samples above 1200 mV; no scope was used. A post-monitor HTTP
+check confirmed continued mining at 2959.78 GH/s and 44 accepted / 0 rejected
+shares. Left the board mining at **600 MHz / 1180 mV with the 45 C threshold**.
+This verifies one cooled startup through OTA, not repeatability or a manual
+input-power boot; it does not isolate voltage as the cause of prior failures.
+
+Record: `local/experiments/2026-09-07-1103-1180mv-45c/README.md`.
+
+## 1180 mV comparison: retry mines at full rate (2026-09-07)
+
+Raised the supported startup setting ceiling from 1160 to 1180 mV/half and set
+1180 mV through the API. At connection the saved value was 1200 mV, rejected by
+the old ceiling. Warmup, PLL ramp, work sequence and temperature checks stayed
+unchanged. Domain voltages were already report-only; no overvoltage guard was
+removed.
+
+The first 1180 mV attempt stopped before first work because A3/A4 failed all
+three post-ramp temperature-conversion retries. A single identical restart
+then passed **2964.04 GH/s / 600 MHz**. Before first work temperatures were
+**54.51 / 53.36 / 54.02 / 53.69 C**, within 0.33 C of the preceding 1160 mV
+failure. The previously missing A1 D0 and A2 D2 were active.
+
+The retry's **301.18-second** pool hold averaged **2961.38 GH/s** across 45
+complete domain-counter epochs; all 16 domains stayed active, with only the
+known single zero-PASS A1 D2 core. There were **43 accepted / 3 rejected**
+shares. All three rejects were low-difficulty responses immediately after a
+pool difficulty increase; no domain dropout accompanied that transition.
+
+Final sampled halves were **1180 / 1184 mV**, total 2364 mV. Sampled half-stack
+maxima were 1197 mV on the aborted attempt and 1188 mV on the retry. No scope
+was used. The board was left mining at **600 MHz / 1180 mV** after a post-monitor
+HTTP check. This supports further voltage/repeatability comparison but does
+not establish causality or reliable startup: one of the two attempts aborted.
+
+Record: `local/experiments/2026-09-07-1103-1180mv/README.md`.
+
+## Dashboard deployment: warm reboot loses two domains (2026-09-07)
+
+The unified ASIC Performance dashboard and a matching application build were
+uploaded by network OTA. The startup and MC3 source hashes match the previously
+successful hot production image; serial was not opened. The observed reboot
+passed warm 300 MHz qualification at 1486.27 GH/s, then failed 600 MHz
+qualification at **2594.87 GH/s**. **A1 D0 and A2 D2** each had 39 zero-PASS
+cores; the remaining 14 domains were active. Before first work temperatures
+were **54.68 / 53.36 / 54.18 / 54.02 C**, within the configured minimums.
+
+The firmware shut ASIC power off (36 mV measured regulator output) without
+starting pool mining. Failure data is retained in the new card. No recovery
+attempt followed. This reinforces that the hotter startup condition has not
+established reliable startup on every reboot; the cause is not isolated by
+this observation. Firmware and AxeOS report `v2.14.0-53-g591dfde-dirty`.
+
+Record: `local/experiments/2026-09-07-asic-performance/README.md` and `flash/`.
 
 ## Production fallback checkpoint (2026-09-07)
 

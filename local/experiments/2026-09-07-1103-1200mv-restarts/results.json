@@ -1,0 +1,362 @@
+[
+  {
+    "attempt": "attempt-01",
+    "outcome": "thermal_abort_before_work",
+    "first_temperatures": [
+      "100",
+      "27.29",
+      "26.64",
+      "26.64",
+      "26.96"
+    ],
+    "pre_work_temperatures": null,
+    "qualifications_600": [],
+    "post_ramp_thermal_reads": [
+      {
+        "attempt": 1,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 1,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 1,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 1,
+        "asic": 4,
+        "valid": 0
+      },
+      {
+        "attempt": 2,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 2,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 2,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 2,
+        "asic": 4,
+        "valid": 0
+      },
+      {
+        "attempt": 3,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 3,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 3,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 3,
+        "asic": 4,
+        "valid": 0
+      }
+    ],
+    "active_domains": null,
+    "active_cores": null,
+    "sampled_peak_halfstack_mv": 1214,
+    "final_info": {
+      "version": "v2.14.0-53-g591dfde-dirty",
+      "axeOSVersion": "v2.14.0-53-g591dfde-dirty",
+      "boardVersion": "1103",
+      "macAddr": "28:84:85:BA:96:08",
+      "actualFrequency": 600,
+      "hashRate": 0,
+      "asicTemps": [
+        48.24273681640625,
+        46.758243560791016,
+        41.6449851989746,
+        41.80992889404297
+      ],
+      "asicVoltages": [],
+      "domainVoltages": [
+        21,
+        13
+      ],
+      "regulatorVoltage": 34,
+      "miningPaused": false,
+      "uptimeSeconds": 184,
+      "sharesAccepted": 0,
+      "sharesRejected": 0,
+      "power": 0.0051193,
+      "fanspeed": 99,
+      "coreVoltage": 1200,
+      "frequency": 600,
+      "autofanspeed": 1,
+      "manualFanSpeed": 100
+    },
+    "efficiency": {
+      "complete_epochs": 0,
+      "zero_core_union": [],
+      "zero_core_intersection": [],
+      "min_active_cores": null,
+      "max_active_cores": null,
+      "mean_reported_power_w": null,
+      "mean_estimated_j_per_th": null,
+      "power_basis": "TPS546 output power; Proto configured board allowance is 0 W. Not wall power."
+    },
+    "hold_seconds": null,
+    "mean_counter_ghs": null
+  },
+  {
+    "attempt": "attempt-02",
+    "outcome": "thermal_abort_before_work",
+    "first_temperatures": [
+      "100",
+      "28.12",
+      "27.46",
+      "27.13",
+      "27.79"
+    ],
+    "pre_work_temperatures": null,
+    "qualifications_600": [],
+    "post_ramp_thermal_reads": [
+      {
+        "attempt": 1,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 1,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 1,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 1,
+        "asic": 4,
+        "valid": 0
+      },
+      {
+        "attempt": 2,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 2,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 2,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 2,
+        "asic": 4,
+        "valid": 0
+      },
+      {
+        "attempt": 3,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 3,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 3,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 3,
+        "asic": 4,
+        "valid": 0
+      }
+    ],
+    "active_domains": null,
+    "active_cores": null,
+    "sampled_peak_halfstack_mv": 1217,
+    "final_info": {
+      "version": "v2.14.0-53-g591dfde-dirty",
+      "axeOSVersion": "v2.14.0-53-g591dfde-dirty",
+      "boardVersion": "1103",
+      "macAddr": "28:84:85:BA:96:08",
+      "actualFrequency": 600,
+      "hashRate": 0,
+      "asicTemps": [
+        46.593299865722656,
+        45.27375030517578,
+        41.48004150390625,
+        41.6449851989746
+      ],
+      "asicVoltages": [],
+      "domainVoltages": [
+        21,
+        13
+      ],
+      "regulatorVoltage": 34,
+      "miningPaused": false,
+      "uptimeSeconds": 192,
+      "sharesAccepted": 0,
+      "sharesRejected": 0,
+      "power": 0.0051246,
+      "fanspeed": 99,
+      "coreVoltage": 1200,
+      "frequency": 600,
+      "autofanspeed": 1,
+      "manualFanSpeed": 100
+    },
+    "efficiency": {
+      "complete_epochs": 0,
+      "zero_core_union": [],
+      "zero_core_intersection": [],
+      "min_active_cores": null,
+      "max_active_cores": null,
+      "mean_reported_power_w": null,
+      "mean_estimated_j_per_th": null,
+      "power_basis": "TPS546 output power; Proto configured board allowance is 0 W. Not wall power."
+    },
+    "hold_seconds": null,
+    "mean_counter_ghs": null
+  },
+  {
+    "attempt": "attempt-03",
+    "outcome": "thermal_abort_before_work",
+    "first_temperatures": [
+      "100",
+      "26.96",
+      "26.31",
+      "26.31",
+      "26.64"
+    ],
+    "pre_work_temperatures": null,
+    "qualifications_600": [],
+    "post_ramp_thermal_reads": [
+      {
+        "attempt": 1,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 1,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 1,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 1,
+        "asic": 4,
+        "valid": 0
+      },
+      {
+        "attempt": 2,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 2,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 2,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 2,
+        "asic": 4,
+        "valid": 0
+      },
+      {
+        "attempt": 3,
+        "asic": 1,
+        "valid": 1
+      },
+      {
+        "attempt": 3,
+        "asic": 2,
+        "valid": 1
+      },
+      {
+        "attempt": 3,
+        "asic": 3,
+        "valid": 0
+      },
+      {
+        "attempt": 3,
+        "asic": 4,
+        "valid": 0
+      }
+    ],
+    "active_domains": null,
+    "active_cores": null,
+    "sampled_peak_halfstack_mv": 1216,
+    "final_info": {
+      "version": "v2.14.0-53-g591dfde-dirty",
+      "axeOSVersion": "v2.14.0-53-g591dfde-dirty",
+      "boardVersion": "1103",
+      "macAddr": "28:84:85:BA:96:08",
+      "actualFrequency": 600,
+      "hashRate": 0,
+      "asicTemps": [
+        47.91284942626953,
+        46.4283561706543,
+        41.80992889404297,
+        42.13981628417969
+      ],
+      "asicVoltages": [],
+      "domainVoltages": [
+        21,
+        13
+      ],
+      "regulatorVoltage": 34,
+      "miningPaused": false,
+      "uptimeSeconds": 190,
+      "sharesAccepted": 0,
+      "sharesRejected": 0,
+      "power": 0.0051193,
+      "fanspeed": 99,
+      "coreVoltage": 1200,
+      "frequency": 600,
+      "autofanspeed": 1,
+      "manualFanSpeed": 100
+    },
+    "efficiency": {
+      "complete_epochs": 0,
+      "zero_core_union": [],
+      "zero_core_intersection": [],
+      "min_active_cores": null,
+      "max_active_cores": null,
+      "mean_reported_power_w": null,
+      "mean_estimated_j_per_th": null,
+      "power_basis": "TPS546 output power; Proto configured board allowance is 0 W. Not wall power."
+    },
+    "hold_seconds": null,
+    "mean_counter_ghs": null
+  }
+]

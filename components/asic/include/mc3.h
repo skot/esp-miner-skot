@@ -74,6 +74,10 @@ task_result * MC3_process_work(void * GLOBAL_STATE);
 void MC3_read_registers(void * GLOBAL_STATE);
 void MC3_set_nonce_space(double nonce_percent, float frequency, uint16_t asic_count, uint16_t cores);
 uint8_t MC3_read_temperatures(float *temps, size_t max_temps);
+// Bounded failure-path voltage conversion diagnostic; logs all four ASICs.
+void MC3_log_voltage_diagnostic(void);
+// Returns whether setup was attempted; subsequent fresh reads establish recovery.
+bool MC3_reinitialize_pvt_sensors(void);
 uint8_t MC3_read_vdd_voltages(float *voltages_mv, size_t max_voltages);
 uint8_t MC3_read_pvt_voltages(mc3_pvt_voltage_reading_t *readings,
     size_t max_readings);

@@ -1,0 +1,23 @@
+{
+  "boardVersion": "1103",
+  "coreVoltage": 1160,
+  "frequency": 600,
+  "actualFrequency": 600,
+  "regulatorVoltage": 32,
+  "asicTemps": [
+    49.39734649658203,
+    48.0777931213379,
+    49.72723388671875,
+    49.06745910644531
+  ],
+  "asicVoltages": [],
+  "domainVoltages": [
+    21,
+    11
+  ],
+  "hardwareFault": null,
+  "fanspeed": 99,
+  "sharesAccepted": 0,
+  "sharesRejected": 0,
+  "uptimeSeconds": 357
+}

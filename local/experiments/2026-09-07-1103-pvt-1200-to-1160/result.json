@@ -1,0 +1,158 @@
+{
+  "result": "no_pvt_recovery_after_voltage_drop",
+  "from_mv": 1200,
+  "to_mv": 1160,
+  "frequency_mhz": 600,
+  "settle_ms": 1000,
+  "measured_total_after_drop_mv": 2323,
+  "temperatures": [
+    {
+      "setting_mv": 1200,
+      "asic": 1,
+      "valid": true,
+      "temperature_c": 47.91
+    },
+    {
+      "setting_mv": 1200,
+      "asic": 2,
+      "valid": true,
+      "temperature_c": 46.26
+    },
+    {
+      "setting_mv": 1200,
+      "asic": 3,
+      "valid": false,
+      "temperature_c": -1.0
+    },
+    {
+      "setting_mv": 1200,
+      "asic": 4,
+      "valid": false,
+      "temperature_c": -1.0
+    },
+    {
+      "setting_mv": 1160,
+      "asic": 1,
+      "valid": true,
+      "temperature_c": 47.42
+    },
+    {
+      "setting_mv": 1160,
+      "asic": 2,
+      "valid": true,
+      "temperature_c": 45.77
+    },
+    {
+      "setting_mv": 1160,
+      "asic": 3,
+      "valid": false,
+      "temperature_c": -1.0
+    },
+    {
+      "setting_mv": 1160,
+      "asic": 4,
+      "valid": false,
+      "temperature_c": -1.0
+    }
+  ],
+  "voltage_results": [
+    {
+      "setting_mv": 1200,
+      "asic": 1,
+      "done": 1,
+      "status": 0,
+      "raw13": 8558,
+      "raw14": 8563,
+      "completed_conversions": 12,
+      "fresh": true,
+      "decoded_mv": 1184.51,
+      "all_reads_successful": true
+    },
+    {
+      "setting_mv": 1200,
+      "asic": 2,
+      "done": 1,
+      "status": 0,
+      "raw13": 8559,
+      "raw14": 8565,
+      "completed_conversions": 12,
+      "fresh": true,
+      "decoded_mv": 1184.82,
+      "all_reads_successful": true
+    },
+    {
+      "setting_mv": 1200,
+      "asic": 3,
+      "done": 0,
+      "status": 3,
+      "raw13": 0,
+      "raw14": 0,
+      "completed_conversions": 0,
+      "fresh": false,
+      "decoded_mv": -554.97,
+      "all_reads_successful": true
+    },
+    {
+      "setting_mv": 1200,
+      "asic": 4,
+      "done": 0,
+      "status": 3,
+      "raw13": 0,
+      "raw14": 0,
+      "completed_conversions": 0,
+      "fresh": false,
+      "decoded_mv": -554.97,
+      "all_reads_successful": true
+    },
+    {
+      "setting_mv": 1160,
+      "asic": 1,
+      "done": 1,
+      "status": 0,
+      "raw13": 8339,
+      "raw14": 8345,
+      "completed_conversions": 12,
+      "fresh": true,
+      "decoded_mv": 1140.11,
+      "all_reads_successful": true
+    },
+    {
+      "setting_mv": 1160,
+      "asic": 2,
+      "done": 1,
+      "status": 0,
+      "raw13": 8342,
+      "raw14": 8348,
+      "completed_conversions": 12,
+      "fresh": true,
+      "decoded_mv": 1140.72,
+      "all_reads_successful": true
+    },
+    {
+      "setting_mv": 1160,
+      "asic": 3,
+      "done": 0,
+      "status": 3,
+      "raw13": 0,
+      "raw14": 0,
+      "completed_conversions": 0,
+      "fresh": false,
+      "decoded_mv": -554.97,
+      "all_reads_successful": true
+    },
+    {
+      "setting_mv": 1160,
+      "asic": 4,
+      "done": 0,
+      "status": 3,
+      "raw13": 0,
+      "raw14": 0,
+      "completed_conversions": 0,
+      "fresh": false,
+      "decoded_mv": -554.97,
+      "all_reads_successful": true
+    }
+  ],
+  "first_600mhz_work_sent": false,
+  "shutdown_after_test": true
+}

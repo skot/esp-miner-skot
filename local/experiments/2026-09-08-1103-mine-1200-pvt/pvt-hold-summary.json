@@ -1,0 +1,52 @@
+{
+  "samples": 48,
+  "all_samples_at_1200_setting": true,
+  "all_samples_at_600mhz": true,
+  "per_asic": [
+    {
+      "asic": 1,
+      "voltage_samples": 48,
+      "voltage_min_mv": 1189.4886474609375,
+      "voltage_max_mv": 1190.7078857421875,
+      "distinct_voltage_readings": 11,
+      "temperature_samples": 48,
+      "temperature_max_c": 54.34566116333008,
+      "distinct_temperature_readings": 16
+    },
+    {
+      "asic": 2,
+      "voltage_samples": 48,
+      "voltage_min_mv": 1190.0982666015625,
+      "voltage_max_mv": 1191.3173828125,
+      "distinct_voltage_readings": 12,
+      "temperature_samples": 48,
+      "temperature_max_c": 53.02610778808594,
+      "distinct_temperature_readings": 16
+    },
+    {
+      "asic": 3,
+      "voltage_samples": 48,
+      "voltage_min_mv": 1193.146240234375,
+      "voltage_max_mv": 1193.5526123046875,
+      "distinct_voltage_readings": 6,
+      "temperature_samples": 48,
+      "temperature_max_c": 53.35599899291992,
+      "distinct_temperature_readings": 16
+    },
+    {
+      "asic": 4,
+      "voltage_samples": 48,
+      "voltage_min_mv": 1199.546875,
+      "voltage_max_mv": 1200.0550537109375,
+      "distinct_voltage_readings": 7,
+      "temperature_samples": 48,
+      "temperature_max_c": 53.02610778808594,
+      "distinct_temperature_readings": 15
+    }
+  ],
+  "logged_pvt_failures": [],
+  "weak_core_105_nonzero_windows": 1,
+  "complete_windows": 42,
+  "weak_core_105_mean_ghs": 0.0004761904761904762,
+  "weak_core_105_max_ghs": 0.02
+}

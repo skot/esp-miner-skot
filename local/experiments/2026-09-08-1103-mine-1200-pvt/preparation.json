@@ -1,0 +1,8 @@
+{
+  "original_fan": {
+    "autofanspeed": 1,
+    "manualFanSpeed": 100
+  },
+  "cooling_started_unix": 1788884621.70777,
+  "mc3_sha256": "4f79a2981d4d47a903486c8636a90d97ca0a261729d2dd1793a9539e4ec68c2c"
+}

@@ -1,0 +1,37 @@
+{
+  "coreVoltage": 1200,
+  "frequency": 600,
+  "actualFrequency": 600,
+  "regulatorVoltage": 2401,
+  "asicTemps": [
+    53.35599899291992,
+    51.87150192260742,
+    52.3663330078125,
+    52.03644561767578
+  ],
+  "asicVoltages": [
+    1189.3870849609375,
+    1189.79345703125,
+    1193.857421875,
+    1200.3597412109375
+  ],
+  "domainVoltages": [
+    1196,
+    1205
+  ],
+  "hashRate": 2963.5400391,
+  "power": 49.9381714,
+  "fanspeed": 99,
+  "sharesAccepted": 41,
+  "sharesRejected": 1,
+  "uptimeSeconds": 565,
+  "diagnostics": {
+    "supported": 1,
+    "mining": 1,
+    "source": "mining",
+    "startupResult": "passed",
+    "status": "Ready for pool work",
+    "epoch": 109,
+    "leadingZeros": 24
+  }
+}

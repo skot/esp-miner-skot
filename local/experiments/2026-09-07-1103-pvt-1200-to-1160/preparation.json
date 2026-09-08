@@ -1,0 +1,19 @@
+{
+  "original_fan": {
+    "autofanspeed": 1,
+    "manualFanSpeed": 100
+  },
+  "before": {
+    "coreVoltage": 1200,
+    "actualFrequency": 600,
+    "hashRate": 0,
+    "regulatorVoltage": 32,
+    "uptimeSeconds": 4129,
+    "sharesAccepted": 0,
+    "sharesRejected": 0
+  },
+  "mc3_sha256": "210396032b6ff488bfd3301aaf541f7c68e71a673f9807668ef526ef1bba61fe",
+  "cooling_started_unix": 1788839504.882544,
+  "off_regulator_mv": 32,
+  "fan_percent": 100
+}

@@ -1,0 +1,83 @@
+{
+  "mean_counter_ghs": null,
+  "min_counter_ghs": null,
+  "max_counter_ghs": null,
+  "qualifications": [
+    {
+      "MHz": 100,
+      "ghs": 493.46,
+      "result": "PASS"
+    },
+    {
+      "MHz": 125,
+      "ghs": 617.53,
+      "result": "PASS"
+    },
+    {
+      "MHz": 150,
+      "ghs": 742.85,
+      "result": "PASS"
+    },
+    {
+      "MHz": 175,
+      "ghs": 866.27,
+      "result": "PASS"
+    },
+    {
+      "MHz": 200,
+      "ghs": 990.28,
+      "result": "PASS"
+    },
+    {
+      "MHz": 225,
+      "ghs": 1114.23,
+      "result": "PASS"
+    },
+    {
+      "MHz": 250,
+      "ghs": 1236.52,
+      "result": "PASS"
+    },
+    {
+      "MHz": 275,
+      "ghs": 1360.09,
+      "result": "PASS"
+    },
+    {
+      "MHz": 300,
+      "ghs": 1482.88,
+      "result": "PASS"
+    },
+    {
+      "MHz": 300,
+      "ghs": 1484.98,
+      "result": "PASS"
+    },
+    {
+      "MHz": 600,
+      "ghs": 2595.75,
+      "result": "FAIL"
+    }
+  ],
+  "first_temperatures": [
+    "100",
+    "27.62",
+    "26.96",
+    "26.80",
+    "27.29"
+  ],
+  "first_600_temperatures": [
+    "600",
+    "47.58",
+    "45.77",
+    "47.09",
+    "47.09"
+  ],
+  "complete_mining_epochs": 0,
+  "zero_domains_observed": 0,
+  "min_domain_percent": null,
+  "sampled_max_halfstack_mv": 1207,
+  "sampled_halfstack_readings_above_1200mv": 2,
+  "pool_peak_temperature": null,
+  "last_domain_window": null
+}

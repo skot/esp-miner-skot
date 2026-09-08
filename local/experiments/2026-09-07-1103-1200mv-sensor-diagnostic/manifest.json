@@ -1,0 +1,15 @@
+{
+  "voltage_failure_diagnostic_budget_ms": 2500,
+  "warmup_coldest_c": 40,
+  "first_work_minimum_c": 40,
+  "high_frequency_step_ms": 2000,
+  "core_voltage_mv": 1200,
+  "mc3_sha256": "210396032b6ff488bfd3301aaf541f7c68e71a673f9807668ef526ef1bba61fe",
+  "version": "v2.14.0-53-g591dfde-dirty",
+  "files": {
+    "esp-miner.bin": {
+      "bytes": 1786528,
+      "sha256": "1e1109960c93e51c948ec9d231f814b0359cbe3b4fde0addeab12cc56621af64"
+    }
+  }
+}

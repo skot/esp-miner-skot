@@ -1,0 +1,14 @@
+{
+  "warmup_coldest_c": 40,
+  "first_work_minimum_c": 40,
+  "high_frequency_step_ms": 1500,
+  "core_voltage_mv": 1180,
+  "mc3_sha256": "5d28fd6c66a53131603ca4e786205a2f94888c0aa937c50d376a457e02d2784d",
+  "version": "v2.14.0-53-g591dfde-dirty",
+  "files": {
+    "esp-miner.bin": {
+      "bytes": 1784384,
+      "sha256": "945717ed7dfe264e6dc814d009b3d01dab1b774a589b5245bd18811ee646890a"
+    }
+  }
+}

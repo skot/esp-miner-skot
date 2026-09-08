@@ -1,0 +1,1478 @@
+{
+  "components": {
+    "A1": {
+      "value": "ProtoMC3",
+      "sheet": "/ASIC/"
+    },
+    "A2": {
+      "value": "ProtoMC3",
+      "sheet": "/ASIC/"
+    },
+    "A3": {
+      "value": "ProtoMC3",
+      "sheet": "/ASIC/"
+    },
+    "A4": {
+      "value": "ProtoMC3",
+      "sheet": "/ASIC/"
+    },
+    "C49": {
+      "value": "1uF",
+      "sheet": "/ASIC/"
+    },
+    "C55": {
+      "value": "1uF",
+      "sheet": "/ASIC/"
+    },
+    "C90": {
+      "value": "0.1uF",
+      "sheet": "/ASIC/"
+    },
+    "C92": {
+      "value": "4.7uF",
+      "sheet": "/ASIC/"
+    },
+    "C130": {
+      "value": "0.1uF",
+      "sheet": "/ASIC/"
+    },
+    "C131": {
+      "value": "4.7uF",
+      "sheet": "/ASIC/"
+    },
+    "TP3": {
+      "value": "GND0",
+      "sheet": "/ASIC/"
+    },
+    "TP4": {
+      "value": "1V2-0",
+      "sheet": "/ASIC/"
+    },
+    "TP12": {
+      "value": "1V2",
+      "sheet": "/ASIC/"
+    },
+    "TP17": {
+      "value": "GND",
+      "sheet": "/ASIC/"
+    },
+    "U6": {
+      "value": "TLV77312PDBVR",
+      "sheet": "/ASIC/"
+    },
+    "U7": {
+      "value": "LW8108A23E",
+      "sheet": "/ASIC/"
+    },
+    "U8": {
+      "value": "25MHz",
+      "sheet": "/ASIC/"
+    },
+    "U10": {
+      "value": "LW8108A23E",
+      "sheet": "/ASIC/"
+    },
+    "U11": {
+      "value": "TLV77312PDBVR",
+      "sheet": "/ASIC/"
+    },
+    "U15": {
+      "value": "25MHz",
+      "sheet": "/ASIC/"
+    },
+    "C206": {
+      "value": "0.1uF",
+      "sheet": "/ASIC/Level Shifter/"
+    },
+    "C207": {
+      "value": "1uF",
+      "sheet": "/ASIC/Level Shifter/"
+    },
+    "U19": {
+      "value": "OPA2365AIDR",
+      "sheet": "/ASIC/Level Shifter/"
+    }
+  },
+  "nets": [
+    {
+      "net": "/ASIC/0V75",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "22",
+          "pinfunction": "VDDH_22",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A1",
+          "pin": "5",
+          "pinfunction": "VDDH_5",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "22",
+          "pinfunction": "VDDH_22",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "5",
+          "pinfunction": "VDDH_5",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "U10",
+          "pin": "5",
+          "pinfunction": "OUT_5",
+          "pintype": "power_out"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/0V75-0",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "22",
+          "pinfunction": "VDDH_22",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A3",
+          "pin": "5",
+          "pinfunction": "VDDH_5",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "22",
+          "pinfunction": "VDDH_22",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "5",
+          "pinfunction": "VDDH_5",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "U7",
+          "pin": "5",
+          "pinfunction": "OUT_5",
+          "pintype": "power_out"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/1V2",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "21",
+          "pinfunction": "VDDIO12_21",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A1",
+          "pin": "6",
+          "pinfunction": "VDDIO12_6",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "21",
+          "pinfunction": "VDDIO12_21",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "6",
+          "pinfunction": "VDDIO12_6",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "TP12",
+          "pin": "1",
+          "pinfunction": "1_1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "U11",
+          "pin": "5",
+          "pinfunction": "OUT_5",
+          "pintype": "power_out"
+        },
+        {
+          "ref": "U8",
+          "pin": "1",
+          "pinfunction": "EN_1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "U8",
+          "pin": "4",
+          "pinfunction": "VIN_4",
+          "pintype": "power_in"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/1V2-0",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "21",
+          "pinfunction": "VDDIO12_21",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A3",
+          "pin": "6",
+          "pinfunction": "VDDIO12_6",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A3",
+          "pin": "8",
+          "pinfunction": "SEL1_8",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "21",
+          "pinfunction": "VDDIO12_21",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "6",
+          "pinfunction": "VDDIO12_6",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "8",
+          "pinfunction": "SEL1_8",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "C130",
+          "pin": "2",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C131",
+          "pin": "2",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C206",
+          "pin": "2",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C207",
+          "pin": "2",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C55",
+          "pin": "2",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C90",
+          "pin": "2",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C92",
+          "pin": "2",
+          "pintype": "passive"
+        },
+        {
+          "ref": "TP4",
+          "pin": "1",
+          "pinfunction": "1_1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "U15",
+          "pin": "1",
+          "pinfunction": "EN_1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "U15",
+          "pin": "4",
+          "pinfunction": "VIN_4",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U19",
+          "pin": "8",
+          "pinfunction": "V+_8",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U6",
+          "pin": "5",
+          "pinfunction": "OUT_5",
+          "pintype": "power_out"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/5V_SWITCH",
+      "nodes": [
+        {
+          "ref": "C49",
+          "pin": "2",
+          "pintype": "passive"
+        },
+        {
+          "ref": "U10",
+          "pin": "1",
+          "pinfunction": "IN_1",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U10",
+          "pin": "3",
+          "pinfunction": "EN_3",
+          "pintype": "input"
+        },
+        {
+          "ref": "U11",
+          "pin": "1",
+          "pinfunction": "IN_1",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U11",
+          "pin": "3",
+          "pinfunction": "EN_3",
+          "pintype": "input"
+        },
+        {
+          "ref": "U6",
+          "pin": "1",
+          "pinfunction": "IN_1",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U6",
+          "pin": "3",
+          "pinfunction": "EN_3",
+          "pintype": "input"
+        },
+        {
+          "ref": "U7",
+          "pin": "1",
+          "pinfunction": "IN_1",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U7",
+          "pin": "3",
+          "pinfunction": "EN_3",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/CLKI",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "26",
+          "pinfunction": "CLKI_26",
+          "pintype": "input"
+        },
+        {
+          "ref": "U8",
+          "pin": "3",
+          "pinfunction": "OUT_3",
+          "pintype": "output"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/CLKI-0",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "1",
+          "pinfunction": "CLKI_1",
+          "pintype": "input"
+        },
+        {
+          "ref": "U15",
+          "pin": "3",
+          "pinfunction": "OUT_3",
+          "pintype": "output"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/GND0",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "28",
+          "pinfunction": "VDD_28",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "A2",
+          "pin": "28",
+          "pinfunction": "VDD_28",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "A3",
+          "pin": "10",
+          "pinfunction": "SEL0_10",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A3",
+          "pin": "17",
+          "pinfunction": "VSS_17",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A3",
+          "pin": "23",
+          "pinfunction": "VSS_23",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A3",
+          "pin": "27",
+          "pinfunction": "VSS_27",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "A3",
+          "pin": "9",
+          "pinfunction": "VSS_9",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "10",
+          "pinfunction": "SEL0_10",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "17",
+          "pinfunction": "VSS_17",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "23",
+          "pinfunction": "VSS_23",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "27",
+          "pinfunction": "VSS_27",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "A4",
+          "pin": "9",
+          "pinfunction": "VSS_9",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "C130",
+          "pin": "1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C131",
+          "pin": "1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C49",
+          "pin": "1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C55",
+          "pin": "1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C90",
+          "pin": "1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C92",
+          "pin": "1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "TP3",
+          "pin": "1",
+          "pinfunction": "1_1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "U15",
+          "pin": "2",
+          "pinfunction": "GND_2",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U6",
+          "pin": "2",
+          "pinfunction": "GND_2",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U7",
+          "pin": "2",
+          "pinfunction": "GND_2",
+          "pintype": "power_in"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/Level Shifter/RST_IN",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "7",
+          "pinfunction": "nRST_7",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/Level Shifter/RST_OUT",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "7",
+          "pinfunction": "nRST_7",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "U19",
+          "pin": "7",
+          "pintype": "output"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/Level Shifter/TX_IN",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "3",
+          "pinfunction": "UTXP_3",
+          "pintype": "output"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/Level Shifter/TX_OUT",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "3",
+          "pinfunction": "URXP_3",
+          "pintype": "input"
+        },
+        {
+          "ref": "U19",
+          "pin": "1",
+          "pintype": "output"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/RST_1V2",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "19",
+          "pinfunction": "nRST_19",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/RX_1V2",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "24",
+          "pinfunction": "URXP_24",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "/ASIC/TX_2V4",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "24",
+          "pinfunction": "UTXP_24",
+          "pintype": "output"
+        }
+      ]
+    },
+    {
+      "net": "/VDD",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "28",
+          "pinfunction": "VDD_28",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "A4",
+          "pin": "28",
+          "pinfunction": "VDD_28",
+          "pintype": "power_in"
+        }
+      ]
+    },
+    {
+      "net": "GND",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "10",
+          "pinfunction": "SEL0_10",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A1",
+          "pin": "17",
+          "pinfunction": "VSS_17",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A1",
+          "pin": "23",
+          "pinfunction": "VSS_23",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A1",
+          "pin": "27",
+          "pinfunction": "VSS_27",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "A1",
+          "pin": "8",
+          "pinfunction": "SEL1_8",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A1",
+          "pin": "9",
+          "pinfunction": "VSS_9",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "10",
+          "pinfunction": "SEL0_10",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "17",
+          "pinfunction": "VSS_17",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "23",
+          "pinfunction": "VSS_23",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "27",
+          "pinfunction": "VSS_27",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "A2",
+          "pin": "8",
+          "pinfunction": "SEL1_8",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "9",
+          "pinfunction": "VSS_9",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "C206",
+          "pin": "1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "C207",
+          "pin": "1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "TP17",
+          "pin": "1",
+          "pinfunction": "1_1",
+          "pintype": "passive"
+        },
+        {
+          "ref": "U10",
+          "pin": "2",
+          "pinfunction": "GND_2",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U11",
+          "pin": "2",
+          "pinfunction": "GND_2",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U19",
+          "pin": "4",
+          "pinfunction": "V-_4",
+          "pintype": "power_in"
+        },
+        {
+          "ref": "U8",
+          "pin": "2",
+          "pinfunction": "GND_2",
+          "pintype": "power_in"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-CLKO)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "1",
+          "pinfunction": "CLKO_1",
+          "pintype": "output"
+        },
+        {
+          "ref": "A2",
+          "pin": "26",
+          "pinfunction": "CLKI_26",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-UTXP)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "3",
+          "pinfunction": "UTXP_3",
+          "pintype": "output"
+        },
+        {
+          "ref": "A2",
+          "pin": "24",
+          "pinfunction": "URXP_24",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-VDDI1_0)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "11",
+          "pinfunction": "VDDI1_0_11",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-VDDI1_1)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "16",
+          "pinfunction": "VDDI1_1_16",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-VDDI2_0)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "12",
+          "pinfunction": "VDDI2_0_12",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-VDDI2_1)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "15",
+          "pinfunction": "VDDI2_1_15",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-VDDI3_0)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "13",
+          "pinfunction": "VDDI3_0_13",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-VDDI3_1)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "14",
+          "pinfunction": "VDDI3_1_14",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A1-nRST-Pad7)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "7",
+          "pinfunction": "nRST_7",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A2",
+          "pin": "19",
+          "pinfunction": "nRST_19",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A2-VDDI1_0)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "11",
+          "pinfunction": "VDDI1_0_11",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A2-VDDI1_1)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "16",
+          "pinfunction": "VDDI1_1_16",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A2-VDDI2_0)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "12",
+          "pinfunction": "VDDI2_0_12",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A2-VDDI2_1)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "15",
+          "pinfunction": "VDDI2_1_15",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A2-VDDI3_0)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "13",
+          "pinfunction": "VDDI3_0_13",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A2-VDDI3_1)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "14",
+          "pinfunction": "VDDI3_1_14",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-CLKO)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "26",
+          "pinfunction": "CLKO_26",
+          "pintype": "output"
+        },
+        {
+          "ref": "A4",
+          "pin": "1",
+          "pinfunction": "CLKI_1",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-UTXP)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "24",
+          "pinfunction": "UTXP_24",
+          "pintype": "output"
+        },
+        {
+          "ref": "A4",
+          "pin": "3",
+          "pinfunction": "URXP_3",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-VDDI1_0)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "11",
+          "pinfunction": "VDDI1_0_11",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-VDDI1_1)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "16",
+          "pinfunction": "VDDI1_1_16",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-VDDI2_0)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "12",
+          "pinfunction": "VDDI2_0_12",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-VDDI2_1)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "15",
+          "pinfunction": "VDDI2_1_15",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-VDDI3_0)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "13",
+          "pinfunction": "VDDI3_0_13",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-VDDI3_1)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "14",
+          "pinfunction": "VDDI3_1_14",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A3-nRST-Pad19)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "19",
+          "pinfunction": "nRST_19",
+          "pintype": "unspecified"
+        },
+        {
+          "ref": "A4",
+          "pin": "7",
+          "pinfunction": "nRST_7",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A4-VDDI1_0)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "11",
+          "pinfunction": "VDDI1_0_11",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A4-VDDI1_1)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "16",
+          "pinfunction": "VDDI1_1_16",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A4-VDDI2_0)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "12",
+          "pinfunction": "VDDI2_0_12",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A4-VDDI2_1)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "15",
+          "pinfunction": "VDDI2_1_15",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A4-VDDI3_0)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "13",
+          "pinfunction": "VDDI3_0_13",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(A4-VDDI3_1)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "14",
+          "pinfunction": "VDDI3_1_14",
+          "pintype": "unspecified"
+        }
+      ]
+    },
+    {
+      "net": "Net-(U19A-+)",
+      "nodes": [
+        {
+          "ref": "U19",
+          "pin": "3",
+          "pinfunction": "+_3",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "Net-(U19A--)",
+      "nodes": [
+        {
+          "ref": "U19",
+          "pin": "2",
+          "pinfunction": "-_2",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "Net-(U19B-+)",
+      "nodes": [
+        {
+          "ref": "U19",
+          "pin": "5",
+          "pinfunction": "+_5",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "Net-(U19B--)",
+      "nodes": [
+        {
+          "ref": "U19",
+          "pin": "6",
+          "pinfunction": "-_6",
+          "pintype": "input"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A1-ATEST-Pad4)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "4",
+          "pinfunction": "ATEST_4",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A1-TO-Pad20)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "20",
+          "pinfunction": "TO_20",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A1-URXN-Pad25)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "25",
+          "pinfunction": "URXN_25",
+          "pintype": "input+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A1-UTXN-Pad2)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "2",
+          "pinfunction": "UTXN_2",
+          "pintype": "output+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A1-VEFS-Pad18)",
+      "nodes": [
+        {
+          "ref": "A1",
+          "pin": "18",
+          "pinfunction": "VEFS_18",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A2-ATEST-Pad4)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "4",
+          "pinfunction": "ATEST_4",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A2-CLKO-Pad1)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "1",
+          "pinfunction": "CLKO_1",
+          "pintype": "output+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A2-TO-Pad20)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "20",
+          "pinfunction": "TO_20",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A2-URXN-Pad25)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "25",
+          "pinfunction": "URXN_25",
+          "pintype": "input+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A2-UTXN-Pad2)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "2",
+          "pinfunction": "UTXN_2",
+          "pintype": "output+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A2-VEFS-Pad18)",
+      "nodes": [
+        {
+          "ref": "A2",
+          "pin": "18",
+          "pinfunction": "VEFS_18",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A3-ATEST-Pad4)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "4",
+          "pinfunction": "ATEST_4",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A3-TO-Pad20)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "20",
+          "pinfunction": "TO_20",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A3-URXN-Pad2)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "2",
+          "pinfunction": "URXN_2",
+          "pintype": "input+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A3-UTXN-Pad25)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "25",
+          "pinfunction": "UTXN_25",
+          "pintype": "output+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A3-VEFS-Pad18)",
+      "nodes": [
+        {
+          "ref": "A3",
+          "pin": "18",
+          "pinfunction": "VEFS_18",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A4-ATEST-Pad4)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "4",
+          "pinfunction": "ATEST_4",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A4-CLKO-Pad26)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "26",
+          "pinfunction": "CLKO_26",
+          "pintype": "output+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A4-TO-Pad20)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "20",
+          "pinfunction": "TO_20",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A4-URXN-Pad2)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "2",
+          "pinfunction": "URXN_2",
+          "pintype": "input+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A4-UTXN-Pad25)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "25",
+          "pinfunction": "UTXN_25",
+          "pintype": "output+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A4-VEFS-Pad18)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "18",
+          "pinfunction": "VEFS_18",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(A4-nRST-Pad19)",
+      "nodes": [
+        {
+          "ref": "A4",
+          "pin": "19",
+          "pinfunction": "nRST_19",
+          "pintype": "unspecified+no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(U6-NC-Pad4)",
+      "nodes": [
+        {
+          "ref": "U6",
+          "pin": "4",
+          "pinfunction": "NC_4",
+          "pintype": "no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(U7-NC-Pad4)",
+      "nodes": [
+        {
+          "ref": "U7",
+          "pin": "4",
+          "pinfunction": "NC_4",
+          "pintype": "no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(U10-NC-Pad4)",
+      "nodes": [
+        {
+          "ref": "U10",
+          "pin": "4",
+          "pinfunction": "NC_4",
+          "pintype": "no_connect"
+        }
+      ]
+    },
+    {
+      "net": "unconnected-(U11-NC-Pad4)",
+      "nodes": [
+        {
+          "ref": "U11",
+          "pin": "4",
+          "pinfunction": "NC_4",
+          "pintype": "no_connect"
+        }
+      ]
+    }
+  ]
+}

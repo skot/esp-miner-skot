@@ -1,0 +1,19 @@
+{
+  "epochs": 42,
+  "zero_core_union": [
+    [
+      1,
+      2,
+      105
+    ]
+  ],
+  "zero_core_intersection": [
+    [
+      1,
+      2,
+      105
+    ]
+  ],
+  "min_active_cores": 623,
+  "max_active_cores": 623
+}

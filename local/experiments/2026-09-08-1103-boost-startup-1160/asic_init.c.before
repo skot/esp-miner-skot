@@ -1,0 +1,713 @@
+#include "mc3_diagnostics.h"
+#include "asic_init.h"
+#include <inttypes.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdatomic.h>
+#include "esp_check.h"
+#include "esp_attr.h"
+#include "esp_system.h"
+#include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/semphr.h"
+#include "asic.h"
+#include "asic_common.h"
+#include "mc3.h"
+#include "serial.h"
+#include "asic_reset.h"
+#include "device_config.h"
+#include "nvs_config.h"
+#include "vcore.h"
+#include "adc.h"
+#include "driver/gpio.h"
+#include "fan_controller_task.h"
+
+#define GPIO_PROTO_VDDIO_5V_EN GPIO_NUM_21
+#define PROTO_VDDIO_STABILIZATION_MS 100
+#define PROTO_VCORE_STABILIZATION_MS 100
+#define PROTO_VCORE_STARTUP_MV 800
+#define PROTO_VCORE_INIT_FALLBACK_MAX_MV 960
+#define PROTO_VCORE_INIT_FALLBACK_STEP_MV 50
+#define PROTO_VCORE_RAMP_STEP_MV 10
+#define PROTO_VCORE_RAMP_SETTLE_MS 100
+#define PROTO_MAX_VDD_READINGS 8
+#define PROTO_MIN_PASS_RATE_PERCENT 97.0f
+#define PROTO_MIN_CHIP_THROUGHPUT_PERCENT 97.5f
+#define PROTO_INTERNAL_DOMAIN_COLLAPSE_PERCENT 90.0f
+
+static const char *TAG = "asic_init";
+
+static esp_err_t set_proto_vddio_5v(const GlobalState *GLOBAL_STATE, bool enabled)
+{
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id != PROTO) {
+        return ESP_OK;
+    }
+
+    gpio_config_t vddio_5v_conf = {
+        .pin_bit_mask = (1ULL << GPIO_PROTO_VDDIO_5V_EN),
+        .mode = GPIO_MODE_OUTPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
+
+    ESP_RETURN_ON_ERROR(gpio_config(&vddio_5v_conf), TAG, "Failed to configure Proto VDDIO 5V enable GPIO");
+    ESP_RETURN_ON_ERROR(gpio_set_level(GPIO_PROTO_VDDIO_5V_EN, enabled ? 1 : 0), TAG,
+        "Failed to set Proto VDDIO 5V enable GPIO");
+    ESP_LOGI(TAG, "Proto VDDIO 5V %s on GPIO%d", enabled ? "enabled" : "disabled", GPIO_PROTO_VDDIO_5V_EN);
+
+    return ESP_OK;
+}
+
+esp_err_t asic_prepare_power(const GlobalState *GLOBAL_STATE)
+{
+    ESP_RETURN_ON_ERROR(asic_hold_reset_low(), TAG, "Failed to hold ASIC reset low");
+    ESP_RETURN_ON_ERROR(VCORE_prepare_asic_enable(GLOBAL_STATE), TAG,
+        "Failed to disable Proto Vcore enable");
+    ESP_RETURN_ON_ERROR(set_proto_vddio_5v(GLOBAL_STATE, false), TAG, "Failed to disable Proto VDDIO 5V");
+    return ESP_OK;
+}
+
+static uint16_t get_proto_target_core_voltage_mv(const GlobalState *GLOBAL_STATE)
+{
+    return GLOBAL_STATE->SELF_TEST_MODULE.is_active
+        ? GLOBAL_STATE->DEVICE_CONFIG.family.asic.default_voltage_mv
+        : nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE);
+}
+
+static esp_err_t set_proto_core_voltage(GlobalState *GLOBAL_STATE, uint16_t core_voltage_mv)
+{
+    ESP_RETURN_ON_ERROR(VCORE_set_voltage(GLOBAL_STATE, (float)core_voltage_mv / 1000.0f), TAG,
+        "Failed to set Proto Vcore");
+    return ESP_OK;
+}
+
+static esp_err_t enable_proto_power(GlobalState *GLOBAL_STATE, uint16_t startup_core_voltage_mv)
+{
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id != PROTO) {
+        return ESP_OK;
+    }
+
+    // MC3's stacked VDD domains must be established before the 1.2 V/0.8 V
+    // auxiliary rails (and the oscillators they power) are enabled.
+    ESP_LOGI(TAG, "Starting Proto Vcore at %u mV/domain", startup_core_voltage_mv);
+    ESP_RETURN_ON_ERROR(set_proto_core_voltage(GLOBAL_STATE, startup_core_voltage_mv), TAG,
+        "Failed to enable Proto startup Vcore");
+    ESP_LOGI(TAG, "Waiting %u ms for Proto Vcore to stabilize", PROTO_VCORE_STABILIZATION_MS);
+    vTaskDelay(pdMS_TO_TICKS(PROTO_VCORE_STABILIZATION_MS));
+
+    ESP_RETURN_ON_ERROR(set_proto_vddio_5v(GLOBAL_STATE, true), TAG, "Failed to enable Proto VDDIO 5V");
+    ESP_LOGI(TAG, "Waiting %u ms for Proto VDDIO/clock rails to stabilize", PROTO_VDDIO_STABILIZATION_MS);
+    vTaskDelay(pdMS_TO_TICKS(PROTO_VDDIO_STABILIZATION_MS));
+
+    return ESP_OK;
+}
+
+static void log_proto_vdd_measurements(GlobalState *GLOBAL_STATE,
+                                       uint16_t commanded_core_voltage_mv)
+{
+    float voltages_mv[PROTO_MAX_VDD_READINGS] = {0};
+    uint8_t count = MC3_read_vdd_voltages(voltages_mv, PROTO_MAX_VDD_READINGS);
+
+    if (count == 0) {
+        ESP_LOGW(TAG, "Vcore ramp command=%u mV/domain; MC3 VDD measurement unavailable",
+            commanded_core_voltage_mv);
+    } else {
+        char readings[128] = {0};
+        size_t used = 0;
+        for (uint8_t chip_id = 0; chip_id < count && used < sizeof(readings); chip_id++) {
+            int written = snprintf(readings + used, sizeof(readings) - used,
+                "%s%u:%.1f", chip_id == 0 ? "" : " ", chip_id, voltages_mv[chip_id]);
+            if (written < 0 || (size_t)written >= sizeof(readings) - used) {
+                break;
+            }
+            used += written;
+        }
+
+        ESP_LOGI(TAG, "Vcore ramp command=%u mV/domain; MC3 VDD mV [%s]",
+            commanded_core_voltage_mv, readings);
+    }
+
+    int16_t regulator_voltage_mv = VCORE_get_regulator_voltage_mv(GLOBAL_STATE);
+    uint16_t lower_domain_mv = 0;
+    uint16_t upper_domain_mv = 0;
+    if (GLOBAL_STATE->DEVICE_CONFIG.domain_voltage_sense && regulator_voltage_mv > 0 &&
+        VCORE_get_domain_voltages_mv(GLOBAL_STATE, (uint16_t)regulator_voltage_mv,
+            &lower_domain_mv, &upper_domain_mv) == ESP_OK) {
+        ESP_LOGI(TAG,
+            "Vcore ramp command=%u mV/domain; PCB domains lower=%u upper=%u delta=%+d mV total=%d mV",
+            commanded_core_voltage_mv,
+            lower_domain_mv,
+            upper_domain_mv,
+            (int)upper_domain_mv - (int)lower_domain_mv,
+            regulator_voltage_mv);
+    }
+}
+
+static esp_err_t ramp_proto_core_voltage(GlobalState *GLOBAL_STATE,
+                                         uint16_t initial_core_voltage_mv,
+                                         uint16_t target_core_voltage_mv)
+{
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id != PROTO ||
+        initial_core_voltage_mv >= target_core_voltage_mv) {
+        return ESP_OK;
+    }
+
+    ESP_LOGI(TAG, "Ramping Proto Vcore from %u to %u mV/domain at 100 MHz",
+        initial_core_voltage_mv, target_core_voltage_mv);
+
+    uint16_t core_voltage_mv = initial_core_voltage_mv;
+    while (core_voltage_mv < target_core_voltage_mv) {
+        uint16_t remaining_mv = target_core_voltage_mv - core_voltage_mv;
+        core_voltage_mv += remaining_mv < PROTO_VCORE_RAMP_STEP_MV
+            ? remaining_mv
+            : PROTO_VCORE_RAMP_STEP_MV;
+
+        ESP_RETURN_ON_ERROR(set_proto_core_voltage(GLOBAL_STATE, core_voltage_mv), TAG,
+            "Failed during Proto Vcore ramp");
+        vTaskDelay(pdMS_TO_TICKS(PROTO_VCORE_RAMP_SETTLE_MS));
+        log_proto_vdd_measurements(GLOBAL_STATE, core_voltage_mv);
+    }
+
+    ESP_LOGI(TAG, "Proto Vcore ramp reached %u mV/domain", target_core_voltage_mv);
+    return ESP_OK;
+}
+
+static void proto_warm_fan(float hottest, int64_t elapsed_us)
+{
+    int fan = hottest < 50 ? (elapsed_us > 60000000 ? 10 : 20) :
+        hottest < 54 ? 15 : hottest < 56 ? 20 : hottest < 58 ? 30 : hottest < 60 ? 50 : 100;
+    FAN_CONTROLLER_set_startup_percent(fan);
+}
+
+// Production startup for the two supported stacked MC3 boards. Pool producers
+// remain blocked by ASIC_initalized until this entire sequence returns true.
+typedef struct {
+    GlobalState *global;
+    atomic_bool stop;
+    atomic_bool tripped;
+    atomic_bool cycling;
+    SemaphoreHandle_t stopped;
+} proto_startup_guard_t;
+
+static bool proto_startup_cancelled(const proto_startup_guard_t *guard)
+{
+    return atomic_load(&guard->tripped) || guard->global->SYSTEM_MODULE.hardware_fault ||
+        guard->global->SYSTEM_MODULE.mining_paused;
+}
+
+static void proto_startup_guard_task(void *arg)
+{
+    proto_startup_guard_t *guard = arg;
+    while (!atomic_load(&guard->stop)) {
+        int16_t total = VCORE_get_regulator_voltage_mv_fresh(guard->global);
+        bool valid = total >= 0;
+        bool cycling = atomic_load(&guard->cycling);
+        if (guard->global->DEVICE_CONFIG.domain_voltage_sense) {
+            if (cycling) {
+                uint16_t raw;
+                valid = valid && ADC_get_domain_midpoint_mv(&raw) == ESP_OK;
+            } else {
+                uint16_t lower, upper;
+                valid = valid && total > 0 && VCORE_get_domain_voltages_mv(
+                    guard->global, total, &lower, &upper) == ESP_OK;
+            }
+        } else {
+            valid = valid && (cycling || total > 0);
+        }
+        if (atomic_load(&guard->stop)) break;
+        if (!valid || proto_startup_cancelled(guard)) {
+            atomic_store(&guard->tripped, true);
+            asic_prepare_power(guard->global);
+            VCORE_set_voltage(guard->global, 0);
+            ESP_LOGE(TAG, "PROTO STARTUP STOP rail_valid=%u total=%d cycle=%u", valid, total, cycling);
+            break;
+        }
+        vTaskDelay(pdMS_TO_TICKS(25));
+    }
+    xSemaphoreGive(guard->stopped);
+    vTaskDelete(NULL);
+}
+
+static bool proto_startup_wait(proto_startup_guard_t *guard, uint32_t ms)
+{
+    int64_t deadline = esp_timer_get_time() + (int64_t)ms * 1000;
+    do {
+        if (proto_startup_cancelled(guard)) return false;
+        vTaskDelay(pdMS_TO_TICKS(10));
+    } while (esp_timer_get_time() < deadline);
+    return !proto_startup_cancelled(guard);
+}
+
+// Temporary paired PVT experiment at fixed 600 MHz; never launches work.
+static bool proto_pvt_log_temperatures(proto_startup_guard_t *guard, const char *phase)
+{
+    float temperatures[4] = {0};
+    if (proto_startup_cancelled(guard) || MC3_read_temperatures(temperatures, 4) != 4) return false;
+    bool hot = false;
+    for (unsigned chip = 0; chip < 4; chip++) {
+        float t = temperatures[chip];
+        bool valid = isfinite(t) && t > 0;
+        hot |= valid && t >= 70;
+        ESP_LOGI(TAG, "PVT_DROP TEMP phase=%s A%u valid=%u temperature=%.2f", phase, chip + 1, valid, t);
+    }
+    return !hot && !proto_startup_cancelled(guard);
+}
+
+static void proto_startup_pvt_voltage_drop_test(proto_startup_guard_t *guard)
+{
+    ESP_LOGI(TAG, "PVT_DROP BEGIN frequency=600 from_mv=1200 to_mv=1160; no work; compare before/after PVT-only reinitialization");
+    if (!proto_pvt_log_temperatures(guard, "1200")) return;
+    ESP_LOGI(TAG, "PVT_DROP VOLTAGE phase=1200");
+    MC3_log_voltage_diagnostic();
+    if (proto_startup_cancelled(guard) || set_proto_core_voltage(guard->global, 1160) != ESP_OK) return;
+    ESP_LOGI(TAG, "PVT_DROP SET voltage_mv=1160 frequency=600 settle_ms=1000");
+    if (!proto_startup_wait(guard, 1000)) return;
+    int16_t total_mv = VCORE_get_regulator_voltage_mv_fresh(guard->global);
+    ESP_LOGI(TAG, "PVT_DROP RAIL requested_half_mv=1160 measured_total_mv=%d", total_mv);
+    // Confirm the requested decrease happened before attributing sensor results to it.
+    if (total_mv < 2270 || total_mv > 2370 || proto_startup_cancelled(guard)) return;
+    if (!proto_pvt_log_temperatures(guard, "1160")) return;
+    ESP_LOGI(TAG, "PVT_DROP VOLTAGE phase=1160");
+    MC3_log_voltage_diagnostic();
+    if (proto_startup_cancelled(guard) || !MC3_reinitialize_pvt_sensors()) return;
+    if (!proto_startup_wait(guard, 100)) return;
+    if (!proto_pvt_log_temperatures(guard, "1160_reinit")) return;
+    ESP_LOGI(TAG, "PVT_DROP VOLTAGE phase=1160_reinit");
+    MC3_log_voltage_diagnostic();
+    ESP_LOGI(TAG, "PVT_DROP END; diagnostic only, shutting ASIC power off");
+}
+
+static bool proto_startup_temperature(proto_startup_guard_t *guard,
+    int64_t warm_elapsed, float *coldest, float *hottest, bool diagnose_invalid)
+{
+    float temperatures[4] = {0};
+    if (proto_startup_cancelled(guard) || MC3_read_temperatures(temperatures, 4) != 4) return false;
+    bool invalid = false, hot = false;
+    for (unsigned chip = 0; chip < 4; chip++) {
+        invalid |= !isfinite(temperatures[chip]) || temperatures[chip] <= 0;
+        hot |= isfinite(temperatures[chip]) && temperatures[chip] >= 70;
+    }
+    if (invalid || hot) {
+        // Diagnose only the pre-work invalid-conversion path. Never delay a
+        // credible overtemperature or a guard-triggered shutdown.
+        if (invalid && !hot && diagnose_invalid && !proto_startup_cancelled(guard)) {
+            MC3_log_voltage_diagnostic();
+        }
+        return false;
+    }
+    *coldest = 100;
+    *hottest = 0;
+    for (unsigned chip = 0; chip < 4; chip++) {
+        float t = temperatures[chip];
+        if (!isfinite(t) || t <= 0 || t >= 70) return false;
+        if (t < *coldest) *coldest = t;
+        if (t > *hottest) *hottest = t;
+        guard->global->POWER_MANAGEMENT_MODULE.asic_temps[chip] = t;
+    }
+    guard->global->POWER_MANAGEMENT_MODULE.asic_temp_count = 4;
+    guard->global->POWER_MANAGEMENT_MODULE.chip_temp_avg = *hottest;
+    proto_warm_fan(*hottest, warm_elapsed);
+    ESP_LOGI(TAG, "PROTO STARTUP TEMP freq=%.0f A1=%.2f A2=%.2f A3=%.2f A4=%.2f",
+        guard->global->POWER_MANAGEMENT_MODULE.actual_frequency,
+        temperatures[0], temperatures[1], temperatures[2], temperatures[3]);
+    return !proto_startup_cancelled(guard);
+}
+
+static bool proto_startup_check_result(GlobalState *global, const mc3_qualification_result_t *result)
+{
+    if (result->chip_count != 4) return false;
+    bool passed = true;
+    for (unsigned chip = 0; chip < 4; chip++) {
+        double ideal = result->chip_frequency_mhz[chip] *
+            global->DEVICE_CONFIG.family.asic.small_core_count / 1000.0;
+        uint64_t counts = (uint64_t)result->passed[chip] + result->failed[chip];
+        double throughput = ideal > 0 ? 100.0 * result->hashrate_ghs[chip] / ideal : 0;
+        double pass_rate = counts ? 100.0 * result->passed[chip] / counts : 0;
+        if (!isfinite(throughput) || throughput < PROTO_MIN_CHIP_THROUGHPUT_PERCENT ||
+            pass_rate < PROTO_MIN_PASS_RATE_PERCENT) passed = false;
+        mc3_core_domain_summary_t domains = {0};
+        if (!MC3_read_core_domain_summary(chip, &domains)) return false;
+        for (unsigned domain = 0; domain < 4; domain++) {
+            double share = domains.core_pass_sum
+                ? 400.0 * domains.domain_pass[domain] / domains.core_pass_sum : 0;
+            // Permit isolated weak cores; reject a substantially missing domain.
+            if (share < PROTO_INTERNAL_DOMAIN_COLLAPSE_PERCENT) passed = false;
+            ESP_LOGI(TAG, "PROTO STARTUP DOMAIN A%u D%u relative_share=%.2f zero=%u",
+                chip + 1, domain, share, domains.domain_zero_cores[domain]);
+        }
+        ESP_LOGI(TAG, "PROTO STARTUP CHIP A%u frequency=%.0f GHs=%.2f throughput=%.2f pass_rate=%.2f",
+            chip + 1, result->chip_frequency_mhz[chip], result->hashrate_ghs[chip], throughput, pass_rate);
+    }
+    ESP_LOGI(TAG, "PROTO STARTUP QUALIFY frequency=%.0f total=%.2f result=%s",
+        result->frequency_mhz, result->total_hashrate_ghs, passed ? "PASS" : "FAIL");
+    return passed;
+}
+
+static bool proto_startup_power_cycle(proto_startup_guard_t *guard)
+{
+    GlobalState *global = guard->global;
+    bool ok = false;
+    atomic_store(&guard->cycling, true);
+    ESP_LOGI(TAG, "PROTO STARTUP POWER_CYCLE disabling Vcore and VDDIO");
+    if (asic_prepare_power(global) != ESP_OK || VCORE_set_voltage(global, 0) != ESP_OK ||
+        !proto_startup_wait(guard, 250)) goto done;
+    int64_t deadline = esp_timer_get_time() + 2000000;
+    int16_t total;
+    do {
+        total = VCORE_get_regulator_voltage_mv_fresh(global);
+        if (total < 0) goto done;
+        if (total <= 100) break;
+        if (!proto_startup_wait(guard, 25)) goto done;
+    } while (esp_timer_get_time() < deadline);
+    if (total > 100 || proto_startup_cancelled(guard)) goto done;
+    ESP_LOGI(TAG, "PROTO STARTUP DISCHARGED total=%d mV", total);
+    if (enable_proto_power(global, 800) != ESP_OK) goto done;
+    total = VCORE_get_regulator_voltage_mv_fresh(global);
+    ok = total >= 1500 && total <= 1700 && !proto_startup_cancelled(guard);
+done:
+    atomic_store(&guard->cycling, false);
+    return ok;
+}
+
+static bool proto_pool_startup_settings_valid(const GlobalState *global, uint16_t voltage_mv)
+{
+    float request = global->POWER_MANAGEMENT_MODULE.frequency_value;
+    return !global->ASIC_initalized && global->DEVICE_CONFIG.family.asic_count == 4 &&
+        isfinite(request) && request >= 100 && request <= 600 && voltage_mv >= 800 && voltage_mv <= 1200;
+}
+
+
+static bool proto_startup_qualify_first_work(proto_startup_guard_t *guard,
+    mc3_qualification_result_t *result)
+{
+    mc3_core_domain_summary_t baseline[4];
+    int64_t started[4];
+    memset(result, 0, sizeof(*result));
+    if (proto_startup_cancelled(guard) || !MC3_start_qualification_observation()) return false;
+    for (unsigned c = 0; c < 4; c++) {
+        int64_t before = esp_timer_get_time();
+        if (!MC3_read_core_domain_summary(c, &baseline[c])) return false;
+        started[c] = (before + esp_timer_get_time()) / 2;
+    }
+    for (unsigned seconds = 0; seconds < 10; seconds++) {
+        float coldest, hottest;
+        if (!proto_startup_temperature(guard, 0, &coldest, &hottest, false)) return false;
+        FAN_CONTROLLER_set_startup_percent(70);
+        if (!proto_startup_wait(guard, 1000)) return false;
+    }
+    result->chip_count = 4;
+    result->frequency_mhz = guard->global->POWER_MANAGEMENT_MODULE.actual_frequency;
+    for (unsigned c = 0; c < 4; c++) {
+        mc3_core_domain_summary_t final;
+        int64_t before = esp_timer_get_time();
+        if (proto_startup_cancelled(guard) || !MC3_read_core_domain_summary(c, &final)) return false;
+        int64_t elapsed = (before + esp_timer_get_time()) / 2 - started[c];
+        if (elapsed <= 0 || final.core_pass_sum < baseline[c].core_pass_sum) return false;
+        uint32_t failed = 0;
+        for (unsigned d = 0; d < 4; d++) {
+            if (final.domain_pass[d] < baseline[c].domain_pass[d] ||
+                final.domain_fail[d] < baseline[c].domain_fail[d]) return false;
+            failed += final.domain_fail[d] - baseline[c].domain_fail[d];
+        }
+        result->passed[c] = final.core_pass_sum - baseline[c].core_pass_sum;
+        result->failed[c] = failed;
+        result->chip_frequency_mhz[c] = result->frequency_mhz;
+        // Counter target 0 represents 2^24 hashes per PASS. Use measured time
+        // between reads, excluding pre-job timer setup and payload submission.
+        result->hashrate_ghs[c] = result->passed[c] * 16777.216 / elapsed;
+        result->total_hashrate_ghs += result->hashrate_ghs[c];
+    }
+    return !proto_startup_cancelled(guard);
+}
+
+// Temperature must remain adequate through the supply cycle and unloaded ramp;
+// prior warmup alone did not prevent cold-launch domain failures.
+static bool proto_startup_warm_enough(float coldest)
+{
+    return coldest >= 40.0f;
+}
+
+static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
+{
+    float request = global->POWER_MANAGEMENT_MODULE.frequency_value;
+    if (!proto_pool_startup_settings_valid(global, voltage_mv)) {
+        ESP_LOGE(TAG, "PROTO STARTUP requires four ASICs, 100..600 MHz and 800..1200 mV/half");
+        return false;
+    }
+    unsigned target = (unsigned)(request / 25.0f + 0.5f) * 25;
+    unsigned warm_frequency = target < 300 ? target : 300;
+    proto_startup_guard_t guard = {.global = global};
+    atomic_init(&guard.stop, false);
+    atomic_init(&guard.tripped, false);
+    atomic_init(&guard.cycling, false);
+    guard.stopped = xSemaphoreCreateBinary();
+    if (!guard.stopped) return false;
+    if (xTaskCreate(proto_startup_guard_task, "startup_guard", 4096, &guard, 6, NULL) != pdPASS) {
+        vSemaphoreDelete(guard.stopped);
+        return false;
+    }
+    bool ok = false;
+    float coldest, hottest;
+    mc3_qualification_result_t result = {0};
+    global->SYSTEM_MODULE.asic_status = "Warming ASICs";
+    ESP_LOGI(TAG, "PROTO STARTUP BEGIN target=%u voltage=%u; warmup=%u coldest>=40C then full supply cycle; sampled voltage report-only",
+        target, voltage_mv, warm_frequency);
+    for (unsigned f = 100; f <= warm_frequency; f += 25) {
+        FAN_CONTROLLER_set_startup_percent(20);
+        if (proto_startup_cancelled(&guard) || !MC3_qualify_frequency(global, f, &result) ||
+            !proto_startup_check_result(global, &result) ||
+            !proto_startup_temperature(&guard, 0, &coldest, &hottest, false)) goto done;
+    }
+    if (target > 300) {
+        int64_t start = esp_timer_get_time(), ready_since = 0;
+        bool warm = false;
+        while (esp_timer_get_time() - start < 600000000) {
+            if (!proto_startup_temperature(&guard, esp_timer_get_time() - start, &coldest, &hottest, false)) goto done;
+            // Require every ASIC to reach the threshold for the ten-second dwell.
+            if (proto_startup_warm_enough(coldest) && hottest <= 60.0f) {
+                if (!ready_since) ready_since = esp_timer_get_time();
+                if (esp_timer_get_time() - ready_since >= 10000000) {warm = true; break;}
+            } else ready_since = 0;
+            if (!proto_startup_wait(&guard, 1000)) goto done;
+        }
+        if (!warm) {ESP_LOGE(TAG, "PROTO STARTUP warmup timed out"); goto done;}
+        if (!MC3_measure_active_frequency_profile(global, &result) ||
+            !proto_startup_check_result(global, &result)) goto done;
+        global->SYSTEM_MODULE.asic_status = "Starting warm ASICs";
+        if (!proto_startup_power_cycle(&guard)) goto done;
+        SERIAL_set_baud(UART_FREQ);
+        SERIAL_clear_buffer();
+        if (asic_reset() != ESP_OK || proto_startup_cancelled(&guard)) goto done;
+        clear_asic_chain_error();
+        if (MC3_init(global) != 4 || global->POWER_MANAGEMENT_MODULE.actual_frequency != 100) goto done;
+        SERIAL_clear_buffer();
+        ESP_LOGI(TAG, "PROTO STARTUP REINITIALIZED four ASICs; no work since supply cycle");
+        for (unsigned mv = 800; mv < voltage_mv;) {
+            mv += voltage_mv - mv < 10 ? voltage_mv - mv : 10;
+            if (set_proto_core_voltage(global, mv) != ESP_OK || !proto_startup_wait(&guard, 150)) goto done;
+        }
+        // Do not trigger thermal conversions during the bounded unloaded ramp.
+        FAN_CONTROLLER_set_startup_percent(70);
+        int64_t deadline = esp_timer_get_time() + 45000000;
+        if (!proto_startup_wait(&guard, 500)) goto done;
+        for (unsigned f = 125; f <= target; f += 25) {
+            if (proto_startup_cancelled(&guard) || esp_timer_get_time() >= deadline ||
+                MC3_send_hash_frequency(f) != f) goto done;
+            global->POWER_MANAGEMENT_MODULE.actual_frequency = f;
+            // Use 2 s per 25 MHz step at high frequencies;
+            // preserve the final first-work settling interval.
+            uint32_t settle = f == target ? 1500 : f >= 300 ? 2000 : 500;
+            ESP_LOGI(TAG, "PROTO STARTUP PLL frequency=%u settle_ms=%u; no work sent", f, settle);
+            FAN_CONTROLLER_set_startup_percent(70);
+            if (!proto_startup_wait(&guard, settle)) goto done;
+        }
+        if (esp_timer_get_time() >= deadline) goto done;
+        if (voltage_mv == 1200 && target == 600) {
+            proto_startup_pvt_voltage_drop_test(&guard);
+            goto done;
+        }
+        if (!proto_startup_temperature(&guard, 0, &coldest, &hottest, true)) goto done;
+        if (!proto_startup_warm_enough(coldest)) {
+            ESP_LOGE(TAG, "PROTO STARTUP too cool before first work: coldest=%.2f hottest=%.2f; require coldest>=40C",
+                coldest, hottest);
+            goto done;
+        }
+        ESP_LOGI(TAG, "PROTO STARTUP FIRST_WORK frequency=%u", target);
+        if (!proto_startup_qualify_first_work(&guard, &result) ||
+            !proto_startup_check_result(global, &result) ||
+            !proto_startup_temperature(&guard, 0, &coldest, &hottest, false)) goto done;
+    }
+    ok = !proto_startup_cancelled(&guard);
+done:
+    atomic_store(&guard.stop, true);
+    xSemaphoreTake(guard.stopped, portMAX_DELAY);
+    vSemaphoreDelete(guard.stopped);
+    ok = ok && !proto_startup_cancelled(&guard);
+    FAN_CONTROLLER_set_startup_percent(-1);
+    mc3_diagnostics_finish_startup(ok);
+    if (ok) {
+        global->POWER_MANAGEMENT_MODULE.expected_hashrate =
+            global->POWER_MANAGEMENT_MODULE.actual_frequency *
+            global->DEVICE_CONFIG.family.asic.small_core_count * 4 / 1000.0f;
+        global->SYSTEM_MODULE.asic_status = "Ready for pool work";
+        ESP_LOGI(TAG, "PROTO STARTUP READY frequency=%.0f; handing off to pool work",
+            global->POWER_MANAGEMENT_MODULE.actual_frequency);
+    } else {
+        global->SYSTEM_MODULE.asic_status = "Warm ASIC startup failed";
+        asic_prepare_power(global);
+        VCORE_set_voltage(global, 0);
+        ESP_LOGE(TAG, "PROTO STARTUP FAILED; ASIC power off, settings retained");
+    }
+    return ok;
+}
+
+static uint8_t asic_initialize_impl(GlobalState *GLOBAL_STATE, asic_init_mode_t mode, uint32_t stabilization_delay_ms)
+{
+    const char *mode_str = (mode == ASIC_INIT_COLD_BOOT) ? "cold boot" : "recovery";
+    ESP_LOGI(TAG, "Starting ASIC initialization (%s mode)", mode_str);
+
+    if (asic_hold_reset_low() != ESP_OK) {
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "ASIC reset hold failed";
+        ESP_LOGE(TAG, "Failed to hold ASIC reset low");
+        return 0;
+    }
+
+    // Check actual UART state for safety
+    bool uart_initialized = SERIAL_is_initialized();
+    
+    // Verify mode matches actual state
+    if (mode == ASIC_INIT_COLD_BOOT && uart_initialized) {
+        ESP_LOGW(TAG, "Cold boot mode but UART already initialized - will reset baud only");
+    } else if (mode == ASIC_INIT_RECOVERY && !uart_initialized) {
+        ESP_LOGW(TAG, "Recovery mode but UART not initialized - will do full init");
+    }
+    
+    // Use actual state for decision, not just mode
+    if (!uart_initialized) {
+        // Fresh boot - full UART initialization
+        ESP_LOGI(TAG, "Performing full UART initialization");
+        SERIAL_init();
+    } else {
+        // Live recovery - ASIC was reset, UART needs baud reset to 115200
+        // This preserves the running system and avoids reboot
+        ESP_LOGI(TAG, "UART already initialized, resetting baud to %d", UART_FREQ);
+        SERIAL_set_baud(UART_FREQ);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
+
+    bool is_proto = GLOBAL_STATE->DEVICE_CONFIG.family.id == PROTO;
+    bool is_proto_mc3 = is_proto &&
+        GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3;
+    uint16_t target_core_voltage_mv = is_proto
+        ? get_proto_target_core_voltage_mv(GLOBAL_STATE)
+        : 0;
+    bool supported_warm_startup = is_proto_mc3 && !GLOBAL_STATE->SELF_TEST_MODULE.is_active &&
+        GLOBAL_STATE->DEVICE_CONFIG.board_version != NULL &&
+        (strcmp(GLOBAL_STATE->DEVICE_CONFIG.board_version, "1103") == 0 ||
+         strcmp(GLOBAL_STATE->DEVICE_CONFIG.board_version, "1102") == 0);
+    if (supported_warm_startup &&
+        !proto_pool_startup_settings_valid(GLOBAL_STATE, target_core_voltage_mv)) {
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Supported startup: 100-600 MHz, 800-1200 mV";
+        ESP_LOGE(TAG, "Proto startup settings outside supported range; ASIC power stays off");
+        return 0;
+    }
+    uint16_t init_core_voltage_mv = is_proto_mc3
+        ? (target_core_voltage_mv < PROTO_VCORE_STARTUP_MV
+            ? target_core_voltage_mv
+            : PROTO_VCORE_STARTUP_MV)
+        : target_core_voltage_mv;
+
+    if (enable_proto_power(GLOBAL_STATE, init_core_voltage_mv) != ESP_OK) {
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto power sequence failed";
+        return 0;
+    }
+
+    if (asic_reset() != ESP_OK) {
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "ASIC reset failed";
+        ESP_LOGE(TAG, "ASIC reset failed!");
+        return 0;
+    }
+
+    uint8_t chip_count = 0;
+    while (true) {
+        if (is_proto_mc3) {
+            ESP_LOGI(TAG, "Detecting ASIC chips at %u mV/domain...", init_core_voltage_mv);
+
+        } else {
+            ESP_LOGI(TAG, "Detecting ASIC chips...");
+        }
+        clear_asic_chain_error();
+        chip_count = ASIC_init(GLOBAL_STATE);
+
+        if (chip_count > 0 || !is_proto_mc3) {
+            break;
+        }
+
+        uint16_t fallback_max_mv = target_core_voltage_mv < PROTO_VCORE_INIT_FALLBACK_MAX_MV
+            ? target_core_voltage_mv
+            : PROTO_VCORE_INIT_FALLBACK_MAX_MV;
+        if (init_core_voltage_mv >= fallback_max_mv) {
+            break;
+        }
+
+        uint16_t remaining_mv = fallback_max_mv - init_core_voltage_mv;
+        init_core_voltage_mv += remaining_mv < PROTO_VCORE_INIT_FALLBACK_STEP_MV
+            ? remaining_mv
+            : PROTO_VCORE_INIT_FALLBACK_STEP_MV;
+
+        ESP_LOGW(TAG, "MC3 chain did not initialize; retrying at %u mV/domain",
+            init_core_voltage_mv);
+        if (asic_hold_reset_low() != ESP_OK ||
+            set_proto_core_voltage(GLOBAL_STATE, init_core_voltage_mv) != ESP_OK) {
+            GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto Vcore fallback failed";
+            return 0;
+        }
+        vTaskDelay(pdMS_TO_TICKS(PROTO_VCORE_STABILIZATION_MS));
+        SERIAL_clear_buffer();
+        if (asic_reset() != ESP_OK) {
+            GLOBAL_STATE->SYSTEM_MODULE.asic_status = "ASIC reset failed";
+            return 0;
+        }
+    }
+    
+    if (chip_count == 0) {
+        const char *chain_error = get_asic_chain_error();
+        ESP_LOGE(TAG, "ASIC initialization failed - chip chain detection failed");
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = chain_error != NULL ? chain_error : "ASIC chain detection failed";
+
+        return 0;
+    }
+
+    if (is_proto_mc3) {
+        if (!MC3_start_qualification_work(GLOBAL_STATE)) {
+            GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto qualification work failed";
+            return 0;
+        }
+        if (ramp_proto_core_voltage(
+                GLOBAL_STATE, init_core_voltage_mv, target_core_voltage_mv) != ESP_OK) {
+            GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto Vcore ramp failed";
+            return 0;
+        }
+    }
+
+    if (supported_warm_startup) {
+        if (!run_proto_pool_startup(GLOBAL_STATE, target_core_voltage_mv)) return 0;
+        MC3_prepare_pool_work(GLOBAL_STATE);
+    } else if (GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3) {
+        if (!MC3_ramp_hash_frequency(GLOBAL_STATE)) {
+            GLOBAL_STATE->SYSTEM_MODULE.asic_status = "MC3 frequency ramp failed";
+            ESP_LOGE(TAG, "MC3 frequency ramp failed after initialization voltage ramp");
+            return 0;
+        }
+    }
+
+    ESP_LOGI(TAG, "Setting max baud rate and clearing buffers");
+    SERIAL_set_baud(ASIC_set_max_baud(GLOBAL_STATE));
+    SERIAL_clear_buffer();
+
+    GLOBAL_STATE->ASIC_initalized = true;
+    
+    if (stabilization_delay_ms > 0) {
+        ESP_LOGI(TAG, "Waiting %u ms for tasks to stabilize...", stabilization_delay_ms);
+        vTaskDelay(stabilization_delay_ms / portTICK_PERIOD_MS);
+    }
+
+    ESP_LOGI(TAG, "ASIC initialized successfully with %d chip(s) (%s mode)", chip_count, mode_str);
+    return chip_count;
+}
+
+uint8_t asic_initialize(GlobalState *global, asic_init_mode_t mode, uint32_t stabilization_delay_ms)
+{
+    global->ASIC_initalized = false;
+    uint8_t chips = asic_initialize_impl(global, mode, stabilization_delay_ms);
+    if (chips == 0 && global->DEVICE_CONFIG.family.id == PROTO) {
+        FAN_CONTROLLER_set_startup_percent(-1);
+        asic_prepare_power(global);
+        VCORE_set_voltage(global, 0);
+        global->POWER_MANAGEMENT_MODULE.expected_hashrate = 0;
+    }
+    return chips;
+}

@@ -1,0 +1,21 @@
+{
+  "result": "failed_pre_work_thermal_conversion",
+  "first_600mhz_work_sent": false,
+  "qualification_600mhz_ghs": null,
+  "active_600mhz_domains": null,
+  "active_600mhz_cores": null,
+  "thermal_failure_asics": [
+    3,
+    4
+  ],
+  "thermal_attempts": 3,
+  "thermal_done": 0,
+  "thermal_status": 3,
+  "thermal_raw": 0,
+  "warm_300mhz_ghs": 1489.57,
+  "sampled_peak_halfstack_mv": 1213,
+  "pool_mining_started": false,
+  "steady_efficiency_j_per_th": null,
+  "final_asic_power": "off",
+  "retry_performed": false
+}

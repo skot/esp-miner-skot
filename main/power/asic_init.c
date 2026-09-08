@@ -241,11 +241,59 @@ static bool proto_startup_wait(proto_startup_guard_t *guard, uint32_t ms)
     return !proto_startup_cancelled(guard);
 }
 
-static bool proto_startup_temperature(proto_startup_guard_t *guard,
-    int64_t warm_elapsed, float *coldest, float *hottest)
+// Recover PVT at fixed 600 MHz before allowing the first mining work.
+static bool proto_pvt_log_temperatures(proto_startup_guard_t *guard, const char *phase, bool require_valid)
 {
     float temperatures[4] = {0};
     if (proto_startup_cancelled(guard) || MC3_read_temperatures(temperatures, 4) != 4) return false;
+    bool hot = false, all_valid = true;
+    for (unsigned chip = 0; chip < 4; chip++) {
+        float t = temperatures[chip];
+        bool valid = isfinite(t) && t > 0;
+        hot |= valid && t >= 70;
+        all_valid &= valid;
+        ESP_LOGI(TAG, "PVT_1200 TEMP phase=%s A%u valid=%u temperature=%.2f", phase, chip + 1, valid, t);
+    }
+    return !hot && (!require_valid || all_valid) && !proto_startup_cancelled(guard);
+}
+
+static bool proto_startup_pvt_1200_recover(proto_startup_guard_t *guard)
+{
+    ESP_LOGI(TAG, "PVT_1200 BEGIN frequency=600 voltage_mv=1200; no voltage drop, no work");
+    if (!proto_startup_wait(guard, 1000)) return false;
+    int16_t total_mv = VCORE_get_regulator_voltage_mv_fresh(guard->global);
+    ESP_LOGI(TAG, "PVT_1200 RAIL requested_half_mv=1200 measured_total_mv=%d", total_mv);
+    if (total_mv < 2340 || total_mv > 2460 || proto_startup_cancelled(guard)) return false;
+    if (!proto_pvt_log_temperatures(guard, "before", false)) return false;
+    ESP_LOGI(TAG, "PVT_1200 VOLTAGE phase=before");
+    MC3_log_voltage_diagnostic();
+    if (proto_startup_cancelled(guard) || !MC3_reinitialize_pvt_sensors()) return false;
+    if (!proto_startup_wait(guard, 100)) return false;
+    if (!proto_pvt_log_temperatures(guard, "after", true)) return false;
+    ESP_LOGI(TAG, "PVT_1200 VOLTAGE phase=after");
+    MC3_log_voltage_diagnostic();
+    ESP_LOGI(TAG, "PVT_1200 END; recovery checks complete, proceeding to first work");
+    return !proto_startup_cancelled(guard);
+}
+
+static bool proto_startup_temperature(proto_startup_guard_t *guard,
+    int64_t warm_elapsed, float *coldest, float *hottest, bool diagnose_invalid)
+{
+    float temperatures[4] = {0};
+    if (proto_startup_cancelled(guard) || MC3_read_temperatures(temperatures, 4) != 4) return false;
+    bool invalid = false, hot = false;
+    for (unsigned chip = 0; chip < 4; chip++) {
+        invalid |= !isfinite(temperatures[chip]) || temperatures[chip] <= 0;
+        hot |= isfinite(temperatures[chip]) && temperatures[chip] >= 70;
+    }
+    if (invalid || hot) {
+        // Diagnose only the pre-work invalid-conversion path. Never delay a
+        // credible overtemperature or a guard-triggered shutdown.
+        if (invalid && !hot && diagnose_invalid && !proto_startup_cancelled(guard)) {
+            MC3_log_voltage_diagnostic();
+        }
+        return false;
+    }
     *coldest = 100;
     *hottest = 0;
     for (unsigned chip = 0; chip < 4; chip++) {
@@ -324,7 +372,7 @@ static bool proto_pool_startup_settings_valid(const GlobalState *global, uint16_
 {
     float request = global->POWER_MANAGEMENT_MODULE.frequency_value;
     return !global->ASIC_initalized && global->DEVICE_CONFIG.family.asic_count == 4 &&
-        isfinite(request) && request >= 100 && request <= 600 && voltage_mv >= 800 && voltage_mv <= 1160;
+        isfinite(request) && request >= 100 && request <= 600 && voltage_mv >= 800 && voltage_mv <= 1200;
 }
 
 
@@ -342,7 +390,7 @@ static bool proto_startup_qualify_first_work(proto_startup_guard_t *guard,
     }
     for (unsigned seconds = 0; seconds < 10; seconds++) {
         float coldest, hottest;
-        if (!proto_startup_temperature(guard, 0, &coldest, &hottest)) return false;
+        if (!proto_startup_temperature(guard, 0, &coldest, &hottest, false)) return false;
         FAN_CONTROLLER_set_startup_percent(70);
         if (!proto_startup_wait(guard, 1000)) return false;
     }
@@ -373,20 +421,35 @@ static bool proto_startup_qualify_first_work(proto_startup_guard_t *guard,
 
 // Temperature must remain adequate through the supply cycle and unloaded ramp;
 // prior warmup alone did not prevent cold-launch domain failures.
-static bool proto_startup_warm_enough(float coldest, float hottest)
+static bool proto_startup_warm_enough(float coldest)
 {
-    return coldest >= 52.0f && hottest >= 54.5f;
+    return coldest >= 40.0f;
+}
+
+// Saved voltage remains 1200 mV through pool handoff; only the warmup is lower.
+static bool proto_1200_pvt_startup(const GlobalState *global, uint16_t voltage_mv)
+{
+    return voltage_mv == 1200 && global->POWER_MANAGEMENT_MODULE.frequency_value == 600 &&
+        global->DEVICE_CONFIG.board_version != NULL &&
+        strcmp(global->DEVICE_CONFIG.board_version, "1103") == 0;
+}
+
+static uint16_t proto_warmup_voltage_mv(const GlobalState *global, uint16_t voltage_mv)
+{
+    return proto_1200_pvt_startup(global, voltage_mv) ? 1160 : voltage_mv;
 }
 
 static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
 {
     float request = global->POWER_MANAGEMENT_MODULE.frequency_value;
     if (!proto_pool_startup_settings_valid(global, voltage_mv)) {
-        ESP_LOGE(TAG, "PROTO STARTUP requires four ASICs, 100..600 MHz and 800..1160 mV/half");
+        ESP_LOGE(TAG, "PROTO STARTUP requires four ASICs, 100..600 MHz and 800..1200 mV/half");
         return false;
     }
     unsigned target = (unsigned)(request / 25.0f + 0.5f) * 25;
     unsigned warm_frequency = target < 300 ? target : 300;
+    bool boost_startup = proto_1200_pvt_startup(global, voltage_mv);
+    uint16_t ramp_voltage_mv = voltage_mv;
     proto_startup_guard_t guard = {.global = global};
     atomic_init(&guard.stop, false);
     atomic_init(&guard.tripped, false);
@@ -401,21 +464,22 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
     float coldest, hottest;
     mc3_qualification_result_t result = {0};
     global->SYSTEM_MODULE.asic_status = "Warming ASICs";
-    ESP_LOGI(TAG, "PROTO STARTUP BEGIN target=%u voltage=%u; warmup=%u coldest>=52C hottest>=54.5C then full supply cycle; sampled voltage report-only",
+    ESP_LOGI(TAG, "PROTO STARTUP BEGIN target=%u voltage=%u; warmup=%u coldest>=40C then full supply cycle; sampled voltage report-only",
         target, voltage_mv, warm_frequency);
+    if (boost_startup) ESP_LOGI(TAG, "PROTO STARTUP BOOST warmup_mv=1160 ramp_mv=1200 mining_mv=1200; PVT reinit then pool work");
     for (unsigned f = 100; f <= warm_frequency; f += 25) {
         FAN_CONTROLLER_set_startup_percent(20);
         if (proto_startup_cancelled(&guard) || !MC3_qualify_frequency(global, f, &result) ||
             !proto_startup_check_result(global, &result) ||
-            !proto_startup_temperature(&guard, 0, &coldest, &hottest)) goto done;
+            !proto_startup_temperature(&guard, 0, &coldest, &hottest, false)) goto done;
     }
     if (target > 300) {
         int64_t start = esp_timer_get_time(), ready_since = 0;
         bool warm = false;
         while (esp_timer_get_time() - start < 600000000) {
-            if (!proto_startup_temperature(&guard, esp_timer_get_time() - start, &coldest, &hottest)) goto done;
-            // Restore the validated hot threshold and its ten-second dwell.
-            if (proto_startup_warm_enough(coldest, hottest) && hottest <= 60.0f) {
+            if (!proto_startup_temperature(&guard, esp_timer_get_time() - start, &coldest, &hottest, false)) goto done;
+            // Require every ASIC to reach the threshold for the ten-second dwell.
+            if (proto_startup_warm_enough(coldest) && hottest <= 60.0f) {
                 if (!ready_since) ready_since = esp_timer_get_time();
                 if (esp_timer_get_time() - ready_since >= 10000000) {warm = true; break;}
             } else ready_since = 0;
@@ -433,8 +497,8 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
         if (MC3_init(global) != 4 || global->POWER_MANAGEMENT_MODULE.actual_frequency != 100) goto done;
         SERIAL_clear_buffer();
         ESP_LOGI(TAG, "PROTO STARTUP REINITIALIZED four ASICs; no work since supply cycle");
-        for (unsigned mv = 800; mv < voltage_mv;) {
-            mv += voltage_mv - mv < 10 ? voltage_mv - mv : 10;
+        for (unsigned mv = 800; mv < ramp_voltage_mv;) {
+            mv += ramp_voltage_mv - mv < 10 ? ramp_voltage_mv - mv : 10;
             if (set_proto_core_voltage(global, mv) != ESP_OK || !proto_startup_wait(&guard, 150)) goto done;
         }
         // Do not trigger thermal conversions during the bounded unloaded ramp.
@@ -445,24 +509,27 @@ static bool run_proto_pool_startup(GlobalState *global, uint16_t voltage_mv)
             if (proto_startup_cancelled(&guard) || esp_timer_get_time() >= deadline ||
                 MC3_send_hash_frequency(f) != f) goto done;
             global->POWER_MANAGEMENT_MODULE.actual_frequency = f;
-            // Slow the high-frequency step cadence while preserving the final
-            // first-work settling interval for a controlled comparison.
+            // Use 2 s per 25 MHz step at high frequencies;
+            // preserve the final first-work settling interval.
             uint32_t settle = f == target ? 1500 : f >= 300 ? 2000 : 500;
             ESP_LOGI(TAG, "PROTO STARTUP PLL frequency=%u settle_ms=%u; no work sent", f, settle);
             FAN_CONTROLLER_set_startup_percent(70);
             if (!proto_startup_wait(&guard, settle)) goto done;
         }
-        if (esp_timer_get_time() >= deadline ||
-            !proto_startup_temperature(&guard, 0, &coldest, &hottest)) goto done;
-        if (!proto_startup_warm_enough(coldest, hottest)) {
-            ESP_LOGE(TAG, "PROTO STARTUP too cool before first work: coldest=%.2f hottest=%.2f; require 52/54.5C",
+        if (esp_timer_get_time() >= deadline) goto done;
+        if (boost_startup) {
+            if (!proto_startup_pvt_1200_recover(&guard)) goto done;
+        }
+        if (!proto_startup_temperature(&guard, 0, &coldest, &hottest, true)) goto done;
+        if (!proto_startup_warm_enough(coldest)) {
+            ESP_LOGE(TAG, "PROTO STARTUP too cool before first work: coldest=%.2f hottest=%.2f; require coldest>=40C",
                 coldest, hottest);
             goto done;
         }
         ESP_LOGI(TAG, "PROTO STARTUP FIRST_WORK frequency=%u", target);
         if (!proto_startup_qualify_first_work(&guard, &result) ||
             !proto_startup_check_result(global, &result) ||
-            !proto_startup_temperature(&guard, 0, &coldest, &hottest)) goto done;
+            !proto_startup_temperature(&guard, 0, &coldest, &hottest, false)) goto done;
     }
     ok = !proto_startup_cancelled(&guard);
 done:
@@ -534,7 +601,7 @@ static uint8_t asic_initialize_impl(GlobalState *GLOBAL_STATE, asic_init_mode_t 
          strcmp(GLOBAL_STATE->DEVICE_CONFIG.board_version, "1102") == 0);
     if (supported_warm_startup &&
         !proto_pool_startup_settings_valid(GLOBAL_STATE, target_core_voltage_mv)) {
-        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Supported startup: 100-600 MHz, 800-1160 mV";
+        GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Supported startup: 100-600 MHz, 800-1200 mV";
         ESP_LOGE(TAG, "Proto startup settings outside supported range; ASIC power stays off");
         return 0;
     }
@@ -611,7 +678,9 @@ static uint8_t asic_initialize_impl(GlobalState *GLOBAL_STATE, asic_init_mode_t 
             return 0;
         }
         if (ramp_proto_core_voltage(
-                GLOBAL_STATE, init_core_voltage_mv, target_core_voltage_mv) != ESP_OK) {
+                GLOBAL_STATE, init_core_voltage_mv, supported_warm_startup
+                    ? proto_warmup_voltage_mv(GLOBAL_STATE, target_core_voltage_mv)
+                    : target_core_voltage_mv) != ESP_OK) {
             GLOBAL_STATE->SYSTEM_MODULE.asic_status = "Proto Vcore ramp failed";
             return 0;
         }

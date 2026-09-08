@@ -1,0 +1,27 @@
+{
+  "coreVoltage": 1180,
+  "actualFrequency": 600,
+  "hashRate": 2967.8601074,
+  "asicTemps": [
+    53.68588638305664,
+    52.20138931274414,
+    52.86116409301758,
+    52.53127670288086
+  ],
+  "asicVoltages": [
+    1170.6927490234375,
+    1171.2008056640625,
+    1173.53759765625,
+    1179.9383544921875
+  ],
+  "domainVoltages": [
+    1178,
+    1186
+  ],
+  "regulatorVoltage": 2364,
+  "uptimeSeconds": 740,
+  "sharesAccepted": 43,
+  "sharesRejected": 3,
+  "miningPaused": false,
+  "poolConnectionInfo": "IPv4"
+}

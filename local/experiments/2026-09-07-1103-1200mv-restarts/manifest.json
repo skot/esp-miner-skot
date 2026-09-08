@@ -1,0 +1,20 @@
+{
+  "warmup_coldest_c": 40,
+  "first_work_minimum_c": 40,
+  "high_frequency_step_ms": 2000,
+  "core_voltage_mv": 1200,
+  "mc3_sha256": "5d28fd6c66a53131603ca4e786205a2f94888c0aa937c50d376a457e02d2784d",
+  "version": "v2.14.0-53-g591dfde-dirty",
+  "files": {
+    "esp-miner.bin": {
+      "bytes": 1784384,
+      "sha256": "f77ac103893b7213393299e0b77398c3fd55cd970f5ce91888296c0bc2f96f9a"
+    }
+  },
+  "source_hashes": {
+    "main/power/asic_init.c": "781cf0062fa153d05bb577cc153a8c15f32ea848608d93d686e048392a4c57cd",
+    "components/asic/mc3.c": "5d28fd6c66a53131603ca4e786205a2f94888c0aa937c50d376a457e02d2784d",
+    "main/power/vcore.c": "be2008a99834d564aeda935c89ecc4da4da2c68e4ee1bce3c61bd860441e7099"
+  },
+  "method": "No flash or source changes; observe in-progress startup, then two API restarts after cooling"
+}

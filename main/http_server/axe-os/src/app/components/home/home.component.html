@@ -275,7 +275,7 @@
                         </strong>
                     </div>
 
-                    <div class="mb-3" *ngIf="info.regulatorVoltage > 0">
+                    <div class="mb-3" *ngIf="info.ASICModel !== 'MC3' && info.regulatorVoltage > 0">
                         <h6 class="flex justify-content-between mb-1">
                             TPS546 Output Voltage<span>{{info.regulatorVoltage}} V</span>
                         </h6>
@@ -293,32 +293,34 @@
                         </p-progressbar>
                     </div>
 
-                    <ng-container *ngIf="info.asicVoltages?.length; else legacyAsicVoltage">
-                        <div class="mb-3" *ngFor="let asicVoltage of info.asicVoltages; let i = index; trackBy: trackByIndex">
-                            <h6 class="flex justify-content-between mb-1">
-                                Measured ASIC Voltage {{ i + 1 }}
-                                <span>
-                                    <ng-container *ngIf="asicVoltage > 0; else noValue">
-                                        {{asicVoltage}} V
-                                    </ng-container>
-                                </span>
-                            </h6>
-                            <p-progressbar [value]="asicVoltage > 0 ? (asicVoltage / 1.8) * 100 : 0" [styleClass]="'p-progressbar--thin'">
-                                <ng-template pTemplate="content" let-value></ng-template>
-                            </p-progressbar>
-                        </div>
-                    </ng-container>
+                    <ng-container *ngIf="info.ASICModel !== 'MC3'">
+                        <ng-container *ngIf="info.asicVoltages?.length; else legacyAsicVoltage">
+                            <div class="mb-3" *ngFor="let asicVoltage of info.asicVoltages; let i = index; trackBy: trackByIndex">
+                                <h6 class="flex justify-content-between mb-1">
+                                    Measured ASIC Voltage {{ i + 1 }}
+                                    <span>
+                                        <ng-container *ngIf="asicVoltage > 0; else noValue">
+                                            {{asicVoltage}} V
+                                        </ng-container>
+                                    </span>
+                                </h6>
+                                <p-progressbar [value]="asicVoltage > 0 ? (asicVoltage / 1.8) * 100 : 0" [styleClass]="'p-progressbar--thin'">
+                                    <ng-template pTemplate="content" let-value></ng-template>
+                                </p-progressbar>
+                            </div>
+                        </ng-container>
 
-                    <ng-template #legacyAsicVoltage>
-                        <div>
-                            <h6 class="flex justify-content-between mb-1">
-                                Measured ASIC Voltage<span>{{info.coreVoltageActual}} V</span>
-                            </h6>
-                            <p-progressbar [value]="(info.coreVoltageActual / 1.8) * 100" [styleClass]="'p-progressbar--thin'">
-                                <ng-template pTemplate="content" let-value></ng-template>
-                            </p-progressbar>
-                        </div>
-                    </ng-template>
+                        <ng-template #legacyAsicVoltage>
+                            <div>
+                                <h6 class="flex justify-content-between mb-1">
+                                    Measured ASIC Voltage<span>{{info.coreVoltageActual}} V</span>
+                                </h6>
+                                <p-progressbar [value]="(info.coreVoltageActual / 1.8) * 100" [styleClass]="'p-progressbar--thin'">
+                                    <ng-template pTemplate="content" let-value></ng-template>
+                                </p-progressbar>
+                            </div>
+                        </ng-template>
+                    </ng-container>
                 </div>
             </div>
         </div>
@@ -618,49 +620,52 @@
         <div class="grid-stack-item" gs-id="registers">
             <div class="grid-stack-item-content">
                 <div class="card">
-                    <h4 class="white-space-nowrap overflow-hidden text-overflow-ellipsis">Hashrate Registers</h4>
+                    <app-asic-diagnostics *ngIf="info.ASICModel === 'MC3'; else legacyRegisters" [info]="info"
+                        [telemetryStale]="!!(systemInfoError$ | async)?.startTime"></app-asic-diagnostics>
+                    <ng-template #legacyRegisters>
+                        <h4 class="white-space-nowrap overflow-hidden text-overflow-ellipsis">Hashrate Registers</h4>
 
-                    <ng-container *ngIf="asicsAmount as asicAmount">
-                        <table class="heatmap text-{{asicAmount <= 2 ? 'sm' : 'xs'}}">
-                            <thead>
-                                <tr>
-                                    <th *ngIf="asicAmount > 1" class="text-left">ASIC</th>
-                                    <th>Total</th>
-                                    <ng-container *ngIf="asicDomainsAmount as asicDomainsAmount">
-                                        <th *ngIf="asicDomainsAmount > 0" [attr.colspan]="asicDomainsAmount">
-                                            {{ asicDomainsAmount == 1 ? "Domain" : "Domains" }}
-                                        </th>
-                                    </ng-container>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="cursor-pointer" *ngFor="let asic of info.hashrateMonitor?.asics; let i = index; trackBy: trackByIndex"
-                                    [pTooltip]="(asicAmount > 1 ? 'ASIC ' + (i + 1) + ' - ' : '') + 'Error count: ' + asic.errorCount"
-                                    tooltipPosition="bottom">
-                                    <td *ngIf="asicAmount > 1" class="text-color-secondary text-left">
-                                        {{ i + 1 }}
-                                    </td>
-                                    <td [style.--heatmap-bg]="getAsicHeatmapColor(asic.total, info.expectedHashrate)"
-                                        [style.height]="(asicAmount <= 2 ? '2rem' : null)"
-                                        class="text-center">
-                                        <span class="text-xs">{{ asic.total | hashSuffix }}</span>
-                                    </td>
-                                    <td *ngFor="let domain of asic?.domains; trackBy: trackByIndex"
-                                        [style.--heatmap-bg]="getHeatmapColor(domain, info.expectedHashrate)"
-                                        [style.height]="(asicAmount <= 2 ? '2rem' : null)"
-                                        class="text-center">
-                                        <span class="text-xs">{{ domain | hashSuffix }}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </ng-container>
+                        <ng-container *ngIf="asicsAmount as asicAmount">
+                            <table class="heatmap text-{{asicAmount <= 2 ? 'sm' : 'xs'}}">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf="asicAmount > 1" class="text-left">ASIC</th>
+                                        <th>Total</th>
+                                        <ng-container *ngIf="asicDomainsAmount as asicDomainsAmount">
+                                            <th *ngIf="asicDomainsAmount > 0" [attr.colspan]="asicDomainsAmount">
+                                                {{ asicDomainsAmount == 1 ? "Domain" : "Domains" }}
+                                            </th>
+                                        </ng-container>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="cursor-pointer" *ngFor="let asic of info.hashrateMonitor?.asics; let i = index; trackBy: trackByIndex"
+                                        [pTooltip]="(asicAmount > 1 ? 'ASIC ' + (i + 1) + ' - ' : '') + 'Error count: ' + asic.errorCount"
+                                        tooltipPosition="bottom">
+                                        <td *ngIf="asicAmount > 1" class="text-color-secondary text-left">
+                                            {{ i + 1 }}
+                                        </td>
+                                        <td [style.--heatmap-bg]="getAsicHeatmapColor(asic.total, info.expectedHashrate)"
+                                            [style.height]="(asicAmount <= 2 ? '2rem' : null)"
+                                            class="text-center">
+                                            <span class="text-xs">{{ asic.total | hashSuffix }}</span>
+                                        </td>
+                                        <td *ngFor="let domain of asic?.domains; trackBy: trackByIndex"
+                                            [style.--heatmap-bg]="getHeatmapColor(domain, info.expectedHashrate)"
+                                            [style.height]="(asicAmount <= 2 ? '2rem' : null)"
+                                            class="text-center">
+                                            <span class="text-xs">{{ domain | hashSuffix }}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-container>
+                    </ng-template>
                 </div>
             </div>
         </div>
     </div>
 
-    <app-asic-diagnostics *ngIf="info.ASICModel === 'MC3'"></app-asic-diagnostics>
 
     <app-confetti *ngIf="info.showNewBlock"></app-confetti>
 </ng-container>

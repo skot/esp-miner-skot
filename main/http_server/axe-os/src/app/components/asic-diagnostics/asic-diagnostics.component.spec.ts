@@ -74,6 +74,52 @@ describe('AsicDiagnosticsComponent', () => {
     component.setSnapshot(data); expect(component.retained).toBeTrue();
   });
 
+  it('keeps sensors aligned by chip ID and preserves millivolt precision', () => {
+    component.info = {
+      asicTemps: [53.5, 52.2], asicVoltages: [1.157, 1.163], domainVoltages: [1157, 1163],
+      regulatorVoltage: 2.320, actualFrequency: 600, power: 46.7,
+      hashrateMonitor: { asics: [] }
+    };
+    const data = sample(); data.chips[0].chipId = 1;
+    component.setSnapshot(data); fixture.detectChanges();
+    const row = fixture.nativeElement.querySelector('.asic-row');
+    expect(row.textContent).toContain('A2');
+    expect(row.textContent).toContain('52.2 °C');
+    expect(row.textContent).toContain('1.163 V');
+    expect(row.textContent).not.toContain('53.5 °C');
+    expect(fixture.nativeElement.querySelector('.supply').textContent).toContain('2.320 V');
+    expect(component.stackDifferenceMv).toBe(6);
+  });
+
+  it('does not display a partial counter sum as total system hashrate', () => {
+    const data = sample();
+    data.chips.push({ ...data.chips[0], chipId: 1, valid: 0, corePassCounts: [], coreFailCounts: [] });
+    component.setSnapshot(data);
+    expect(component.totalGhs).toBeNull();
+    expect(component.measuredDomains).toBe(4);
+    expect(component.activeDomains).toBe(4);
+  });
+
+  it('shows absent or invalid sensors as unavailable', () => {
+    component.info = {
+      asicTemps: [-1], asicVoltages: [0], domainVoltages: [1160, 0],
+      regulatorVoltage: 0, actualFrequency: 600, power: 0,
+      hashrateMonitor: { asics: [] }
+    };
+    component.setSnapshot(sample()); fixture.detectChanges();
+    expect(component.stackDifferenceMv).toBeNull();
+    expect(fixture.nativeElement.querySelector('.sensors').textContent).not.toContain('0.000 V');
+    expect(fixture.nativeElement.querySelector('.sensors').textContent).not.toContain('-1.0 °C');
+    expect(component.positive(NaN)).toBeFalse();
+  });
+
+  it('labels stale telemetry separately from fresh counters', () => {
+    component.telemetryStale = true;
+    component.setSnapshot(sample()); fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Voltages and temperatures are last received values');
+    expect(component.retained).toBeFalse();
+  });
+
   it('continues polling after an error and stops when destroyed', fakeAsync(() => {
     fixture.detectChanges(); tick(0);
     expect(api.getDiagnostics).toHaveBeenCalledTimes(1);

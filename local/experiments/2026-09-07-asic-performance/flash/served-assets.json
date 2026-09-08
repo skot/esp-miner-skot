@@ -1,0 +1,14 @@
+{
+  "index.html": {
+    "sha256": "fe63f3b94f70da947a9e6967b4040e58545291786ca6c16947e4af15c0bcc996",
+    "matches_build": true
+  },
+  "main-FUC2DLKF.js": {
+    "sha256": "8d8996a419d6b95f081d06d6a64fba1e33546b66d0239fc737488d53c987c745",
+    "matches_build": true
+  },
+  "version.txt": {
+    "sha256": "360a74dda02128e6967730a6a267bbb31e89384491c7459aa6371495862cd96f",
+    "matches_build": true
+  }
+}

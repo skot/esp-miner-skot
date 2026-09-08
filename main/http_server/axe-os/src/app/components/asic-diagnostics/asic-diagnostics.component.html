@@ -1,24 +1,46 @@
-<section class="card mt-3" aria-label="ASIC core and domain diagnostics">
+<section aria-label="ASIC performance">
   <div class="heading">
-    <h2>Core &amp; domain health</h2>
+    <div><h2>ASIC Performance</h2><p class="subtitle">Hashrate, temperature &amp; voltage balance</p></div>
     <span class="state" [class.failed]="snapshot?.startupResult === 'failed'">
-      {{ snapshot?.source === 'mining' ? 'Mining counters' : 'Startup qualification' }}
-      <ng-container *ngIf="snapshot?.source === 'startup'"> · {{ snapshot?.startupResult || 'waiting' }}</ng-container>
+      {{ !snapshot ? 'Waiting for counters' : snapshot.source === 'startup' && snapshot.startupResult === 'pending' ? 'Warming up' : retained ? 'Retained measurement' : 'Live measurements' }}
     </span>
   </div>
-  <p class="text-color-secondary" *ngIf="snapshot">{{ snapshot.status }} · {{ snapshot.source === 'startup' && snapshot.startupResult === 'pending' ? 'Startup measurements' : retained ? 'Retained measurement' : 'Live measurements' }}</p>
+  <div class="overview">
+    <div class="total"><span>Total ASIC hashrate</span><strong>{{ totalGhs === null ? '—' : (totalGhs / 1000 | number:'1.3-3') }} <small>TH/s</small></strong></div>
+    <div><span>Active domains</span><strong>{{ measuredDomains ? activeDomains + ' / ' + measuredDomains : '—' }}</strong><small *ngIf="measuredDomains && measuredDomains < chips.length * 4">Partial window</small></div>
+    <div><span>Frequency</span><strong>{{ positive(info?.actualFrequency) ? (info?.actualFrequency | number:'1.0-0') : '—' }} <small>MHz</small></strong></div>
+    <div><span>System power</span><strong>{{ positive(info?.power) ? (info?.power | number:'1.1-1') : '—' }} <small>W</small></strong></div>
+  </div>
+  <div class="supply" *ngIf="info">
+    <span>TPS546 output <b>{{ positive(info.regulatorVoltage) ? (info.regulatorVoltage | number:'1.3-3') + ' V' : '—' }}</b></span>
+    <span *ngFor="let voltage of info.domainVoltages; let i = index">{{ info.domainVoltages.length === 2 ? (i === 0 ? 'Lower stack' : 'Upper stack') : 'Stack ' + (i + 1) }} <b>{{ positive(voltage) ? (voltage / 1000 | number:'1.3-3') + ' V' : '—' }}</b></span>
+    <span *ngIf="stackDifferenceMv !== null">Stack difference <b>{{ stackDifferenceMv | number:'1.0-0' }} mV</b></span>
+  </div>
+  <p *ngIf="telemetryStale" role="status" class="failed">Live telemetry disconnected. Voltages and temperatures are last received values.</p>
   <p *ngIf="error" role="status" class="failed">Unable to refresh counters. Showing the last received measurement; its age is from the last successful refresh.</p>
   <p *ngIf="!chips.length" class="text-color-secondary">Waiting for the first core counter window. No PASS data yet.</p>
   <div class="chips">
     <article *ngFor="let chip of chips; trackBy: trackChip" class="chip">
-      <div class="heading">
-        <h3>A{{ chip.data.chipId + 1 }}</h3>
-        <strong *ngIf="chip.domains.length">{{ chip.ghs | number:'1.1-1' }} GH/s</strong>
+      <div class="asic-row">
+        <div class="identity"><h3>A{{ chip.data.chipId + 1 }}</h3><strong>{{ chip.domains.length ? (chip.ghs | number:'1.1-1') : '—' }} <small>GH/s</small></strong></div>
+        <div class="sensors">
+          <div><span>Temperature</span><strong [class.failed]="(info?.asicTemps?.[chip.data.chipId] || 0) >= 70">{{ positive(info?.asicTemps?.[chip.data.chipId]) ? (info?.asicTemps?.[chip.data.chipId] | number:'1.1-1') + ' °C' : '—' }}</strong></div>
+          <div><span>ASIC voltage</span><strong>{{ positive(info?.asicVoltages?.[chip.data.chipId]) ? (info?.asicVoltages?.[chip.data.chipId] | number:'1.3-3') + ' V' : '—' }}</strong></div>
+        </div>
+        <div class="domains" *ngIf="chip.domains.length; else unavailable">
+          <div *ngFor="let domain of chip.domains; trackBy: trackDomain" class="domain" [class.silent]="domain.pass === 0" [class.low]="domainHealth(chip, domain) === 'Low rate'">
+            <div class="domain-heading"><b>D{{ domain.id }}</b><span>{{ domainHealth(chip, domain) }}</span></div>
+            <strong>{{ domain.ghs | number:'1.1-1' }} <small>GH/s</small></strong>
+            <span class="core-count">{{ 39 - domain.zero }}/39 cores active</span>
+          </div>
+        </div>
+        <ng-template #unavailable><p class="text-color-secondary">Counters unavailable for this window.</p></ng-template>
       </div>
       <p class="text-color-secondary measurement" *ngIf="chip.domains.length">
-        {{ chip.data.frequency | number:'1.0-0' }} MHz · {{ chip.data.windowSeconds | number:'1.2-2' }} s window · {{ chip.data.ageSeconds | number:'1.0-0' }} s ago
+        {{ chip.data.frequency | number:'1.0-0' }} MHz · {{ chip.data.windowSeconds | number:'1.2-2' }} s counter window · {{ chip.data.ageSeconds | number:'1.0-0' }} s ago
       </p>
-      <p *ngIf="!chip.domains.length" class="text-color-secondary">Counters unavailable for this window.</p>
+      <details *ngIf="chip.domains.length">
+        <summary>Core counters · A{{ chip.data.chipId + 1 }}</summary>
       <table *ngIf="chip.domains.length">
         <thead><tr><th>Domain</th><th>PASS</th><th>FAIL</th><th>GH/s</th><th>No PASS</th></tr></thead>
         <tbody>
@@ -29,9 +51,7 @@
           </tr>
         </tbody>
       </table>
-      <details *ngIf="chip.domains.length">
-        <summary>Individual cores · A{{ chip.data.chipId + 1 }}</summary>
-        <p class="text-color-secondary">Each cell: core ID, PASS count, GH/s. Focus or hover for FAIL count.</p>
+        <p class="text-color-secondary">Each cell shows core ID, PASS count and GH/s. Focus or hover for FAIL count.</p>
         <div *ngFor="let domain of chip.domains; trackBy: trackDomain" class="core-domain">
           <h4>D{{ domain.id }} · cores {{ domain.id * 39 }}–{{ domain.id * 39 + 38 }}</h4>
           <div class="cores">
@@ -44,9 +64,10 @@
       </details>
     </article>
   </div>
-  <p class="text-color-secondary footnote" *ngIf="chips.length">
-    PASS/FAIL are hardware counter counts for each window, not pool shares. Red means no PASS; amber means domain hashrate below 90% of ideal.
-    D0–D3 are the four internal domains within each ASIC (39 cores each). Readings survive ASIC shutdown, but clear on reinitialization or reboot.
-    Startup rates use counter growth between reads; the first read establishes a baseline.
+  <p class="text-color-secondary footnote">
+    {{ snapshot?.status }}<ng-container *ngIf="snapshot?.source === 'startup'"> · Startup {{ snapshot?.startupResult }}</ng-container>
+    · Hashrates use domain counter windows. Red: no PASS. Amber: below 90% of ideal.
+    Voltages and temperatures are latest telemetry; ASIC voltage spans the whole chip, not an individual internal domain.
+    Retained counters survive ASIC shutdown and clear on reinitialization.
   </p>
 </section>

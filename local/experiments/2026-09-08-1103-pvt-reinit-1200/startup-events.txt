@@ -1,0 +1,447 @@
+PROTO STARTUP BOOST warmup_mv=1160 ramp_mv=1200; PVT-only comparison at 1200, no work
+I (29032) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=103.67 zero=0
+I (29033) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=97.78 zero=0
+I (29037) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=96.76 zero=1
+I (29045) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.79 zero=0
+I (29052) asic_init: PROTO STARTUP CHIP A1 frequency=100 GHs=122.30 throughput=97.99 pass_rate=98.33
+I (29149) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=99.19 zero=0
+I (29149) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.83 zero=0
+I (29154) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=100.57 zero=0
+I (29161) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=99.42 zero=0
+I (29169) asic_init: PROTO STARTUP CHIP A2 frequency=100 GHs=123.08 throughput=98.62 pass_rate=98.61
+I (29267) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.31 zero=0
+I (29267) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.39 zero=0
+I (29272) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.02 zero=0
+I (29279) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.28 zero=0
+I (29287) asic_init: PROTO STARTUP CHIP A3 frequency=100 GHs=124.04 throughput=99.39 pass_rate=99.08
+I (29384) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=101.75 zero=0
+I (29385) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=100.03 zero=0
+I (29389) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=98.56 zero=0
+I (29397) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.66 zero=0
+I (29404) asic_init: PROTO STARTUP CHIP A4 frequency=100 GHs=122.68 throughput=98.30 pass_rate=99.46
+I (29414) asic_init: PROTO STARTUP QUALIFY frequency=100 total=492.10 result=PASS
+I (29508) asic_init: PROTO STARTUP TEMP freq=100 A1=27.79 A2=27.13 A3=27.13 A4=27.79
+I (34175) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=102.77 zero=0
+I (34182) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=98.29 zero=0
+I (34186) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.11 zero=1
+I (34193) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.82 zero=0
+I (34198) asic_init: PROTO STARTUP CHIP A1 frequency=125 GHs=153.47 throughput=98.38 pass_rate=98.36
+I (34331) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=98.71 zero=0
+I (34337) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=101.40 zero=0
+I (34343) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=100.01 zero=0
+I (34347) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=99.89 zero=0
+I (34355) asic_init: PROTO STARTUP CHIP A2 frequency=125 GHs=153.51 throughput=98.40 pass_rate=98.58
+I (34472) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=99.98 zero=0
+I (34478) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.47 zero=0
+I (34481) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.60 zero=0
+I (34490) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=98.95 zero=0
+I (34497) asic_init: PROTO STARTUP CHIP A3 frequency=125 GHs=154.92 throughput=99.31 pass_rate=99.13
+I (34621) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=101.22 zero=0
+I (34623) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=99.87 zero=0
+I (34628) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=98.77 zero=0
+I (34636) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=100.14 zero=0
+I (34644) asic_init: PROTO STARTUP CHIP A4 frequency=125 GHs=153.97 throughput=98.70 pass_rate=99.50
+I (34653) asic_init: PROTO STARTUP QUALIFY frequency=125 total=615.86 result=PASS
+I (34769) asic_init: PROTO STARTUP TEMP freq=125 A1=28.61 A2=27.79 A3=27.95 A4=28.28
+I (39452) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=101.91 zero=0
+I (39453) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=98.96 zero=0
+I (39457) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.28 zero=1
+I (39466) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.85 zero=0
+I (39473) asic_init: PROTO STARTUP CHIP A1 frequency=150 GHs=184.28 throughput=98.44 pass_rate=98.38
+I (39569) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=99.02 zero=0
+I (39570) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.55 zero=0
+I (39574) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=100.14 zero=0
+I (39583) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=100.29 zero=0
+I (39590) asic_init: PROTO STARTUP CHIP A2 frequency=150 GHs=184.54 throughput=98.58 pass_rate=98.64
+I (39686) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.29 zero=0
+I (39687) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.50 zero=0
+I (39692) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.10 zero=0
+I (39699) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.11 zero=0
+I (39707) asic_init: PROTO STARTUP CHIP A3 frequency=150 GHs=186.23 throughput=99.48 pass_rate=99.14
+I (39804) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=100.71 zero=0
+I (39804) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=100.18 zero=0
+I (39809) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=99.47 zero=0
+I (39817) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.64 zero=0
+I (39824) asic_init: PROTO STARTUP CHIP A4 frequency=150 GHs=185.95 throughput=99.33 pass_rate=99.45
+I (39834) asic_init: PROTO STARTUP QUALIFY frequency=150 total=741.00 result=PASS
+I (39924) asic_init: PROTO STARTUP TEMP freq=150 A1=29.27 A2=28.45 A3=28.61 A4=29.11
+I (44533) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=101.91 zero=0
+I (44534) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=99.01 zero=0
+I (44538) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.04 zero=1
+I (44546) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=102.05 zero=0
+I (44553) asic_init: PROTO STARTUP CHIP A1 frequency=175 GHs=214.89 throughput=98.39 pass_rate=98.42
+I (44650) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=99.06 zero=0
+I (44651) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.49 zero=0
+I (44655) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=99.87 zero=0
+I (44663) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=100.59 zero=0
+I (44671) asic_init: PROTO STARTUP CHIP A2 frequency=175 GHs=215.65 throughput=98.74 pass_rate=98.63
+I (44767) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.34 zero=0
+I (44768) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.41 zero=0
+I (44772) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.11 zero=0
+I (44780) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.14 zero=0
+I (44787) asic_init: PROTO STARTUP CHIP A3 frequency=175 GHs=216.75 throughput=99.25 pass_rate=99.16
+I (44884) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=101.23 zero=0
+I (44885) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=100.24 zero=0
+I (44889) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=98.71 zero=0
+I (44897) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.81 zero=0
+I (44905) asic_init: PROTO STARTUP CHIP A4 frequency=175 GHs=216.95 throughput=99.34 pass_rate=99.43
+I (44914) asic_init: PROTO STARTUP QUALIFY frequency=175 total=864.25 result=PASS
+I (45009) asic_init: PROTO STARTUP TEMP freq=175 A1=30.10 A2=29.44 A3=29.44 A4=29.93
+I (49620) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=101.94 zero=0
+I (49621) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=99.10 zero=0
+I (49625) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.27 zero=1
+I (49632) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.69 zero=0
+I (49640) asic_init: PROTO STARTUP CHIP A1 frequency=200 GHs=246.00 throughput=98.56 pass_rate=98.45
+I (49737) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=98.76 zero=0
+I (49737) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.40 zero=0
+I (49742) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=100.08 zero=0
+I (49749) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=100.76 zero=0
+I (49757) asic_init: PROTO STARTUP CHIP A2 frequency=200 GHs=246.11 throughput=98.60 pass_rate=98.60
+I (49854) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.48 zero=0
+I (49854) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=99.87 zero=0
+I (49859) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.46 zero=0
+I (49866) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.20 zero=0
+I (49874) asic_init: PROTO STARTUP CHIP A3 frequency=200 GHs=247.68 throughput=99.23 pass_rate=99.19
+I (49972) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=101.71 zero=0
+I (49972) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=99.84 zero=0
+I (49977) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=98.81 zero=0
+I (49984) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.64 zero=0
+I (49992) asic_init: PROTO STARTUP CHIP A4 frequency=200 GHs=248.05 throughput=99.38 pass_rate=99.44
+I (50002) asic_init: PROTO STARTUP QUALIFY frequency=200 total=987.84 result=PASS
+I (50097) asic_init: PROTO STARTUP TEMP freq=200 A1=31.09 A2=30.26 A3=30.26 A4=30.59
+I (54711) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=101.77 zero=0
+I (54712) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=99.02 zero=0
+I (54716) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.57 zero=1
+I (54724) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.64 zero=0
+I (54733) asic_init: PROTO STARTUP CHIP A1 frequency=225 GHs=276.68 throughput=98.53 pass_rate=98.47
+I (54830) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=98.40 zero=0
+I (54830) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.87 zero=0
+I (54835) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=99.90 zero=0
+I (54842) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=100.83 zero=0
+I (54850) asic_init: PROTO STARTUP CHIP A2 frequency=225 GHs=277.09 throughput=98.68 pass_rate=98.60
+I (54947) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.35 zero=0
+I (54947) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.15 zero=0
+I (54952) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.25 zero=0
+I (54959) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.24 zero=0
+I (54967) asic_init: PROTO STARTUP CHIP A3 frequency=225 GHs=278.83 throughput=99.30 pass_rate=99.20
+I (55064) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=101.69 zero=0
+I (55064) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=100.12 zero=0
+I (55069) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=98.77 zero=0
+I (55076) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.41 zero=0
+I (55084) asic_init: PROTO STARTUP CHIP A4 frequency=225 GHs=278.92 throughput=99.33 pass_rate=99.45
+I (55094) asic_init: PROTO STARTUP QUALIFY frequency=225 total=1111.52 result=PASS
+I (55183) asic_init: PROTO STARTUP TEMP freq=225 A1=31.91 A2=31.09 A3=31.25 A4=31.58
+I (59858) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=101.52 zero=0
+I (59864) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=99.36 zero=0
+I (59866) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.78 zero=1
+I (59875) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.35 zero=0
+I (59882) asic_init: PROTO STARTUP CHIP A1 frequency=250 GHs=307.12 throughput=98.43 pass_rate=98.46
+I (59996) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=98.23 zero=0
+I (60001) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.71 zero=0
+I (60005) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=99.99 zero=0
+I (60012) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=101.07 zero=0
+I (60019) asic_init: PROTO STARTUP CHIP A2 frequency=250 GHs=308.49 throughput=98.88 pass_rate=98.68
+I (60131) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.10 zero=0
+I (60134) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.06 zero=0
+I (60137) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.20 zero=0
+I (60146) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.63 zero=0
+I (60155) asic_init: PROTO STARTUP CHIP A3 frequency=250 GHs=309.22 throughput=99.11 pass_rate=99.20
+I (60279) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=101.81 zero=0
+I (60284) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=99.85 zero=0
+I (60294) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=99.03 zero=0
+I (60300) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.31 zero=0
+I (60309) asic_init: PROTO STARTUP CHIP A4 frequency=250 GHs=309.01 throughput=99.04 pass_rate=99.46
+I (60318) asic_init: PROTO STARTUP QUALIFY frequency=250 total=1233.83 result=PASS
+I (60450) asic_init: PROTO STARTUP TEMP freq=250 A1=32.74 A2=31.91 A3=32.24 A4=32.41
+I (65118) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=101.13 zero=0
+I (65118) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=99.54 zero=0
+I (65123) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.86 zero=1
+I (65130) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.47 zero=0
+I (65138) asic_init: PROTO STARTUP CHIP A1 frequency=275 GHs=338.32 throughput=98.58 pass_rate=98.49
+I (65235) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=98.49 zero=0
+I (65235) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.54 zero=0
+I (65240) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=100.04 zero=0
+I (65247) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=100.93 zero=0
+I (65255) asic_init: PROTO STARTUP CHIP A2 frequency=275 GHs=339.14 throughput=98.82 pass_rate=98.71
+I (65353) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.07 zero=0
+I (65355) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.10 zero=0
+I (65359) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.08 zero=0
+I (65367) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.75 zero=0
+I (65374) asic_init: PROTO STARTUP CHIP A3 frequency=275 GHs=339.80 throughput=99.01 pass_rate=99.23
+I (65471) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=101.66 zero=0
+I (65472) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=100.14 zero=0
+I (65476) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=98.84 zero=0
+I (65485) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.36 zero=0
+I (65498) asic_init: PROTO STARTUP CHIP A4 frequency=275 GHs=340.22 throughput=99.13 pass_rate=99.45
+I (65508) asic_init: PROTO STARTUP QUALIFY frequency=275 total=1357.48 result=PASS
+I (65594) asic_init: PROTO STARTUP TEMP freq=275 A1=33.73 A2=32.74 A3=33.07 A4=33.23
+I (70204) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=100.90 zero=0
+I (70205) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=99.61 zero=0
+I (70209) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.95 zero=1
+I (70218) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.54 zero=0
+I (70225) asic_init: PROTO STARTUP CHIP A1 frequency=300 GHs=369.05 throughput=98.57 pass_rate=98.51
+I (70321) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=98.71 zero=0
+I (70322) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=100.69 zero=0
+I (70326) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=99.84 zero=0
+I (70334) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=100.76 zero=0
+I (70342) asic_init: PROTO STARTUP CHIP A2 frequency=300 GHs=369.68 throughput=98.74 pass_rate=98.84
+I (70441) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=99.92 zero=0
+I (70442) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=100.29 zero=0
+I (70446) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.10 zero=0
+I (70454) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.69 zero=0
+I (70461) asic_init: PROTO STARTUP CHIP A3 frequency=300 GHs=370.15 throughput=98.86 pass_rate=99.25
+I (70558) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=101.58 zero=0
+I (70558) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=100.33 zero=0
+I (70563) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=98.63 zero=0
+I (70570) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.47 zero=0
+I (70578) asic_init: PROTO STARTUP CHIP A4 frequency=300 GHs=371.16 throughput=99.13 pass_rate=99.48
+I (70588) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1480.03 result=PASS
+I (70674) asic_init: PROTO STARTUP TEMP freq=300 A1=34.72 A2=33.73 A3=34.06 A4=34.39
+I (70760) asic_init: PROTO STARTUP TEMP freq=300 A1=34.72 A2=33.73 A3=34.06 A4=34.39
+I (71854) asic_init: PROTO STARTUP TEMP freq=300 A1=34.72 A2=33.89 A3=34.22 A4=34.39
+I (72986) asic_init: PROTO STARTUP TEMP freq=300 A1=35.05 A2=34.06 A3=34.39 A4=34.72
+I (74111) asic_init: PROTO STARTUP TEMP freq=300 A1=35.21 A2=34.06 A3=34.39 A4=34.72
+I (75238) asic_init: PROTO STARTUP TEMP freq=300 A1=35.38 A2=34.39 A3=34.72 A4=34.88
+I (76328) asic_init: PROTO STARTUP TEMP freq=300 A1=35.38 A2=34.39 A3=34.88 A4=34.88
+I (77419) asic_init: PROTO STARTUP TEMP freq=300 A1=35.71 A2=34.55 A3=34.88 A4=35.21
+I (78506) asic_init: PROTO STARTUP TEMP freq=300 A1=35.71 A2=34.88 A3=35.05 A4=35.21
+I (79605) asic_init: PROTO STARTUP TEMP freq=300 A1=35.87 A2=34.88 A3=35.21 A4=35.38
+I (80701) asic_init: PROTO STARTUP TEMP freq=300 A1=35.87 A2=35.05 A3=35.21 A4=35.38
+I (81814) asic_init: PROTO STARTUP TEMP freq=300 A1=36.04 A2=35.05 A3=35.38 A4=35.71
+I (82906) asic_init: PROTO STARTUP TEMP freq=300 A1=36.04 A2=35.38 A3=35.38 A4=35.87
+I (83991) asic_init: PROTO STARTUP TEMP freq=300 A1=36.20 A2=35.38 A3=35.71 A4=35.87
+I (85083) asic_init: PROTO STARTUP TEMP freq=300 A1=36.37 A2=35.54 A3=35.71 A4=36.04
+I (86217) asic_init: PROTO STARTUP TEMP freq=300 A1=36.53 A2=35.54 A3=35.87 A4=36.20
+I (87356) asic_init: PROTO STARTUP TEMP freq=300 A1=36.53 A2=35.71 A3=36.04 A4=36.20
+I (88453) asic_init: PROTO STARTUP TEMP freq=300 A1=36.86 A2=35.87 A3=35.87 A4=36.20
+I (89540) asic_init: PROTO STARTUP TEMP freq=300 A1=37.03 A2=35.87 A3=36.20 A4=36.37
+I (90631) asic_init: PROTO STARTUP TEMP freq=300 A1=36.86 A2=36.04 A3=36.37 A4=36.53
+I (91718) asic_init: PROTO STARTUP TEMP freq=300 A1=37.03 A2=36.20 A3=36.53 A4=36.70
+I (92811) asic_init: PROTO STARTUP TEMP freq=300 A1=37.19 A2=36.20 A3=36.53 A4=36.86
+I (93905) asic_init: PROTO STARTUP TEMP freq=300 A1=37.36 A2=36.20 A3=36.70 A4=36.86
+I (94994) asic_init: PROTO STARTUP TEMP freq=300 A1=37.52 A2=36.53 A3=36.70 A4=36.86
+I (96089) asic_init: PROTO STARTUP TEMP freq=300 A1=37.36 A2=36.70 A3=36.86 A4=37.03
+I (97183) asic_init: PROTO STARTUP TEMP freq=300 A1=37.52 A2=36.86 A3=36.86 A4=37.19
+I (98269) asic_init: PROTO STARTUP TEMP freq=300 A1=37.69 A2=36.70 A3=37.03 A4=37.19
+I (99399) asic_init: PROTO STARTUP TEMP freq=300 A1=37.85 A2=36.86 A3=37.19 A4=37.36
+I (100544) asic_init: PROTO STARTUP TEMP freq=300 A1=38.02 A2=37.03 A3=37.36 A4=37.52
+I (101633) asic_init: PROTO STARTUP TEMP freq=300 A1=38.18 A2=37.19 A3=37.36 A4=37.69
+I (102725) asic_init: PROTO STARTUP TEMP freq=300 A1=38.18 A2=37.36 A3=37.52 A4=37.69
+I (103820) asic_init: PROTO STARTUP TEMP freq=300 A1=38.35 A2=37.52 A3=37.52 A4=37.85
+I (104908) asic_init: PROTO STARTUP TEMP freq=300 A1=38.35 A2=37.36 A3=37.85 A4=37.85
+I (105995) asic_init: PROTO STARTUP TEMP freq=300 A1=38.51 A2=37.52 A3=37.85 A4=38.02
+I (107092) asic_init: PROTO STARTUP TEMP freq=300 A1=38.51 A2=37.69 A3=37.85 A4=38.02
+I (108188) asic_init: PROTO STARTUP TEMP freq=300 A1=38.84 A2=37.85 A3=38.02 A4=38.35
+I (109279) asic_init: PROTO STARTUP TEMP freq=300 A1=38.84 A2=37.85 A3=38.18 A4=38.51
+I (110368) asic_init: PROTO STARTUP TEMP freq=300 A1=38.84 A2=37.85 A3=38.18 A4=38.51
+I (111458) asic_init: PROTO STARTUP TEMP freq=300 A1=39.01 A2=38.18 A3=38.51 A4=38.51
+I (112590) asic_init: PROTO STARTUP TEMP freq=300 A1=39.01 A2=38.18 A3=38.51 A4=38.68
+I (113726) asic_init: PROTO STARTUP TEMP freq=300 A1=39.17 A2=38.18 A3=38.51 A4=38.68
+I (114822) asic_init: PROTO STARTUP TEMP freq=300 A1=39.34 A2=38.35 A3=38.68 A4=39.01
+I (115910) asic_init: PROTO STARTUP TEMP freq=300 A1=39.50 A2=38.51 A3=38.68 A4=39.01
+I (116999) asic_init: PROTO STARTUP TEMP freq=300 A1=39.50 A2=38.51 A3=38.84 A4=39.01
+I (118089) asic_init: PROTO STARTUP TEMP freq=300 A1=39.67 A2=38.68 A3=39.01 A4=39.17
+I (119177) asic_init: PROTO STARTUP TEMP freq=300 A1=39.83 A2=38.68 A3=39.01 A4=39.34
+I (120266) asic_init: PROTO STARTUP TEMP freq=300 A1=40.00 A2=39.01 A3=39.17 A4=39.34
+I (121365) asic_init: PROTO STARTUP TEMP freq=300 A1=40.00 A2=39.01 A3=39.34 A4=39.50
+I (122458) asic_init: PROTO STARTUP TEMP freq=300 A1=40.00 A2=39.01 A3=39.17 A4=39.67
+I (123554) asic_init: PROTO STARTUP TEMP freq=300 A1=40.00 A2=39.34 A3=39.50 A4=39.50
+I (124646) asic_init: PROTO STARTUP TEMP freq=300 A1=40.16 A2=39.34 A3=39.50 A4=39.67
+I (125773) asic_init: PROTO STARTUP TEMP freq=300 A1=40.33 A2=39.50 A3=39.67 A4=39.83
+I (126915) asic_init: PROTO STARTUP TEMP freq=300 A1=40.33 A2=39.50 A3=39.67 A4=39.83
+I (128013) asic_init: PROTO STARTUP TEMP freq=300 A1=40.49 A2=39.50 A3=39.83 A4=40.16
+I (129108) asic_init: PROTO STARTUP TEMP freq=300 A1=40.49 A2=39.67 A3=40.00 A4=40.16
+I (130196) asic_init: PROTO STARTUP TEMP freq=300 A1=40.66 A2=39.83 A3=40.00 A4=40.16
+I (131286) asic_init: PROTO STARTUP TEMP freq=300 A1=40.82 A2=39.83 A3=40.16 A4=40.33
+I (132385) asic_init: PROTO STARTUP TEMP freq=300 A1=40.99 A2=40.00 A3=40.33 A4=40.33
+I (133471) asic_init: PROTO STARTUP TEMP freq=300 A1=40.99 A2=40.16 A3=40.33 A4=40.49
+I (134574) asic_init: PROTO STARTUP TEMP freq=300 A1=41.15 A2=40.16 A3=40.49 A4=40.49
+I (135663) asic_init: PROTO STARTUP TEMP freq=300 A1=41.15 A2=40.33 A3=40.66 A4=40.82
+I (136760) asic_init: PROTO STARTUP TEMP freq=300 A1=41.32 A2=40.33 A3=40.66 A4=40.66
+I (137894) asic_init: PROTO STARTUP TEMP freq=300 A1=41.48 A2=40.49 A3=40.82 A4=40.99
+I (139041) asic_init: PROTO STARTUP TEMP freq=300 A1=41.48 A2=40.66 A3=40.82 A4=41.15
+I (140172) asic_init: PROTO STARTUP TEMP freq=300 A1=41.64 A2=40.82 A3=40.99 A4=41.32
+I (141267) asic_init: PROTO STARTUP TEMP freq=300 A1=41.81 A2=40.82 A3=41.15 A4=41.32
+I (142359) asic_init: PROTO STARTUP TEMP freq=300 A1=41.64 A2=41.15 A3=41.32 A4=41.48
+I (143449) asic_init: PROTO STARTUP TEMP freq=300 A1=41.97 A2=41.15 A3=41.32 A4=41.48
+I (144537) asic_init: PROTO STARTUP TEMP freq=300 A1=41.97 A2=41.32 A3=41.48 A4=41.64
+I (148965) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=101.12 zero=0
+I (148966) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=100.61 zero=0
+I (148970) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=97.59 zero=1
+I (148979) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=100.67 zero=0
+I (148986) asic_init: PROTO STARTUP CHIP A1 frequency=300 GHs=369.30 throughput=98.64 pass_rate=98.78
+I (149084) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=101.29 zero=0
+I (149084) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=99.00 zero=0
+I (149089) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=99.88 zero=0
+I (149096) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=99.83 zero=0
+I (149104) asic_init: PROTO STARTUP CHIP A2 frequency=300 GHs=371.40 throughput=99.20 pass_rate=99.23
+I (149201) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=100.03 zero=0
+I (149201) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=99.22 zero=0
+I (149206) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.70 zero=0
+I (149214) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=100.05 zero=0
+I (149221) asic_init: PROTO STARTUP CHIP A3 frequency=300 GHs=372.92 throughput=99.61 pass_rate=99.44
+I (149318) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=99.48 zero=0
+I (149319) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=99.97 zero=0
+I (149324) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=100.58 zero=0
+I (149331) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.96 zero=0
+I (149339) asic_init: PROTO STARTUP CHIP A4 frequency=300 GHs=372.83 throughput=99.58 pass_rate=99.62
+I (149349) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1486.45 result=PASS
+I (149357) asic_init: PROTO STARTUP POWER_CYCLE disabling Vcore and VDDIO
+I (149643) asic_init: PROTO STARTUP DISCHARGED total=34 mV
+I (150516) asic_init: PROTO STARTUP REINITIALIZED four ASICs; no work since supply cycle
+I (157663) asic_init: PROTO STARTUP PLL frequency=125 settle_ms=500; no work sent
+I (158200) asic_init: PROTO STARTUP PLL frequency=150 settle_ms=500; no work sent
+I (158737) asic_init: PROTO STARTUP PLL frequency=175 settle_ms=500; no work sent
+I (159270) asic_init: PROTO STARTUP PLL frequency=200 settle_ms=500; no work sent
+I (159810) asic_init: PROTO STARTUP PLL frequency=225 settle_ms=500; no work sent
+I (160342) asic_init: PROTO STARTUP PLL frequency=250 settle_ms=500; no work sent
+I (160879) asic_init: PROTO STARTUP PLL frequency=275 settle_ms=500; no work sent
+I (161416) asic_init: PROTO STARTUP PLL frequency=300 settle_ms=2000; no work sent
+I (163452) asic_init: PROTO STARTUP PLL frequency=325 settle_ms=2000; no work sent
+I (165523) asic_init: PROTO STARTUP PLL frequency=350 settle_ms=2000; no work sent
+I (167552) asic_init: PROTO STARTUP PLL frequency=375 settle_ms=2000; no work sent
+I (169583) asic_init: PROTO STARTUP PLL frequency=400 settle_ms=2000; no work sent
+I (171620) asic_init: PROTO STARTUP PLL frequency=425 settle_ms=2000; no work sent
+I (173656) asic_init: PROTO STARTUP PLL frequency=450 settle_ms=2000; no work sent
+I (175687) asic_init: PROTO STARTUP PLL frequency=475 settle_ms=2000; no work sent
+I (177746) asic_init: PROTO STARTUP PLL frequency=500 settle_ms=2000; no work sent
+I (179785) asic_init: PROTO STARTUP PLL frequency=525 settle_ms=2000; no work sent
+I (181816) asic_init: PROTO STARTUP PLL frequency=550 settle_ms=2000; no work sent
+I (183853) asic_init: PROTO STARTUP PLL frequency=575 settle_ms=2000; no work sent
+I (185890) asic_init: PROTO STARTUP PLL frequency=600 settle_ms=1500; no work sent
+I (187399) asic_init: PVT_1200 BEGIN frequency=600 voltage_mv=1200; no voltage drop, no work
+I (188404) asic_init: PVT_1200 RAIL requested_half_mv=1200 measured_total_mv=2403
+I (190323) asic_init: PVT_1200 TEMP phase=before A1 valid=1 temperature=48.24
+I (190332) asic_init: PVT_1200 TEMP phase=before A2 valid=1 temperature=46.59
+I (190341) asic_init: PVT_1200 TEMP phase=before A3 valid=0 temperature=-1.00
+I (190348) asic_init: PVT_1200 TEMP phase=before A4 valid=0 temperature=-1.00
+I (190355) asic_init: PVT_1200 VOLTAGE phase=before
+I (190360) mc3: VOLT_DIAG BEGIN budget_ms=2500; failure-path only; no work
+I (190382) mc3: VOLT_DIAG phase=before A1 done_read=1 done=0x00000000 status_read=1 status=0x00000000 a_read=1 raw13=0x00001A23 b_read=1 raw14=0x00001A27 completed=0 fresh=0 decoded_mv=805.04
+I (190405) mc3: VOLT_DIAG phase=before A2 done_read=1 done=0x00000000 status_read=1 status=0x00000000 a_read=1 raw13=0x00001A25 b_read=1 raw14=0x00001A28 completed=0 fresh=0 decoded_mv=805.34
+I (190432) mc3: VOLT_DIAG phase=before A3 done_read=1 done=0x00000000 status_read=1 status=0x00000000 a_read=1 raw13=0x00000000 b_read=1 raw14=0x00000000 completed=0 fresh=0 decoded_mv=-554.97
+I (190453) mc3: VOLT_DIAG phase=before A4 done_read=1 done=0x00000000 status_read=1 status=0x00000000 a_read=1 raw13=0x00000000 b_read=1 raw14=0x00000000 completed=0 fresh=0 decoded_mv=-554.97
+I (190583) mc3: VOLT_DIAG sample=1 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (190590) mc3: VOLT_DIAG sample=1 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (190599) mc3: VOLT_DIAG sample=1 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (190611) mc3: VOLT_DIAG sample=1 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (190737) mc3: VOLT_DIAG sample=2 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (190744) mc3: VOLT_DIAG sample=2 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (190758) mc3: VOLT_DIAG sample=2 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (190772) mc3: VOLT_DIAG sample=2 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (190904) mc3: VOLT_DIAG sample=3 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (190912) mc3: VOLT_DIAG sample=3 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (190924) mc3: VOLT_DIAG sample=3 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (190932) mc3: VOLT_DIAG sample=3 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191059) mc3: VOLT_DIAG sample=4 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191067) mc3: VOLT_DIAG sample=4 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191080) mc3: VOLT_DIAG sample=4 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191098) mc3: VOLT_DIAG sample=4 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191226) mc3: VOLT_DIAG sample=5 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191233) mc3: VOLT_DIAG sample=5 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191246) mc3: VOLT_DIAG sample=5 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191254) mc3: VOLT_DIAG sample=5 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191380) mc3: VOLT_DIAG sample=6 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191391) mc3: VOLT_DIAG sample=6 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191399) mc3: VOLT_DIAG sample=6 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191408) mc3: VOLT_DIAG sample=6 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191540) mc3: VOLT_DIAG sample=7 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191548) mc3: VOLT_DIAG sample=7 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191557) mc3: VOLT_DIAG sample=7 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191567) mc3: VOLT_DIAG sample=7 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191701) mc3: VOLT_DIAG sample=8 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191713) mc3: VOLT_DIAG sample=8 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191721) mc3: VOLT_DIAG sample=8 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191729) mc3: VOLT_DIAG sample=8 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191863) mc3: VOLT_DIAG sample=9 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191872) mc3: VOLT_DIAG sample=9 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (191880) mc3: VOLT_DIAG sample=9 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (191892) mc3: VOLT_DIAG sample=9 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (192022) mc3: VOLT_DIAG sample=10 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (192031) mc3: VOLT_DIAG sample=10 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (192042) mc3: VOLT_DIAG sample=10 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (192055) mc3: VOLT_DIAG sample=10 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (192203) mc3: VOLT_DIAG sample=11 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (192211) mc3: VOLT_DIAG sample=11 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (192220) mc3: VOLT_DIAG sample=11 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (192231) mc3: VOLT_DIAG sample=11 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (192364) mc3: VOLT_DIAG sample=12 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (192369) mc3: VOLT_DIAG sample=12 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (192380) mc3: VOLT_DIAG sample=12 A3 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (192390) mc3: VOLT_DIAG sample=12 A4 clear_before=1 trigger=1 ready=0 status_read=1 status=0x00000003
+I (192414) mc3: VOLT_DIAG phase=after A1 done_read=1 done=0x00000001 status_read=1 status=0x00000000 a_read=1 raw13=0x00002169 b_read=1 raw14=0x00002171 completed=12 fresh=1 decoded_mv=1183.80
+I (192435) mc3: VOLT_DIAG phase=after A2 done_read=1 done=0x00000001 status_read=1 status=0x00000000 a_read=1 raw13=0x0000216C b_read=1 raw14=0x00002173 completed=12 fresh=1 decoded_mv=1184.31
+I (192461) mc3: VOLT_DIAG phase=after A3 done_read=1 done=0x00000000 status_read=1 status=0x00000003 a_read=1 raw13=0x00000000 b_read=1 raw14=0x00000000 completed=0 fresh=0 decoded_mv=-554.97
+I (192483) mc3: VOLT_DIAG phase=after A4 done_read=1 done=0x00000000 status_read=1 status=0x00000003 a_read=1 raw13=0x00000000 b_read=1 raw14=0x00000000 completed=0 fresh=0 decoded_mv=-554.97
+I (192492) mc3: VOLT_DIAG END rounds=12 elapsed_ms=2131; startup still fails
+I (192499) mc3: PVT_REINIT BEGIN; existing voltage/thermal setup only; no PLL or ASIC reset
+I (192568) mc3: PVT_REINIT A1 voltage_status_read=1 voltage_status=0x00000000 thermal_status_read=1 thermal_status=0x00000000 voltage_clock_read=1 voltage_clock=0x01010000 thermal_clock_read=1 thermal_clock=0x01010000 pll_read=1 pll_en=0x00000007
+I (192598) mc3: PVT_REINIT A2 voltage_status_read=1 voltage_status=0x00000000 thermal_status_read=1 thermal_status=0x00000000 voltage_clock_read=1 voltage_clock=0x01010000 thermal_clock_read=1 thermal_clock=0x01010000 pll_read=1 pll_en=0x00000007
+I (192631) mc3: PVT_REINIT A3 voltage_status_read=1 voltage_status=0x00000000 thermal_status_read=1 thermal_status=0x00000000 voltage_clock_read=1 voltage_clock=0x01010000 thermal_clock_read=1 thermal_clock=0x01010000 pll_read=1 pll_en=0x00000007
+I (192664) mc3: PVT_REINIT A4 voltage_status_read=1 voltage_status=0x00000000 thermal_status_read=1 thermal_status=0x00000000 voltage_clock_read=1 voltage_clock=0x01010000 thermal_clock_read=1 thermal_clock=0x01010000 pll_read=1 pll_en=0x00000007
+I (192677) mc3: PVT_REINIT END; setup issued, conversion recovery not yet established
+I (192924) asic_init: PVT_1200 TEMP phase=after A1 valid=1 temperature=48.57
+I (192936) asic_init: PVT_1200 TEMP phase=after A2 valid=1 temperature=46.92
+I (192940) asic_init: PVT_1200 TEMP phase=after A3 valid=1 temperature=47.75
+I (192948) asic_init: PVT_1200 TEMP phase=after A4 valid=1 temperature=47.75
+I (192955) asic_init: PVT_1200 VOLTAGE phase=after
+I (192962) mc3: VOLT_DIAG BEGIN budget_ms=2500; failure-path only; no work
+I (192985) mc3: VOLT_DIAG phase=before A1 done_read=1 done=0x00000000 status_read=1 status=0x00000000 a_read=1 raw13=0x00002169 b_read=1 raw14=0x00002171 completed=0 fresh=0 decoded_mv=1183.80
+I (193010) mc3: VOLT_DIAG phase=before A2 done_read=1 done=0x00000000 status_read=1 status=0x00000000 a_read=1 raw13=0x0000216C b_read=1 raw14=0x00002173 completed=0 fresh=0 decoded_mv=1184.31
+I (193036) mc3: VOLT_DIAG phase=before A3 done_read=1 done=0x00000001 status_read=1 status=0x00000000 a_read=1 raw13=0x00000000 b_read=1 raw14=0x00000000 completed=0 fresh=0 decoded_mv=-554.97
+I (193065) mc3: VOLT_DIAG phase=before A4 done_read=1 done=0x00000001 status_read=1 status=0x00000000 a_read=1 raw13=0x00000000 b_read=1 raw14=0x00000000 completed=0 fresh=0 decoded_mv=-554.97
+I (193120) mc3: VOLT_DIAG sample=1 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193132) mc3: VOLT_DIAG sample=1 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193141) mc3: VOLT_DIAG sample=1 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193158) mc3: VOLT_DIAG sample=1 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193205) mc3: VOLT_DIAG sample=2 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193217) mc3: VOLT_DIAG sample=2 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193225) mc3: VOLT_DIAG sample=2 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193234) mc3: VOLT_DIAG sample=2 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193292) mc3: VOLT_DIAG sample=3 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193304) mc3: VOLT_DIAG sample=3 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193312) mc3: VOLT_DIAG sample=3 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193321) mc3: VOLT_DIAG sample=3 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193377) mc3: VOLT_DIAG sample=4 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193391) mc3: VOLT_DIAG sample=4 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193400) mc3: VOLT_DIAG sample=4 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193409) mc3: VOLT_DIAG sample=4 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193463) mc3: VOLT_DIAG sample=5 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193478) mc3: VOLT_DIAG sample=5 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193486) mc3: VOLT_DIAG sample=5 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193495) mc3: VOLT_DIAG sample=5 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193553) mc3: VOLT_DIAG sample=6 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193560) mc3: VOLT_DIAG sample=6 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193569) mc3: VOLT_DIAG sample=6 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193585) mc3: VOLT_DIAG sample=6 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193638) mc3: VOLT_DIAG sample=7 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193648) mc3: VOLT_DIAG sample=7 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193661) mc3: VOLT_DIAG sample=7 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193669) mc3: VOLT_DIAG sample=7 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193729) mc3: VOLT_DIAG sample=8 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193742) mc3: VOLT_DIAG sample=8 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193751) mc3: VOLT_DIAG sample=8 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193760) mc3: VOLT_DIAG sample=8 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193806) mc3: VOLT_DIAG sample=9 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193812) mc3: VOLT_DIAG sample=9 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193821) mc3: VOLT_DIAG sample=9 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193831) mc3: VOLT_DIAG sample=9 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193876) mc3: VOLT_DIAG sample=10 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193882) mc3: VOLT_DIAG sample=10 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193891) mc3: VOLT_DIAG sample=10 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193902) mc3: VOLT_DIAG sample=10 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193945) mc3: VOLT_DIAG sample=11 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193951) mc3: VOLT_DIAG sample=11 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193959) mc3: VOLT_DIAG sample=11 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (193969) mc3: VOLT_DIAG sample=11 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (194014) mc3: VOLT_DIAG sample=12 A1 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (194017) mc3: VOLT_DIAG sample=12 A2 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (194026) mc3: VOLT_DIAG sample=12 A3 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (194037) mc3: VOLT_DIAG sample=12 A4 clear_before=1 trigger=1 ready=1 status_read=1 status=0x00000000
+I (194055) mc3: VOLT_DIAG phase=after A1 done_read=1 done=0x00000001 status_read=1 status=0x00000000 a_read=1 raw13=0x0000216A b_read=1 raw14=0x00002171 completed=12 fresh=1 decoded_mv=1183.90
+I (194073) mc3: VOLT_DIAG phase=after A2 done_read=1 done=0x00000001 status_read=1 status=0x00000000 a_read=1 raw13=0x0000216E b_read=1 raw14=0x00002174 completed=12 fresh=1 decoded_mv=1184.61
+I (194091) mc3: VOLT_DIAG phase=after A3 done_read=1 done=0x00000001 status_read=1 status=0x00000000 a_read=1 raw13=0x000021BF b_read=1 raw14=0x000021CB completed=12 fresh=1 decoded_mv=1201.68
+I (194113) mc3: VOLT_DIAG phase=after A4 done_read=1 done=0x00000001 status_read=1 status=0x00000000 a_read=1 raw13=0x000021DF b_read=1 raw14=0x000021E6 completed=12 fresh=1 decoded_mv=1207.67
+I (194121) mc3: VOLT_DIAG END rounds=12 elapsed_ms=1158; startup still fails
+I (194128) asic_init: PVT_1200 END; diagnostic only, shutting ASIC power off
+E (194162) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained

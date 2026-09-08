@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { catchError, EMPTY, exhaustMap, Subject, takeUntil, timer } from 'rxjs';
-import { AsicDiagnostics, AsicDiagnosticsChip } from '../../generated/models';
+import { AsicDiagnostics, AsicDiagnosticsChip, SystemInfo } from '../../generated/models';
 import { SystemApiService } from '../../services/system.service';
 
 interface CoreView { id: number; pass: number; fail: number; ghs: number; }
@@ -16,6 +16,10 @@ interface ChipView { data: AsicDiagnosticsChip; domains: DomainView[]; ghs: numb
   styleUrls: ['./asic-diagnostics.component.scss']
 })
 export class AsicDiagnosticsComponent implements OnInit, OnDestroy {
+  // Home supplies voltages in volts, except board domainVoltages (API millivolts).
+  @Input() info?: Pick<SystemInfo, 'asicTemps' | 'asicVoltages' | 'domainVoltages' |
+    'regulatorVoltage' | 'actualFrequency' | 'power' | 'hashrateMonitor'>;
+  @Input() telemetryStale = false;
   snapshot?: AsicDiagnostics;
   chips: ChipView[] = [];
   error = false;
@@ -52,6 +56,34 @@ export class AsicDiagnosticsComponent implements OnInit, OnDestroy {
       }) : [];
       return { data, domains, ghs: domains.reduce((sum, domain) => sum + domain.ghs, 0) };
     });
+  }
+
+  get totalGhs(): number | null {
+    if (!this.chips.length || this.chips.some(chip => !chip.domains.length)) return null;
+    return this.chips.reduce((sum, chip) => sum + chip.ghs, 0);
+  }
+
+  get activeDomains(): number {
+    return this.chips.reduce((sum, chip) => sum + chip.domains.filter(d => d.pass > 0).length, 0);
+  }
+
+  get measuredDomains(): number {
+    return this.chips.reduce((sum, chip) => sum + chip.domains.length, 0);
+  }
+
+  get stackDifferenceMv(): number | null {
+    const rails = this.info?.domainVoltages;
+    return rails?.length === 2 && rails.every(v => this.positive(v)) ? Math.abs(rails[0] - rails[1]) : null;
+  }
+
+  positive(value: number | null | undefined): boolean {
+    return typeof value === 'number' && Number.isFinite(value) && value > 0;
+  }
+
+  domainHealth(chip: ChipView, domain: DomainView): string {
+    if (domain.pass === 0) return 'No PASS';
+    if (domain.ghs < chip.data.frequency * .312 * .9) return 'Low rate';
+    return 'Active';
   }
 
   get retained(): boolean {

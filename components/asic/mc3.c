@@ -1251,6 +1251,43 @@ static void mc3_setup_vdd_voltage_sensor(void)
     mc3_wait_register(0, MC3_VOLTAGE_STATUS, 0x00000000, 500);
 }
 
+bool MC3_reinitialize_pvt_sensors(void)
+{
+    if (mc3_chip_count != 4 || pthread_mutex_trylock(&mc3_voltage_sensor_lock) != 0) {
+        ESP_LOGW(TAG, "PVT_REINIT skipped: chain unavailable or voltage sensor busy");
+        return false;
+    }
+    if (pthread_mutex_trylock(&mc3_thermal_sensor_lock) != 0) {
+        pthread_mutex_unlock(&mc3_voltage_sensor_lock);
+        ESP_LOGW(TAG, "PVT_REINIT skipped: thermal sensor busy");
+        return false;
+    }
+    ESP_LOGI(TAG, "PVT_REINIT BEGIN; existing voltage/thermal setup only; no PLL or ASIC reset");
+    // Reuse the established sensor setup commands, without calling MC3_init.
+    // Its A1-only setup waits are followed by per-ASIC readback and fresh sweeps.
+    mc3_setup_vdd_voltage_sensor();
+    mc3_setup_thermal_sensor();
+    for (uint8_t chip = 0; chip < 4; chip++) {
+        uint32_t vstatus = UINT32_MAX, tstatus = UINT32_MAX;
+        uint32_t vclock = UINT32_MAX, tclock = UINT32_MAX, pll = UINT32_MAX;
+        bool vs = mc3_read_register(chip, MC3_VOLTAGE_STATUS, &vstatus);
+        bool ts = mc3_read_register(chip, MC3_THERMAL_STATUS, &tstatus);
+        bool vc = mc3_read_register(chip, MC3_VOLTAGE_CLOCK, &vclock);
+        bool tc = mc3_read_register(chip, MC3_THERMAL_CLOCK, &tclock);
+        bool pl = mc3_read_register(chip, MC3_PLL0_EN, &pll);
+        ESP_LOGI(TAG, "PVT_REINIT A%u voltage_status_read=%u voltage_status=0x%08" PRIX32
+            " thermal_status_read=%u thermal_status=0x%08" PRIX32
+            " voltage_clock_read=%u voltage_clock=0x%08" PRIX32
+            " thermal_clock_read=%u thermal_clock=0x%08" PRIX32
+            " pll_read=%u pll_en=0x%08" PRIX32,
+            chip + 1, vs, vstatus, ts, tstatus, vc, vclock, tc, tclock, pl, pll);
+    }
+    ESP_LOGI(TAG, "PVT_REINIT END; setup issued, conversion recovery not yet established");
+    pthread_mutex_unlock(&mc3_thermal_sensor_lock);
+    pthread_mutex_unlock(&mc3_voltage_sensor_lock);
+    return true;
+}
+
 static bool mc3_trigger_voltage_conversion(void)
 {
     mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x88000505, MC3_CHIP_NUM_ALL);
@@ -2296,6 +2333,82 @@ uint8_t MC3_read_vdd_voltages(float *voltages_mv, size_t max_voltages)
 
     pthread_mutex_unlock(&mc3_voltage_sensor_lock);
     return chip_count;
+}
+
+static void mc3_log_voltage_diag_snapshot(const char *phase, uint8_t chip,
+    unsigned completed)
+{
+    uint32_t done = UINT32_MAX, status = UINT32_MAX, a = UINT32_MAX, b = UINT32_MAX;
+    bool rd_done = mc3_read_register(chip, MC3_VOLTAGE_DONE, &done);
+    bool rd_status = mc3_read_register(chip, MC3_VOLTAGE_STATUS, &status);
+    bool rd_a = mc3_read_register(chip, mc3_voltage_dout_register(MC3_VOLTAGE_VDD_CHANNEL_A), &a);
+    bool rd_b = mc3_read_register(chip, mc3_voltage_dout_register(MC3_VOLTAGE_VDD_CHANNEL_B), &b);
+    bool raw_ok = rd_a && rd_b && a < (1U << MC3_VOLTAGE_RESOLUTION_BITS) &&
+        b < (1U << MC3_VOLTAGE_RESOLUTION_BITS);
+    float mv = raw_ok ? (mc3_voltage_from_dout(a) + mc3_voltage_from_dout(b)) *
+        0.5f * MC3_VOLTAGE_VDD_SCALE * 1000.0f : -1.0f;
+    bool fresh = completed == MC3_VOLTAGE_STACK_CHANNEL_COUNT &&
+        rd_done && done == 1 && rd_status && status == 0 && raw_ok && mv > 0;
+    ESP_LOGI(TAG, "VOLT_DIAG phase=%s A%u done_read=%u done=0x%08" PRIX32
+        " status_read=%u status=0x%08" PRIX32 " a_read=%u raw13=0x%08" PRIX32
+        " b_read=%u raw14=0x%08" PRIX32 " completed=%u fresh=%u decoded_mv=%.2f",
+        phase, chip + 1, rd_done, done, rd_status, status, rd_a, a, rd_b, b,
+        completed, fresh, mv);
+}
+
+void MC3_log_voltage_diagnostic(void)
+{
+    // This experiment runs only after a four-ASIC pre-work thermal failure.
+    // Preserve the existing sensor configuration and change no PLL/work registers.
+    if (mc3_chip_count != 4 || pthread_mutex_trylock(&mc3_voltage_sensor_lock) != 0) {
+        ESP_LOGW(TAG, "VOLT_DIAG skipped: chain unavailable or voltage sensor busy");
+        return;
+    }
+    int64_t start = esp_timer_get_time(), deadline = start + 2500000;
+    unsigned completed[4] = {0}, rounds = 0;
+    ESP_LOGI(TAG, "VOLT_DIAG BEGIN budget_ms=2500; failure-path only; no work");
+    for (uint8_t chip = 0; chip < 4 && esp_timer_get_time() < deadline; chip++) {
+        // DOUT reads also drain the previous DONE latch; values are not fresh yet.
+        mc3_log_voltage_diag_snapshot("before", chip, 0);
+    }
+    for (unsigned sample = 0; sample < MC3_VOLTAGE_STACK_CHANNEL_COUNT &&
+         esp_timer_get_time() < deadline - 400000; sample++) {
+        bool fresh[4] = {false}, ready[4] = {false};
+        for (uint8_t chip = 0; chip < 4; chip++) {
+            uint32_t before = UINT32_MAX;
+            fresh[chip] = mc3_read_register(chip, MC3_VOLTAGE_DONE, &before) && before == 0;
+        }
+        bool trigger = mc3_write_register(0, MC3_VOLTAGE_COMMAND, 0x88000505, MC3_CHIP_NUM_ALL);
+        int64_t poll_end = esp_timer_get_time() + 100000;
+        if (poll_end > deadline - 400000) poll_end = deadline - 400000;
+        do {
+            bool all = true;
+            for (uint8_t chip = 0; chip < 4; chip++) {
+                uint32_t done = UINT32_MAX;
+                if (!ready[chip]) ready[chip] = mc3_read_register(chip, MC3_VOLTAGE_DONE, &done) && done == 1;
+                all &= ready[chip];
+            }
+            if (all || !trigger || esp_timer_get_time() >= poll_end) break;
+            vTaskDelay(pdMS_TO_TICKS(5));
+        } while (esp_timer_get_time() < poll_end);
+        for (uint8_t chip = 0; chip < 4; chip++) {
+            uint32_t status = UINT32_MAX, discarded = 0;
+            bool rd_status = mc3_read_register(chip, MC3_VOLTAGE_STATUS, &status);
+            if (fresh[chip] && trigger && ready[chip] && rd_status && status == 0) completed[chip]++;
+            ESP_LOGI(TAG, "VOLT_DIAG sample=%u A%u clear_before=%u trigger=%u ready=%u status_read=%u status=0x%08" PRIX32,
+                sample + 1, chip + 1, fresh[chip], trigger, ready[chip], rd_status, status);
+            if (sample + 1 < MC3_VOLTAGE_STACK_CHANNEL_COUNT) {
+                mc3_read_register(chip, mc3_voltage_dout_register(MC3_VOLTAGE_STACK_CHANNEL_FIRST), &discarded);
+            }
+        }
+        rounds++;
+    }
+    for (uint8_t chip = 0; chip < 4 && esp_timer_get_time() < deadline; chip++) {
+        mc3_log_voltage_diag_snapshot("after", chip, completed[chip]);
+    }
+    ESP_LOGI(TAG, "VOLT_DIAG END rounds=%u elapsed_ms=%" PRId64 "; startup still fails",
+        rounds, (esp_timer_get_time() - start) / 1000);
+    pthread_mutex_unlock(&mc3_voltage_sensor_lock);
 }
 
 uint8_t MC3_read_pvt_voltages(mc3_pvt_voltage_reading_t *readings,

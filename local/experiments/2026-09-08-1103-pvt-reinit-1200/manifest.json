@@ -1,0 +1,18 @@
+{
+  "pvt_only_reinit_at_mv": 1200,
+  "post_reinit_settle_ms": 100,
+  "voltage_drop": false,
+  "pvt_test_stops_before_work": true,
+  "warmup_coldest_c": 40,
+  "warmup_voltage_mv": 1160,
+  "ramp_voltage_mv": 1200,
+  "high_frequency_step_ms": 2000,
+  "core_voltage_mv": 1160,
+  "mc3_sha256": "4f79a2981d4d47a903486c8636a90d97ca0a261729d2dd1793a9539e4ec68c2c",
+  "files": {
+    "esp-miner.bin": {
+      "bytes": 1788736,
+      "sha256": "876ea6466b559eaa36799e8afc7e63a1f3c449f8cad686a6bc67d3411b8bbfc5"
+    }
+  }
+}

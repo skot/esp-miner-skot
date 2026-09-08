@@ -1,0 +1,34 @@
+{
+  "info": {
+    "version": "v2.14.0-53-g591dfde-dirty",
+    "boardVersion": "1103",
+    "actualFrequency": 600,
+    "hashRate": 2959.7800293,
+    "asicTemps": [
+      52.03644561767578,
+      50.7168960571289,
+      51.5416145324707,
+      51.211727142333984
+    ],
+    "domainVoltages": [
+      1180,
+      1184
+    ],
+    "regulatorVoltage": 2364,
+    "miningPaused": false,
+    "uptimeSeconds": 561,
+    "sharesAccepted": 44,
+    "sharesRejected": 0,
+    "power": 48.1335449,
+    "fanspeed": 99,
+    "coreVoltage": 1180,
+    "frequency": 600
+  },
+  "diagnostics": {
+    "status": "Ready for pool work",
+    "mining": 1,
+    "startupResult": "passed",
+    "epoch": 99,
+    "source": "mining"
+  }
+}

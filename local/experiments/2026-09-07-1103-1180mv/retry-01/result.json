@@ -1,0 +1,41 @@
+{
+  "reboot_seen": true,
+  "pool_seconds": 301.17538416700006,
+  "api_rate_samples": 49,
+  "mean_ghs": 2900.8489367387765,
+  "min_ghs": 0,
+  "max_ghs": 2976.5600586,
+  "final": {
+    "version": "v2.14.0-53-g591dfde-dirty",
+    "axeOSVersion": "v2.14.0-53-g591dfde-dirty",
+    "boardVersion": "1103",
+    "macAddr": "28:84:85:BA:96:08",
+    "actualFrequency": 600,
+    "hashRate": 2957.6201172,
+    "asicTemps": [
+      53.35599899291992,
+      52.03644561767578,
+      52.69622039794922,
+      52.3663330078125
+    ],
+    "asicVoltages": [
+      1170.6927490234375,
+      1171.302490234375,
+      1173.63916015625,
+      1179.9383544921875
+    ],
+    "domainVoltages": [
+      1180,
+      1184
+    ],
+    "regulatorVoltage": 2364,
+    "miningPaused": false,
+    "uptimeSeconds": 673,
+    "sharesAccepted": 43,
+    "sharesRejected": 3,
+    "power": 48.3540039,
+    "fanspeed": 99,
+    "coreVoltage": 1180,
+    "frequency": 600
+  }
+}

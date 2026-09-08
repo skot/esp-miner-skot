@@ -1,0 +1,28 @@
+{
+  "version": "v2.14.0-53-g591dfde-dirty",
+  "axeOSVersion": "v2.14.0-53-g591dfde-dirty",
+  "boardVersion": "1103",
+  "macAddr": "28:84:85:BA:96:08",
+  "actualFrequency": 600,
+  "hashRate": 0,
+  "asicTemps": [
+    49.39734649658203,
+    47.91284942626953,
+    49.23240280151367,
+    49.06745910644531
+  ],
+  "asicVoltages": [],
+  "domainVoltages": [
+    21,
+    11
+  ],
+  "regulatorVoltage": 32,
+  "miningPaused": false,
+  "uptimeSeconds": 563,
+  "sharesAccepted": 0,
+  "sharesRejected": 0,
+  "power": 0.0040627,
+  "fanspeed": 100,
+  "coreVoltage": 1200,
+  "frequency": 600
+}

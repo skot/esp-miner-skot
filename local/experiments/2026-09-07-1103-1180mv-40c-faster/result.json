@@ -1,0 +1,22 @@
+{
+  "result": "failed_600mhz_qualification",
+  "qualification_ghs": 2593.8,
+  "active_domains": 14,
+  "active_cores": 545,
+  "zero_domains": [
+    {
+      "asic": 2,
+      "domain": 0
+    },
+    {
+      "asic": 3,
+      "domain": 2
+    }
+  ],
+  "first_work_uptime_s": 164.557,
+  "previous_45c_first_work_uptime_s": 224.157,
+  "pool_mining_started": false,
+  "steady_efficiency_j_per_th": null,
+  "final_asic_power": "off",
+  "retry_performed": false
+}

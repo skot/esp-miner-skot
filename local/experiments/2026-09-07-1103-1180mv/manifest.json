@@ -1,0 +1,9 @@
+{
+  "version": "v2.14.0-53-g591dfde-dirty",
+  "files": {
+    "esp-miner.bin": {
+      "bytes": 1784432,
+      "sha256": "73f5bb39296ea64a9de5c9b23743d89c31b67392f018b7fc292f56a977ce0e68"
+    }
+  }
+}

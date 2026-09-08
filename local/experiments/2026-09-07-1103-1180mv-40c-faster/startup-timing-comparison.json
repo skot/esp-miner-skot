@@ -1,0 +1,24 @@
+{
+  "45C": [
+    "I (25107) asic_init: PROTO STARTUP BEGIN target=600 voltage=1180; warmup=300 coldest>=45C then full supply cycle; sampled voltage report-only",
+    "I (71233) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1483.23 result=PASS",
+    "I (186408) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1491.00 result=PASS",
+    "I (187571) asic_init: PROTO STARTUP REINITIALIZED four ASICs; no work since supply cycle",
+    "I (198114) asic_init: PROTO STARTUP PLL frequency=300 settle_ms=2000; no work sent",
+    "I (222563) asic_init: PROTO STARTUP PLL frequency=600 settle_ms=1500; no work sent",
+    "I (224157) asic_init: PROTO STARTUP FIRST_WORK frequency=600",
+    "I (236503) asic_init: PROTO STARTUP QUALIFY frequency=600 total=2962.43 result=PASS",
+    "I (236621) asic_init: PROTO STARTUP READY frequency=600; handing off to pool work"
+  ],
+  "40C": [
+    "I (24873) asic_init: PROTO STARTUP BEGIN target=600 voltage=1180; warmup=300 coldest>=40C then full supply cycle; sampled voltage report-only",
+    "I (70791) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1483.38 result=PASS",
+    "I (132857) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1486.66 result=PASS",
+    "I (134008) asic_init: PROTO STARTUP REINITIALIZED four ASICs; no work since supply cycle",
+    "I (144511) asic_init: PROTO STARTUP PLL frequency=300 settle_ms=1500; no work sent",
+    "I (162962) asic_init: PROTO STARTUP PLL frequency=600 settle_ms=1500; no work sent",
+    "I (164557) asic_init: PROTO STARTUP FIRST_WORK frequency=600",
+    "I (176894) asic_init: PROTO STARTUP QUALIFY frequency=600 total=2593.80 result=FAIL",
+    "E (176928) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "original_fan": {
+    "autofanspeed": 1,
+    "manualFanSpeed": 100
+  },
+  "before": {
+    "coreVoltage": 1180,
+    "actualFrequency": 600,
+    "hashRate": 2964.6201172,
+    "asicTemps": [
+      52.20138931274414,
+      50.7168960571289,
+      51.70655822753906,
+      51.211727142333984
+    ],
+    "regulatorVoltage": 2364,
+    "uptimeSeconds": 1343,
+    "power": 48.2070313,
+    "sharesAccepted": 79,
+    "sharesRejected": 0
+  },
+  "mc3_sha256": "5d28fd6c66a53131603ca4e786205a2f94888c0aa937c50d376a457e02d2784d",
+  "cooling_started_unix": 1788824528.623287,
+  "off_regulator_mv": 34,
+  "fan_percent": 100,
+  "temporary_blocked_voltage_setting_mv": 1181,
+  "cooling_status": "Supported startup: 100-600 MHz, 800-1180 mV"
+}

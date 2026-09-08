@@ -1,0 +1,116 @@
+{
+  "result": "failed_600mhz_qualification",
+  "frequency_mhz": 600,
+  "voltage_mv_per_half": 1160,
+  "counter_ghs": 2045.1332651851178,
+  "active_cores": 429,
+  "active_domains": 11,
+  "chips": [
+    {
+      "asic": 1,
+      "ghs": 373.34885425471066,
+      "domains": [
+        {
+          "domain": 0,
+          "ghs": 0.0,
+          "active_cores": 0
+        },
+        {
+          "domain": 1,
+          "ghs": 186.2401519826314,
+          "active_cores": 39
+        },
+        {
+          "domain": 2,
+          "ghs": 0.0,
+          "active_cores": 0
+        },
+        {
+          "domain": 3,
+          "ghs": 187.10870227207926,
+          "active_cores": 39
+        }
+      ]
+    },
+    {
+      "asic": 2,
+      "ghs": 371.35404959276923,
+      "domains": [
+        {
+          "domain": 0,
+          "ghs": 0.0,
+          "active_cores": 0
+        },
+        {
+          "domain": 1,
+          "ghs": 185.56820561437593,
+          "active_cores": 39
+        },
+        {
+          "domain": 2,
+          "ghs": 0.0,
+          "active_cores": 0
+        },
+        {
+          "domain": 3,
+          "ghs": 185.78584397839333,
+          "active_cores": 39
+        }
+      ]
+    },
+    {
+      "asic": 3,
+      "ghs": 557.8979175432586,
+      "domains": [
+        {
+          "domain": 0,
+          "ghs": 186.49197515509763,
+          "active_cores": 39
+        },
+        {
+          "domain": 1,
+          "ghs": 185.88219290830247,
+          "active_cores": 39
+        },
+        {
+          "domain": 2,
+          "ghs": 0.0,
+          "active_cores": 0
+        },
+        {
+          "domain": 3,
+          "ghs": 185.52374947985845,
+          "active_cores": 39
+        }
+      ]
+    },
+    {
+      "asic": 4,
+      "ghs": 742.5324437943793,
+      "domains": [
+        {
+          "domain": 0,
+          "ghs": 186.1155060492044,
+          "active_cores": 39
+        },
+        {
+          "domain": 1,
+          "ghs": 185.50886305921273,
+          "active_cores": 39
+        },
+        {
+          "domain": 2,
+          "ghs": 185.13149124618977,
+          "active_cores": 39
+        },
+        {
+          "domain": 3,
+          "ghs": 185.77658343977245,
+          "active_cores": 39
+        }
+      ]
+    }
+  ],
+  "pool_mining_started": false,
+  "efficiency_j_per_th": null
+}

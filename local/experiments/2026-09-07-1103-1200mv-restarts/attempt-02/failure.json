@@ -1,0 +1,43 @@
+{
+  "elapsed": 176.893333958,
+  "info": {
+    "version": "v2.14.0-53-g591dfde-dirty",
+    "axeOSVersion": "v2.14.0-53-g591dfde-dirty",
+    "boardVersion": "1103",
+    "macAddr": "28:84:85:BA:96:08",
+    "actualFrequency": 600,
+    "hashRate": 0,
+    "asicTemps": [
+      46.593299865722656,
+      45.27375030517578,
+      41.48004150390625,
+      41.6449851989746
+    ],
+    "asicVoltages": [],
+    "domainVoltages": [
+      21,
+      13
+    ],
+    "regulatorVoltage": 34,
+    "miningPaused": false,
+    "uptimeSeconds": 192,
+    "sharesAccepted": 0,
+    "sharesRejected": 0,
+    "power": 0.0051246,
+    "fanspeed": 99,
+    "coreVoltage": 1200,
+    "frequency": 600,
+    "autofanspeed": 1,
+    "manualFanSpeed": 100
+  },
+  "diagnostics": {
+    "supported": 1,
+    "mining": 0,
+    "source": "startup",
+    "startupResult": "failed",
+    "status": "Warm ASIC startup failed",
+    "epoch": 0,
+    "leadingZeros": 0,
+    "chips": []
+  }
+}

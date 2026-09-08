@@ -1,0 +1,22 @@
+{
+  "before": {
+    "coreVoltage": 1200,
+    "actualFrequency": 600,
+    "hashRate": 0,
+    "regulatorVoltage": 34,
+    "uptimeSeconds": 225,
+    "sharesAccepted": 0,
+    "sharesRejected": 0
+  },
+  "original_fan": {
+    "autofanspeed": 1,
+    "manualFanSpeed": 100
+  },
+  "temporary_blocked_setting": false,
+  "cooling_started_unix": 1788832791.815777,
+  "off_regulator_mv": 34,
+  "fan_percent": 100,
+  "restart_before_uptime": 346,
+  "restart_unix": 1788832912.0483918,
+  "first_new_uptime": 14
+}

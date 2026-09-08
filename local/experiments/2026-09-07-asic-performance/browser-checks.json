@@ -1,0 +1,22 @@
+{
+  "desktop": {
+    "width": 1186,
+    "height": 942,
+    "scrollHeight": 942
+  },
+  "mobile": {
+    "width": 360,
+    "scrollWidth": 360
+  },
+  "checks": [
+    "single integrated card",
+    "replaced ASIC voltage meters",
+    "one-time layout migration preserves other widths",
+    "later resize preserved",
+    "156 expandable core cells",
+    "mobile no horizontal overflow",
+    "retained failed domain labelled"
+  ],
+  "browserErrors": [],
+  "previewData": "Mock MC3 development data; no miner writes"
+}

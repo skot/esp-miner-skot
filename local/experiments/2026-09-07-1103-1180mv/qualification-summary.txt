@@ -1,0 +1,23 @@
+I (70292) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1482.63 result=PASS
+I (296549) asic_init: PROTO STARTUP DOMAIN A1 D0 relative_share=100.58 zero=0
+I (296550) asic_init: PROTO STARTUP DOMAIN A1 D1 relative_share=99.72 zero=0
+I (296554) asic_init: PROTO STARTUP DOMAIN A1 D2 relative_share=98.23 zero=1
+I (296562) asic_init: PROTO STARTUP DOMAIN A1 D3 relative_share=101.47 zero=0
+I (296570) asic_init: PROTO STARTUP CHIP A1 frequency=300 GHs=368.85 throughput=98.52 pass_rate=99.01
+I (296666) asic_init: PROTO STARTUP DOMAIN A2 D0 relative_share=100.56 zero=0
+I (296667) asic_init: PROTO STARTUP DOMAIN A2 D1 relative_share=99.50 zero=0
+I (296671) asic_init: PROTO STARTUP DOMAIN A2 D2 relative_share=99.65 zero=0
+I (296679) asic_init: PROTO STARTUP DOMAIN A2 D3 relative_share=100.30 zero=0
+I (296687) asic_init: PROTO STARTUP CHIP A2 frequency=300 GHs=371.19 throughput=99.14 pass_rate=99.60
+I (296792) asic_init: PROTO STARTUP DOMAIN A3 D0 relative_share=99.92 zero=0
+I (296794) asic_init: PROTO STARTUP DOMAIN A3 D1 relative_share=99.83 zero=0
+I (296799) asic_init: PROTO STARTUP DOMAIN A3 D2 relative_share=100.66 zero=0
+I (296806) asic_init: PROTO STARTUP DOMAIN A3 D3 relative_share=99.59 zero=0
+I (296814) asic_init: PROTO STARTUP CHIP A3 frequency=300 GHs=373.88 throughput=99.86 pass_rate=99.62
+I (296910) asic_init: PROTO STARTUP DOMAIN A4 D0 relative_share=100.23 zero=0
+I (296911) asic_init: PROTO STARTUP DOMAIN A4 D1 relative_share=100.48 zero=0
+I (296916) asic_init: PROTO STARTUP DOMAIN A4 D2 relative_share=99.69 zero=0
+I (296923) asic_init: PROTO STARTUP DOMAIN A4 D3 relative_share=99.61 zero=0
+I (296931) asic_init: PROTO STARTUP CHIP A4 frequency=300 GHs=373.73 throughput=99.82 pass_rate=99.68
+I (296941) asic_init: PROTO STARTUP QUALIFY frequency=300 total=1487.65 result=PASS
+E (336495) asic_init: PROTO STARTUP FAILED; ASIC power off, settings retained

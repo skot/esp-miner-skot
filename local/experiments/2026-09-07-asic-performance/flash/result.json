@@ -1,0 +1,33 @@
+{
+  "flash_succeeded": true,
+  "version": "v2.14.0-53-g591dfde-dirty",
+  "axeOSVersion": "v2.14.0-53-g591dfde-dirty",
+  "startup_passed": false,
+  "qualification_ghs": 2594.87,
+  "first_work_temperatures_c": [
+    54.68,
+    53.36,
+    54.18,
+    54.02
+  ],
+  "failed_domains": [
+    {
+      "asic": 1,
+      "domain": 0,
+      "zero_cores": 39
+    },
+    {
+      "asic": 2,
+      "domain": 2,
+      "zero_cores": 39
+    }
+  ],
+  "active_domains": 14,
+  "source_hashes_match_hot_production_archive": {
+    "main/power/asic_init.c": "3ba18478334172dbc9ed3901a1931ef4ed5f709f63d3e8cbe31be92a2b66aca5",
+    "components/asic/mc3.c": "5d28fd6c66a53131603ca4e786205a2f94888c0aa937c50d376a457e02d2784d"
+  },
+  "final_regulator_mv": 36,
+  "mining_started": false,
+  "serial_opened": false
+}

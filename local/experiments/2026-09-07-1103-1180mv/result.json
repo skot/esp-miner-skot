@@ -1,0 +1,9 @@
+{
+  "startup_passed": false,
+  "first_work_sent": false,
+  "reason": "A3/A4 invalid temperature after all three bounded retries at 600 MHz, before first work",
+  "core_voltage_mv": 1180,
+  "full_stack_target_mv": 2360,
+  "regulator_off_mv": 36,
+  "domain_throughput_comparison_available": false
+}

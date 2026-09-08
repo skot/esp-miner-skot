@@ -1,0 +1,16 @@
+{
+  "complete_epochs": 42,
+  "zero_core_union": [
+    [
+      1,
+      2,
+      105
+    ]
+  ],
+  "zero_core_intersection": [],
+  "min_active_cores": 623,
+  "max_active_cores": 624,
+  "mean_reported_power_w": 50.12158348333334,
+  "mean_estimated_j_per_th": 16.87863745529636,
+  "power_basis": "TPS546 output power; Proto configured board allowance is 0 W. Not wall power."
+}
