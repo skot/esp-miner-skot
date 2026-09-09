@@ -52,6 +52,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
   public savedChanges: boolean = false;
   public settingsUnlocked: boolean = false;
   public externalDisplay: boolean = false;
+  public isProtoMC3: boolean = false;
 
   @Input() uri = '';
 
@@ -170,6 +171,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
       this.voltageOptions = asic.voltageOptions;
       this.statsLimit = info.statsLimit || 720;
       this.externalDisplay = info.displayBackend === 'bonanza-i2c';
+      this.isProtoMC3 = asic.deviceModel === 'Proto' && asic.ASICModel === 'MC3';
 
       // Check if overclock is enabled in NVS
       if (info.overclockEnabled) {
@@ -247,6 +249,8 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public updateSystem() {
+    const restartAlreadyPending = this.savedChanges;
+    const restartRequired = this.isRestartRequired;
     const form = this.form.getRawValue();
 
     if (form.stratumPassword === '*****') {
@@ -259,16 +263,17 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe({
         next: () => {
           const successMessage = this.uri ? `Saved settings for ${this.uri}` : 'Saved settings';
-          if (this.isRestartRequired) {
+          if (restartRequired) {
             this.toastr.warning('You must restart this device after saving for changes to take effect.');
           }
           this.toastr.success(successMessage);
-          this.savedChanges = true;
+          this.savedChanges = restartAlreadyPending || restartRequired;
+          this.form.markAsPristine();
         },
         error: (err: HttpErrorResponse) => {
           const errorMessage = this.uri ? `Could not save settings for ${this.uri}. ${err.message}` : `Could not save settings. ${err.message}`;
           this.toastr.error(errorMessage);
-          this.savedChanges = false;
+          this.savedChanges = restartAlreadyPending;
         }
       });
   }
@@ -299,6 +304,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
         next: () => {
           const successMessage = this.uri ? `Device at ${this.uri} restarted` : 'Device restarted';
           this.toastr.success(successMessage);
+          this.savedChanges = false;
         },
         error: (err: HttpErrorResponse) => {
           const errorMessage = this.uri ? `Failed to restart device at ${this.uri}. ${err.message}` : `Failed to restart device. ${err.message}`;
@@ -367,6 +373,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
       'frequency',
       'autofanspeed',
       'manualFanSpeed',
+      'minfanspeed',
       'temptarget',
       'overheat_mode',
       'statsFrequency'

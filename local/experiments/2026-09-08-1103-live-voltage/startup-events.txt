@@ -1,0 +1,10 @@
+I (142909) asic_init: PROTO STARTUP QUALIFY frequency=600 total=2965.86 result=PASS
+I (143007) asic_init: PROTO STARTUP READY frequency=600; handing off to pool work
+I (276931) power_management: LIVE VOLTAGE applied=1190 mV/domain saved=1200 PLL/work unchanged
+I (398514) power_management: LIVE VOLTAGE applied=1180 mV/domain saved=1200 PLL/work unchanged
+I (519600) power_management: LIVE VOLTAGE applied=1170 mV/domain saved=1200 PLL/work unchanged
+I (639936) power_management: LIVE VOLTAGE applied=1160 mV/domain saved=1200 PLL/work unchanged
+I (944913) power_management: LIVE VOLTAGE applied=1170 mV/domain saved=1200 PLL/work unchanged
+I (945510) power_management: LIVE VOLTAGE applied=1180 mV/domain saved=1200 PLL/work unchanged
+I (946330) power_management: LIVE VOLTAGE applied=1190 mV/domain saved=1200 PLL/work unchanged
+I (946915) power_management: LIVE VOLTAGE applied=1200 mV/domain saved=1200 PLL/work unchanged

@@ -1,0 +1,50 @@
+[
+  {
+    "phase": "baseline",
+    "millivolts": 1200,
+    "mhz": 600,
+    "settled_seconds": 61.63551020800003,
+    "epochs": 11,
+    "mean_ghs": 2966.050909090909,
+    "mean_power_w": 50.165449654545455,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "uptime": 295
+  },
+  {
+    "phase": "voltage-down",
+    "millivolts": 1180,
+    "mhz": 600,
+    "settled_seconds": 61.533249333000015,
+    "epochs": 12,
+    "mean_ghs": 2964.6366666666668,
+    "mean_power_w": 48.33840943333333,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "uptime": 363
+  },
+  {
+    "phase": "voltage-up",
+    "millivolts": 1200,
+    "mhz": 600,
+    "settled_seconds": 62.02657825,
+    "epochs": 10,
+    "mean_ghs": 2965.996,
+    "mean_power_w": 50.0156555,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "uptime": 430
+  }
+]

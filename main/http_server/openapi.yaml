@@ -670,6 +670,7 @@ components:
             - BM1368
             - BM1370
             - BM1397
+            - MC3
           examples:
             - "BM1366"
         deviceModel:

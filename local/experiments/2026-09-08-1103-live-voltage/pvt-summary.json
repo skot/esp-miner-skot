@@ -1,0 +1,21 @@
+{
+  "fresh_valid_thermal_readings_per_asic": {
+    "1": 2156,
+    "2": 2157,
+    "3": 2157,
+    "4": 2157
+  },
+  "thermal_retry_lines": 0,
+  "thermal_invalid_lines": 0,
+  "voltage_error_lines": [],
+  "voltage_changes": [
+    "I (276931) power_management: LIVE VOLTAGE applied=1190 mV/domain saved=1200 PLL/work unchanged",
+    "I (398514) power_management: LIVE VOLTAGE applied=1180 mV/domain saved=1200 PLL/work unchanged",
+    "I (519600) power_management: LIVE VOLTAGE applied=1170 mV/domain saved=1200 PLL/work unchanged",
+    "I (639936) power_management: LIVE VOLTAGE applied=1160 mV/domain saved=1200 PLL/work unchanged",
+    "I (944913) power_management: LIVE VOLTAGE applied=1170 mV/domain saved=1200 PLL/work unchanged",
+    "I (945510) power_management: LIVE VOLTAGE applied=1180 mV/domain saved=1200 PLL/work unchanged",
+    "I (946330) power_management: LIVE VOLTAGE applied=1190 mV/domain saved=1200 PLL/work unchanged",
+    "I (946915) power_management: LIVE VOLTAGE applied=1200 mV/domain saved=1200 PLL/work unchanged"
+  ]
+}

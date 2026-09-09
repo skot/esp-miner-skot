@@ -272,6 +272,8 @@ esp_err_t VCORE_set_voltage(GlobalState * GLOBAL_STATE, float core_voltage)
     }
 
     ESP_RETURN_ON_ERROR(regulator_err, TAG, "Core voltage regulator update failed");
+    GLOBAL_STATE->POWER_MANAGEMENT_MODULE.applied_core_voltage_mv =
+        (uint16_t)(core_voltage * 1000.0f + 0.5f);
     return ESP_OK;
 }
 

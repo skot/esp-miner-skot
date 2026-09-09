@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <limits.h>
+#include <math.h>
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <esp_heap_caps.h>
@@ -825,6 +826,21 @@ static esp_err_t PATCH_update_settings(httpd_req_t * req)
     if (root == NULL) {
         httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid JSON");
         return ESP_OK;
+    }
+
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id == PROTO &&
+        GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3) {
+        const cJSON *voltage = cJSON_GetObjectItem(root, "coreVoltage");
+        const cJSON *frequency = cJSON_GetObjectItem(root, "frequency");
+        if ((voltage && (!cJSON_IsNumber(voltage) || !isfinite(voltage->valuedouble) ||
+                voltage->valuedouble < 800 || voltage->valuedouble > 1200 ||
+                voltage->valuedouble != voltage->valueint)) ||
+            (frequency && (!cJSON_IsNumber(frequency) || !isfinite(frequency->valuedouble) ||
+                frequency->valuedouble < 100 || frequency->valuedouble > 600))) {
+            cJSON_Delete(root);
+            return httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST,
+                "Proto supports 100..600 MHz and 800..1200 mV per half-stack");
+        }
     }
 
     cJSON *hostname_item = cJSON_GetObjectItem(root, "hostname");

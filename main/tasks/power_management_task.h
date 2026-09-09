@@ -2,6 +2,7 @@
 #define POWER_MANAGEMENT_TASK_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define MAX_ASIC_TEMPS 8
 #define MAX_VOLTAGE_DOMAINS 4
@@ -28,6 +29,8 @@ typedef struct
     float current;
     float core_voltage;
     float regulator_voltage;
+    uint16_t applied_core_voltage_mv; // Last successful command, not a measurement.
+    int64_t initialized_us;
 } PowerManagementModule;
 
 void POWER_MANAGEMENT_init_frequency(void * pvParameters);

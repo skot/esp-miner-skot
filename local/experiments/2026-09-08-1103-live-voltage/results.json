@@ -1,0 +1,194 @@
+[
+  {
+    "name": "baseline",
+    "millivolts": 1200,
+    "duration_seconds": 122.07757470800001,
+    "complete_epochs": 17,
+    "mean_ghs": 2963.6070588235298,
+    "min_ghs": 2949.3600000000006,
+    "mean_power_w": 50.26179415294118,
+    "mean_j_per_th": 16.959790529119818,
+    "min_domain_percent": 95.12820512820514,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "max_temp_c": 54.51060485839844,
+    "accepted_delta": 28,
+    "rejected_delta": 0,
+    "temperature_distinct_values": [
+      9,
+      8,
+      8,
+      10
+    ],
+    "voltage_distinct_values": [
+      5,
+      6,
+      5,
+      3
+    ]
+  },
+  {
+    "name": "voltage-1190",
+    "millivolts": 1190,
+    "duration_seconds": 121.796240292,
+    "complete_epochs": 18,
+    "mean_ghs": 2965.6922222222224,
+    "min_ghs": 2950.8600000000006,
+    "mean_power_w": 49.51447550555555,
+    "mean_j_per_th": 16.6958883507149,
+    "min_domain_percent": 94.20940170940172,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "max_temp_c": 54.6755485534668,
+    "accepted_delta": 6,
+    "rejected_delta": 0,
+    "temperature_distinct_values": [
+      5,
+      5,
+      5,
+      5
+    ],
+    "voltage_distinct_values": [
+      6,
+      7,
+      4,
+      5
+    ]
+  },
+  {
+    "name": "voltage-1180",
+    "millivolts": 1180,
+    "duration_seconds": 121.13027854200004,
+    "complete_epochs": 16,
+    "mean_ghs": 2965.585,
+    "min_ghs": 2956.5600000000004,
+    "mean_power_w": 48.318931575,
+    "mean_j_per_th": 16.29331165939565,
+    "min_domain_percent": 94.67948717948718,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "max_temp_c": 53.35599899291992,
+    "accepted_delta": 2,
+    "rejected_delta": 0,
+    "temperature_distinct_values": [
+      7,
+      7,
+      7,
+      6
+    ],
+    "voltage_distinct_values": [
+      4,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "name": "voltage-1170",
+    "millivolts": 1170,
+    "duration_seconds": 120.2674673329999,
+    "complete_epochs": 14,
+    "mean_ghs": 2960.0628571428574,
+    "min_ghs": 2949.0200000000004,
+    "mean_power_w": 47.25486537142857,
+    "mean_j_per_th": 15.964188193536692,
+    "min_domain_percent": 95.30982905982907,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "max_temp_c": 52.03644561767578,
+    "accepted_delta": 8,
+    "rejected_delta": 0,
+    "temperature_distinct_values": [
+      6,
+      6,
+      6,
+      6
+    ],
+    "voltage_distinct_values": [
+      4,
+      4,
+      3,
+      5
+    ]
+  },
+  {
+    "name": "voltage-1160",
+    "millivolts": 1160,
+    "duration_seconds": 304.923282791,
+    "complete_epochs": 46,
+    "mean_ghs": 2937.6269565217394,
+    "min_ghs": 2923.96,
+    "mean_power_w": 46.20308917391304,
+    "mean_j_per_th": 15.728119122091233,
+    "min_domain_percent": 92.95940170940172,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "max_temp_c": 51.046783447265625,
+    "accepted_delta": 10,
+    "rejected_delta": 0,
+    "temperature_distinct_values": [
+      6,
+      6,
+      6,
+      6
+    ],
+    "voltage_distinct_values": [
+      7,
+      8,
+      4,
+      6
+    ]
+  },
+  {
+    "name": "restore-1200",
+    "millivolts": 1200,
+    "duration_seconds": 121.32754220799995,
+    "complete_epochs": 18,
+    "mean_ghs": 2967.5633333333335,
+    "min_ghs": 2951.48,
+    "mean_power_w": 50.057071255555556,
+    "mean_j_per_th": 16.86813779468768,
+    "min_domain_percent": 95.53418803418803,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "max_temp_c": 53.68588638305664,
+    "accepted_delta": 1,
+    "rejected_delta": 0,
+    "temperature_distinct_values": [
+      10,
+      8,
+      10,
+      10
+    ],
+    "voltage_distinct_values": [
+      5,
+      7,
+      5,
+      5
+    ]
+  }
+]

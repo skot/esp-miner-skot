@@ -2,6 +2,59 @@
 
 Last updated: 2026-09-08
 
+## AxeOS settings: live voltage; frequency still requalifies ASICs (2026-09-08)
+
+Normal AxeOS voltage-only saves now ease the regulator toward the saved target
+in at most 10 mV increments without touching PLLs/work or restarting ASICs.
+Stock 1103 startup above 300 through 600 MHz retains the 1160 mV warmup and
+1200 mV first-work/PVT recovery path; the lower saved voltage is applied after
+30 seconds of initialized mining. The temporary leased bench endpoint was
+removed. AxeOS explains the different voltage/frequency behavior and does not
+enable its Restart button merely because live settings were saved.
+
+Fully live frequency changes remain **unresolved**. Three direct 600->575 MHz
+trials failed: the first stalled A3/A4 PVT, the second recovered PVT but lost
+A1/A2 D1 and D2 throughput, and a work-reset/reapply variant lost the same
+domains. 156 cores had zero PASS and total throughput was about 2.14 TH/s at
+575 MHz; returning to 600 MHz under power did not recover those domains.
+The failing live-PLL code was removed, and the checkpoint MC3 driver restored.
+
+Frequency saves therefore retain automatic ASIC power cycling/warmup and
+qualification. No manual ESP reboot is required, but these are **not** live,
+uninterrupted frequency changes. The PVT recovery startup path was generalized
+to supported stock-1103 targets above 300 MHz so 575 MHz requalification can
+use the same startup-voltage margin. Existing notes already describe an
+unsuccessful alternate-PLL switch, so it was not repeated speculatively.
+
+[Experiment, source snapshots, failed attempts and final tests](experiments/2026-09-08-1103-live-settings/README.md).
+
+## Live voltage reduction after healthy 600 MHz mining (2026-09-08)
+
+Starting with the checkpoint startup sequence at 1200 mV, the stock 1103
+successfully mined while voltage was reduced in 10 mV steps to 1160 mV.
+No PLL, work-reset, or PVT-reinitialization command was added during the sweep.
+All 16 domains and the same 623 active cores stayed active; the existing A1/D2
+core 105 remained inactive. No PVT retries or failures occurred.
+
+- 1200 mV baseline: 2.964 TH/s, 50.26 W, 16.96 J/TH.
+- 1190 mV: 2.966 TH/s, 49.51 W, 16.70 J/TH (two minutes).
+- 1180 mV: 2.966 TH/s, 48.32 W, 16.29 J/TH (two minutes).
+- 1170 mV: 2.960 TH/s, 47.25 W, 15.96 J/TH (two minutes).
+- 1160 mV: 2.938 TH/s, 46.20 W, 15.73 J/TH (five minutes).
+- Restored 1200 mV: 2.968 TH/s, with no reset required (two minutes).
+
+1160 mV saved about 7% in reported J/TH, with about 0.9% lower throughput.
+Core-level averages show reduced margin before outright dropout: A2/D3 core
+124 slowed at 1170/1160 mV, and A3/D0 core 0 slowed at 1160 mV. Both recovered
+above 90% of baseline on restoring 1200 mV. These short holds support lower
+voltage after successful startup, not yet a long-term minimum-voltage claim.
+Power is TPS546 output power, not wall power.
+
+A temporary leased API override applies regulator changes in the power task;
+NVS remains 1200 mV, preserving the verified startup. The miner was left at
+600 MHz / 1200 mV after the recovery comparison. Full method, firmware hash,
+per-core data and results: [live-voltage experiment](experiments/2026-09-08-1103-live-voltage/README.md).
+
 ## Checkpoint before voltage-efficiency tuning (2026-09-08)
 
 The user reports a couple of additional manual restarts with the current

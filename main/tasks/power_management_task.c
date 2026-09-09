@@ -145,6 +145,45 @@ static float expected_hashrate(GlobalState * GLOBAL_STATE)
     return GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value * GLOBAL_STATE->DEVICE_CONFIG.family.asic.small_core_count * GLOBAL_STATE->DEVICE_CONFIG.family.asic_count / 1000.0;
 }
 
+typedef struct {
+    uint16_t requested_mv;
+    float requested_mhz;
+    int64_t changed_us;
+} proto_live_settings_t;
+
+static bool proto_apply_live_voltage(GlobalState *global, proto_live_settings_t *settings,
+    uint16_t millivolts, float frequency)
+{
+    PowerManagementModule *power = &global->POWER_MANAGEMENT_MODULE;
+    if (!global->ASIC_initalized || global->SYSTEM_MODULE.mining_paused ||
+        global->SYSTEM_MODULE.hardware_fault || global->SELF_TEST_MODULE.is_active) return true;
+    if (millivolts < 800 || millivolts > 1200 || !isfinite(frequency) ||
+        frequency < 100 || frequency > 600 || power->applied_core_voltage_mv < 800 ||
+        !isfinite(power->actual_frequency) || power->actual_frequency < 100) return false;
+
+    int64_t now = esp_timer_get_time();
+    if (settings->requested_mv != millivolts || settings->requested_mhz != frequency) {
+        settings->requested_mv = millivolts;
+        settings->requested_mhz = frequency;
+        settings->changed_us = now;
+        ESP_LOGI(TAG, "Proto live settings requested: %u mV/domain, %.3f MHz", millivolts, frequency);
+        return true;
+    }
+    // Coalesce asynchronously saved settings. After a boot/resume, keep the
+    // qualified operating point for 30 seconds before easing toward NVS targets.
+    if (now - settings->changed_us < 1000000 || now - power->initialized_us < 30000000) return true;
+
+    uint16_t applied = power->applied_core_voltage_mv;
+    if (millivolts != applied) {
+        uint16_t next = millivolts > applied
+            ? applied + (millivolts - applied > 10 ? 10 : millivolts - applied)
+            : applied - (applied - millivolts > 10 ? 10 : applied - millivolts);
+        if (VCORE_set_voltage(global, next / 1000.0f) != ESP_OK) return false;
+        ESP_LOGI(TAG, "Proto live voltage: %u mV/domain, PLL/work unchanged", next);
+    }
+    return true;
+}
+
 static void update_asic_telemetry(GlobalState *GLOBAL_STATE)
 {
     PowerManagementModule *power_management = &GLOBAL_STATE->POWER_MANAGEMENT_MODULE;
@@ -301,6 +340,7 @@ void POWER_MANAGEMENT_task(void * pvParameters)
     float last_known_asic_frequency = 0.0;
     bool is_paused = false;
     int64_t proto_domain_last_log_us = 0;
+    proto_live_settings_t proto_settings = {0};
 
     while (1) {
         if (GLOBAL_STATE->SELF_TEST_MODULE.is_finished) {
@@ -438,40 +478,41 @@ void POWER_MANAGEMENT_task(void * pvParameters)
         bool voltage_changed = core_voltage != last_core_voltage;
         bool frequency_changed = asic_frequency != last_asic_frequency;
 
-        if (is_proto_mc3 && GLOBAL_STATE->ASIC_initalized &&
-            !GLOBAL_STATE->SELF_TEST_MODULE.is_active &&
-            (voltage_changed || frequency_changed)) {
-            ESP_LOGI(TAG,
-                "Proto operating point changed to %u mV/domain, %.0f MHz; restarting ordered qualification",
-                core_voltage, asic_frequency);
-            last_core_voltage = core_voltage;
-            last_asic_frequency = asic_frequency;
-            mining_stop(GLOBAL_STATE);
-            if (mining_start(GLOBAL_STATE) == 0) {
-                ESP_LOGE(TAG, "Proto operating-point qualification restart failed");
+        if (is_proto_mc3 && !GLOBAL_STATE->SELF_TEST_MODULE.is_active) {
+            if (frequency_changed && GLOBAL_STATE->ASIC_initalized) {
+                ESP_LOGI(TAG, "Proto frequency changed to %.3f MHz; automatically requalifying ASICs", asic_frequency);
+                mining_stop(GLOBAL_STATE);
+                last_asic_frequency = asic_frequency;
+                if (mining_start(GLOBAL_STATE) == 0)
+                    ESP_LOGE(TAG, "Proto frequency qualification failed");
+                continue;
             }
-            last_core_voltage = nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE);
-            last_asic_frequency = nvs_config_get_float(NVS_CONFIG_ASIC_FREQUENCY);
-            continue;
-        }
+            if (!proto_apply_live_voltage(GLOBAL_STATE, &proto_settings, core_voltage, asic_frequency)) {
+                sys_module->hardware_fault = true;
+                snprintf(sys_module->hardware_fault_msg, sizeof(sys_module->hardware_fault_msg),
+                    "Live voltage update failed");
+                mining_stop(GLOBAL_STATE);
+                is_paused = true;
+            }
+        } else {
+            if (voltage_changed && !proto_power_sequence_active) {
+                ESP_LOGI(TAG, "setting new vcore voltage to %umV", core_voltage);
+                VCORE_set_voltage(GLOBAL_STATE, (double) core_voltage / 1000.0);
+                last_core_voltage = core_voltage;
+            }
 
-        if (voltage_changed && !proto_power_sequence_active) {
-            ESP_LOGI(TAG, "setting new vcore voltage to %umV", core_voltage);
-            VCORE_set_voltage(GLOBAL_STATE, (double) core_voltage / 1000.0);
-            last_core_voltage = core_voltage;
-        }
-
-        if (frequency_changed) {
-            ESP_LOGI(TAG, "New ASIC frequency requested: %g MHz (current: %g MHz)", asic_frequency, last_asic_frequency);
+            if (frequency_changed) {
+                ESP_LOGI(TAG, "New ASIC frequency requested: %g MHz (current: %g MHz)", asic_frequency, last_asic_frequency);
             
-            power_management->frequency_value = asic_frequency;
-            power_management->expected_hashrate = expected_hashrate(GLOBAL_STATE);
-            last_asic_frequency = asic_frequency;
-        }
+                power_management->frequency_value = asic_frequency;
+                power_management->expected_hashrate = expected_hashrate(GLOBAL_STATE);
+                last_asic_frequency = asic_frequency;
+            }
 
-        if (frequency_changed && GLOBAL_STATE->ASIC_initalized) {
-            ASIC_set_frequency(GLOBAL_STATE);
-            ASIC_set_nonce_space(GLOBAL_STATE);
+            if (frequency_changed && GLOBAL_STATE->ASIC_initalized) {
+                ASIC_set_frequency(GLOBAL_STATE);
+                ASIC_set_nonce_space(GLOBAL_STATE);
+            }
         }
 
         // Check for changing of overheat mode

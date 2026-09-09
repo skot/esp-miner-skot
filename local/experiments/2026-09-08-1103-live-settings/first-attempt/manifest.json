@@ -1,0 +1,10 @@
+{
+  "www.bin": {
+    "sha256": "3a9ecf96119fa64cb18ac4c80907e77c1552f9843dbd30a5744c5287217716d8",
+    "size": 3145728
+  },
+  "esp-miner.bin": {
+    "sha256": "d9a8ba95f84b9dc98d5731e87edaf8d13a8295438c77637e51491e6703abe619",
+    "size": 1790656
+  }
+}

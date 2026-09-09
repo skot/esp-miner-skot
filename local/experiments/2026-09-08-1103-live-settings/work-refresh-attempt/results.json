@@ -1,0 +1,18 @@
+[
+  {
+    "phase": "baseline",
+    "millivolts": 1200,
+    "mhz": 600,
+    "settled_seconds": 62.00522699999999,
+    "epochs": 12,
+    "mean_ghs": 2969.5433333333335,
+    "mean_power_w": 50.22680664166666,
+    "zero_core_union": [
+      [
+        1,
+        105
+      ]
+    ],
+    "uptime": 252
+  }
+]

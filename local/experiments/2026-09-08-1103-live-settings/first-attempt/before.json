@@ -1,0 +1,32 @@
+{
+  "version": "v2.14.0-54-gcef666d-dirty",
+  "boardVersion": "1103",
+  "macAddr": "28:84:85:BA:96:08",
+  "actualFrequency": 600,
+  "frequency": 600,
+  "coreVoltage": 1200,
+  "regulatorVoltage": 2403,
+  "hashRate": 2964.6601563,
+  "asicTemps": [
+    54.51060485839844,
+    53.02610778808594,
+    53.52094268798828,
+    53.52094268798828
+  ],
+  "asicVoltages": [
+    1189.89501953125,
+    1190.504638671875,
+    1193.146240234375,
+    1199.953369140625
+  ],
+  "domainVoltages": [
+    1196,
+    1207
+  ],
+  "power": 50.4272461,
+  "uptimeSeconds": 2949,
+  "sharesAccepted": 132,
+  "sharesRejected": 0,
+  "miningPaused": false,
+  "fanspeed": 99
+}

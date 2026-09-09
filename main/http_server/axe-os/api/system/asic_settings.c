@@ -49,8 +49,12 @@ esp_err_t GET_system_asic(httpd_req_t *req)
     // Create arrays for frequency and voltage options based on ASIC model
     cJSON *freqOptions = cJSON_CreateArray();
     size_t count = 0;
+    bool proto_mc3 = GLOBAL_STATE->DEVICE_CONFIG.family.id == PROTO &&
+        GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3;
     while (GLOBAL_STATE->DEVICE_CONFIG.family.asic.frequency_options[count] != 0) {
-        cJSON_AddItemToArray(freqOptions, cJSON_CreateNumber(GLOBAL_STATE->DEVICE_CONFIG.family.asic.frequency_options[count]));
+        uint16_t frequency = GLOBAL_STATE->DEVICE_CONFIG.family.asic.frequency_options[count];
+        if (!proto_mc3 || frequency <= 600)
+            cJSON_AddItemToArray(freqOptions, cJSON_CreateNumber(frequency));
         count++;
     }
     cJSON_AddItemToObject(root, "frequencyOptions", freqOptions);

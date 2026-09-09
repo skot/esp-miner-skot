@@ -1,0 +1,23 @@
+I (23424) asic_init: PROTO STARTUP BEGIN target=600 voltage=1200; warmup=300 coldest>=40C then full supply cycle; sampled voltage report-only
+I (23437) asic_init: PROTO STARTUP BOOST warmup_mv=1160 ramp_mv=1200 mining_mv=1200; PVT reinit then pool work
+I (24134) asic_init: PROTO STARTUP BEGIN target=600 voltage=1200; warmup=300 coldest>=40C then full supply cycle; sampled voltage report-only
+I (24147) asic_init: PROTO STARTUP BOOST warmup_mv=1160 ramp_mv=1200 mining_mv=1200; PVT reinit then pool work
+I (123733) asic_init: PVT_1200 BEGIN frequency=600 voltage_mv=1200; no voltage drop, no work
+I (142535) asic_init: PROTO STARTUP QUALIFY frequency=600 total=2965.57 result=PASS
+I (142693) asic_init: PROTO STARTUP READY frequency=600; handing off to pool work
+I (173368) power_management: Proto live voltage: 1190 mV/domain, PLL/work unchanged
+I (173903) power_management: Proto live voltage: 1180 mV/domain, PLL/work unchanged
+I (258744) power_management: Proto live voltage: 1190 mV/domain, PLL/work unchanged
+I (259587) power_management: Proto live voltage: 1200 mV/domain, PLL/work unchanged
+I (324239) power_management: Proto frequency changed to 575.000 MHz; automatically requalifying ASICs
+I (342838) asic_init: PROTO STARTUP BEGIN target=575 voltage=1200; warmup=300 coldest>=40C then full supply cycle; sampled voltage report-only
+I (342852) asic_init: PROTO STARTUP BOOST warmup_mv=1160 ramp_mv=1200 mining_mv=1200; PVT reinit then pool work
+I (440319) asic_init: PVT_1200 BEGIN frequency=575 voltage_mv=1200; no voltage drop, no work
+I (458992) asic_init: PROTO STARTUP QUALIFY frequency=575 total=2844.37 result=PASS
+I (459110) asic_init: PROTO STARTUP READY frequency=575; handing off to pool work
+I (550226) power_management: Proto frequency changed to 600.000 MHz; automatically requalifying ASICs
+I (568553) asic_init: PROTO STARTUP BEGIN target=600 voltage=1200; warmup=300 coldest>=40C then full supply cycle; sampled voltage report-only
+I (568567) asic_init: PROTO STARTUP BOOST warmup_mv=1160 ramp_mv=1200 mining_mv=1200; PVT reinit then pool work
+I (668023) asic_init: PVT_1200 BEGIN frequency=600 voltage_mv=1200; no voltage drop, no work
+I (686678) asic_init: PROTO STARTUP QUALIFY frequency=600 total=2965.27 result=PASS
+I (686779) asic_init: PROTO STARTUP READY frequency=600; handing off to pool work

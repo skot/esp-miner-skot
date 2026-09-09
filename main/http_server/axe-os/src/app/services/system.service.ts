@@ -509,7 +509,7 @@ export class SystemApiService {
     }
 
     return of({
-      ASICModel: "BM1370" as any,
+      ASICModel: "BM1370" as const,
       deviceModel: "Gamma",
       swarmColor: "purple",
       asicCount: 1,

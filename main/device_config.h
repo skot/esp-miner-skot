@@ -103,13 +103,13 @@ static const uint16_t BM1366_FREQUENCY_OPTIONS[]   = {400, 425, 450, 475, 485, 5
 static const uint16_t BM1368_FREQUENCY_OPTIONS[]   = {400, 425, 450, 475, 485, 490, 500, 525, 550, 575, 0};
 static const uint16_t BM1370_FREQUENCY_OPTIONS[]   = {400, 490, 525, 550, 600, 625,                     0};
 static const uint16_t BM1370_FRQUENCY_XP_OPTIONS[] = {350, 375, 380, 400, 410,                        0};
-static const uint16_t MC3_FREQUENCY_OPTIONS[]     = {100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800, 825, 850, 875, 900, 925, 950, 975, 1000};
+static const uint16_t MC3_FREQUENCY_OPTIONS[]     = {100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800, 825, 850, 875, 900, 925, 950, 975, 1000, 0};
 
 static const uint16_t BM1397_VOLTAGE_OPTIONS[] = {1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 0};
 static const uint16_t BM1366_VOLTAGE_OPTIONS[] = {1100, 1150, 1200, 1250, 1300,                         0};
 static const uint16_t BM1368_VOLTAGE_OPTIONS[] = {1100, 1150, 1166, 1200, 1250, 1300,                   0};
 static const uint16_t BM1370_VOLTAGE_OPTIONS[] = {1000, 1060, 1100, 1150, 1200, 1250,                   0};
-static const uint16_t MC3_VOLTAGE_OPTIONS[]   = {960,  970,  980,  990, 1000, 1050, 1100, 1150, 1200};
+static const uint16_t MC3_VOLTAGE_OPTIONS[]   = {960, 970, 980, 990, 1000, 1050, 1100, 1150, 1160, 1170, 1180, 1190, 1200, 0};
 
 static const AsicConfig ASIC_BM1397 = { .id = BM1397, .name = "BM1397", .chip_id = 1397, .default_frequency_mhz = 425, .frequency_options = BM1397_FREQUENCY_OPTIONS, .default_voltage_mv = 1400, .voltage_options = BM1397_VOLTAGE_OPTIONS, .difficulty = 256, .core_count = 168, .small_core_count =  672, .hash_domains = 1, .hashrate_test_percentage_target = 0.85, .default_asic_timeout = 20};
 static const AsicConfig ASIC_BM1366 = { .id = BM1366, .name = "BM1366", .chip_id = 1366, .default_frequency_mhz = 485, .frequency_options = BM1366_FREQUENCY_OPTIONS, .default_voltage_mv = 1200, .voltage_options = BM1366_VOLTAGE_OPTIONS, .difficulty = 256, .core_count = 112, .small_core_count =  894, .hash_domains = 4, .hashrate_test_percentage_target = 0.85, .default_asic_timeout = 2000};

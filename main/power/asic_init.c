@@ -72,9 +72,19 @@ esp_err_t asic_prepare_power(const GlobalState *GLOBAL_STATE)
 
 static uint16_t get_proto_target_core_voltage_mv(const GlobalState *GLOBAL_STATE)
 {
-    return GLOBAL_STATE->SELF_TEST_MODULE.is_active
+    uint16_t requested = GLOBAL_STATE->SELF_TEST_MODULE.is_active
         ? GLOBAL_STATE->DEVICE_CONFIG.family.asic.default_voltage_mv
         : nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE);
+    // The saved voltage is the mining target. Preserve the qualified 1200 mV
+    // first-work sequence when booting/resuming a stock 1103 above 300 MHz.
+    if (!GLOBAL_STATE->SELF_TEST_MODULE.is_active &&
+        GLOBAL_STATE->DEVICE_CONFIG.family.asic.id == MC3 &&
+        GLOBAL_STATE->DEVICE_CONFIG.board_version &&
+        strcmp(GLOBAL_STATE->DEVICE_CONFIG.board_version, "1103") == 0 &&
+        GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value > 300 &&
+        GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value <= 600 &&
+        requested >= 800 && requested <= 1200) return 1200;
+    return requested;
 }
 
 static esp_err_t set_proto_core_voltage(GlobalState *GLOBAL_STATE, uint16_t core_voltage_mv)
@@ -241,7 +251,7 @@ static bool proto_startup_wait(proto_startup_guard_t *guard, uint32_t ms)
     return !proto_startup_cancelled(guard);
 }
 
-// Recover PVT at fixed 600 MHz before allowing the first mining work.
+// Recover PVT at the final PLL frequency before allowing the first mining work.
 static bool proto_pvt_log_temperatures(proto_startup_guard_t *guard, const char *phase, bool require_valid)
 {
     float temperatures[4] = {0};
@@ -259,7 +269,8 @@ static bool proto_pvt_log_temperatures(proto_startup_guard_t *guard, const char 
 
 static bool proto_startup_pvt_1200_recover(proto_startup_guard_t *guard)
 {
-    ESP_LOGI(TAG, "PVT_1200 BEGIN frequency=600 voltage_mv=1200; no voltage drop, no work");
+    ESP_LOGI(TAG, "PVT_1200 BEGIN frequency=%.0f voltage_mv=1200; no voltage drop, no work",
+        guard->global->POWER_MANAGEMENT_MODULE.actual_frequency);
     if (!proto_startup_wait(guard, 1000)) return false;
     int16_t total_mv = VCORE_get_regulator_voltage_mv_fresh(guard->global);
     ESP_LOGI(TAG, "PVT_1200 RAIL requested_half_mv=1200 measured_total_mv=%d", total_mv);
@@ -429,7 +440,8 @@ static bool proto_startup_warm_enough(float coldest)
 // Saved voltage remains 1200 mV through pool handoff; only the warmup is lower.
 static bool proto_1200_pvt_startup(const GlobalState *global, uint16_t voltage_mv)
 {
-    return voltage_mv == 1200 && global->POWER_MANAGEMENT_MODULE.frequency_value == 600 &&
+    return voltage_mv == 1200 && global->POWER_MANAGEMENT_MODULE.frequency_value > 300 &&
+        global->POWER_MANAGEMENT_MODULE.frequency_value <= 600 &&
         global->DEVICE_CONFIG.board_version != NULL &&
         strcmp(global->DEVICE_CONFIG.board_version, "1103") == 0;
 }
@@ -701,6 +713,7 @@ static uint8_t asic_initialize_impl(GlobalState *GLOBAL_STATE, asic_init_mode_t 
     SERIAL_set_baud(ASIC_set_max_baud(GLOBAL_STATE));
     SERIAL_clear_buffer();
 
+    GLOBAL_STATE->POWER_MANAGEMENT_MODULE.initialized_us = esp_timer_get_time();
     GLOBAL_STATE->ASIC_initalized = true;
     
     if (stabilization_delay_ms > 0) {

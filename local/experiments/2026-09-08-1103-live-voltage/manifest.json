@@ -1,0 +1,17 @@
+{
+  "app_sha256": "59f3e3eeb5211661aeb5036668051c4e10cb684e7da9c14999047b17908a5d81",
+  "base_commit": "cef666d55805674210828250f49df88420f05519",
+  "startup_unchanged": true,
+  "saved_voltage_mv": 1200,
+  "frequency_mhz": 600,
+  "steps_mv": [
+    1200,
+    1190,
+    1180,
+    1170,
+    1160,
+    1200
+  ],
+  "lease_seconds": 90,
+  "mc3_sha256": "4f79a2981d4d47a903486c8636a90d97ca0a261729d2dd1793a9539e4ec68c2c"
+}

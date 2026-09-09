@@ -46,6 +46,10 @@
             </ng-container>
         </div>
 
+        <p *ngIf="isProtoMC3" class="text-color-secondary">
+            Voltage changes apply while mining. Frequency changes temporarily pause mining for ASIC warmup.
+        </p>
+
         <div *ngIf="form.get('overheat_mode')?.value === 1" class="mt-4">
             <button pButton type="button" label="Disable Overheat Mode"
                     class="p-button-danger w-full"
