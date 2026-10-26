@@ -15,6 +15,7 @@ extern const TPS546_CONFIG TPS546_CONFIG_DEFAULT;
 extern const TPS546_CONFIG TPS546_CONFIG_HEX;
 extern const TPS546_CONFIG TPS546_CONFIG_GAMMA_TURBO;
 extern const TPS546_CONFIG TPS546_CONFIG_NAJA_DUO;
+extern const TPS546_CONFIG TPS546_CONFIG_NAJA_1200;
 extern const TPS546_CONFIG TPS546_CONFIG_GAMMA_HEX;
 
 typedef enum
@@ -140,6 +141,7 @@ static const FamilyConfig FAMILY_GAMMA_DUO   = { .id = GAMMA_DUO,   .name = "Gam
 static const FamilyConfig FAMILY_SUPRA_HEX   = { .id = SUPRA_HEX,   .name = "SupraHex",   .asic = ASIC_BM1368,   .asic_count = 6, .max_power = 120, .power_offset = 25, .nominal_voltage = 12, .voltage_domains = 3, .swarm_color = "darkblue", .tps546_config = &TPS546_CONFIG_HEX, };
 static const FamilyConfig FAMILY_GAMMA_TURBO = { .id = GAMMA_TURBO, .name = "GammaTurbo", .asic = ASIC_BM1370,   .asic_count = 2, .max_power =  60, .power_offset = 10, .nominal_voltage = 12, .voltage_domains = 1, .swarm_color = "cyan",     .tps546_config = &TPS546_CONFIG_GAMMA_TURBO, };
 static const FamilyConfig FAMILY_NAJA_DUO    = { .id = NAJA_DUO,    .name = "NajaDuo",    .asic = ASIC_BM1373,   .asic_count = 2, .max_power =  60, .power_offset = 0,  .nominal_voltage = 12, .voltage_domains = 2, .swarm_color = "magenta",  .tps546_config = &TPS546_CONFIG_NAJA_DUO, };
+static const FamilyConfig FAMILY_NAJA_1200   = { .id = NAJA_DUO,    .name = "Naja",       .asic = ASIC_BM1373,   .asic_count = 2, .max_power =  60, .power_offset = 10, .nominal_voltage = 12, .voltage_domains = 2, .swarm_color = "magenta",  .tps546_config = &TPS546_CONFIG_NAJA_1200, };
 static const FamilyConfig FAMILY_GAMMA_HEX   = { .id = GAMMA_HEX,   .name = "GammaHex",   .asic = ASIC_BM1370_HEX, .asic_count = 6, .max_power = 180, .power_offset = 25, .nominal_voltage = 12, .voltage_domains = 2, .swarm_color = "cyan", .tps546_config = &TPS546_CONFIG_GAMMA_HEX, };
 
 static const FamilyConfig default_families[] = {
@@ -153,6 +155,7 @@ static const FamilyConfig default_families[] = {
     FAMILY_GAMMA_HEX,
     FAMILY_GAMMA_TURBO,
     FAMILY_NAJA_DUO,
+    FAMILY_NAJA_1200,
 };
 
 static const DeviceConfig default_configs[] = {
@@ -179,6 +182,7 @@ static const DeviceConfig default_configs[] = {
     { .board_version = "701",  .family = FAMILY_SUPRA_HEX,   .pins = BITAXE_ORIGINAL_PINS, .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "702",  .family = FAMILY_SUPRA_HEX,   .pins = BITAXE_ORIGINAL_PINS, .EMC2302 = true, .TMP1075 = true,                                            .temp_offset = 10,  .TPS546 = true,                                                           .power_consumption_target = 90, },
     { .board_version = "801",  .family = FAMILY_GAMMA_TURBO, .pins = BITAXE_ORIGINAL_PINS, .EMC2103 = true,                                          .temp_flip = true, .temp_offset = 0,   .TPS546 = true, .power_consumption_target = 36, .self_test_fan_target_rpm = 500, },
+    { .board_version = "1200", .family = FAMILY_NAJA_1200,   .pins = BITAXE_ORIGINAL_PINS, .EMC2103 = true, .temp_offset = 10, .TPS546 = true, .power_consumption_target = 12, .self_test_fan_target_rpm = 500, },
     { .board_version = "1201", .family = FAMILY_NAJA_DUO,    .pins = BITAXE_COLOR_PINS,    .asic_enable = true, .asic_enable_active_high = true, .EMC2103 = true, .emc_ideality_factor = 0x17, .emc_beta_compensation = 0x10, .temp_offset = 0, .TPS546 = true, .power_consumption_target = 50, .power_consumption_margin = 10, .self_test_fan_target_rpm = 500, },
     { .board_version = "1300", .family = FAMILY_GAMMA_HEX,   .pins = BITAXE_COLOR_PINS,    .asic_enable = true, .asic_enable_active_high = true, .EMC2103 = true, .emc_direct_pwm = true, .temp_flip = true, .display_flip = true, .temp_offset = 0, .TPS546 = true, .power_consumption_target = 140, .power_consumption_margin = 21, .self_test_fan_target_rpm = 500, },
 };
