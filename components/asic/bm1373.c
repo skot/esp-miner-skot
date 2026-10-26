@@ -16,6 +16,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <math.h>
+#include <pthread.h>
+#include <inttypes.h>
 
 #define BM1372_CHIP_ID 0x1372
 #define BM1373_CHIP_ID_ALIAS 0x1373
@@ -33,6 +36,8 @@
 #define BM1372_REGISTER_ROSC_PAD_DISABLE 0x68
 #define BM1372_REGISTER_SOFT_RESET_CONTROL 0xA8
 #define BM1372_REGISTER_VERSION_ROLLING 0xA4
+#define BM1372_REGISTER_TEMPSENSOR_CTRL0 0xB2
+#define BM1372_REGISTER_TEMPSENSOR_DATA0 0xB3
 #define BM1372_REGISTER_AUTO_WORK_CONFIGURATION 0xC4
 
 // The generic BM13xx nonce-space calculation makes BM1372/BM1373 chips search
@@ -65,6 +70,10 @@
 #define BM1372_FAST_RESET_DELAY_MS 20
 #define BM1372_SET_ADDRESS_STRIDE 0x10
 #define BM1372_COMMAND_ADDRESS_SHIFT 2
+#define BM1372_MAX_CHIPS (256 / BM1372_SET_ADDRESS_STRIDE)
+#define BM1372_TEMP_DONE 0x80000000U
+#define BM1372_TEMP_ERROR 0x40000000U
+#define BM1372_TEMP_MAX_AGE_US 5000000ULL
 
 #define TYPE_JOB 0x20
 #define TYPE_CMD 0x40
@@ -128,6 +137,29 @@ static uint16_t chip_nonce_address_interval;
 static uint8_t detected_chip_count;
 static uint8_t detected_voltage_domains;
 static bool frequency_write_failed;
+
+static struct {
+    uint32_t data;
+    uint64_t timestamp_us;
+} die_sensors[BM1372_MAX_CHIPS];
+static pthread_mutex_t die_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
+
+float BM1373_get_die_temperature(uint8_t asic_nr, uint64_t now_us)
+{
+    if (asic_nr >= detected_chip_count || asic_nr >= BM1372_MAX_CHIPS) {
+        return NAN;
+    }
+    pthread_mutex_lock(&die_sensor_lock);
+    uint32_t data = die_sensors[asic_nr].data;
+    uint64_t timestamp_us = die_sensors[asic_nr].timestamp_us;
+    pthread_mutex_unlock(&die_sensor_lock);
+    if (!timestamp_us || now_us < timestamp_us || now_us - timestamp_us > BM1372_TEMP_MAX_AGE_US ||
+        !(data & BM1372_TEMP_DONE) || (data & BM1372_TEMP_ERROR)) {
+        return NAN;
+    }
+    // S23-hyd BM1372 0x52e9c: VNMLS computes product minus intercept.
+    return (float)((data & 0xFFFF) * (683.254 / 4096.0) - 289.18);
+}
 
 /// @brief
 /// @param ftdi
@@ -292,6 +324,13 @@ uint8_t BM1373_init(GlobalState * GLOBAL_STATE)
     detected_chip_count = 0;
     detected_voltage_domains = 0;
     frequency_write_failed = false;
+    pthread_mutex_lock(&die_sensor_lock);
+    memset(die_sensors, 0, sizeof(die_sensors));
+    pthread_mutex_unlock(&die_sensor_lock);
+    if (expected_chip_count == 0 || expected_chip_count > BM1372_MAX_CHIPS) {
+        ESP_LOGE(TAG, "Invalid BM1372/BM1373 chip count: %u", expected_chip_count);
+        return 0;
+    }
 
     // Discover the chain at reset baud before changing any ASIC configuration.
     const uint8_t chip_id_request[2] = {0x00, 0x00};
@@ -462,12 +501,31 @@ task_result * BM1373_process_work(GlobalState * GLOBAL_STATE)
     }
 
     if (!asic_result.is_job_response) {
+        if (!chip_response_address_interval ||
+            asic_result.cmd.asic_address % chip_response_address_interval != 0 ||
+            asic_result.cmd.asic_address / chip_response_address_interval >= detected_chip_count) {
+            return NULL;
+        }
+        uint8_t asic_nr = asic_result.cmd.asic_address / chip_response_address_interval;
+        if (asic_result.cmd.register_address == BM1372_REGISTER_TEMPSENSOR_DATA0) {
+            uint32_t value = ntohl(asic_result.cmd.value);
+            pthread_mutex_lock(&die_sensor_lock);
+            bool first_read = !die_sensors[asic_nr].timestamp_us;
+            die_sensors[asic_nr].data = value;
+            die_sensors[asic_nr].timestamp_us = result.timestamp_us;
+            pthread_mutex_unlock(&die_sensor_lock);
+            if (first_read) {
+                ESP_LOGI(TAG, "ASIC %u temperature register 0x%02x: 0x%08" PRIX32,
+                         asic_nr, asic_result.cmd.register_address, value);
+            }
+            return NULL;
+        }
         result.register_type = REGISTER_MAP[asic_result.cmd.register_address];
         if (result.register_type == REGISTER_INVALID) {
             ESP_LOGW(TAG, "Unknown register read: %02x", asic_result.cmd.register_address);
             return NULL;
         }
-        result.asic_nr = asic_result.cmd.asic_address / chip_response_address_interval;
+        result.asic_nr = asic_nr;
         result.value = ntohl(asic_result.cmd.value);
 
         return &result;
@@ -494,6 +552,29 @@ void BM1373_read_registers(void)
         if (REGISTER_MAP[reg] != REGISTER_INVALID) {
             _send_BM1373((TYPE_CMD | GROUP_ALL | CMD_READ), (uint8_t[]){0x00, reg}, 2, BM1373_SERIALTX_DEBUG);
             vTaskDelay(pdMS_TO_TICKS(1));
+        }
+    }
+
+    // CTRL0 is write-only; use the stock register shadow's defaults, including TS_CLK_EN.
+    static const uint32_t stages[] = {0x40020000, 0x60020000, 0x61020000, 0x70020000};
+    bool ready[BM1372_MAX_CHIPS];
+    for (uint8_t chip = 0; chip < detected_chip_count; chip++) {
+        ready[chip] = true;
+    }
+    for (size_t stage = 0; stage < sizeof(stages) / sizeof(stages[0]); stage++) {
+        for (uint8_t chip = 0; chip < detected_chip_count; chip++) {
+            if (ready[chip] && !_write_chip(chip * chip_response_address_interval,
+                                          BM1372_REGISTER_TEMPSENSOR_CTRL0, stages[stage])) {
+                ready[chip] = false;
+            }
+        }
+        vTaskDelay(pdMS_TO_TICKS(BM1372_INIT_STEP_DELAY_MS));
+    }
+    for (uint8_t chip = 0; chip < detected_chip_count; chip++) {
+        if (ready[chip]) {
+            _send_BM1373(TYPE_CMD | GROUP_SINGLE | CMD_READ,
+                        (uint8_t[]){chip * chip_response_address_interval, BM1372_REGISTER_TEMPSENSOR_DATA0},
+                        2, BM1373_SERIALTX_DEBUG);
         }
     }
 }

@@ -652,6 +652,12 @@ components:
         temp2:
           type: number
           description: Average chip temperature from second sensor
+        asicDieTemps:
+          type: array
+          description: On-die temperatures in Celsius in ASIC chain order; empty on unsupported models, null for unavailable or stale readings. Independent of temp/temp2 used for cooling control.
+          items:
+            type: number
+            nullable: true
         uptimeSeconds:
           type: number
           description: System uptime in seconds

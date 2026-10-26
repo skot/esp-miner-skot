@@ -16,6 +16,8 @@
 #include "hashrate_monitor_task.h"
 #include "statistics_task.h"
 #include "asic.h"
+#include "bm1373.h"
+#include "esp_timer.h"
 #include "yyjson_utils.h"
 
 static const char *get_reset_reason_str(esp_reset_reason_t reason)
@@ -50,6 +52,18 @@ static void system_api_add_telemetry(yyjson_mut_doc *doc, yyjson_mut_val *root, 
     yyjson_mut_obj_add_float(doc, root, "current", g->POWER_MANAGEMENT_MODULE.current);
     yyjson_mut_obj_add_float(doc, root, "temp", g->POWER_MANAGEMENT_MODULE.chip_temp_avg);
     yyjson_mut_obj_add_float(doc, root, "temp2", g->POWER_MANAGEMENT_MODULE.chip_temp2_avg);
+    yyjson_mut_val *die_temps = yyjson_mut_obj_add_arr(doc, root, "asicDieTemps");
+    if (g->DEVICE_CONFIG.family.asic.id == BM1373) {
+        uint64_t now_us = esp_timer_get_time();
+        for (uint16_t chip = 0; chip < g->DEVICE_CONFIG.family.asic_count; chip++) {
+            float temperature = g->ASIC_initalized ? BM1373_get_die_temperature(chip, now_us) : NAN;
+            if (isfinite(temperature)) {
+                yyjson_mut_arr_add_real(doc, die_temps, temperature);
+            } else {
+                yyjson_mut_arr_add_null(doc, die_temps);
+            }
+        }
+    }
     yyjson_mut_obj_add_float(doc, root, "vrTemp", g->POWER_MANAGEMENT_MODULE.vr_temp);
     yyjson_mut_obj_add_float(doc, root, "coreVoltageActual", g->POWER_MANAGEMENT_MODULE.core_voltage);
     yyjson_mut_obj_add_float(doc, root, "actualFrequency", g->POWER_MANAGEMENT_MODULE.actual_frequency);
