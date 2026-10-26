@@ -61,6 +61,7 @@ void BM1370_set_hash_counting_number(uint32_t hcn);
 #define BM1373_send_hash_frequency bm1373_test_send_hash_frequency
 #define BM1373_process_work bm1373_test_process_work
 #define BM1373_read_registers bm1373_test_read_registers
+#define BM1373_get_die_temperature bm1373_test_get_die_temperature
 #define BM1373_set_nonce_space bm1373_test_set_nonce_space
 #define BM1373_set_hash_counting_number bm1373_test_set_hash_counting_number
 void BM1373_set_hash_counting_number(uint32_t hcn);
