@@ -289,6 +289,22 @@ describe('HomeComponent', () => {
     expect(rows[1].textContent).toContain('223.0');
   });
 
+  it('shows the single-chip Gamma die temperature and four voltage channels', () => {
+    mockLiveDataService.info$.next({
+      ...mockSystemInfo, ASICModel: 'BM1370', boardVersion: '602', temp2: 0,
+      asicDieTemps: [46.0156], asicDomainVoltages: [[285, 286, 287, 288]]
+    });
+    fixture.detectChanges();
+    const dieRows = fixture.nativeElement.querySelectorAll('.asic-die-temperature');
+    const voltageRows = fixture.nativeElement.querySelectorAll('.asic-domain-voltages');
+    expect(dieRows.length).toBe(1);
+    expect(dieRows[0].textContent).toContain('46.0 °C');
+    expect(voltageRows.length).toBe(1);
+    expect(voltageRows[0].querySelectorAll('td').length).toBe(4);
+    expect(voltageRows[0].textContent).toContain('288.0');
+    expect(fixture.nativeElement.textContent).toContain('ASIC Diode Temperature');
+  });
+
   it('hides internal voltage channels on unsupported models and older firmware', () => {
     expect(fixture.nativeElement.querySelectorAll('.asic-domain-voltages').length).toBe(0);
     mockLiveDataService.info$.next({ ...mockSystemInfo, asicDomainVoltages: undefined });

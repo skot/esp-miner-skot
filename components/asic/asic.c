@@ -204,6 +204,7 @@ void ASIC_read_registers(GlobalState * GLOBAL_STATE)
             break;
         case BM1370:
             BM1370_read_registers(GLOBAL_STATE);
+            BM1370_read_sensors(GLOBAL_STATE);
             break;
         case BM1373:
             BM1373_read_registers();
