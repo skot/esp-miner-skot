@@ -7,6 +7,7 @@
 typedef struct GlobalState GlobalState;
 
 #define BM1370_SMALL_CORE_BITS 4
+#define BM1370_VOLTAGE_DOMAINS 4
 
 #define BM1370_SERIALTX_DEBUG false
 #define BM1370_SERIALRX_DEBUG false
@@ -19,6 +20,9 @@ int BM1370_set_max_baud(void);
 float BM1370_send_hash_frequency(float frequency);
 task_result * BM1370_process_work(GlobalState * GLOBAL_STATE);
 void BM1370_read_registers(GlobalState * GLOBAL_STATE);
+void BM1370_read_sensors(GlobalState * GLOBAL_STATE);
+float BM1370_get_die_temperature(uint8_t chip, uint64_t now_us);
+float BM1370_get_domain_voltage_mv(uint8_t chip, uint8_t domain, uint64_t now_us);
 void BM1370_set_nonce_space(double nonce_percent, float frequency, uint16_t asic_count, uint16_t cores);
 void BM1370_set_difficulty(uint8_t difficulty_power);
 

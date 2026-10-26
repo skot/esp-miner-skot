@@ -13,6 +13,9 @@
 #include "pll.h"
 
 #include <stdint.h>
+#include <inttypes.h>
+#include <math.h>
+#include <pthread.h>
 #include <string.h>
 #include <arpa/inet.h>
 
@@ -81,8 +84,47 @@ static const char * TAG = "bm1370";
 static task_result result;
 
 static uint16_t address_interval;
+#define BM1370_MAX_CHIPS 16
+#define BM1370_ADC_CTRL0 0xb8
+#define BM1370_ADC_CTRL1 0xb9
+#define BM1370_ADC_DATA 0xbd
+#define BM1370_ADC_READY (1U << 31)
+#define BM1370_SENSOR_MAX_AGE_US 10000000ULL
+static uint8_t detected_chip_count;
+static uint8_t sensor_step;
+static pthread_mutex_t sensor_lock = PTHREAD_MUTEX_INITIALIZER;
+static struct {
+    float temperature;
+    float voltage_mv[BM1370_VOLTAGE_DOMAINS];
+    uint64_t temperature_time;
+    uint64_t voltage_time[BM1370_VOLTAGE_DOMAINS];
+    uint32_t reply;
+    uint64_t reply_time;
+    bool pending;
+    bool logged[6];
+} sensors[BM1370_MAX_CHIPS];
 
-static void _send_BM1370(uint8_t header, const uint8_t * data, uint8_t data_len, bool debug);
+float BM1370_get_die_temperature(uint8_t chip, uint64_t now_us)
+{
+    if (chip >= detected_chip_count) return NAN;
+    pthread_mutex_lock(&sensor_lock);
+    uint64_t time = sensors[chip].temperature_time;
+    float temperature = sensors[chip].temperature;
+    pthread_mutex_unlock(&sensor_lock);
+    return time && now_us >= time && now_us - time <= BM1370_SENSOR_MAX_AGE_US ? temperature : NAN;
+}
+
+float BM1370_get_domain_voltage_mv(uint8_t chip, uint8_t domain, uint64_t now_us)
+{
+    if (chip >= detected_chip_count || domain >= BM1370_VOLTAGE_DOMAINS) return NAN;
+    pthread_mutex_lock(&sensor_lock);
+    uint64_t time = sensors[chip].voltage_time[domain];
+    float mv = sensors[chip].voltage_mv[domain];
+    pthread_mutex_unlock(&sensor_lock);
+    return time && now_us >= time && now_us - time <= BM1370_SENSOR_MAX_AGE_US ? mv : NAN;
+}
+
+static bool _send_BM1370(uint8_t header, const uint8_t * data, uint8_t data_len, bool debug);
 
 static void BM1370_write_clock_delay_ctrl(uint8_t chip_addr, uint8_t header)
 {
@@ -105,14 +147,14 @@ static void BM1370_write_io_driver_strength(uint8_t chip_addr, uint8_t header, u
 /// @param header
 /// @param data
 /// @param len
-static void _send_BM1370(uint8_t header, const uint8_t * data, uint8_t data_len, bool debug)
+static bool _send_BM1370(uint8_t header, const uint8_t * data, uint8_t data_len, bool debug)
 {
     packet_type_t packet_type = (header & TYPE_JOB) ? JOB_PACKET : CMD_PACKET;
     const uint8_t total_length = (packet_type == JOB_PACKET) ? (data_len + 6) : (data_len + 5);
 
     if (total_length > 128) {
         ESP_LOGE(TAG, "Packet length %d exceeds maximum buffer size", total_length);
-        return;
+        return false;
     }
 
     uint8_t buf[128];
@@ -140,9 +182,11 @@ static void _send_BM1370(uint8_t header, const uint8_t * data, uint8_t data_len,
     }
 
     // send serial data
-    if (SERIAL_send(buf, total_length, debug) == 0) {
+    if (SERIAL_send(buf, total_length, debug) != total_length) {
         ESP_LOGE(TAG, "Failed to send data to BM1370");
+        return false;
     }
+    return true;
 }
 
 static void _send_chain_inactive(void)
@@ -214,6 +258,11 @@ float BM1370_send_hash_frequency(float target_freq)
 
 uint8_t BM1370_init(GlobalState * GLOBAL_STATE)
 {
+    pthread_mutex_lock(&sensor_lock);
+    detected_chip_count = 0;
+    sensor_step = 0;
+    memset(sensors, 0, sizeof(sensors));
+    pthread_mutex_unlock(&sensor_lock);
     // set version mask
     for (int i = 0; i < 3; i++) {
         BM1370_set_version_mask(BIP320_VERSION_ROLLING_MASK);
@@ -225,9 +274,11 @@ uint8_t BM1370_init(GlobalState * GLOBAL_STATE)
     uint16_t asic_count = GLOBAL_STATE->DEVICE_CONFIG.family.asic_count;
     int chip_counter = count_asic_chips(asic_count, BM1370_CHIP_ID, BM1370_CHIP_ID_RESPONSE_LENGTH);
 
-    if (chip_counter == 0) {
+    if (chip_counter <= 0 || chip_counter > BM1370_MAX_CHIPS) {
         return 0;
     }
+
+    detected_chip_count = chip_counter;
 
     // set version mask
     BM1370_set_version_mask(BIP320_VERSION_ROLLING_MASK);
@@ -351,6 +402,20 @@ task_result * BM1370_process_work(GlobalState * GLOBAL_STATE)
     }
     
     if (!asic_result.is_job_response) {
+        if (!address_interval || asic_result.cmd.asic_address % address_interval ||
+            asic_result.cmd.asic_address / address_interval >= detected_chip_count) return NULL;
+        uint8_t chip = asic_result.cmd.asic_address / address_interval;
+        if (asic_result.cmd.register_address == BM1370_ADC_DATA) {
+            uint32_t value = ntohl(asic_result.cmd.value);
+            pthread_mutex_lock(&sensor_lock);
+            if (sensors[chip].pending) {
+                sensors[chip].reply = value;
+                sensors[chip].reply_time = result.timestamp_us;
+                sensors[chip].pending = false;
+            }
+            pthread_mutex_unlock(&sensor_lock);
+            return NULL;
+        }
         result.register_type = REGISTER_MAP[asic_result.cmd.register_address];
         if (result.register_type == REGISTER_INVALID) {
             ESP_LOGW(TAG, "Unknown register read: %02x", asic_result.cmd.register_address);
@@ -392,6 +457,136 @@ void BM1370_read_registers(GlobalState * GLOBAL_STATE)
             }
         }
     }
+}
+
+static bool write_sensor_register(uint8_t reg, uint32_t value)
+{
+    return _send_BM1370(TYPE_CMD | GROUP_ALL | CMD_WRITE,
+                       (uint8_t[]){0, reg, value >> 24, value >> 16, value >> 8, value},
+                       6, BM1370_SERIALTX_DEBUG);
+}
+
+static bool configure_sensor(const uint32_t (*registers)[2], size_t count)
+{
+    for (size_t i = 0; i < count; i++) {
+        if (!write_sensor_register(registers[i][0], registers[i][1])) return false;
+    }
+    return true;
+}
+
+static void read_sensor_samples(GlobalState *state, bool *valid, uint32_t *sums,
+                                uint64_t *times, bool temperature, uint8_t phase_or_domain)
+{
+    unsigned samples = temperature ? 21 : 10;
+    static const uint8_t selectors[] = {1, 2, 4, 5};
+    uint32_t start = temperature ? (phase_or_domain ? 0x23ace00d : 0x23ac000d) :
+                                 0x232c030d | ((uint32_t)selectors[phase_or_domain] << 13);
+    for (unsigned sample = 0; sample < samples; sample++) {
+        if (!state->ASIC_initalized || !write_sensor_register(BM1370_ADC_CTRL0, start) ||
+            (temperature && !write_sensor_register(BM1370_ADC_CTRL1, 0x3f4141af))) {
+            for (uint8_t chip = 0; chip < detected_chip_count; chip++) valid[chip] = false;
+            break;
+        }
+        if (!temperature) vTaskDelay(pdMS_TO_TICKS(60));
+        if (!state->ASIC_initalized) {
+            for (uint8_t chip = 0; chip < detected_chip_count; chip++) valid[chip] = false;
+            break;
+        }
+        bool any_valid = false;
+        for (uint8_t chip = 0; chip < detected_chip_count; chip++) {
+            if (!valid[chip]) continue;
+            any_valid = true;
+            pthread_mutex_lock(&sensor_lock);
+            sensors[chip].pending = true;
+            sensors[chip].reply = 0;
+            pthread_mutex_unlock(&sensor_lock);
+            if (!_send_BM1370(TYPE_CMD | GROUP_SINGLE | CMD_READ,
+                             (uint8_t[]){chip * address_interval, BM1370_ADC_DATA},
+                             2, BM1370_SERIALTX_DEBUG)) valid[chip] = false;
+        }
+        if (!any_valid) break;
+        for (unsigned wait = 0; wait < 20 && state->ASIC_initalized; wait++) {
+            bool pending = false;
+            pthread_mutex_lock(&sensor_lock);
+            for (uint8_t chip = 0; chip < detected_chip_count; chip++) {
+                pending |= valid[chip] && sensors[chip].pending;
+            }
+            pthread_mutex_unlock(&sensor_lock);
+            if (!pending) break;
+            vTaskDelay(pdMS_TO_TICKS(1));
+        }
+        pthread_mutex_lock(&sensor_lock);
+        for (uint8_t chip = 0; chip < detected_chip_count; chip++) {
+            valid[chip] = valid[chip] && !sensors[chip].pending &&
+                          (sample == 0 || (sensors[chip].reply & BM1370_ADC_READY));
+            sensors[chip].pending = false;
+            if (valid[chip] && sample > 0) {
+                uint32_t raw = sensors[chip].reply;
+                sums[chip] += (temperature && phase_or_domain ? raw >> 16 : raw) & 0x7fff;
+                times[chip] = sensors[chip].reply_time;
+                uint8_t log_index = temperature ? phase_or_domain : phase_or_domain + 2;
+                if (!sensors[chip].logged[log_index]) {
+                    sensors[chip].logged[log_index] = true;
+                    ESP_LOGI(TAG, "ASIC %u %s %u raw ADC: 0x%08" PRIX32, chip,
+                             temperature ? "temperature phase" : "voltage channel", phase_or_domain + 1, raw);
+                }
+            }
+        }
+        pthread_mutex_unlock(&sensor_lock);
+    }
+}
+
+void BM1370_read_sensors(GlobalState *state)
+{
+    if (!state->ASIC_initalized || !detected_chip_count) return;
+    bool temperature = sensor_step == 0;
+    uint8_t domain = temperature ? 0 : sensor_step - 1;
+    bool valid[BM1370_MAX_CHIPS];
+    uint32_t sums[2][BM1370_MAX_CHIPS] = {0};
+    uint64_t times[BM1370_MAX_CHIPS] = {0};
+    for (uint8_t chip = 0; chip < detected_chip_count; chip++) valid[chip] = true;
+    if (temperature) {
+        static const uint32_t phase_a[][2] = {{0xb8, 0x238c000d}, {0xba, 0x00040010}, {0xbb, 0x03340e80}};
+        static const uint32_t phase_b[][2] = {
+            {0xb8, 0x238ce00d}, {0xb9, 0x3f0141af}, {0xba, 0x00040010}, {0xbb, 0x03340e80}};
+        for (uint8_t phase = 0; phase < 2; phase++) {
+            bool configured = state->ASIC_initalized && (phase ? configure_sensor(phase_b, 4) : configure_sensor(phase_a, 3));
+            if (!configured) {
+                for (uint8_t chip = 0; chip < detected_chip_count; chip++) valid[chip] = false;
+                break;
+            }
+            vTaskDelay(pdMS_TO_TICKS(20));
+            read_sensor_samples(state, valid, sums[phase], times, true, phase);
+        }
+    } else {
+        static const uint8_t selectors[] = {1, 2, 4, 5};
+        const uint32_t config[][2] = {
+            {0xb8, 0x230c030d | ((uint32_t)selectors[domain] << 13)},
+            {0xb9, 0x3f014381}, {0xba, 0x00040010}, {0xbb, 0x03340e80}};
+        if (configure_sensor(config, 4)) {
+            read_sensor_samples(state, valid, sums[0], times, false, domain);
+        } else {
+            for (uint8_t chip = 0; chip < detected_chip_count; chip++) valid[chip] = false;
+        }
+    }
+    pthread_mutex_lock(&sensor_lock);
+    for (uint8_t chip = 0; chip < detected_chip_count; chip++) {
+        sensors[chip].pending = false;
+        bool available = valid[chip] && state->ASIC_initalized;
+        if (temperature) {
+            uint32_t a = sums[0][chip] / 20, b = sums[1][chip] / 20;
+            uint32_t code = a + 16384 - ((a + b) >> 1);
+            sensors[chip].temperature = (float)(code * 0.0309 - 769.25);
+            sensors[chip].temperature_time = available ? times[chip] : 0;
+        } else {
+            double mean = sums[0][chip] / 9.0;
+            sensors[chip].voltage_mv[domain] = (float)((domain < 2 ? 1000.0 : 2000.0) * (mean / 16384.0 - 1.0));
+            sensors[chip].voltage_time[domain] = available ? times[chip] : 0;
+        }
+    }
+    // The ADC is shared: acquire a full temperature measurement or one voltage channel per poll.
+    if (state->ASIC_initalized) sensor_step = (sensor_step + 1) % (BM1370_VOLTAGE_DOMAINS + 1);
+    pthread_mutex_unlock(&sensor_lock);
 }
 
 void BM1370_set_difficulty(uint8_t difficulty_power)

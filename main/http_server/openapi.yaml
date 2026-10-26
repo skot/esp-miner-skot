@@ -654,7 +654,7 @@ components:
           description: Average chip temperature from second sensor
         asicDomainVoltages:
           type: array
-          description: Internal supply-sense domain voltages in millivolts, indexed by ASIC then channel (four channels per BM1372/BM1373). Empty on unsupported models; null for unavailable or stale readings. These channels are distinct from hashrate domains and individual cores.
+          description: Internal supply-sense domain voltages in millivolts, indexed by ASIC then channel (four channels per BM1370 or BM1372/BM1373). Empty on unsupported models; null for unavailable or stale readings. These channels are distinct from hashrate domains and individual cores.
           items:
             type: array
             items:
