@@ -4,6 +4,7 @@
 #include "lvgl.h"
 #include "esp_lvgl_port.h"
 #include "driver/gpio.h"
+#include "ota_security.h"
 
 #define GPIO_BUTTON_BOOT CONFIG_GPIO_BUTTON_BOOT
 
@@ -31,6 +32,8 @@ static void IRAM_ATTR button_isr_handler(void *arg)
 static void button_short_clicked_event_cb(lv_event_t *e)
 {
     ESP_LOGI(TAG, "Short button click detected");
+    ota_security_unlock_from_button();
+    ESP_LOGI(TAG, "OTA unlocked for 120 seconds");
     button_short_clicked_fn();
 }
 

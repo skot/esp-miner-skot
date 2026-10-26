@@ -1,6 +1,27 @@
 <div class="card">
   <h2>Update</h2>
 
+  @if (info$ | async; as info) {
+    <div class="mb-4 p-3 rounded border border-white/10">
+      <h5>OTA Protection</h5>
+      @if (info.otaButtonRequired === 0) {
+        <p class="text-orange-500">Button protection is disabled. Remote firmware and custom web UI updates are allowed.</p>
+      } @else if (info.otaUnlockRemaining > 0) {
+        <p class="text-green-500">OTA unlocked for {{ info.otaUnlockRemaining }} seconds. You can upload an update or activate installed firmware.</p>
+      } @else {
+        <p>OTA is locked. Briefly press the BOOT button on your Bitaxe to unlock updates for 120 seconds.</p>
+      }
+      <div class="flex items-center gap-2">
+        <input id="otaButtonRequired" type="checkbox"
+          [checked]="info.otaButtonRequired !== 0"
+          [disabled]="otaLocked"
+          (change)="toggleOtaButtonRequired($event)">
+        <label for="otaButtonRequired">Require a button press for updates</label>
+      </div>
+      <small class="text-secondary block mt-2">Disabling protection requires a button press first and is saved across restarts. Enabling protection locks updates immediately. Uploads already started can finish after the unlock window expires.</small>
+    </div>
+  }
+
   <div class="flex flex-wrap -mx-2">
     <div class="w-full xl:w-1/3 px-2 mb-4 xl:mb-0">
       <div class="card h-full">
@@ -88,7 +109,7 @@
         <label class="btn w-full text-center relative flex justify-center items-center gap-2 cursor-pointer my-2">
           <i class="pi pi-upload"></i>
           <span>Browse</span>
-          <input #firmwareUpload type="file" accept=".bin" (change)="onFileSelected($event, 'firmwareUpload')" class="hidden">
+          <input #firmwareUpload type="file" accept=".bin" [disabled]="otaLocked" (change)="onFileSelected($event, 'firmwareUpload')" class="hidden">
         </label>
 
         <small>(esp-miner.bin)</small>
@@ -116,7 +137,7 @@
             <label class="btn w-full text-center relative flex justify-center items-center gap-2 cursor-pointer my-2">
               <i class="pi pi-upload"></i>
               <span>Browse</span>
-              <input #websiteUpload type="file" accept=".bin" (change)="onFileSelected($event, 'websiteUpload')" class="hidden">
+              <input #websiteUpload type="file" accept=".bin" [disabled]="otaLocked" (change)="onFileSelected($event, 'websiteUpload')" class="hidden">
             </label>
             <small class="block mt-1 text-secondary">(www.bin)</small>
           </div>
@@ -223,6 +244,7 @@
                 @if (!partition.isCurrent && partition.version) {
                   <button 
                     (click)="switchPartition(partition.label)"
+                    [disabled]="otaLocked"
                     class="btn btn-secondary py-1 px-3 text-sm">
                     Activate
                   </button>

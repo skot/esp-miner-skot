@@ -8,18 +8,23 @@ import { ProgressbarComponent } from '../progressbar/progressbar.component';
 import { provideHttpClient, HttpErrorResponse } from '@angular/common/http';
 import { provideToastr } from 'ngx-toastr';
 import { getHttpErrorMessage } from 'src/app/utils/error-handler';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
+import { LiveDataService } from 'src/app/services/live-data.service';
+import { SystemInfo } from 'src/app/generated/models';
 import { SystemApiService } from 'src/app/services/system.service';
 import { GithubRelease, GithubUpdateService } from 'src/app/services/github-update.service';
 
 describe('UpdateComponent', () => {
   let component: UpdateComponent;
   let fixture: ComponentFixture<UpdateComponent>;
+  let info: BehaviorSubject<SystemInfo>;
 
   beforeEach(() => {
+    info = new BehaviorSubject<SystemInfo>({ version: 'test', otaButtonRequired: 1, otaUnlockRemaining: 0 } as SystemInfo);
     TestBed.configureTestingModule({
       imports: [CheckboxComponent, ProgressbarComponent, FormsModule, UpdateComponent, ModalComponent],
-      providers: [provideHttpClient(), provideToastr()]
+      providers: [provideHttpClient(), provideToastr(),
+        { provide: LiveDataService, useValue: { info$: info.asObservable(), connected$: of(false) } }]
     });
     fixture = TestBed.createComponent(UpdateComponent);
     component = fixture.componentInstance;
@@ -28,6 +33,70 @@ describe('UpdateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('OTA protection', () => {
+    it('blocks firmware and custom web UI uploads while locked', () => {
+      const service = TestBed.inject(SystemApiService);
+      const firmware = spyOn(service, 'performOTAUpdate');
+      const website = spyOn(service, 'performWWWOTAUpdate');
+      component.otaUpdate(new File(['firmware'], 'esp-miner.bin'));
+      component.otaWWWUpdate(new File(['website'], 'www.bin'));
+      expect(firmware).not.toHaveBeenCalled();
+      expect(website).not.toHaveBeenCalled();
+      expect(fixture.nativeElement.querySelector('input[type="file"]').disabled).toBeTrue();
+      expect(fixture.nativeElement.querySelector('#otaButtonRequired').disabled).toBeTrue();
+    });
+
+    it('unlocks controls on a button press and relocks when the window expires', () => {
+      info.next({ ...info.value, otaUnlockRemaining: 120 });
+      fixture.detectChanges();
+      expect(component.otaLocked).toBeFalse();
+      expect(fixture.nativeElement.textContent).toContain('OTA unlocked for 120 seconds');
+      expect(fixture.nativeElement.querySelector('input[type="file"]').disabled).toBeFalse();
+      expect(fixture.nativeElement.querySelector('#otaButtonRequired').disabled).toBeFalse();
+      info.next({ ...info.value, otaUnlockRemaining: 0 });
+      fixture.detectChanges();
+      expect(component.otaLocked).toBeTrue();
+      expect(fixture.nativeElement.querySelector('input[type="file"]').disabled).toBeTrue();
+    });
+
+    it('allows remote uploads when button protection is disabled', () => {
+      info.next({ ...info.value, otaButtonRequired: 0 });
+      const upload = spyOn(TestBed.inject(SystemApiService), 'performOTAUpdate').and.returnValue(of());
+      component.otaUpdate(new File(['firmware'], 'esp-miner.bin'));
+      expect(upload).toHaveBeenCalled();
+      expect(component.otaLocked).toBeFalse();
+    });
+
+    it('does not activate installed firmware while locked', () => {
+      const activate = spyOn(TestBed.inject(SystemApiService), 'switchBootPartition');
+      component.switchPartition('factory');
+      expect(activate).not.toHaveBeenCalled();
+    });
+
+    it('shows the backend error if the unlock expires before an upload starts', () => {
+      info.next({ ...info.value, otaUnlockRemaining: 1 });
+      spyOn(TestBed.inject(SystemApiService), 'performOTAUpdate').and.returnValue(
+        throwError(() => new HttpErrorResponse({ status: 403, error: { message: 'Press the BOOT button to unlock OTA for 120 seconds' } }))
+      );
+      component.otaUpdate(new File(['firmware'], 'esp-miner.bin'));
+      expect(component.updateStatus).toBe('error');
+      expect(component.updateMessage).toContain('Press the BOOT button');
+    });
+
+    it('preserves the displayed protection setting when disabling is rejected', () => {
+      const update = spyOn(TestBed.inject(SystemApiService), 'updateSystem').and.returnValue(
+        throwError(() => new HttpErrorResponse({ status: 403 }))
+      );
+      info.next({ ...info.value, otaUnlockRemaining: 1 });
+      fixture.detectChanges();
+      const checkbox: HTMLInputElement = fixture.nativeElement.querySelector('#otaButtonRequired');
+      checkbox.checked = false;
+      checkbox.dispatchEvent(new Event('change'));
+      expect(update).toHaveBeenCalledWith('', { otaButtonRequired: 0 });
+      expect(checkbox.checked).toBeTrue();
+    });
   });
 
   describe('getHttpErrorMessage', () => {
