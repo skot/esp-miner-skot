@@ -43,7 +43,7 @@ static void sensor_reply_hook(const uint8_t *bytes, size_t length)
         raw = sample ? (selector < 3 ? 24576 : 20480) : 16384;
         raw |= 0x45670000;
     }
-    if (data_ready && sample && !(control & (1U << 23))) raw |= 0x80000000;
+    if (data_ready && sample) raw |= 0x80000000;
     const uint8_t response[11] = {0xaa, 0x55, raw >> 24, raw >> 16, raw >> 8, raw, bytes[4], 0xbd, 0, 0, 0};
     bm13xx_harness_queue_response(response);
     TEST_ASSERT_NULL(BM1370_process_work(sensor_state));
@@ -132,5 +132,21 @@ TEST_CASE("BM1370 sensor acquisition stops on power down and failed writes", "[a
     bm13xx_harness_fail_writes(1);
     BM1370_read_sensors(sensor_state);
     TEST_ASSERT_TRUE(isnan(BM1370_get_die_temperature(0, sample_time)));
+    bm13xx_harness_end();
+}
+
+TEST_CASE("BM1370 does not interpret unfinished temperature conversions as die temperatures", "[asic][temperature]")
+{
+    begin_sensor_test();
+    data_ready = false;
+    BM1370_read_sensors(sensor_state);
+    TEST_ASSERT_TRUE(isnan(BM1370_get_die_temperature(0, sample_time)));
+    TEST_ASSERT_TRUE(isnan(BM1370_get_die_temperature(1, sample_time)));
+    data_ready = true;
+    for (unsigned step = 0; step < 5; step++) {
+        bm13xx_harness_clear_packets();
+        BM1370_read_sensors(sensor_state);
+    }
+    TEST_ASSERT_FLOAT_WITHIN(0.001f, 25.0036f, BM1370_get_die_temperature(0, sample_time));
     bm13xx_harness_end();
 }

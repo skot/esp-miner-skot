@@ -488,7 +488,7 @@ static void read_sensor_samples(GlobalState *state, bool *valid, uint32_t *sums,
             break;
         }
         // Allow the ADC to settle across mux/reference changes on the direct UART transport.
-        vTaskDelay(pdMS_TO_TICKS(temperature ? 10 : 60));
+        vTaskDelay(pdMS_TO_TICKS(60));
         if (!state->ASIC_initalized) {
             for (uint8_t chip = 0; chip < detected_chip_count; chip++) valid[chip] = false;
             break;
@@ -525,8 +525,7 @@ static void read_sensor_samples(GlobalState *state, bool *valid, uint32_t *sums,
                 ESP_LOGI(TAG, "ASIC %u %s %u raw ADC: 0x%08" PRIX32, chip,
                          temperature ? "temperature phase" : "voltage channel", phase_or_domain + 1, sensors[chip].reply);
             }
-            // Automatic temperature conversions return data with DATA_RDY clear; stock consumes these directly.
-            valid[chip] = received && (temperature || sample == 0 || (sensors[chip].reply & BM1370_ADC_READY));
+            valid[chip] = received && (sample == 0 || (sensors[chip].reply & BM1370_ADC_READY));
             sensors[chip].pending = false;
             if (valid[chip] && sample > 0) {
                 uint32_t raw = sensors[chip].reply;
