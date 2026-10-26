@@ -207,6 +207,7 @@ void ASIC_read_registers(GlobalState * GLOBAL_STATE)
             break;
         case BM1373:
             BM1373_read_registers();
+            BM1373_read_voltages(GLOBAL_STATE);
             break;
         default:
             ESP_LOGE(TAG, "Unknown ASIC id %d — cannot read registers", GLOBAL_STATE->DEVICE_CONFIG.family.asic.id);

@@ -29,6 +29,7 @@ static uint8_t queued_response[BM13XX_HARNESS_RESPONSE_SIZE];
 static bool response_ready;
 static unsigned failed_writes;
 static unsigned delay_count;
+static void (*serial_hook)(const uint8_t *, size_t);
 
 GlobalState *bm13xx_harness_begin(const bm13xx_harness_driver_t *driver)
 {
@@ -44,6 +45,7 @@ GlobalState *bm13xx_harness_begin(const bm13xx_harness_driver_t *driver)
     response_ready = false;
     failed_writes = 0;
     delay_count = 0;
+    serial_hook = NULL;
     return &fixture_state;
 }
 
@@ -128,6 +130,11 @@ void bm13xx_harness_queue_response(
     }
 }
 
+void bm13xx_harness_set_serial_hook(void (*hook)(const uint8_t *bytes, size_t length))
+{
+    serial_hook = hook;
+}
+
 int bm13xx_spy_serial_send(uint8_t *bytes, int length, bool debug)
 {
     (void)debug;
@@ -140,6 +147,7 @@ int bm13xx_spy_serial_send(uint8_t *bytes, int length, bool debug)
         failed_writes--;
         return length - 1;
     }
+    if (serial_hook) serial_hook(bytes, length);
     return length;
 }
 

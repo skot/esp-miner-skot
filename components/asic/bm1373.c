@@ -38,6 +38,11 @@
 #define BM1372_REGISTER_VERSION_ROLLING 0xA4
 #define BM1372_REGISTER_TEMPSENSOR_CTRL0 0xB2
 #define BM1372_REGISTER_TEMPSENSOR_DATA0 0xB3
+#define BM1372_REGISTER_ADC_CTRL0 0xB8
+#define BM1372_REGISTER_ADC_CTRL1 0xB9
+#define BM1372_REGISTER_ADC_CTRL2 0xBA
+#define BM1372_REGISTER_ADC_CTRL3 0xBB
+#define BM1372_REGISTER_ADC_VOLTAGE_DATAOUT 0xBD
 #define BM1372_REGISTER_AUTO_WORK_CONFIGURATION 0xC4
 
 // The generic BM13xx nonce-space calculation makes BM1372/BM1373 chips search
@@ -74,6 +79,11 @@
 #define BM1372_TEMP_DONE 0x80000000U
 #define BM1372_TEMP_ERROR 0x40000000U
 #define BM1372_TEMP_MAX_AGE_US 5000000ULL
+#define BM1372_VOLTAGE_MAX_AGE_US 10000000ULL
+#define BM1372_ADC_DATA_READY 0x80000000U
+#define BM1372_ADC_SAMPLE_COUNT 10
+#define BM1372_ADC_CONVERSION_MS 60
+#define BM1372_ADC_REPLY_TIMEOUT_MS 20
 
 #define TYPE_JOB 0x20
 #define TYPE_CMD 0x40
@@ -143,6 +153,29 @@ static struct {
     uint64_t timestamp_us;
 } die_sensors[BM1372_MAX_CHIPS];
 static pthread_mutex_t die_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
+
+static struct {
+    float mv[BM1373_VOLTAGE_DOMAINS];
+    uint64_t timestamp_us[BM1373_VOLTAGE_DOMAINS];
+    uint32_t reply;
+    uint64_t reply_time_us;
+    bool pending;
+    bool logged[BM1373_VOLTAGE_DOMAINS];
+} voltage_sensors[BM1372_MAX_CHIPS];
+static pthread_mutex_t voltage_sensor_lock = PTHREAD_MUTEX_INITIALIZER;
+static uint8_t voltage_channel;
+
+float BM1373_get_domain_voltage_mv(uint8_t asic_nr, uint8_t domain, uint64_t now_us)
+{
+    if (asic_nr >= detected_chip_count || asic_nr >= BM1372_MAX_CHIPS || domain >= BM1373_VOLTAGE_DOMAINS) {
+        return NAN;
+    }
+    pthread_mutex_lock(&voltage_sensor_lock);
+    float mv = voltage_sensors[asic_nr].mv[domain];
+    uint64_t timestamp_us = voltage_sensors[asic_nr].timestamp_us[domain];
+    pthread_mutex_unlock(&voltage_sensor_lock);
+    return timestamp_us && now_us >= timestamp_us && now_us - timestamp_us <= BM1372_VOLTAGE_MAX_AGE_US ? mv : NAN;
+}
 
 float BM1373_get_die_temperature(uint8_t asic_nr, uint64_t now_us)
 {
@@ -327,6 +360,10 @@ uint8_t BM1373_init(GlobalState * GLOBAL_STATE)
     pthread_mutex_lock(&die_sensor_lock);
     memset(die_sensors, 0, sizeof(die_sensors));
     pthread_mutex_unlock(&die_sensor_lock);
+    pthread_mutex_lock(&voltage_sensor_lock);
+    memset(voltage_sensors, 0, sizeof(voltage_sensors));
+    voltage_channel = 0;
+    pthread_mutex_unlock(&voltage_sensor_lock);
     if (expected_chip_count == 0 || expected_chip_count > BM1372_MAX_CHIPS) {
         ESP_LOGE(TAG, "Invalid BM1372/BM1373 chip count: %u", expected_chip_count);
         return 0;
@@ -507,6 +544,23 @@ task_result * BM1373_process_work(GlobalState * GLOBAL_STATE)
             return NULL;
         }
         uint8_t asic_nr = asic_result.cmd.asic_address / chip_response_address_interval;
+        if (asic_result.cmd.register_address == BM1372_REGISTER_ADC_VOLTAGE_DATAOUT) {
+            uint32_t value = ntohl(asic_result.cmd.value);
+            pthread_mutex_lock(&voltage_sensor_lock);
+            bool first_read = voltage_sensors[asic_nr].pending && !voltage_sensors[asic_nr].logged[voltage_channel];
+            uint8_t channel = voltage_channel;
+            if (voltage_sensors[asic_nr].pending) {
+                voltage_sensors[asic_nr].reply = value;
+                voltage_sensors[asic_nr].reply_time_us = result.timestamp_us;
+                voltage_sensors[asic_nr].pending = false;
+                voltage_sensors[asic_nr].logged[channel] = true;
+            }
+            pthread_mutex_unlock(&voltage_sensor_lock);
+            if (first_read) {
+                ESP_LOGI(TAG, "ASIC %u voltage domain %u raw: 0x%08" PRIX32, asic_nr, channel + 1, value);
+            }
+            return NULL;
+        }
         if (asic_result.cmd.register_address == BM1372_REGISTER_TEMPSENSOR_DATA0) {
             uint32_t value = ntohl(asic_result.cmd.value);
             pthread_mutex_lock(&die_sensor_lock);
@@ -577,6 +631,92 @@ void BM1373_read_registers(void)
                         2, BM1373_SERIALTX_DEBUG);
         }
     }
+}
+
+void BM1373_read_voltages(GlobalState *GLOBAL_STATE)
+{
+    uint8_t count = detected_chip_count;
+    if (!GLOBAL_STATE->ASIC_initalized || !count) {
+        return;
+    }
+    static const uint8_t selectors[BM1373_VOLTAGE_DOMAINS] = {1, 2, 4, 5};
+    uint8_t channel = voltage_channel;
+    uint32_t control = 0x230C000D | ((uint32_t)selectors[channel] << 13);
+    uint32_t sums[BM1372_MAX_CHIPS] = {0};
+    uint64_t timestamps[BM1372_MAX_CHIPS] = {0};
+    bool ready[BM1372_MAX_CHIPS];
+    bool configured = _write_broadcast(BM1372_REGISTER_ADC_CTRL0, control) &&
+                      _write_broadcast(BM1372_REGISTER_ADC_CTRL1, 0x3F014081) &&
+                      _write_broadcast(BM1372_REGISTER_ADC_CTRL2, 0x00040010) &&
+                      _write_broadcast(BM1372_REGISTER_ADC_CTRL3, 0x03340E80);
+    for (uint8_t chip = 0; chip < count; chip++) {
+        ready[chip] = configured;
+    }
+
+    // One channel per monitor poll keeps the stock 10-sample acquisition within its one-second period.
+    for (uint8_t sample = 0; configured && sample < BM1372_ADC_SAMPLE_COUNT; sample++) {
+        if (!GLOBAL_STATE->ASIC_initalized ||
+            !_write_broadcast(BM1372_REGISTER_ADC_CTRL0, control | (1U << 21))) {
+            configured = false;
+            break;
+        }
+        vTaskDelay(pdMS_TO_TICKS(BM1372_ADC_CONVERSION_MS));
+        if (!GLOBAL_STATE->ASIC_initalized) {
+            configured = false;
+            break;
+        }
+        bool any_ready = false;
+        for (uint8_t chip = 0; chip < count && GLOBAL_STATE->ASIC_initalized; chip++) {
+            if (!ready[chip]) continue;
+            any_ready = true;
+            pthread_mutex_lock(&voltage_sensor_lock);
+            voltage_sensors[chip].pending = true;
+            voltage_sensors[chip].reply = 0;
+            pthread_mutex_unlock(&voltage_sensor_lock);
+            if (!_send_BM1373(TYPE_CMD | GROUP_SINGLE | CMD_READ,
+                             (uint8_t[]){chip * chip_response_address_interval, BM1372_REGISTER_ADC_VOLTAGE_DATAOUT},
+                             2, BM1373_SERIALTX_DEBUG)) {
+                ready[chip] = false;
+            }
+        }
+        if (!any_ready) break;
+        for (uint8_t wait = 0; wait < BM1372_ADC_REPLY_TIMEOUT_MS && GLOBAL_STATE->ASIC_initalized; wait++) {
+            bool pending = false;
+            pthread_mutex_lock(&voltage_sensor_lock);
+            for (uint8_t chip = 0; chip < count; chip++) {
+                pending |= ready[chip] && voltage_sensors[chip].pending;
+            }
+            pthread_mutex_unlock(&voltage_sensor_lock);
+            if (!pending) break;
+            vTaskDelay(pdMS_TO_TICKS(1));
+        }
+        pthread_mutex_lock(&voltage_sensor_lock);
+        for (uint8_t chip = 0; chip < count; chip++) {
+            ready[chip] = ready[chip] && !voltage_sensors[chip].pending &&
+                          (sample == 0 || (voltage_sensors[chip].reply & BM1372_ADC_DATA_READY));
+            voltage_sensors[chip].pending = false;
+            if (ready[chip] && sample > 0) {
+                sums[chip] += voltage_sensors[chip].reply & 0x7FFF;
+                timestamps[chip] = voltage_sensors[chip].reply_time_us;
+            }
+        }
+        pthread_mutex_unlock(&voltage_sensor_lock);
+    }
+    pthread_mutex_lock(&voltage_sensor_lock);
+    for (uint8_t chip = 0; chip < count; chip++) {
+        voltage_sensors[chip].pending = false;
+        voltage_sensors[chip].timestamp_us[channel] = 0;
+        if (configured && ready[chip] && GLOBAL_STATE->ASIC_initalized) {
+            double mean = sums[chip] / (double)(BM1372_ADC_SAMPLE_COUNT - 1);
+            double scale_mv = channel < 2 ? 600.0 : 1200.0;
+            voltage_sensors[chip].mv[channel] = (float)(scale_mv * (mean / 16384.0 - 1.0));
+            voltage_sensors[chip].timestamp_us[channel] = timestamps[chip];
+        }
+    }
+    if (GLOBAL_STATE->ASIC_initalized) {
+        voltage_channel = (channel + 1) % BM1373_VOLTAGE_DOMAINS;
+    }
+    pthread_mutex_unlock(&voltage_sensor_lock);
 }
 
 void BM1373_set_difficulty(uint8_t difficulty_power)

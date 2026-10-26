@@ -39,6 +39,7 @@ asic_job_t *bm13xx_harness_active_job(uint8_t slot);
 bool bm13xx_harness_slot_valid(uint8_t slot);
 void bm13xx_harness_install_job(uint8_t slot, const asic_job_t *job);
 void bm13xx_harness_fail_writes(unsigned count);
+void bm13xx_harness_set_serial_hook(void (*hook)(const uint8_t *bytes, size_t length));
 unsigned bm13xx_harness_delay_count(void);
 void bm13xx_harness_set_job(uint32_t version, bool valid, bool present);
 /* Supply bytes after receive_work's framing/CRC check; NULL means timeout. */

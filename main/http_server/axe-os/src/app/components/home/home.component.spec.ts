@@ -97,6 +97,7 @@ const mockSystemInfo: ISystemInfo = {
   temp: 55,
   temp2: 0,
   asicDieTemps: [],
+  asicDomainVoltages: [],
   vrTemp: 0,
   fanspeed: 80,
   fanrpm: 3000,
@@ -268,6 +269,31 @@ describe('HomeComponent', () => {
     mockLiveDataService.info$.next({ ...mockSystemInfo, asicDieTemps: undefined });
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelectorAll('.asic-die-temperature').length).toBe(0);
+  });
+
+  it('shows four internal voltage channels per chip with unavailable and zero readings', () => {
+    mockLiveDataService.info$.next({
+      ...mockSystemInfo,
+      asicDomainVoltages: [[220.125, null, 0, -1.5], [219, 221, 222, 223]]
+    });
+    fixture.detectChanges();
+    const rows = fixture.nativeElement.querySelectorAll('.asic-domain-voltages');
+    expect(rows.length).toBe(2);
+    expect(fixture.nativeElement.textContent).toContain('Internal Domain Voltages (mV)');
+    expect(rows[0].querySelector('th').textContent.trim()).toBe('1');
+    expect(rows[0].textContent).toContain('220.1');
+    expect(rows[0].textContent).toContain('--');
+    expect(rows[0].textContent).toContain('0.0');
+    expect(rows[0].textContent).toContain('-1.5');
+    expect(rows[1].querySelector('th').textContent.trim()).toBe('2');
+    expect(rows[1].textContent).toContain('223.0');
+  });
+
+  it('hides internal voltage channels on unsupported models and older firmware', () => {
+    expect(fixture.nativeElement.querySelectorAll('.asic-domain-voltages').length).toBe(0);
+    mockLiveDataService.info$.next({ ...mockSystemInfo, asicDomainVoltages: undefined });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('.asic-domain-voltages').length).toBe(0);
   });
 
   it('uses the device presets for frequency messages', () => {

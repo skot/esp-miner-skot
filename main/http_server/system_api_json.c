@@ -53,9 +53,19 @@ static void system_api_add_telemetry(yyjson_mut_doc *doc, yyjson_mut_val *root, 
     yyjson_mut_obj_add_float(doc, root, "temp", g->POWER_MANAGEMENT_MODULE.chip_temp_avg);
     yyjson_mut_obj_add_float(doc, root, "temp2", g->POWER_MANAGEMENT_MODULE.chip_temp2_avg);
     yyjson_mut_val *die_temps = yyjson_mut_obj_add_arr(doc, root, "asicDieTemps");
+    yyjson_mut_val *domain_voltages = yyjson_mut_obj_add_arr(doc, root, "asicDomainVoltages");
     if (g->DEVICE_CONFIG.family.asic.id == BM1373) {
         uint64_t now_us = esp_timer_get_time();
         for (uint16_t chip = 0; chip < g->DEVICE_CONFIG.family.asic_count; chip++) {
+            yyjson_mut_val *voltages = yyjson_mut_arr_add_arr(doc, domain_voltages);
+            for (uint8_t domain = 0; domain < BM1373_VOLTAGE_DOMAINS; domain++) {
+                float mv = g->ASIC_initalized ? BM1373_get_domain_voltage_mv(chip, domain, now_us) : NAN;
+                if (isfinite(mv)) {
+                    yyjson_mut_arr_add_real(doc, voltages, mv);
+                } else {
+                    yyjson_mut_arr_add_null(doc, voltages);
+                }
+            }
             float temperature = g->ASIC_initalized ? BM1373_get_die_temperature(chip, now_us) : NAN;
             if (isfinite(temperature)) {
                 yyjson_mut_arr_add_real(doc, die_temps, temperature);
