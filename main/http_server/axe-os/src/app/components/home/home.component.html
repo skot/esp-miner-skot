@@ -240,7 +240,7 @@
     <!-- Power -->
     <div class="grid-stack-item" gs-id="power">
       <div class="grid-stack-item-content">
-        <div class="card">
+        <div class="card" [class.power-domain-telemetry]="!!info.asicDomainVoltages?.length">
           <h4 class="text-center font-medium">Power</h4>
 
           <div class="mb-4">
@@ -273,12 +273,34 @@
             <app-progressbar [value]="(info.actualFrequency / maxFrequency) * 100"></app-progressbar>
           </div>
 
-          <div>
+          <div class="mb-4">
             <h6 class="flex justify-between mb-1">
               Measured ASIC Voltage<span>{{info.coreVoltageActual}} V</span>
             </h6>
             <app-progressbar [value]="(info.coreVoltageActual / 1.8) * 100"></app-progressbar>
           </div>
+          @if (info.asicDomainVoltages?.length) {
+            <div class="mb-4">
+              <h6 class="mb-1" appTooltip="Four internal supply-sense channels, separate from the hashrate domains and individual cores.">
+                Internal Domain Voltages (mV)
+              </h6>
+              <table class="w-full text-sm text-right">
+                <thead class="text-secondary">
+                  <tr><th class="text-left">ASIC</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th></tr>
+                </thead>
+                <tbody>
+                  @for (voltages of info.asicDomainVoltages; track $index) {
+                    <tr class="asic-domain-voltages">
+                      <th class="text-left">{{$index + 1}}</th>
+                      @for (voltage of voltages; track $index) {
+                        <td>{{voltage === null ? '--' : (voltage | number: '1.1-1')}}</td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
         </div>
       </div>
     </div>

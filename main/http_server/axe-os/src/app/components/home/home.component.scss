@@ -182,6 +182,14 @@
     .mb-3 { margin-bottom: 1.25rem; }
 }
 
+.grid-stack .grid-stack-item[gs-id="power"] .grid-stack-item-content > .card.power-domain-telemetry {
+    padding: 0.75rem;
+    h4 { margin-bottom: 0.5rem; line-height: 1.25rem; }
+    h6 { line-height: 1.25rem; }
+    .mb-4 { margin-bottom: 0.25rem; }
+    .mb-1 { margin-bottom: 0.125rem; }
+}
+
 app-chart {
     ::ng-deep > div {
         position: relative;

@@ -58,6 +58,7 @@ export class SystemApiService {
         temp: 60,
         temp2: 60,
         asicDieTemps: [],
+        asicDomainVoltages: [],
         vrTemp: 45,
         maxPower: 25,
         nominalVoltage: 5,

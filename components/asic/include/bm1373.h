@@ -7,6 +7,7 @@
 typedef struct GlobalState GlobalState;
 
 #define BM1373_SMALL_CORE_BITS 4
+#define BM1373_VOLTAGE_DOMAINS 4
 
 #define BM1373_SERIALTX_DEBUG false
 #define BM1373_SERIALRX_DEBUG false
@@ -21,6 +22,9 @@ task_result * BM1373_process_work(GlobalState * GLOBAL_STATE);
 void BM1373_read_registers(void);
 // Returns Celsius, or NAN when missing, invalid, or older than five seconds.
 float BM1373_get_die_temperature(uint8_t asic_nr, uint64_t now_us);
+void BM1373_read_voltages(GlobalState *GLOBAL_STATE);
+// Returns millivolts, or NAN when missing or older than ten seconds.
+float BM1373_get_domain_voltage_mv(uint8_t asic_nr, uint8_t domain, uint64_t now_us);
 void BM1373_set_nonce_space(double nonce_percent, float frequency, uint16_t asic_count, uint16_t cores);
 void BM1373_set_difficulty(uint8_t difficulty_power);
 
