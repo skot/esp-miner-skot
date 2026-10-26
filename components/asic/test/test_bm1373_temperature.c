@@ -32,29 +32,13 @@ static uint32_t packet_value(const bm13xx_harness_packet_t *packet)
            ((uint32_t)packet->bytes[8] << 8) | packet->bytes[9];
 }
 
-TEST_CASE("BM1373 temperature polling preserves per-chip config and stock stage order", "[asic][temperature]")
+TEST_CASE("BM1373 temperature polling uses stock config and assigned chip addresses", "[asic][temperature]")
 {
-    GlobalState *state = begin_temperature_test();
-    BM1373_read_registers();
-    unsigned control_reads = 0;
-    for (size_t i = 0; i < bm13xx_harness_packet_count(); i++) {
-        const bm13xx_harness_packet_t *packet = bm13xx_harness_packet(i);
-        TEST_ASSERT_FALSE(packet->bytes[2] == 0x41 && packet->bytes[5] == 0xb2);
-        if (packet->bytes[5] == 0xb2) {
-            TEST_ASSERT_EQUAL_HEX8(0x42, packet->bytes[2]);
-            TEST_ASSERT_EQUAL_HEX8(control_reads * 4, packet->bytes[4]);
-            control_reads++;
-        }
-    }
-    TEST_ASSERT_EQUAL_UINT(2, control_reads);
-
-    receive_register(state, 0x00, 0xb2, 0xc0000000);
-    receive_register(state, 0x10, 0xb2, 0x4efdffff);
-    bm13xx_harness_clear_packets();
+    begin_temperature_test();
     BM1373_read_registers();
     static const uint32_t expected[] = {
-        0x40020000, 0x4effffff, 0xc0020000, 0xceffffff,
-        0xc1020000, 0xcfffffff, 0xd0020000, 0xdeffffff,
+        0x40020000, 0x40020000, 0x60020000, 0x60020000,
+        0x61020000, 0x61020000, 0x70020000, 0x70020000,
     };
     unsigned writes = 0;
     unsigned data_reads = 0;
@@ -64,14 +48,14 @@ TEST_CASE("BM1373 temperature polling preserves per-chip config and stock stage 
             TEST_ASSERT_LESS_THAN_UINT(8, writes);
             TEST_ASSERT_EQUAL_UINT(11, packet->length);
             TEST_ASSERT_EQUAL_HEX8(0x41, packet->bytes[2]);
-            TEST_ASSERT_EQUAL_HEX8((writes % 2) * 4, packet->bytes[4]);
+            TEST_ASSERT_EQUAL_HEX8((writes % 2) * 0x10, packet->bytes[4]);
             TEST_ASSERT_EQUAL_HEX32(expected[writes], packet_value(packet));
             TEST_ASSERT_EQUAL_HEX8(crc5((uint8_t *)packet->bytes + 2, 8), packet->bytes[10]);
             writes++;
         } else if (packet->bytes[5] == 0xb3) {
             TEST_ASSERT_EQUAL_UINT(8, writes);
             TEST_ASSERT_EQUAL_HEX8(0x42, packet->bytes[2]);
-            TEST_ASSERT_EQUAL_HEX8(data_reads * 4, packet->bytes[4]);
+            TEST_ASSERT_EQUAL_HEX8(data_reads * 0x10, packet->bytes[4]);
             data_reads++;
         }
     }
@@ -118,9 +102,7 @@ TEST_CASE("BM1373 rejects unfinished and failed temperatures and clears them on 
 
 TEST_CASE("BM1373 does not read temperature after a failed sensor setup", "[asic][temperature]")
 {
-    GlobalState *state = begin_temperature_test();
-    receive_register(state, 0, 0xb2, 0xc0000000);
-    receive_register(state, 0x10, 0xb2, 0xc0000000);
+    begin_temperature_test();
     bm13xx_harness_fail_writes(36);
     BM1373_read_registers();
     for (size_t i = 0; i < bm13xx_harness_packet_count(); i++) {
