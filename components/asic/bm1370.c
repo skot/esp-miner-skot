@@ -487,7 +487,8 @@ static void read_sensor_samples(GlobalState *state, bool *valid, uint32_t *sums,
             for (uint8_t chip = 0; chip < detected_chip_count; chip++) valid[chip] = false;
             break;
         }
-        if (!temperature) vTaskDelay(pdMS_TO_TICKS(60));
+        // Allow the ADC to settle across mux/reference changes on the direct UART transport.
+        vTaskDelay(pdMS_TO_TICKS(temperature ? 10 : 60));
         if (!state->ASIC_initalized) {
             for (uint8_t chip = 0; chip < detected_chip_count; chip++) valid[chip] = false;
             break;
