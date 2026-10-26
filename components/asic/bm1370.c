@@ -517,19 +517,20 @@ static void read_sensor_samples(GlobalState *state, bool *valid, uint32_t *sums,
         }
         pthread_mutex_lock(&sensor_lock);
         for (uint8_t chip = 0; chip < detected_chip_count; chip++) {
-            valid[chip] = valid[chip] && !sensors[chip].pending &&
-                          (sample == 0 || (sensors[chip].reply & BM1370_ADC_READY));
+            bool received = valid[chip] && !sensors[chip].pending;
+            uint8_t log_index = temperature ? phase_or_domain : phase_or_domain + 2;
+            if (received && sample > 0 && !sensors[chip].logged[log_index]) {
+                sensors[chip].logged[log_index] = true;
+                ESP_LOGI(TAG, "ASIC %u %s %u raw ADC: 0x%08" PRIX32, chip,
+                         temperature ? "temperature phase" : "voltage channel", phase_or_domain + 1, sensors[chip].reply);
+            }
+            // Automatic temperature conversions return data with DATA_RDY clear; stock consumes these directly.
+            valid[chip] = received && (temperature || sample == 0 || (sensors[chip].reply & BM1370_ADC_READY));
             sensors[chip].pending = false;
             if (valid[chip] && sample > 0) {
                 uint32_t raw = sensors[chip].reply;
                 sums[chip] += (temperature && phase_or_domain ? raw >> 16 : raw) & 0x7fff;
                 times[chip] = sensors[chip].reply_time;
-                uint8_t log_index = temperature ? phase_or_domain : phase_or_domain + 2;
-                if (!sensors[chip].logged[log_index]) {
-                    sensors[chip].logged[log_index] = true;
-                    ESP_LOGI(TAG, "ASIC %u %s %u raw ADC: 0x%08" PRIX32, chip,
-                             temperature ? "temperature phase" : "voltage channel", phase_or_domain + 1, raw);
-                }
             }
         }
         pthread_mutex_unlock(&sensor_lock);

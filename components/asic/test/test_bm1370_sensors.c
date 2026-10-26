@@ -43,7 +43,7 @@ static void sensor_reply_hook(const uint8_t *bytes, size_t length)
         raw = sample ? (selector < 3 ? 24576 : 20480) : 16384;
         raw |= 0x45670000;
     }
-    if (data_ready && sample) raw |= 0x80000000;
+    if (data_ready && sample && !(control & (1U << 23))) raw |= 0x80000000;
     const uint8_t response[11] = {0xaa, 0x55, raw >> 24, raw >> 16, raw >> 8, raw, bytes[4], 0xbd, 0, 0, 0};
     bm13xx_harness_queue_response(response);
     TEST_ASSERT_NULL(BM1370_process_work(sensor_state));
