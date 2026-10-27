@@ -37,6 +37,8 @@ describe('UpdateComponent', () => {
 
   describe('OTA protection', () => {
     it('blocks firmware and custom web UI uploads while locked', () => {
+      info.next({ ...info.value, useCustomWWW: 1 });
+      fixture.detectChanges();
       const service = TestBed.inject(SystemApiService);
       const firmware = spyOn(service, 'performOTAUpdate');
       const website = spyOn(service, 'performWWWOTAUpdate');
@@ -46,19 +48,35 @@ describe('UpdateComponent', () => {
       expect(website).not.toHaveBeenCalled();
       expect(fixture.nativeElement.querySelector('input[type="file"]').disabled).toBeTrue();
       expect(fixture.nativeElement.querySelector('#otaButtonRequired').disabled).toBeTrue();
+      const browse: HTMLButtonElement = fixture.nativeElement.querySelector('button[aria-label="Browse firmware"]');
+      const fileInput: HTMLInputElement = fixture.nativeElement.querySelector('input[type="file"]');
+      const openPicker = spyOn(fileInput, 'click');
+      expect(browse.disabled).toBeTrue();
+      expect(fixture.nativeElement.querySelector('button[aria-label="Browse custom web UI"]').disabled).toBeTrue();
+      browse.click();
+      expect(openPicker).not.toHaveBeenCalled();
     });
 
     it('unlocks controls on a button press and relocks when the window expires', () => {
-      info.next({ ...info.value, otaUnlockRemaining: 120 });
+      info.next({ ...info.value, useCustomWWW: 1, otaUnlockRemaining: 120 });
       fixture.detectChanges();
       expect(component.otaLocked).toBeFalse();
       expect(fixture.nativeElement.textContent).toContain('OTA unlocked for 120 seconds');
       expect(fixture.nativeElement.querySelector('input[type="file"]').disabled).toBeFalse();
       expect(fixture.nativeElement.querySelector('#otaButtonRequired').disabled).toBeFalse();
+      const browse: HTMLButtonElement = fixture.nativeElement.querySelector('button[aria-label="Browse firmware"]');
+      const fileInput: HTMLInputElement = fixture.nativeElement.querySelector('input[type="file"]');
+      const openPicker = spyOn(fileInput, 'click');
+      expect(browse.disabled).toBeFalse();
+      expect(fixture.nativeElement.querySelector('button[aria-label="Browse custom web UI"]').disabled).toBeFalse();
+      browse.click();
+      expect(openPicker).toHaveBeenCalledTimes(1);
       info.next({ ...info.value, otaUnlockRemaining: 0 });
       fixture.detectChanges();
       expect(component.otaLocked).toBeTrue();
       expect(fixture.nativeElement.querySelector('input[type="file"]').disabled).toBeTrue();
+      expect(browse.disabled).toBeTrue();
+      expect(fixture.nativeElement.querySelector('button[aria-label="Browse custom web UI"]').disabled).toBeTrue();
     });
 
     it('allows remote uploads when button protection is disabled', () => {
