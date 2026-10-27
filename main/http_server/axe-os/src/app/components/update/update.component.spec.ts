@@ -61,7 +61,7 @@ describe('UpdateComponent', () => {
       info.next({ ...info.value, useCustomWWW: 1, otaUnlockRemaining: 120 });
       fixture.detectChanges();
       expect(component.otaLocked).toBeFalse();
-      expect(fixture.nativeElement.textContent).toContain('OTA unlocked for 120 seconds');
+      expect(fixture.nativeElement.textContent).toContain('Updates are unlocked for 120 seconds');
       expect(fixture.nativeElement.querySelector('input[type="file"]').disabled).toBeFalse();
       expect(fixture.nativeElement.querySelector('#otaButtonRequired').disabled).toBeFalse();
       const browse: HTMLButtonElement = fixture.nativeElement.querySelector('button[aria-label="Browse firmware"]');

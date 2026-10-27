@@ -89,9 +89,9 @@
           @if (info.otaButtonRequired === 0) {
             <p class="text-sm text-orange-500 mb-3">Button protection is disabled. Remote updates are allowed.</p>
           } @else if (info.otaUnlockRemaining > 0) {
-            <p class="text-sm text-green-500 mb-3">OTA unlocked for {{ info.otaUnlockRemaining }} seconds.</p>
+            <p class="text-sm text-green-500 mb-3">Updates are unlocked for {{ info.otaUnlockRemaining }} seconds.</p>
           } @else {
-            <p class="text-sm text-secondary mb-3">OTA is locked. Briefly press BOOT to unlock updates for 120 seconds.</p>
+            <p class="text-sm text-secondary mb-3">Updates are locked. Briefly press BOOT to unlock updates for 120 seconds.</p>
           }
         }
         <button type="button" aria-label="Browse firmware" class="btn w-full text-center relative flex justify-center items-center gap-2 my-2"
