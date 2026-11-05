@@ -29,6 +29,7 @@ static TaskHandle_t subscription_task_handle = NULL;
 
 typedef struct {
     char hashrate[32];
+    char frequency[32];
     char chip_temp[32];
     char vr_temp[32];
     char power[32];
@@ -47,6 +48,7 @@ typedef struct {
 
 typedef struct {
     bool hashrate;
+    bool frequency;
     bool chip_temp;
     bool vr_temp;
     bool power;
@@ -103,7 +105,13 @@ void BAP_subscription_handle_subscribe(const char *parameter, const char *value)
     //ESP_LOGI(TAG, "Parameter ID: %d (from string: %s)", param, parameter);
     
     if (param == BAP_PARAM_UNKNOWN) {
-        ESP_LOGE(TAG, "Unknown subscription parameter: %s", parameter);
+        BAP_send_message(BAP_CMD_ERR, parameter, "unknown_parameter");
+        return;
+    }
+
+    uint32_t interval = 3000;
+    if (value && !BAP_parse_interval(value, &interval)) {
+        BAP_send_message(BAP_CMD_ERR, parameter, "invalid_request");
         return;
     }
 
@@ -114,11 +122,14 @@ void BAP_subscription_handle_subscribe(const char *parameter, const char *value)
         subscriptions[param].active = true;
         subscriptions[param].last_subscribe = current_time;
         subscriptions[param].last_response = 0;
-        subscriptions[param].update_interval_ms = 3000;
+        subscriptions[param].update_interval_ms = interval;
 
         switch (param) {
             case BAP_PARAM_HASHRATE:
                 last_values_valid.hashrate = false;
+                break;
+            case BAP_PARAM_FREQUENCY:
+                last_values_valid.frequency = false;
                 break;
             case BAP_PARAM_TEMPERATURE:
                 last_values_valid.chip_temp = false;
@@ -158,12 +169,6 @@ void BAP_subscription_handle_subscribe(const char *parameter, const char *value)
                 break;
         }
 
-        if (value) {
-            int interval = atoi(value);
-            if (interval > 0) {
-                subscriptions[param].update_interval_ms = interval;
-            }
-        }
 
         ESP_LOGI(TAG, "Subscription activated for %s with interval %lu ms",
                  BAP_parameter_to_string(param), subscriptions[param].update_interval_ms);
@@ -249,6 +254,14 @@ void BAP_send_subscription_update(GlobalState *state) {
                         }
                         break;
                         
+                    case BAP_PARAM_FREQUENCY:
+                        {
+                            char frequency_str[32];
+                            snprintf(frequency_str, sizeof(frequency_str), "%.2f", state->POWER_MANAGEMENT_MODULE.actual_frequency);
+                            BAP_send_if_changed("frequency", frequency_str, last_values.frequency, sizeof(last_values.frequency), &last_values_valid.frequency);
+                        }
+                        break;
+
                     case BAP_PARAM_TEMPERATURE:
                         {
                             char temp_str[32];

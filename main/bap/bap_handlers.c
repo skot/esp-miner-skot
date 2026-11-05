@@ -21,8 +21,6 @@
 static const char *TAG = "BAP_HANDLERS";
 
 static bap_command_handler_t handlers[BAP_CMD_UNKNOWN + 1] = {0};
-static char last_processed_message[BAP_MAX_MESSAGE_LEN] = {0};
-static uint32_t last_message_time = 0;
 
 void BAP_register_handler(bap_command_t cmd, bap_command_handler_t handler) {
     if (cmd >= 0 && cmd <= BAP_CMD_UNKNOWN) {
@@ -31,120 +29,19 @@ void BAP_register_handler(bap_command_t cmd, bap_command_handler_t handler) {
 }
 
 void BAP_parse_message(const char *message) {
-    if (!message) {
-        ESP_LOGE(TAG, "Parse message: NULL message");
-        return;
+    char body[BAP_MAX_MESSAGE_LEN];
+    if (!BAP_decode_sentence(message, body, sizeof(body)) || strncmp(body, "BAP,", 4)) return;
+    char *cmd_str = body + 4;
+    char *parameter = strchr(cmd_str, ',');
+    if (!parameter) return;
+    *parameter++ = '\0';
+    char *value = strchr(parameter, ',');
+    if (value) *value++ = '\0';
+    if (!*cmd_str || !*parameter) return;
+    for (const char *p = parameter; *p; ++p) {
+        if (!((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z') ||
+              (p != parameter && ((*p >= '0' && *p <= '9') || *p == '_')))) return;
     }
-
-    uint32_t current_time = esp_timer_get_time() / 1000;
-    if (strcmp(message, last_processed_message) == 0 &&
-        (current_time - last_message_time) < 1000) {
-        // Don't echo the body: a SET can carry the Wi-Fi or pool password.
-        ESP_LOGW(TAG, "Duplicate message detected, ignoring");
-        return;
-    }
-
-    strncpy(last_processed_message, message, sizeof(last_processed_message) - 1);
-    last_processed_message[sizeof(last_processed_message) - 1] = '\0';
-    last_message_time = current_time;
-
-    //ESP_LOGI(TAG, "Parsing message: %s", message);
-    
-    size_t len = strlen(message);
-    if (len < 5) {
-        ESP_LOGE(TAG, "Parse message: Too short (%d chars)", len);
-        return;
-    }
-
-    if (message[0] != '$') {
-        ESP_LOGE(TAG, "Parse message: Doesn't start with $");
-        return;
-    }
-
-    const char *asterisk = strchr(message, '*');
-    char sentence_body[BAP_MAX_MESSAGE_LEN];
-    
-    if (asterisk) {
-        if ((asterisk - message) + 3 > len) {
-            ESP_LOGE(TAG, "Parse message: Not enough room for checksum");
-            return;
-        }
-
-        uint8_t received_checksum = 0;
-        sscanf(asterisk + 1, "%2hhX", &received_checksum);
-
-        size_t body_len = asterisk - (message + 1);
-        if (body_len >= sizeof(sentence_body)) {
-            ESP_LOGE(TAG, "Parse message: Body too long");
-            return;
-        }
-
-        strncpy(sentence_body, message + 1, body_len);
-        sentence_body[body_len] = '\0';
-
-        uint8_t calc_checksum = BAP_calculate_checksum(sentence_body);
-        
-        if (calc_checksum != received_checksum) {
-            ESP_LOGE(TAG, "Parse message: Checksum mismatch (received: 0x%02X, calculated: 0x%02X)",
-                     received_checksum, calc_checksum);
-            
-            if (strstr(sentence_body, "BAP,SUB,") == sentence_body) {
-                //ESP_LOGI(TAG, "Subscription command - ignoring checksum mismatch");
-            } else {
-                ESP_LOGE(TAG, "Non-subscription command with invalid checksum, rejecting");
-                return;
-            }
-        }
-    } else {
-        size_t body_len = len - 1;
-        
-        for (size_t i = 1; i < len; i++) {
-            if (message[i] == '\r' || message[i] == '\n') {
-                body_len = i - 1;
-                break;
-            }
-        }
-        
-        if (body_len >= sizeof(sentence_body)) {
-            ESP_LOGE(TAG, "Parse message: Body too long");
-            return;
-        }
-        
-        strncpy(sentence_body, message + 1, body_len);
-        sentence_body[body_len] = '\0';
-        
-        if (strstr(sentence_body, "BAP,SUB,") == sentence_body ||
-            strstr(sentence_body, "BAP,UNSUB,") == sentence_body) {
-            //ESP_LOGI(TAG, "Subscription command without checksum, accepted");
-        } else {
-            ESP_LOGE(TAG, "Non-subscription command without checksum, rejecting");
-            return;
-        }
-    }
-
-    char tokenize_body[BAP_MAX_MESSAGE_LEN];
-    strcpy(tokenize_body, sentence_body);
-    
-    char *saveptr;
-    char *talker = strtok_r(tokenize_body, ",", &saveptr);
-    if (!talker || strcmp(talker, "BAP") != 0) {
-        ESP_LOGE(TAG, "Parse message: Invalid talker ID: %s", talker ? talker : "NULL");
-        return;
-    }
-
-    char *cmd_str = strtok_r(NULL, ",", &saveptr);
-    if (!cmd_str) {
-        ESP_LOGE(TAG, "Parse message: No command");
-        return;
-    }
-
-    char *parameter = strtok_r(NULL, ",", &saveptr);
-    if (!parameter) {
-        ESP_LOGE(TAG, "Parse message: No parameter");
-        return;
-    }
-
-    char *value = strtok_r(NULL, ",", &saveptr);
 
     bap_command_t cmd = BAP_command_from_string(cmd_str);
 
@@ -206,8 +103,8 @@ void BAP_handle_request(const char *parameter, const char *value) {
     }
 
     bap_parameter_t param = BAP_parameter_from_string(parameter);
-    if (param == BAP_PARAM_UNKNOWN) {
-        ESP_LOGE(TAG, "Unknown request parameter: %s", parameter);
+    if (param == BAP_PARAM_UNKNOWN || value != NULL) {
+        BAP_send_message(BAP_CMD_ERR, parameter, param == BAP_PARAM_UNKNOWN ? "unknown_parameter" : "invalid_request");
         return;
     }
 
@@ -237,6 +134,46 @@ void BAP_send_request(bap_parameter_t param, GlobalState *state) {
             BAP_send_message(BAP_CMD_RES, "pool", state->SYSTEM_MODULE.pools[prim_idx].url);
             BAP_send_message(BAP_CMD_RES, "poolPort", port_str);
             BAP_send_message(BAP_CMD_RES, "poolUser", state->SYSTEM_MODULE.pools[prim_idx].user);
+            // The v3 display probes systemInfo but does not subscribe to frequency.
+            BAP_send_request(BAP_PARAM_FREQUENCY, state);
+            break;
+        case BAP_PARAM_FREQUENCY: {
+            char number[32];
+            snprintf(number, sizeof(number), "%.2f", state->POWER_MANAGEMENT_MODULE.actual_frequency);
+            BAP_send_message(BAP_CMD_RES, "frequency", number);
+            break;
+        }
+        case BAP_PARAM_HASHRATE: {
+            char number[32];
+            snprintf(number, sizeof(number), "%.2f", state->SYSTEM_MODULE.current_hashrate);
+            BAP_send_message(BAP_CMD_RES, "hashrate", number);
+            break;
+        }
+        case BAP_PARAM_TEMPERATURE: {
+            char number[32];
+            snprintf(number, sizeof(number), "%f", state->POWER_MANAGEMENT_MODULE.chip_temp_avg);
+            BAP_send_message(BAP_CMD_RES, "chipTemp", number);
+            snprintf(number, sizeof(number), "%f", state->POWER_MANAGEMENT_MODULE.vr_temp);
+            BAP_send_message(BAP_CMD_RES, "vrTemp", number);
+            break;
+        }
+        case BAP_PARAM_POWER: {
+            char number[32];
+            snprintf(number, sizeof(number), "%.2f", state->POWER_MANAGEMENT_MODULE.power);
+            BAP_send_message(BAP_CMD_RES, "power", number);
+            break;
+        }
+        case BAP_PARAM_FAN_SPEED: {
+            char number[32];
+            snprintf(number, sizeof(number), "%u", state->POWER_MANAGEMENT_MODULE.fan_rpm);
+            BAP_send_message(BAP_CMD_RES, "fan_speed", number);
+            break;
+        }
+        case BAP_PARAM_BEST_DIFFICULTY:
+            BAP_send_message(BAP_CMD_RES, "best_difficulty", state->SYSTEM_MODULE.best_diff_string);
+            break;
+        case BAP_PARAM_WIFI:
+            BAP_send_message(BAP_CMD_RES, "wifi_ip", state->SYSTEM_MODULE.ip_addr_str);
             break;
         case BAP_PARAM_SHARES:
             {
@@ -267,7 +204,7 @@ void BAP_send_request(bap_parameter_t param, GlobalState *state) {
             }
             break;
         default:
-            ESP_LOGE(TAG, "Unsupported request parameter: %d", param);
+            BAP_send_message(BAP_CMD_ERR, BAP_parameter_to_string(param), "unsupported_parameter");
             break;
     }
 }

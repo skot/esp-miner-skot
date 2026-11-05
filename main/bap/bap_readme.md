@@ -42,7 +42,7 @@ $BAP,<COMMAND>,<PARAMETER>,<VALUE>*<CHECKSUM>\r\n
 | Parameter | Description | Data Type | Example Value |
 |-----------|-------------|-----------|---------------|
 | `systemInfo` | Device model and ASIC information | String | "BM1366" |
-| `hashrate` | Current hashrate in MH/s | Float | "20.5" |
+| `hashrate` | Current hashrate in GH/s | Float | "20.5" |
 | `temperature` | Chip temperature in Celsius | Float | "65.3" |
 | `power` | Power consumption in watts | Float | "120.5" |
 | `voltage` | Input voltage in volts | Float | "12.1" |
@@ -52,7 +52,7 @@ $BAP,<COMMAND>,<PARAMETER>,<VALUE>*<CHECKSUM>\r\n
 | `asic_voltage` | ASIC voltage in millivolts | Integer | "1200" |
 | `ssid` | WiFi network SSID | String | "MyNetwork" |
 | `password` | WiFi password | String | "secret123" |
-| `fan_speed` | Fan speed percentage | Integer | "80" |
+| `fan_speed` | REQ/SUB: fan RPM; SET: fan percentage | Integer | "4200" / "80" |
 | `auto_fan` | Auto fan speed control | Boolean | "1" |
 | `best_difficulty` | Best difficulty achieved | String | "1024" |
 | `block_height` | Current network block height | Integer | "845123" |
@@ -229,3 +229,43 @@ UART settings:
 - Use a serial terminal to manually send commands
 - Monitor UART buffer status for overflow conditions
 - Check mutex acquisition failures in logs
+
+## Bonanza 1004 serial display
+
+Bonanza 1004 enables the existing BAP host for bonanzaDisplay-v3 on UART2,
+115200 baud, 8N1, ESP32 TX GPIO39 / RX GPIO40. The ASIC bridge uses UART1
+on GPIO17/18 independently. `CONFIG_ENABLE_BAP=n` disables the accessory;
+BAP pin overrides still pass through the shared board pin conflict checks.
+The accessory runs its own display firmware; ESP-Miner does not flash it or
+use the older display I2C register interface. Keep the local LVGL display set
+to `NONE` on Bonanza.
+
+The v3 client requests `systemInfo` and subscribes to `hashrate`, `temperature`,
+`power`, `fan_speed`, `best_difficulty`, and `wifi` at 1000 ms intervals. Identity
+responses use `deviceModel` (Bonanza) and `asicModel` (BZM), and include
+`frequency` (actual ASIC MHz) so the v3 display fills its frequency row on its
+existing identity probes. `REQ`/`SUB,frequency` are also supported. Telemetry uses
+`hashrate` (GH/s), `chipTemp` (C), `power` (W), `fan_speed` (RPM),
+`best_difficulty` (formatted difficulty), and `wifi_ip` (IPv4). These groups
+also accept one-shot `REQ` commands. No `RES` acknowledgement or display metric
+readback is available.
+
+Frames are bounded to 256 bytes including delimiters and require a two-digit
+XOR checksum. LF and CRLF endings are accepted. Invalid input is discarded;
+a new `$` resynchronizes the stream, including after a UART receive fault.
+Subscriptions accept decimal intervals from 100 to 60000 ms (3000 ms if omitted),
+are serviced by the existing one-second update task, send changed values, and
+expire after five minutes without renewal. A new/renewed subscription invalidates
+cached values so an accessory reconnect receives a fresh snapshot. The display
+renews every minute and probes `systemInfo` for liveness when values stay steady.
+Existing AP-mode behavior is retained: telemetry starts after WiFi connects.
+
+Hardware validation on bitaxeBonanza-1004x (2026-11-05), with bridge
+`0.1.0-1004.2+g1840d61`, passed at 800 MHz / 2.8 V. The physical display showed
+identity, live telemetry and 800 MHz; six subscription groups renewed after
+software restart. All four ASICs produced work and public-pool.io accepted
+shares with no ASIC errors or rejected shares during the check. Pause brought
+current hashrate to zero in 0.81 seconds, switched off the core rail and held
+cumulative work steady; resume restored all four ASIC rates. The final image
+passed the ESP-IDF 6.0.2 build and 448 QEMU tests, and its running checksum
+matched the local binary.

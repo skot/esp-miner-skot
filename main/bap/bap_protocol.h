@@ -10,6 +10,7 @@
 #define BAP_PROTOCOL_H_
 
 #include <stdint.h>
+#include <stddef.h>
 #include <stdbool.h>
 
 #ifdef __cplusplus
@@ -17,6 +18,20 @@ extern "C" {
 #endif
 
 #define BAP_MAX_MESSAGE_LEN 256
+
+typedef struct {
+    char message[BAP_MAX_MESSAGE_LEN + 1];
+    size_t length;
+} bap_stream_t;
+
+// Feed bytes until a complete LF/CRLF frame is available in stream->message.
+bool BAP_stream_feed(bap_stream_t *stream, uint8_t byte);
+// Return zero for invalid fields or frames exceeding the wire/capacity limit.
+size_t BAP_format_message(char *out, size_t capacity, const char *command,
+                          const char *parameter, const char *value);
+// Validate a complete frame and copy its body (without delimiters/checksum).
+bool BAP_decode_sentence(const char *message, char *body, size_t capacity);
+bool BAP_parse_interval(const char *value, uint32_t *interval_ms);
 
 // BAP Command Types
 typedef enum {

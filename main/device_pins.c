@@ -69,6 +69,10 @@ static esp_err_t device_pins_validate(const DevicePins * pins)
     esp_err_t status = ESP_OK;
 
     if (pins->bap) {
+        if (!GPIO_IS_VALID_OUTPUT_GPIO(pins->bap->tx) || pins->bap->rx == GPIO_NUM_NC) {
+            ESP_LOGE(TAG, "BAP UART requires an output-capable TX and a connected RX");
+            status = ESP_ERR_INVALID_STATE;
+        }
         if (check_pin(pins->bap->tx, "BAP TX", &allocated_pins_mask) != ESP_OK) status = ESP_ERR_INVALID_STATE;
         if (check_pin(pins->bap->rx, "BAP RX", &allocated_pins_mask) != ESP_OK) status = ESP_ERR_INVALID_STATE;
     }

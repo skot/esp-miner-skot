@@ -24,7 +24,7 @@
 #define UART_SEND_QUEUE_SIZE 10
 #define UART_SEND_QUEUE_ITEM_SIZE sizeof(bap_message_t)
 #define UART_SEND_TIMEOUT_MS 1000
-#define UART_BUFFER_THRESHOLD (BAP_BUF_SIZE / 2)
+static QueueHandle_t uart_event_queue;
 
 static const char *TAG = "BAP_UART";
 
@@ -37,21 +37,9 @@ static void uart_send_task(void *pvParameters);
 extern void BAP_parse_message(const char *message);
 
 void BAP_send_message(bap_command_t cmd, const char *parameter, const char *value) {
-    char message[BAP_MAX_MESSAGE_LEN];
-    char sentence_body[BAP_MAX_MESSAGE_LEN];
-    int len;
-
-    if (value && strlen(value) > 0) {
-        snprintf(sentence_body, sizeof(sentence_body), "BAP,%s,%s,%s",
-                 BAP_command_to_string(cmd), parameter, value);
-    } else {
-        snprintf(sentence_body, sizeof(sentence_body), "BAP,%s,%s",
-                 BAP_command_to_string(cmd), parameter);
-    }
-
-    uint8_t checksum = BAP_calculate_checksum(sentence_body);
-
-    len = snprintf(message, sizeof(message), "$%s*%02X\r\n", sentence_body, checksum);
+    char message[BAP_MAX_MESSAGE_LEN + 1];
+    size_t len = BAP_format_message(message, sizeof(message), BAP_command_to_string(cmd), parameter, value);
+    if (!len) return;
 
     if (bap_uart_send_mutex != NULL && xSemaphoreTake(bap_uart_send_mutex, pdMS_TO_TICKS(100)) == pdTRUE) {
         uart_write_bytes(BAP_UART_NUM, message, len);
@@ -64,22 +52,10 @@ void BAP_send_message(bap_command_t cmd, const char *parameter, const char *valu
 }
 
 void BAP_send_message_with_queue(bap_command_t cmd, const char *parameter, const char *value) {
-    char message[BAP_MAX_MESSAGE_LEN];
-    char sentence_body[BAP_MAX_MESSAGE_LEN];
-    int len;
+    char message[BAP_MAX_MESSAGE_LEN + 1];
+    size_t len = BAP_format_message(message, sizeof(message), BAP_command_to_string(cmd), parameter, value);
+    if (!len || !bap_uart_send_queue) return;
     bap_message_t msg;
-
-    if (value && strlen(value) > 0) {
-        snprintf(sentence_body, sizeof(sentence_body), "BAP,%s,%s,%s",
-                 BAP_command_to_string(cmd), parameter, value);
-    } else {
-        snprintf(sentence_body, sizeof(sentence_body), "BAP,%s,%s",
-                 BAP_command_to_string(cmd), parameter);
-    }
-
-    uint8_t checksum = BAP_calculate_checksum(sentence_body);
-
-    len = snprintf(message, sizeof(message), "$%s*%02X\r\n", sentence_body, checksum);
 
     msg.message = malloc(len + 1);
     if (msg.message == NULL) {
@@ -120,46 +96,28 @@ static void uart_receive_task(void *pvParameters) {
         return;
     }
 
-    char message[BAP_MAX_MESSAGE_LEN + 1];
-    size_t message_len = 0;
-    bool in_message = false;
-
+    bap_stream_t stream = {0};
+    uart_event_t event;
     while (1) {
-        int len = uart_read_bytes(BAP_UART_NUM, data, BAP_BUF_SIZE, pdMS_TO_TICKS(100));
-        
-        if (len > 0) {
-            ESP_LOGD(TAG, "Received %d bytes from UART", len);
-            
-            for (int i = 0; i < len; i++) {
-                char c = (char)data[i];
-                
-                if (c == '$') {
-                    if (!in_message) {
-                        ESP_LOGI(TAG, "Start of message detected");
-                    }
-                    in_message = true;
-                    message_len = 0;
-                    message[message_len++] = c;
-                }
-                else if ((c == '\n' || c == '\r') && in_message) {
-                    if (message_len > 1 && message_len < BAP_MAX_MESSAGE_LEN) {
-                        message[message_len++] = c;
-                        message[message_len] = '\0';
-                        
-                        //ESP_LOGI(TAG, "Received complete message: %s", message);
-                        BAP_parse_message(message);
-
-                        // End on either terminator; a trailing LF would re-parse the buffer.
-                        in_message = false;
-                    } else if (message_len >= BAP_MAX_MESSAGE_LEN) {
-                        ESP_LOGE(TAG, "Message too long, discarding");
-                        in_message = false;
-                    }
-                }
-                else if (in_message && message_len < BAP_MAX_MESSAGE_LEN) {
-                    message[message_len++] = c;
-                    ESP_LOGD(TAG, "Added to message: %c, len now %d", c, message_len);
-                }
+        if (xQueueReceive(uart_event_queue, &event, portMAX_DELAY) != pdTRUE) continue;
+        if (event.type == UART_FIFO_OVF || event.type == UART_BUFFER_FULL ||
+            event.type == UART_FRAME_ERR || event.type == UART_PARITY_ERR || event.type == UART_BREAK) {
+            stream.length = 0;
+            uart_flush_input(BAP_UART_NUM);
+            xQueueReset(uart_event_queue);
+            continue;
+        }
+        if (event.type != UART_DATA) continue;
+        size_t remaining = event.size;
+        while (remaining) {
+            int len = uart_read_bytes(BAP_UART_NUM, data, remaining < BAP_BUF_SIZE ? remaining : BAP_BUF_SIZE, 0);
+            if (len <= 0) {
+                stream.length = 0;
+                break;
+            }
+            remaining -= len;
+            for (int i = 0; i < len; ++i) {
+                if (BAP_stream_feed(&stream, data[i])) BAP_parse_message(stream.message);
             }
         }
     }
@@ -174,22 +132,11 @@ static void uart_send_task(void *pvParameters) {
         if (xQueueReceive(bap_uart_send_queue, &msg, portMAX_DELAY) == pdTRUE) {
             
             if (bap_uart_send_mutex != NULL && xSemaphoreTake(bap_uart_send_mutex, pdMS_TO_TICKS(100)) == pdTRUE) {
-                size_t available;
-                esp_err_t ret = uart_get_buffered_data_len(BAP_UART_NUM, &available);
-                if (ret != ESP_OK) {
-                    ESP_LOGE(TAG, "Failed to get UART buffer status");
-                    xSemaphoreGive(bap_uart_send_mutex);
-                } else if (available > UART_BUFFER_THRESHOLD) {
-                    ESP_LOGW(TAG, "UART buffer threshold exceeded (%zu bytes), dropping message", available);
-                    xSemaphoreGive(bap_uart_send_mutex);
-                } else {
-                    int bytes_sent = uart_write_bytes(BAP_UART_NUM, msg.message, msg.length);
-                    if (bytes_sent == msg.length) {
-                    } else {
-                        ESP_LOGW(TAG, "UART send failed or partial: %d of %d bytes", bytes_sent, msg.length);
-                    }
-                    xSemaphoreGive(bap_uart_send_mutex);
+                int bytes_sent = uart_write_bytes(BAP_UART_NUM, msg.message, msg.length);
+                if (bytes_sent < 0 || (size_t)bytes_sent != msg.length) {
+                    ESP_LOGW(TAG, "UART send failed or partial: %d of %zu bytes", bytes_sent, msg.length);
                 }
+                xSemaphoreGive(bap_uart_send_mutex);
             } else {
                 ESP_LOGW(TAG, "Failed to take UART send mutex, dropping message");
             }
@@ -205,7 +152,7 @@ static void uart_send_task(void *pvParameters) {
 }
 
 esp_err_t BAP_start_uart_receive_task(void) {
-    xTaskCreateWithCaps(
+    BaseType_t result = xTaskCreateWithCaps(
         uart_receive_task,
         "uart_receive_ta",
         8192,
@@ -215,8 +162,7 @@ esp_err_t BAP_start_uart_receive_task(void) {
         MALLOC_CAP_SPIRAM
     );
 
-    //ESP_LOGI(TAG, "UART receive task started");
-    return ESP_OK;
+    return result == pdPASS ? ESP_OK : ESP_ERR_NO_MEM;
 }
 
 esp_err_t BAP_uart_init(void) {
@@ -246,7 +192,7 @@ esp_err_t BAP_uart_init(void) {
         return ret;
     }
     
-    ret = uart_driver_install(BAP_UART_NUM, BAP_BUF_SIZE, BAP_BUF_SIZE, 0, NULL, 0);
+    ret = uart_driver_install(BAP_UART_NUM, BAP_BUF_SIZE, BAP_BUF_SIZE, 20, &uart_event_queue, 0);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "Failed to install UART driver: %d", ret);
         return ret;
@@ -264,6 +210,7 @@ esp_err_t BAP_uart_init(void) {
     );
     
     if (task_result != pdPASS) {
+        uart_driver_delete(BAP_UART_NUM);
         ESP_LOGE(TAG, "Failed to create uart_send_task");
         return ESP_ERR_NO_MEM;
     }

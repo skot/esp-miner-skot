@@ -26,6 +26,9 @@ TEST_CASE("Bonanza 1004 supplies its control pin map through device configuratio
     }
     TEST_ASSERT_EQUAL_PTR(&BONANZA_1004_CONTROL_PINS, config.pins.bzm);
     TEST_ASSERT_EQUAL_PTR(&BONANZA_1004_UART_PINS, config.pins.asic_uart);
+    TEST_ASSERT_EQUAL_PTR(&DEFAULT_BAP_PINS, config.pins.bap);
+    TEST_ASSERT_EQUAL(GPIO_NUM_39, config.pins.bap->tx);
+    TEST_ASSERT_EQUAL(GPIO_NUM_40, config.pins.bap->rx);
     TEST_ASSERT_EQUAL_PTR(&BONANZA_FAN_DRIVER, config.fan_driver);
     TEST_ASSERT_EQUAL_PTR(&BONANZA_VCORE_DRIVER, config.vcore_driver);
     TEST_ASSERT_EQUAL(GPIO_NUM_17, config.pins.asic_uart->tx);
@@ -86,5 +89,23 @@ TEST_CASE("Existing Bitmain boards retain their legacy UART configuration", "[as
         if (config.family.asic.id == BZM) continue;
         TEST_ASSERT_NULL(config.pins.asic_uart);
         TEST_ASSERT_EQUAL(ESP_OK, device_pins_init(&config.pins));
+    }
+}
+
+TEST_CASE("Bonanza BAP pins cannot overlap the ASIC UART or board controls", "[asic][bonanza][bap][pins]")
+{
+    const BapPins invalid[] = {
+        {.tx = GPIO_NUM_17, .rx = GPIO_NUM_40},
+        {.tx = GPIO_NUM_39, .rx = GPIO_NUM_18},
+        {.tx = GPIO_NUM_1, .rx = GPIO_NUM_40},
+        {.tx = GPIO_NUM_39, .rx = GPIO_NUM_39},
+        {.tx = GPIO_NUM_39, .rx = CONFIG_GPIO_I2C_SDA},
+        {.tx = GPIO_NUM_NC, .rx = GPIO_NUM_40},
+        {.tx = GPIO_NUM_39, .rx = GPIO_NUM_NC},
+    };
+    for (unsigned i = 0; i < sizeof(invalid) / sizeof(invalid[0]); ++i) {
+        DevicePins pins = {.bap = &invalid[i], .asic_uart = &BONANZA_1004_UART_PINS,
+                           .bzm = &BONANZA_1004_CONTROL_PINS, .i2c = &DEFAULT_I2C_PINS};
+        TEST_ASSERT_EQUAL(ESP_ERR_INVALID_STATE, device_pins_init(&pins));
     }
 }
