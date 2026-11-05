@@ -58,6 +58,7 @@ typedef enum
     GAMMA_HEX,
     GAMMA_TURBO,
     NAJA_DUO,
+    BITAIR,
 } Family;
 
 typedef struct FamilyConfig {
@@ -94,6 +95,8 @@ typedef struct DeviceConfig {
     bool DS4432U : 1;
     bool INA260  : 1;
     bool TPS546  : 1;
+    bool no_display : 1;
+    bool no_fan_tach : 1;
     // test values
     uint16_t power_consumption_target;
     uint16_t power_consumption_margin;
@@ -136,6 +139,7 @@ static const FamilyConfig FAMILY_ULTRA       = { .id = ULTRA,       .name = "Ult
 static const FamilyConfig FAMILY_HEX         = { .id = HEX,         .name = "Hex",        .asic = ASIC_BM1366,   .asic_count = 6, .max_power =  90, .power_offset = 12, .nominal_voltage = 12, .voltage_domains = 3, .swarm_color = "orange",   .tps546_config = &TPS546_CONFIG_HEX, };
 static const FamilyConfig FAMILY_SUPRA       = { .id = SUPRA,       .name = "Supra",      .asic = ASIC_BM1368,   .asic_count = 1, .max_power =  40, .power_offset = 5,  .nominal_voltage = 5,  .voltage_domains = 1, .swarm_color = "blue",     .tps546_config = &TPS546_CONFIG_DEFAULT, };
 static const FamilyConfig FAMILY_GAMMA       = { .id = GAMMA,       .name = "Gamma",      .asic = ASIC_BM1370,   .asic_count = 1, .max_power =  40, .power_offset = 5,  .nominal_voltage = 5,  .voltage_domains = 1, .swarm_color = "green",    .tps546_config = &TPS546_CONFIG_DEFAULT, };
+static const FamilyConfig FAMILY_BITAIR      = { .id = BITAIR,      .name = "Bitair",     .asic = ASIC_BM1370,   .asic_count = 1, .max_power =  25, .power_offset = 5,  .nominal_voltage = 5,  .voltage_domains = 1, .swarm_color = "green",    .tps546_config = &TPS546_CONFIG_DEFAULT, };
 static const FamilyConfig FAMILY_GAMMA_DUO   = { .id = GAMMA_DUO,   .name = "GammaDuo",   .asic = ASIC_BM1370XP, .asic_count = 2, .max_power =  40, .power_offset = 5,  .nominal_voltage = 5,  .voltage_domains = 1, .swarm_color = "green",    .tps546_config = &TPS546_CONFIG_DEFAULT, };
 static const FamilyConfig FAMILY_SUPRA_HEX   = { .id = SUPRA_HEX,   .name = "SupraHex",   .asic = ASIC_BM1368,   .asic_count = 6, .max_power = 120, .power_offset = 25, .nominal_voltage = 12, .voltage_domains = 3, .swarm_color = "darkblue", .tps546_config = &TPS546_CONFIG_HEX, };
 static const FamilyConfig FAMILY_GAMMA_TURBO = { .id = GAMMA_TURBO, .name = "GammaTurbo", .asic = ASIC_BM1370,   .asic_count = 2, .max_power =  60, .power_offset = 10, .nominal_voltage = 12, .voltage_domains = 1, .swarm_color = "cyan",     .tps546_config = &TPS546_CONFIG_GAMMA_TURBO, };
@@ -153,9 +157,11 @@ static const FamilyConfig default_families[] = {
     FAMILY_GAMMA_HEX,
     FAMILY_GAMMA_TURBO,
     FAMILY_NAJA_DUO,
+    FAMILY_BITAIR,
 };
 
 static const DeviceConfig default_configs[] = {
+    { .board_version = "bitair", .family = FAMILY_BITAIR, .pins = BITAIR_PINS, .EMC2101 = true, .emc_ideality_factor = 0x24, .emc_beta_compensation = 0x00, .TPS546 = true, .no_display = true, .no_fan_tach = true, .power_consumption_target = 22, },
     { .board_version = "2.2",  .family = FAMILY_MAX,         .pins = BITAXE_ORIGINAL_PINS, .EMC2101 = true,                                                                                 .DS4432U = true, .INA260 = true, .plug_sense = true, .asic_enable = true, .power_consumption_target = 12, },
     { .board_version = "102",  .family = FAMILY_MAX,         .pins = BITAXE_ORIGINAL_PINS, .EMC2101 = true,                                                                                 .DS4432U = true, .INA260 = true, .plug_sense = true, .asic_enable = true, .power_consumption_target = 12, },
     { .board_version = "0.11", .family = FAMILY_ULTRA,       .pins = BITAXE_ORIGINAL_PINS, .EMC2101 = true, .emc_internal_temp = true,                                  .temp_offset = 5,   .DS4432U = true, .INA260 = true, .plug_sense = true, .asic_enable = true, .power_consumption_target = 12, },

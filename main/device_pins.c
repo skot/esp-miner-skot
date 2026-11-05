@@ -50,7 +50,7 @@ static inline esp_err_t check_pin(gpio_num_t gpio, const char * name, uint64_t *
 
 static esp_err_t device_pins_validate(const DevicePins * pins)
 {
-    uint64_t allocated_pins_mask = 0;
+    uint64_t allocated_pins_mask = pins->reserved_gpio_mask;
     esp_err_t status = ESP_OK;
 
     if (pins->bap) {
@@ -85,7 +85,7 @@ static void apply_kconfig_pin_overrides(DevicePins * pins)
     pins->bap = NULL;
     ESP_LOGI(TAG, "BAP disabled via Kconfig (CONFIG_ENABLE_BAP=n)");
 #elif defined(CONFIG_GPIO_BAP_TX) && defined(CONFIG_GPIO_BAP_RX)
-    if (CONFIG_GPIO_BAP_TX >= 0 && CONFIG_GPIO_BAP_RX >= 0) {
+    if (!pins->bap_disabled && CONFIG_GPIO_BAP_TX >= 0 && CONFIG_GPIO_BAP_RX >= 0) {
         static BapPins kconfig_bap_pins;
         kconfig_bap_pins.tx = CONFIG_GPIO_BAP_TX;
         kconfig_bap_pins.rx = CONFIG_GPIO_BAP_RX;

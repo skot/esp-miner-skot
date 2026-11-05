@@ -8,6 +8,8 @@
 # ESP-Miner
 esp-miner is open source ESP32 firmware for the [Bitaxe](https://github.com/bitaxeorg/bitaxe)
 
+This fork also supports the Heatbit Bitair V1.22 mainboard and its physical fan-mode controls. See [Bitair setup and hardware notes](doc/bitair.md).
+
 ## Community
 The ESP-Miner firmware is maintained by OSMU which hosts it's own discussion forum at [Forum](https://osmu.xyz).
 

@@ -41,3 +41,4 @@ debug.log
 
 # Device list file for tools/upload2device.py
 devices.txt
+tools/tests/__pycache__/

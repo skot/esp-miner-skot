@@ -31,6 +31,8 @@ typedef struct {
     const BapPins * bap;
     const I2cPins * i2c;
     const I80Pins * i80;
+    uint64_t reserved_gpio_mask;
+    bool bap_disabled;
 } DevicePins;
 
 extern const BapPins DEFAULT_BAP_PINS;
@@ -43,6 +45,8 @@ extern const I80Pins ST7789_I80_PINS;
 
 #define BITAXE_ORIGINAL_PINS        BITAXE_ORIGINAL_DEVICE_PINS
 #define BITAXE_COLOR_PINS           BITAXE_COLOR_DEVICE_PINS
+#define BITAIR_PINS { .bap = NULL, .i2c = &DEFAULT_I2C_PINS, .i80 = NULL, .bap_disabled = true, \
+    .reserved_gpio_mask = (1ULL << 6) | (1ULL << 39) | (1ULL << 40) | (1ULL << 41) }
 
 esp_err_t device_pins_init(DevicePins * pins);
 

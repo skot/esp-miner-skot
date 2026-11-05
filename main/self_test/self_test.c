@@ -350,6 +350,10 @@ void self_test_show_message(GlobalState * GLOBAL_STATE, const char * msg)
 
 static esp_err_t test_fan_sense(GlobalState * GLOBAL_STATE)
 {
+    if (GLOBAL_STATE->DEVICE_CONFIG.no_fan_tach) {
+        ESP_LOGI(TAG, "Fan RPM test unavailable: board has no tach feedback");
+        return ESP_OK;
+    }
     uint16_t fan_speed = Thermal_get_fan_speed(&GLOBAL_STATE->DEVICE_CONFIG);
     uint16_t target_speed = GLOBAL_STATE->DEVICE_CONFIG.self_test_fan_target_rpm != 0
                                 ? GLOBAL_STATE->DEVICE_CONFIG.self_test_fan_target_rpm

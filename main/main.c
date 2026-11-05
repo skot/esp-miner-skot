@@ -32,6 +32,8 @@
 #include "setup_ble.h"
 #include "esp_ota_ops.h"
 #include "esp_netif_sntp.h"
+#include "bitair.h"
+#include "vcore.h"
 
 static GlobalState GLOBAL_STATE;
 
@@ -160,6 +162,9 @@ void app_main(void)
     esp_err_t system_init_ret = SYSTEM_init_peripherals(&GLOBAL_STATE);
     
     if (system_init_ret == ESP_OK) {
+        if (GLOBAL_STATE.DEVICE_CONFIG.family.id == BITAIR && !GLOBAL_STATE.SELF_TEST_MODULE.is_active) {
+            ESP_ERROR_CHECK(VCORE_set_voltage(&GLOBAL_STATE, 0.0f));
+        }
         if (xTaskCreate(POWER_MANAGEMENT_task, "power management", 8192, (void *) &GLOBAL_STATE, 10, NULL) != pdPASS) {
             ESP_LOGE(TAG, "Error creating power management task");
         }
@@ -231,6 +236,12 @@ void app_main(void)
     miner_job_pool_init();
 
     if (system_init_ret == ESP_OK) {
+        if (GLOBAL_STATE.DEVICE_CONFIG.family.id == BITAIR && !GLOBAL_STATE.SELF_TEST_MODULE.is_active) {
+            while (bitair_mining_disabled() || GLOBAL_STATE.SYSTEM_MODULE.mining_paused || GLOBAL_STATE.SYSTEM_MODULE.hardware_fault) {
+                vTaskDelay(pdMS_TO_TICKS(100));
+            }
+            ESP_ERROR_CHECK(VCORE_set_voltage(&GLOBAL_STATE, nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE) / 1000.0f));
+        }
         if (asic_initialize(&GLOBAL_STATE, ASIC_INIT_COLD_BOOT, 0) == 0) {
             if (!GLOBAL_STATE.SELF_TEST_MODULE.is_active) {
                 return;

@@ -12,6 +12,7 @@
 #include "asic_reset.h"
 #include "difficulty_controller.h"
 #include "driver/uart.h"
+#include "bitair.h"
 
 #define POLL_RATE 100
 #define MAX_TEMP 90.0
@@ -141,8 +142,14 @@ void POWER_MANAGEMENT_task(void * pvParameters)
         power_management->chip_temp2_avg = Thermal_get_chip_temp2(GLOBAL_STATE);
 
         power_management->vr_temp = Power_get_vreg_temp(GLOBAL_STATE);
-        // User pause, hardware fault, or all pools unreachable
-        bool wants_stop = sys_module->mining_paused || sys_module->hardware_fault || sys_module->pools_unavailable;
+        if (GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR && !GLOBAL_STATE->ASIC_initalized && !is_paused) {
+            vTaskDelay(pdMS_TO_TICKS(POLL_RATE));
+            continue;
+        }
+        // Let cold boot finish before applying the purifier's independent pause reason.
+        bool purifier_off = GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR && bitair_mining_disabled()
+                            && (GLOBAL_STATE->ASIC_initalized || is_paused);
+        bool wants_stop = sys_module->mining_paused || sys_module->hardware_fault || sys_module->pools_unavailable || purifier_off;
         if (wants_stop && !is_paused) {
             mining_stop(GLOBAL_STATE);
             is_paused = true;
@@ -225,6 +232,13 @@ void POWER_MANAGEMENT_task(void * pvParameters)
             
             ESP_LOGI(TAG, "Restoring at reduced settings: %umV (was %umV), %.0f MHz (was %.0f MHz)",
                      reduced_voltage, last_known_asic_voltage, reduced_asic_frequency, last_known_asic_frequency);
+
+            if (GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR &&
+                (bitair_mining_disabled() || sys_module->mining_paused || sys_module->hardware_fault || sys_module->pools_unavailable)) {
+                is_paused = true;
+                nvs_config_set_bool(NVS_CONFIG_OVERHEAT_MODE, false);
+                continue;
+            }
 
             uint8_t chip_count = mining_start(GLOBAL_STATE);
 

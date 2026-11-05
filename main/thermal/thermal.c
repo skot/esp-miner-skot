@@ -9,6 +9,7 @@
 #include "EMC2103.h"
 #include "EMC2302.h"
 #include "TMP1075.h"
+#include "bitair.h"
 
 static const char * TAG = "thermal";
 
@@ -55,6 +56,10 @@ esp_err_t Thermal_init(DeviceConfig * DEVICE_CONFIG)
     if (DEVICE_CONFIG->TMP1075) {
         ESP_RETURN_ON_ERROR(TMP1075_init(DEVICE_CONFIG->temp_offset), TAG, "Failed to initialise TMP1075");
     }
+    if (DEVICE_CONFIG->family.id == BITAIR) {
+        ESP_RETURN_ON_ERROR(bitair_init(), TAG, "Failed to initialise purifier controls");
+        ESP_RETURN_ON_ERROR(Thermal_set_fan_percent(DEVICE_CONFIG, 1.0f), TAG, "Failed to start purifier fan");
+    }
 
     return ESP_OK;
 }
@@ -76,6 +81,9 @@ esp_err_t Thermal_set_fan_percent(DeviceConfig * DEVICE_CONFIG, float percent)
 
 uint16_t Thermal_get_fan_speed(DeviceConfig * DEVICE_CONFIG) 
 {
+    if (DEVICE_CONFIG->no_fan_tach) {
+        return 0;
+    }
     if (DEVICE_CONFIG->EMC2101) {
         return EMC2101_get_fan_speed();
     }

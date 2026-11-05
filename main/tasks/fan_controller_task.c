@@ -8,6 +8,8 @@
 #include "nvs_config.h"
 #include "thermal.h"
 #include "PID.h"
+#include "bitair.h"
+#include "esp_timer.h"
 
 #define EPSILON 0.0001f
 #define POLL_TIME_MS 100
@@ -22,10 +24,13 @@ static const char * prev_context = "";
 
 static void update_fan_speed(GlobalState * GLOBAL_STATE, float target_perc, const char * context)
 {
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR) {
+        target_perc = fmaxf(target_perc, bitair_get_fan_percent());
+    }
     if (target_perc > 100.0f) target_perc = 100.0f;
     if (target_perc < 0.0f) target_perc = 0.0f;
 
-    bool target_changed = fabs(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.fan_perc - target_perc) > EPSILON;
+    bool target_changed = prev_context[0] == '\0' || fabs(GLOBAL_STATE->POWER_MANAGEMENT_MODULE.fan_perc - target_perc) > EPSILON;
     if (strcmp(context, prev_context) != 0) {
         prev_context = context;
         ESP_LOGI(TAG, "Set to %s mode, fan speed: %.1f%%", context, target_perc);
@@ -56,6 +61,8 @@ void FAN_CONTROLLER_task(void * pvParameters)
     uint16_t pid_output_min = 0;
     int log_counter = 0;
     float filtered_input = -1.0f;
+    int64_t purifier_off_since = -1;
+    const char *previous_purifier_mode = "";
 
     GlobalState * GLOBAL_STATE = (GlobalState *) pvParameters;
 
@@ -68,8 +75,24 @@ void FAN_CONTROLLER_task(void * pvParameters)
     TickType_t taskWakeTime = xTaskGetTickCount();
 
     while (1) {
+        if (GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR) {
+            const char *mode = bitair_get_mode_name();
+            if (strcmp(mode, previous_purifier_mode) != 0) {
+                ESP_LOGI(TAG, "Purifier mode: %s", mode);
+                previous_purifier_mode = mode;
+            }
+        }
+        bool purifier_off = GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR && bitair_mining_disabled();
+        if (purifier_off && purifier_off_since < 0) {
+            purifier_off_since = esp_timer_get_time();
+        } else if (!purifier_off) {
+            purifier_off_since = -1;
+        }
         if (nvs_config_get_bool(NVS_CONFIG_OVERHEAT_MODE)) {
             update_fan_speed(GLOBAL_STATE, 100.0f, "Overheat");
+        } else if (purifier_off) {
+            float cooldown_percent = esp_timer_get_time() - purifier_off_since < 30000000 ? 30.0f : 0.0f;
+            update_fan_speed(GLOBAL_STATE, cooldown_percent, "Purifier off");
         } else if (GLOBAL_STATE->SYSTEM_MODULE.mining_paused) {
             update_fan_speed(GLOBAL_STATE, 30.0f, "Paused");
         } else if (GLOBAL_STATE->SYSTEM_MODULE.pools_unavailable) {

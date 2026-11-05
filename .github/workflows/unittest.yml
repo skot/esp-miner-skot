@@ -21,6 +21,9 @@ jobs:
           name: event-file
           path: ${{ github.event_path }}
 
+      - name: Test Bitair purifier controls
+        run: python3 -m unittest discover -s tools/tests
+
       - name: esp-idf build
         uses: espressif/esp-idf-ci-action@v1
         with:

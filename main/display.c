@@ -63,6 +63,11 @@ static void display_apply_nvs_rotation(lv_disp_t * disp)
 
 static esp_err_t read_display_config(GlobalState * GLOBAL_STATE)
 {
+    if (GLOBAL_STATE->DEVICE_CONFIG.no_display) {
+        GLOBAL_STATE->DISPLAY_CONFIG = *get_display_config("NONE");
+        return ESP_OK;
+    }
+
     if (GLOBAL_STATE->DEVICE_CONFIG.pins.i80 != NULL) {
         const DisplayConfig * display_config = get_display_config("ST7789 (320x170)");
         if (display_config) {
