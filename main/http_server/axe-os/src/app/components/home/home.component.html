@@ -292,9 +292,9 @@
           <div class="mb-4">
             <h6 class="flex justify-between mb-1">
               @if (info.temp2 > 0) {
-                ASIC Temperature 1
+                {{info.asicDieTemps?.length ? 'ASIC Diode Temperature 1' : 'ASIC Temperature 1'}}
               } @else {
-                ASIC Temperature
+                {{info.asicDieTemps?.length ? 'ASIC Diode Temperature' : 'ASIC Temperature'}}
               }
               <span>
                 @if (info.temp > 0) {
@@ -319,7 +319,7 @@
           @if (info.temp2 > 0) {
             <div class="mb-4">
               <h6 class="flex justify-between mb-1">
-                ASIC Temperature 2
+                {{info.asicDieTemps?.length ? 'ASIC Diode Temperature 2' : 'ASIC Temperature 2'}}
                 <span>
                   {{info.temp2}} °C
                 </span>
@@ -334,6 +334,15 @@
                   Danger: High Temperature
                 </strong>
               }
+            </div>
+          }
+
+          @for (temperature of info.asicDieTemps ?? []; track $index) {
+            <div class="mb-4 asic-die-temperature">
+              <h6 class="flex justify-between mb-1">
+                ASIC {{$index + 1}} Die Temperature
+                <span>{{temperature === null ? '--' : (temperature | number: '1.1-1') + ' °C'}}</span>
+              </h6>
             </div>
           }
 

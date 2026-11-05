@@ -96,6 +96,7 @@ const mockSystemInfo: ISystemInfo = {
   hashRate_1h: 500,
   temp: 55,
   temp2: 0,
+  asicDieTemps: [],
   vrTemp: 0,
   fanspeed: 80,
   fanrpm: 3000,
@@ -247,6 +248,26 @@ describe('HomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('shows per-chip die readings separately from diode temperatures', () => {
+    mockLiveDataService.info$.next({ ...mockSystemInfo, temp2: 56, asicDieTemps: [25.09015, null] });
+    fixture.detectChanges();
+    const rows = fixture.nativeElement.querySelectorAll('.asic-die-temperature');
+    expect(rows.length).toBe(2);
+    expect(rows[0].textContent).toContain('ASIC 1 Die Temperature');
+    expect(rows[0].textContent).toContain('25.1 °C');
+    expect(rows[1].textContent).toContain('ASIC 2 Die Temperature');
+    expect(rows[1].textContent).toContain('--');
+    expect(fixture.nativeElement.textContent).toContain('ASIC Diode Temperature 1');
+    expect(fixture.nativeElement.textContent).toContain('ASIC Diode Temperature 2');
+  });
+
+  it('hides die readings on unsupported models and older firmware', () => {
+    expect(fixture.nativeElement.querySelectorAll('.asic-die-temperature').length).toBe(0);
+    mockLiveDataService.info$.next({ ...mockSystemInfo, asicDieTemps: undefined });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('.asic-die-temperature').length).toBe(0);
   });
 
   it('uses the device presets for frequency messages', () => {
