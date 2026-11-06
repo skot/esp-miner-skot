@@ -21,6 +21,8 @@
 static const char *TAG = "BAP_HANDLERS";
 
 static bap_command_handler_t handlers[BAP_CMD_UNKNOWN + 1] = {0};
+static char last_processed_message[BAP_MAX_MESSAGE_LEN] = {0};
+static uint32_t last_message_time = 0;
 
 void BAP_register_handler(bap_command_t cmd, bap_command_handler_t handler) {
     if (cmd >= 0 && cmd <= BAP_CMD_UNKNOWN) {
@@ -29,6 +31,23 @@ void BAP_register_handler(bap_command_t cmd, bap_command_handler_t handler) {
 }
 
 void BAP_parse_message(const char *message) {
+    if (!message) {
+        ESP_LOGE(TAG, "Parse message: NULL message");
+        return;
+    }
+
+    uint32_t current_time = esp_timer_get_time() / 1000;
+    if (strcmp(message, last_processed_message) == 0 &&
+        (current_time - last_message_time) < 1000) {
+        // Don't echo the body: a SET can carry the Wi-Fi or pool password.
+        ESP_LOGW(TAG, "Duplicate message detected, ignoring");
+        return;
+    }
+
+    strncpy(last_processed_message, message, sizeof(last_processed_message) - 1);
+    last_processed_message[sizeof(last_processed_message) - 1] = '\0';
+    last_message_time = current_time;
+
     char body[BAP_MAX_MESSAGE_LEN];
     if (!BAP_decode_sentence(message, body, sizeof(body)) || strncmp(body, "BAP,", 4)) return;
     char *cmd_str = body + 4;

@@ -82,6 +82,8 @@ static void reset_fixture(GlobalState *state)
     clock_us = 10000000;
     sent = settings_written = 0;
     BAP_handlers_init(state);
+    memset(last_processed_message, 0, sizeof(last_processed_message));
+    last_message_time = 0;
     BAP_subscription_init();
 }
 
@@ -177,6 +179,67 @@ TEST_CASE("BAP stream handles fragmentation CRLF noise overruns and resynchroniz
     BAP_stream_feed(&stream, '$');
     BAP_stream_feed(&stream, 0);
     TEST_ASSERT_FALSE(BAP_stream_feed(&stream, '\n'));
+}
+
+TEST_CASE("BAP accepts bare CR LF and fragmented CRLF with one frame per terminator", "[asic][bap]")
+{
+    const char *endings[] = {"\r", "\n", "\r\n"};
+    for (unsigned i = 0; i < sizeof(endings) / sizeof(endings[0]); ++i) {
+        bap_stream_t stream = {0};
+        const char *sentence = "$BAP,REQ,systemInfo*3E";
+        for (const char *p = sentence; *p; ++p) TEST_ASSERT_FALSE(BAP_stream_feed(&stream, *p));
+        TEST_ASSERT_EQUAL_UINT32(strlen(sentence), stream.length);
+        TEST_ASSERT_TRUE(BAP_stream_feed(&stream, endings[i][0]));
+        char body[BAP_MAX_MESSAGE_LEN];
+        TEST_ASSERT_TRUE(BAP_decode_sentence(stream.message, body, sizeof(body)));
+        TEST_ASSERT_EQUAL_STRING("BAP,REQ,systemInfo", body);
+        TEST_ASSERT_EQUAL_UINT32(0, stream.length);
+        if (endings[i][1]) TEST_ASSERT_FALSE(BAP_stream_feed(&stream, endings[i][1]));
+    }
+}
+
+static unsigned duplicate_test_requests;
+
+static void duplicate_test_handler(const char *parameter, const char *value)
+{
+    (void)parameter;
+    (void)value;
+    ++duplicate_test_requests;
+}
+
+TEST_CASE("BAP retains the consecutive receive duplicate filter and its one second boundary", "[asic][bap]")
+{
+    BAP_handlers_init(NULL);
+    BAP_register_handler(BAP_CMD_REQ, duplicate_test_handler);
+    memset(last_processed_message, 0, sizeof(last_processed_message));
+    last_message_time = 0;
+    duplicate_test_requests = 0;
+    clock_us = 10000000;
+
+    command("REQ", "hashrate", NULL);
+    TEST_ASSERT_EQUAL_UINT32(1, duplicate_test_requests);
+    clock_us += 999000;
+    command("REQ", "hashrate", NULL);
+    TEST_ASSERT_EQUAL_UINT32(1, duplicate_test_requests);
+    clock_us += 1000;
+    command("REQ", "hashrate", NULL);
+    TEST_ASSERT_EQUAL_UINT32(2, duplicate_test_requests);
+
+    clock_us += 1000;
+    command("REQ", "power", NULL);
+    TEST_ASSERT_EQUAL_UINT32(3, duplicate_test_requests);
+    command("REQ", "hashrate", NULL);
+    TEST_ASSERT_EQUAL_UINT32(4, duplicate_test_requests);
+
+    clock_us = (int64_t)(UINT32_MAX - 500U) * 1000;
+    command("REQ", "power", NULL);
+    TEST_ASSERT_EQUAL_UINT32(5, duplicate_test_requests);
+    clock_us += 999000;
+    command("REQ", "power", NULL);
+    TEST_ASSERT_EQUAL_UINT32(5, duplicate_test_requests);
+    clock_us += 1000;
+    command("REQ", "power", NULL);
+    TEST_ASSERT_EQUAL_UINT32(6, duplicate_test_requests);
 }
 
 TEST_CASE("BAP serves Bonanza identity and live telemetry with display units", "[asic][bap]")

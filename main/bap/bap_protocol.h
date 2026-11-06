@@ -24,7 +24,7 @@ typedef struct {
     size_t length;
 } bap_stream_t;
 
-// Feed bytes until a complete LF/CRLF frame is available in stream->message.
+// Complete a frame on CR or LF; ignore the trailing LF of CRLF.
 bool BAP_stream_feed(bap_stream_t *stream, uint8_t byte);
 // Return zero for invalid fields or frames exceeding the wire/capacity limit.
 size_t BAP_format_message(char *out, size_t capacity, const char *command,

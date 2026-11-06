@@ -120,8 +120,8 @@ bool BAP_decode_sentence(const char *message, char *body, size_t capacity) {
     if (!len || len > BAP_MAX_MESSAGE_LEN || message[0] != '$') return false;
     if (message[len - 1] == '\n') {
         --len;
-        if (len && message[len - 1] == '\r') --len;
     }
+    if (len && message[len - 1] == '\r') --len;
     const char *star = strchr(message, '*');
     if (!star || (size_t)(star - message) + 3 != len) return false;
     size_t body_len = star - message - 1;
@@ -140,15 +140,13 @@ bool BAP_stream_feed(bap_stream_t *stream, uint8_t byte) {
         stream->message[0] = '$';
         stream->length = 1;
     } else if (stream->length) {
-        if (byte == '\n') {
-            stream->message[stream->length++] = '\n';
+        if (byte == '\r' || byte == '\n') {
+            stream->message[stream->length++] = (char)byte;
             stream->message[stream->length] = '\0';
             stream->length = 0;
             return true;
         }
-        if (stream->length >= BAP_MAX_MESSAGE_LEN - 1 ||
-            stream->message[stream->length - 1] == '\r' ||
-            (byte != '\r' && (byte < 0x20 || byte > 0x7e))) {
+        if (stream->length >= BAP_MAX_MESSAGE_LEN - 1 || byte < 0x20 || byte > 0x7e) {
             stream->length = 0;
         } else {
             stream->message[stream->length++] = (char)byte;

@@ -251,7 +251,9 @@ also accept one-shot `REQ` commands. No `RES` acknowledgement or display metric
 readback is available.
 
 Frames are bounded to 256 bytes including delimiters and require a two-digit
-XOR checksum. LF and CRLF endings are accepted. Invalid input is discarded;
+XOR checksum. CR, LF and CRLF endings are accepted; CRLF dispatches only once.
+The existing receive filter suppresses an identical consecutive message for
+1000 ms after its last processing. Invalid input is discarded;
 a new `$` resynchronizes the stream, including after a UART receive fault.
 Subscriptions accept decimal intervals from 100 to 60000 ms (3000 ms if omitted),
 are serviced by the existing one-second update task, send changed values, and
