@@ -33,6 +33,7 @@
 #include "esp_ota_ops.h"
 #include "esp_netif_sntp.h"
 #include "bitair.h"
+#include "bitair_indicator.h"
 #include "vcore.h"
 
 static GlobalState GLOBAL_STATE;
@@ -145,12 +146,19 @@ void app_main(void)
     // wait for I2C to init
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    if (self_test_init(&GLOBAL_STATE) != ESP_OK) {
+    if (GLOBAL_STATE.DEVICE_CONFIG.family.id == BITAIR) {
+        ESP_LOGW(TAG, "Bitair factory/BOOT self-test is unsupported; using normal startup and physical controls");
+        GLOBAL_STATE.ASIC_startup_pending = true;
+    } else if (self_test_init(&GLOBAL_STATE) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to init self test");
         return;
     }
 
     SYSTEM_init_system(&GLOBAL_STATE);
+    esp_err_t indicator_ret = bitair_indicator_init(&GLOBAL_STATE);
+    if (indicator_ret != ESP_OK) {
+        ESP_LOGW(TAG, "Front LED unavailable: %s", esp_err_to_name(indicator_ret));
+    }
     if (scoreboard_init(&GLOBAL_STATE.SYSTEM_MODULE.scoreboard) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to init scoreboard");
     }
@@ -160,11 +168,11 @@ void app_main(void)
     }
 
     esp_err_t system_init_ret = SYSTEM_init_peripherals(&GLOBAL_STATE);
-    
+    if (system_init_ret == ESP_OK && GLOBAL_STATE.DEVICE_CONFIG.family.id == BITAIR) {
+        system_init_ret = VCORE_set_voltage(&GLOBAL_STATE, 0.0f);
+    }
+
     if (system_init_ret == ESP_OK) {
-        if (GLOBAL_STATE.DEVICE_CONFIG.family.id == BITAIR && !GLOBAL_STATE.SELF_TEST_MODULE.is_active) {
-            ESP_ERROR_CHECK(VCORE_set_voltage(&GLOBAL_STATE, 0.0f));
-        }
         if (xTaskCreate(POWER_MANAGEMENT_task, "power management", 8192, (void *) &GLOBAL_STATE, 10, NULL) != pdPASS) {
             ESP_LOGE(TAG, "Error creating power management task");
         }
@@ -176,6 +184,7 @@ void app_main(void)
     } else {
         ESP_LOGE(TAG, "Critical peripheral initialization failure (%s). Entering degraded mode.",
                  esp_err_to_name(system_init_ret));
+        POWER_MANAGEMENT_finish_asic_startup(&GLOBAL_STATE, false);
     }
     
     // Read version info (from SPIFFS if custom WWW is active)
@@ -240,9 +249,14 @@ void app_main(void)
             while (bitair_mining_disabled() || GLOBAL_STATE.SYSTEM_MODULE.mining_paused || GLOBAL_STATE.SYSTEM_MODULE.hardware_fault) {
                 vTaskDelay(pdMS_TO_TICKS(100));
             }
-            ESP_ERROR_CHECK(VCORE_set_voltage(&GLOBAL_STATE, nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE) / 1000.0f));
+            if (VCORE_set_voltage(&GLOBAL_STATE, nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE) / 1000.0f) != ESP_OK) {
+                POWER_MANAGEMENT_finish_asic_startup(&GLOBAL_STATE, false);
+                return;
+            }
         }
-        if (asic_initialize(&GLOBAL_STATE, ASIC_INIT_COLD_BOOT, 0) == 0) {
+        uint8_t chip_count = asic_initialize(&GLOBAL_STATE, ASIC_INIT_COLD_BOOT, 0);
+        POWER_MANAGEMENT_finish_asic_startup(&GLOBAL_STATE, chip_count > 0);
+        if (chip_count == 0) {
             if (!GLOBAL_STATE.SELF_TEST_MODULE.is_active) {
                 return;
             }

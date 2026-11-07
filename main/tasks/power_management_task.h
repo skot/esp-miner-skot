@@ -1,6 +1,9 @@
 #ifndef POWER_MANAGEMENT_TASK_H_
 #define POWER_MANAGEMENT_TASK_H_
 
+#include <stdbool.h>
+#include <stdint.h>
+
 typedef struct GlobalState GlobalState;
 
 typedef struct
@@ -21,6 +24,7 @@ typedef struct
 } PowerManagementModule;
 
 void POWER_MANAGEMENT_init_frequency(GlobalState * GLOBAL_STATE);
+void POWER_MANAGEMENT_finish_asic_startup(GlobalState * GLOBAL_STATE, bool success);
 
 void POWER_MANAGEMENT_task(void * pvParameters);
 

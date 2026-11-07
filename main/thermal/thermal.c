@@ -57,6 +57,7 @@ esp_err_t Thermal_init(DeviceConfig * DEVICE_CONFIG)
         ESP_RETURN_ON_ERROR(TMP1075_init(DEVICE_CONFIG->temp_offset), TAG, "Failed to initialise TMP1075");
     }
     if (DEVICE_CONFIG->family.id == BITAIR) {
+        ESP_RETURN_ON_ERROR(EMC2101_set_spinup(0), TAG, "Failed to configure purifier fan spin-up");
         ESP_RETURN_ON_ERROR(bitair_init(), TAG, "Failed to initialise purifier controls");
         ESP_RETURN_ON_ERROR(Thermal_set_fan_percent(DEVICE_CONFIG, 1.0f), TAG, "Failed to start purifier fan");
     }

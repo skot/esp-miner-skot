@@ -57,6 +57,11 @@ esp_err_t EMC2101_init(int temp_offset_param)
     return ESP_OK;
 }
 
+esp_err_t EMC2101_set_spinup(uint8_t config)
+{
+    return i2c_bitaxe_register_write_byte(emc2101_dev_handle, EMC2101_FAN_SPINUP, config);
+}
+
 esp_err_t EMC2101_set_ideality_factor(uint8_t ideality){
     //set Ideality Factor
     ESP_RETURN_ON_ERROR(i2c_bitaxe_register_write_byte(emc2101_dev_handle, EMC2101_IDEALITY_FACTOR, ideality), TAG, "Failed to set ideality factor");

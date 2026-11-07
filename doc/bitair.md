@@ -18,7 +18,7 @@ These connections were checked against a KiCad XML netlist exported from `bitair
 | Purifier mode input | GPIO40 → Q3 → CN1 pin 8 | Input only, edge capture |
 | Fan tach | EMC2101 ALERT/TACH pin 6 is unconnected | RPM reports 0; RPM-only self-test is skipped |
 | CN1 B | GPIO39, CN1 pin 9 | Reserved; stock firmware uses a 9600-baud sensor UART |
-| CN1 LED | GPIO41, CN1 pin 6 | Reserved; indicator is not implemented |
+| Front LED | GPIO41, CN1 pin 6 | Stock 5 kHz, 10-bit PWM indicator |
 | External input voltage | GPIO6, R94/R95 51k/12k divider | Reserved; not sampled by this port |
 | BOOT button | GPIO0 | Existing input handling |
 
@@ -28,22 +28,37 @@ GPIO6/39/40/41 are reserved against I2C overrides, and BAP overrides cannot enab
 
 ## Physical fan controls
 
-The stock firmware measures the high-time duty cycle on GPIO40. The port uses the same mode boundaries and requests:
+The stock firmware measures the high-time duty cycle on GPIO40. The port uses the same mode boundaries. REA decompilation additionally recovered a 0.75 gain in the stock EMC2101 output routine, so the physical fan floors below refer to actual requested PWM duty:
 
 | Input duty | Mode | Fan request | Mining |
 | --- | --- | --- | --- |
 | Below 25% | Off | 30% for 30 seconds, then 0% | Paused |
-| 25% through 65% | Silent | At least 50% | Allowed |
-| Above 65% through 85% | Auto | At least 75% | Allowed |
-| Above 85% | Turbo | 100% | Allowed |
+| 25% through 65% | Silent | At least 37.5% | Allowed |
+| Above 65% through 85% | Auto | At least 56.25% | Allowed |
+| Above 85% | Turbo | At least 75% | Allowed |
 
-Thermal control or the AxeOS manual setting can request more airflow than the physical mode. This is an intentional safety difference from the stock fixed-speed override. Overheat mode always requests 100%. Physical off adds its own pause reason: switching the purifier back on does not clear a pause made in AxeOS, a hardware fault, or a pool outage. The fan may continue running during the off-mode cooldown.
+Thermal control or the AxeOS manual setting can request more airflow than the physical mode. This is an intentional safety difference from the stock fixed-speed override. Overheat mode always requests 100%. The EMC2101 spin-up register is explicitly initialized to zero, matching stock. Physical off adds its own pause reason: switching the purifier back on does not clear a pause made in AxeOS, a hardware fault, or a pool outage. The fan may continue running during the off-mode cooldown.
 
 On the tested unit, holding the lock touch icon for approximately five seconds extinguished the lock indicator and restored the touch controls. Selecting one fan dot also darkened the button lights; the next touch relit them without changing speed. Treat that first touch as a panel wake action and confirm an actual mode transition before interpreting the dots.
 
 At startup or with an invalid/noisy PWM signal, the port requests 100% airflow and pauses mining. It accepts a waveform after three valid cycles, supports periods from 8 microseconds to 100 milliseconds, and rejects pulses shorter than 2 microseconds. A 16-cycle exponential average and 200-millisecond mode settling interval suppress timing jitter under mining/Wi-Fi load. Invalid signals still invoke the safe state immediately. PWM measurements expire after 250 milliseconds; a level stable for 500 milliseconds becomes off (LOW) or turbo (HIGH). An established valid PWM signal transitioning to constant HIGH starts the turbo settling interval after 250 milliseconds, avoiding a spurious unknown/pause interval during the transition to 100%. The hardware has a pull-up, so an unplugged input that stays HIGH cannot be distinguished from a deliberate 100% command.
 
-The AHT20, the sensor protocol on GPIO39, the GPIO41 indicator, and Heatbit cloud/app services are not implemented. They are not needed to decode the physical fan-mode PWM. The board provides no fan tach signal, so actual airflow must be checked during hardware bring-up.
+The AHT20, the sensor protocol on GPIO39, and Heatbit cloud/app services are not implemented. They are not needed to decode the physical fan-mode PWM. The board provides no fan tach signal, so actual airflow must be checked during hardware bring-up.
+
+## Front status LED
+
+The front LED uses GPIO41 through CN1 pin 6. The dedicated indicator task uses the stock low-speed LEDC timer/channel 0, 5 kHz carrier, non-inverted output and 10-bit resolution. It starts before Wi-Fi setup and runs independently of mining/fan tasks, including while ASIC startup is waiting or has failed. LED initialization errors are logged without preventing mining.
+
+| State | LED behavior |
+| --- | --- |
+| Starting or disconnected from Wi-Fi | Breathing between 5% and 100%, in 3-point steps every 20 ms |
+| Connected, physical off/unknown or AxeOS pause | Off |
+| Connected, Silent | Duty 511/1023 (about 50%) |
+| Connected, Auto | Duty 767/1023 (about 75%) |
+| Connected, Turbo | Duty 1023/1023 (100%) |
+| Latched hardware fault | Three 100 ms flashes every 2 seconds |
+
+Steady brightness represents the physical purifier mode, not the fan controller's thermal/manual PWM demand or pool connectivity. Connectivity follows Wi-Fi association, as in stock, and is refreshed every 100 ms; it does not wait for DHCP or a pool connection. Disconnection breathing takes precedence over the normal off/mode indication, matching stock. A latched hardware fault takes precedence over both. The fault indication reuses stock's failed-diagnostic three-flash pattern; applying it to ESP-Miner hardware faults is a port adaptation. Heatbit BLE/cloud indication commands and factory diagnostics remain absent. The [REA audit](bitair-rea-audit.md) records the stock GPIO configuration and patterns. On November 7, 2026, an app-only flash verified all three visible brightness levels and the front LED turning off and back on with the purifier. During the same cycle, ASIC core voltage fell to about 21 mV, returned to 1144 mV, and mining resumed with another accepted share.
 
 ## Build and configure
 
@@ -60,7 +75,7 @@ python -m esptool --chip esp32s3 --port /dev/cu.usbmodem11434101 \
   --baud 460800 write-flash 0x10000 build/esp-miner.bin
 ```
 
-This updates the factory application slot and preserves the existing bootloader, partition table, NVS settings, and OTA selection data. The port keeps ASIC core power off while waiting for Wi-Fi and an enabled physical fan mode; it restores core voltage immediately before initial ASIC discovery.
+This updates the factory application slot and preserves the existing bootloader, partition table, NVS settings, and OTA selection data. The port keeps ASIC core power off while waiting for Wi-Fi and an enabled physical fan mode; it restores core voltage immediately before initial ASIC discovery. Failed voltage restoration or ASIC discovery commands core power off, holds ASIC reset, and latches a fault requiring restart. Power-management startup waiting ends on either success or failure; failed recovery cannot silently resume or re-enable core voltage.
 
 Only for a fresh installation that should replace settings, generate the Bitair NVS image and include it in the factory merge:
 
@@ -70,7 +85,7 @@ python "$IDF_PATH/components/nvs_flash/nvs_partition_generator/nvs_partition_gen
 ./merge_bin.sh -c esp-miner-factory-bitair.bin
 ```
 
-The supplied CSV starts at 525 MHz / 1150 mV, uses `display=NONE`, and disables automatic factory self-test. Configure your own pool payout address and network through AxeOS. These are initial Gamma settings, not a hardware-validated Bitair performance tune. Factory release workflows include the `bitair` configuration.
+The supplied CSV starts at 525 MHz / 1150 mV and uses `display=NONE`. Factory/BOOT self-test is disabled for Bitair: its diagnostic fan/power ownership conflicts with the physical-off interlock. Normal startup, Wi-Fi, and purifier controls remain active even if a retained setting requests self-test. Configure your own pool payout address and network through AxeOS. These are initial Gamma settings, not a hardware-validated Bitair performance tune. Factory release workflows include the `bitair` configuration.
 
 For an installation that retains stock NVS, the existing `boardversion=bitair` selects the profile automatically and the firmware migrates legacy frequency/fan/pool keys. A factory image containing `config.bin` replaces those stored settings. Preserve the full original flash backup before installation. This port retains the stock partition offsets: NVS 0x9000, factory app 0x10000, OTA slots 0x710000/0xb10000, OTA data 0xf10000. Do not rely on Heatbit OTA or its app to install this firmware.
 
@@ -82,7 +97,7 @@ Only `build/esp-miner.bin` was flashed at 0x10000. Esptool verified its written 
 
 The device recognized the Bitair profile, initialized its TPS546D24A and EMC2101, discovered one BM1370, joined Wi-Fi, served AxeOS, generated nonces, and received a pool-accepted share. No rejected shares were observed during the initial test. With the retained 600 MHz / 1150 mV settings, one-minute hashrate was approximately 1.0–1.15 TH/s, chip temperature approximately 40–45°C, regulator temperature up to 53°C, and estimated power approximately 18–19 W. The internal input rail measured approximately 5.02 V; measured core voltage was approximately 1.144 V when enabled and 0.021 V when off.
 
-The physical power button started airflow and enabled ASIC discovery/mining. An initial dot-to-mode inference was withdrawn when an illuminated lock icon and unresponsive controls were discovered. After unlocking with a five-second hold, explicit button-driven transitions confirmed three dots/turbo/100%, then one dot/silent/50%, then two dots/auto/75%. Both the user's observations and live mode/output telemetry agreed. At the subsequent checks, mining continued at approximately 1.1 TH/s with two pool-accepted shares and zero rejected. A combined physical-off/API-pause test remains a useful follow-up. The fan button is the fan icon beside three indicator dots on the top panel; a wake-only touch after the lights darken must not be counted as a speed change.
+The physical power button started airflow and enabled ASIC discovery/mining. An initial dot-to-mode inference was withdrawn when an illuminated lock icon and unresponsive controls were discovered. After unlocking with a five-second hold, explicit button-driven transitions confirmed three dots/turbo/100%, then one dot/silent/50%, then two dots/auto/75%. Both the user's observations and live mode/output telemetry agreed. Those percentages describe the November 4 build; the November 6 REA audit corrected physical preset duty to 37.5/56.25/75% to match the stock driver gain, with thermal/manual demand still allowed to increase it. At the subsequent checks, mining continued at approximately 1.1 TH/s with two pool-accepted shares and zero rejected. A combined physical-off/API-pause test remains a useful follow-up. The fan button is the fan icon beside three indicator dots on the top panel; a wake-only touch after the lights darken must not be counted as a speed change.
 
 Bring-up exposed two issues that were corrected: core power could otherwise be enabled while waiting for Wi-Fi in physical off mode, and single-cycle PWM timing could cause brief mode misclassification under load. The updated firmware keeps core power off until initial startup is authorized and averages/debounces the input. The updated app ran without the earlier mode flickers during network monitoring, and AxeOS pause/resume removed/restored core power successfully. Pause includes the inherited frequency ramp-down; telemetry took about 20 seconds to show core power off, and resume took about 14 seconds to report a valid chip temperature again.
 
@@ -104,4 +119,4 @@ The following are static observations from the app's Xtensa code, not claims of 
 | 0x4200e349–0x4200e352, 0x4203141c, 0x420135f4 | Off updates heater enable; its downstream inverted flag is consistent with a mining pause |
 | 0x42010914–0x4201097c | Configures UART2 at 9600 baud with RX on GPIO39, used by `tpm300a_service` |
 
-REA's firmware-region provider was unavailable on macOS because it requires Linux/Binwalk. Analysis continued using ESP image/partition parsing and the installed Xtensa objdump. The original dump, credentials, and extracted app bytes are not included in this repository.
+The initial November 4 investigation used ESP image/partition parsing and Xtensa objdump. The November 6 follow-up used REA with Ghidra for disassembly and decompilation through a documented experimental Xtensa adapter. See [the REA audit](bitair-rea-audit.md) for artifact hashes, evidence IDs, corrections, intentional differences, coverage, and remaining checks. The original dump, credentials, and extracted app bytes are not included in this repository.

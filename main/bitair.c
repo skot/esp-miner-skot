@@ -105,34 +105,30 @@ esp_err_t bitair_init(void)
     return ESP_OK;
 }
 
-static FanMode get_raw_mode(void)
+static FanMode get_raw_mode(const FanCapture *sample, int64_t now)
 {
-    portENTER_CRITICAL(&capture_lock);
-    FanCapture sample = capture;
-    portEXIT_CRITICAL(&capture_lock);
-    int64_t now = esp_timer_get_time();
-    if (!sample.initialized) return MODE_UNKNOWN;
-    if (now - sample.last_edge >= SIGNAL_SETTLE_US) {
-        return sample.level ? MODE_TURBO : MODE_OFF;
+    if (!sample->initialized) return MODE_UNKNOWN;
+    if (now - sample->last_edge >= SIGNAL_SETTLE_US) {
+        return sample->level ? MODE_TURBO : MODE_OFF;
     }
-    if (sample.valid_cycles >= REQUIRED_CYCLES && sample.level && now - sample.last_edge >= PWM_STALE_US) {
+    if (sample->valid_cycles >= REQUIRED_CYCLES && sample->level && now - sample->last_edge >= PWM_STALE_US) {
         return MODE_TURBO;
     }
-    if (sample.valid_cycles < REQUIRED_CYCLES || now - sample.last_cycle > PWM_STALE_US) {
+    if (sample->valid_cycles < REQUIRED_CYCLES || now - sample->last_cycle > PWM_STALE_US) {
         return MODE_UNKNOWN;
     }
-    uint32_t duty = sample.high_us * 100;
-    if (duty < sample.period_us * 25) return MODE_OFF;
-    if (duty <= sample.period_us * 65) return MODE_SILENT;
-    if (duty <= sample.period_us * 85) return MODE_AUTO;
+    uint32_t duty = sample->high_us * 100;
+    if (duty < sample->period_us * 25) return MODE_OFF;
+    if (duty <= sample->period_us * 65) return MODE_SILENT;
+    if (duty <= sample->period_us * 85) return MODE_AUTO;
     return MODE_TURBO;
 }
 
 static FanMode get_mode(void)
 {
-    FanMode mode = get_raw_mode();
     int64_t now = esp_timer_get_time();
     portENTER_CRITICAL(&capture_lock);
+    FanMode mode = get_raw_mode(&capture, now);
     if (mode == MODE_UNKNOWN || capture.mode == MODE_UNKNOWN || mode == capture.mode) {
         capture.mode = mode;
         capture.pending_mode = mode;
@@ -152,8 +148,9 @@ float bitair_get_fan_percent(void)
 {
     switch (get_mode()) {
         case MODE_OFF: return 0;
-        case MODE_SILENT: return 50;
-        case MODE_AUTO: return 75;
+        case MODE_SILENT: return 37.5f;
+        case MODE_AUTO: return 56.25f;
+        case MODE_TURBO: return 75;
         default: return 100;
     }
 }

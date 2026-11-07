@@ -13,6 +13,7 @@
 #include "difficulty_controller.h"
 #include "driver/uart.h"
 #include "bitair.h"
+#include <stdio.h>
 
 #define POLL_RATE 100
 #define MAX_TEMP 90.0
@@ -29,6 +30,26 @@
 #define ASIC_REDUCTION 100.0
 
 static const char * TAG = "power_management";
+
+void POWER_MANAGEMENT_finish_asic_startup(GlobalState * GLOBAL_STATE, bool success)
+{
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id != BITAIR) return;
+    if (!success) {
+        GLOBAL_STATE->ASIC_initalized = false;
+        GLOBAL_STATE->POWER_MANAGEMENT_MODULE.frequency_value = 50;
+        GLOBAL_STATE->POWER_MANAGEMENT_MODULE.expected_hashrate = 0;
+        GLOBAL_STATE->SYSTEM_MODULE.hardware_fault = true;
+        snprintf(GLOBAL_STATE->SYSTEM_MODULE.hardware_fault_msg,
+                 sizeof(GLOBAL_STATE->SYSTEM_MODULE.hardware_fault_msg), "ASIC initialization failed; restart required");
+        if (VCORE_is_initialized() && VCORE_set_voltage(GLOBAL_STATE, 0.0f) != ESP_OK) {
+            ESP_LOGE(TAG, "Failed to disable core power after ASIC initialization failure");
+        }
+        if (asic_hold_reset_low() != ESP_OK) {
+            ESP_LOGE(TAG, "Failed to hold ASIC reset after initialization failure");
+        }
+    }
+    GLOBAL_STATE->ASIC_startup_pending = false;
+}
 
 static void mining_stop(GlobalState * GLOBAL_STATE)
 {
@@ -66,7 +87,11 @@ static uint8_t mining_start(GlobalState * GLOBAL_STATE)
 
     // Restore voltage from NVS
     uint16_t voltage = nvs_config_get_u16(NVS_CONFIG_ASIC_VOLTAGE);
-    VCORE_set_voltage(GLOBAL_STATE, (double) voltage / 1000.0);
+    esp_err_t voltage_ret = VCORE_set_voltage(GLOBAL_STATE, (double) voltage / 1000.0);
+    if (GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR && voltage_ret != ESP_OK) {
+        ESP_LOGE(TAG, "Mining start failed - core voltage could not be restored");
+        return 0;
+    }
 
     // Wait for voltage to stabilize before touching the ASIC
     vTaskDelay(500 / portTICK_PERIOD_MS);
@@ -142,7 +167,7 @@ void POWER_MANAGEMENT_task(void * pvParameters)
         power_management->chip_temp2_avg = Thermal_get_chip_temp2(GLOBAL_STATE);
 
         power_management->vr_temp = Power_get_vreg_temp(GLOBAL_STATE);
-        if (GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR && !GLOBAL_STATE->ASIC_initalized && !is_paused) {
+        if (GLOBAL_STATE->ASIC_startup_pending) {
             vTaskDelay(pdMS_TO_TICKS(POLL_RATE));
             continue;
         }
@@ -151,11 +176,17 @@ void POWER_MANAGEMENT_task(void * pvParameters)
                             && (GLOBAL_STATE->ASIC_initalized || is_paused);
         bool wants_stop = sys_module->mining_paused || sys_module->hardware_fault || sys_module->pools_unavailable || purifier_off;
         if (wants_stop && !is_paused) {
-            mining_stop(GLOBAL_STATE);
+            if (GLOBAL_STATE->DEVICE_CONFIG.family.id != BITAIR || GLOBAL_STATE->ASIC_initalized) {
+                mining_stop(GLOBAL_STATE);
+            }
             is_paused = true;
         } else if (!wants_stop && is_paused) {
-            mining_start(GLOBAL_STATE);
-            is_paused = false;
+            uint8_t chip_count = mining_start(GLOBAL_STATE);
+            if (GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR && chip_count == 0) {
+                POWER_MANAGEMENT_finish_asic_startup(GLOBAL_STATE, false);
+            } else {
+                is_paused = false;
+            }
         }
 
         // If we've paused or have a hardware fault, skip doing anything else
@@ -241,6 +272,12 @@ void POWER_MANAGEMENT_task(void * pvParameters)
             }
 
             uint8_t chip_count = mining_start(GLOBAL_STATE);
+
+            if (GLOBAL_STATE->DEVICE_CONFIG.family.id == BITAIR && chip_count == 0) {
+                POWER_MANAGEMENT_finish_asic_startup(GLOBAL_STATE, false);
+                is_paused = true;
+                continue;
+            }
 
             if (chip_count > 0) {
                 // Frequency reduction will now be applied by normal power management loop
