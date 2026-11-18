@@ -17,7 +17,7 @@ These connections were checked against a KiCad XML netlist exported from `bitair
 | Fan PWM output | EMC2101 FAN pin 4 → CN1 pin 10 | Existing fan driver |
 | Purifier mode input | GPIO40 → Q3 → CN1 pin 8 | Input only, edge capture |
 | Fan tach | EMC2101 ALERT/TACH pin 6 is unconnected | RPM reports 0; RPM-only self-test is skipped |
-| CN1 B | GPIO39, CN1 pin 9 | Reserved; stock firmware uses a 9600-baud sensor UART |
+| Air quality sensor | GPIO39, CN1 pin 9 | UART2 receive at 9600 baud. Readings appear on the AxeOS dashboard. |
 | Front LED | GPIO41, CN1 pin 6 | Stock 5 kHz, 10-bit PWM indicator |
 | External input voltage | GPIO6, R94/R95 51k/12k divider | Reserved; not sampled by this port |
 | BOOT button | GPIO0 | Existing input handling |
@@ -43,7 +43,9 @@ On the tested unit, holding the lock touch icon for approximately five seconds e
 
 At startup or with an invalid/noisy PWM signal, the port requests 100% airflow and pauses mining. It accepts a waveform after three valid cycles, supports periods from 8 microseconds to 100 milliseconds, and rejects pulses shorter than 2 microseconds. A 16-cycle exponential average and 200-millisecond mode settling interval suppress timing jitter under mining/Wi-Fi load. Invalid signals still invoke the safe state immediately. PWM measurements expire after 250 milliseconds; a level stable for 500 milliseconds becomes off (LOW) or turbo (HIGH). An established valid PWM signal transitioning to constant HIGH starts the turbo settling interval after 250 milliseconds, avoiding a spurious unknown/pause interval during the transition to 100%. The hardware has a pull-up, so an unplugged input that stays HIGH cannot be distinguished from a deliberate 100% command.
 
-The AHT20, the sensor protocol on GPIO39, and Heatbit cloud/app services are not implemented. They are not needed to decode the physical fan-mode PWM. The board provides no fan tach signal, so actual airflow must be checked during hardware bring-up.
+The board provides no fan tach signal, so actual airflow must be checked during hardware bring-up.
+
+The AxeOS Air Quality panel shows the Dovelet module's TVOC and formaldehyde in µg/m³ and its estimated CO₂ (eCO₂) in ppm. Older five-byte packets provide a raw sensor level. The panel shows “No recent sensor readings” before the first valid packet and after ten seconds without one. These readings are dashboard telemetry.
 
 ## Front status LED
 

@@ -328,6 +328,44 @@ describe('HomeComponent', () => {
     expect(element.querySelector('app-dropdown')).toBeTruthy();
   });
 
+  it('shows Bitair air readings, including zero, and clears them when the sensor stops reporting', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const panel = () => element.querySelector('section[aria-labelledby="air-quality-heading"]')?.textContent;
+    expect(panel()).toBeUndefined();
+
+    const info: ISystemInfo = {
+      ...mockSystemInfo,
+      boardVersion: 'bitair',
+      airQualityTvocUgM3: 0,
+      airQualityFormaldehydeUgM3: 3,
+      airQualityEstimatedCo2Ppm: 560,
+      airQualityRawLevel: null,
+    };
+    mockLiveDataService.info$.next(info);
+    fixture.detectChanges();
+    expect(panel()).toContain('0 µg/m³');
+    expect(panel()).toContain('3 µg/m³');
+    expect(panel()).toContain('Estimated CO₂ (eCO₂)');
+    expect(panel()).toContain('560 ppm');
+
+    const unavailable = {
+      ...info,
+      airQualityTvocUgM3: null,
+      airQualityFormaldehydeUgM3: null,
+      airQualityEstimatedCo2Ppm: null,
+    };
+    mockLiveDataService.info$.next({ ...unavailable, airQualityRawLevel: 0 });
+    fixture.detectChanges();
+    expect(panel()).toContain('Raw sensor level');
+    expect(panel()).not.toContain('560 ppm');
+    expect(panel()).not.toContain('No recent sensor readings');
+
+    mockLiveDataService.info$.next(unavailable);
+    fixture.detectChanges();
+    expect(panel()).toContain('No recent sensor readings');
+    expect(panel()).not.toContain('Raw sensor level');
+  });
+
   describe('pool selection', () => {
     function emitPoolInfo(changes: Partial<ISystemInfo>): void {
       mockLiveDataService.info$.next({ ...mockLiveDataService.info$.value, ...changes });

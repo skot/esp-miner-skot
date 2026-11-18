@@ -30,6 +30,7 @@ SRCS
     "device_pins.c"
     "device_config.c"
     "bitair.c"
+    "bitair_air_quality.c"
     "bitair_indicator.c"
     "difficulty_controller.c"
     "setup_ble.c"

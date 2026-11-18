@@ -16,6 +16,7 @@
 #include "hashrate_monitor_task.h"
 #include "statistics_task.h"
 #include "asic.h"
+#include "bitair_air_quality.h"
 #include "yyjson_utils.h"
 
 static const char *get_reset_reason_str(esp_reset_reason_t reason)
@@ -41,6 +42,22 @@ static const char *get_reset_reason_str(esp_reset_reason_t reason)
     }
 }
 
+static void system_api_add_air_quality(yyjson_mut_doc *doc, yyjson_mut_val *root)
+{
+    BitairAirQuality reading;
+    bool fresh = bitair_air_quality_get(&reading);
+    bool concentrations = fresh && reading.has_concentrations;
+    // Explicit nulls clear expired readings and values absent from the current packet format.
+    yyjson_mut_obj_add_val(doc, root, "airQualityTvocUgM3",
+                          concentrations ? yyjson_mut_uint(doc, reading.tvoc_ug_m3) : yyjson_mut_null(doc));
+    yyjson_mut_obj_add_val(doc, root, "airQualityFormaldehydeUgM3",
+                          concentrations ? yyjson_mut_uint(doc, reading.formaldehyde_ug_m3) : yyjson_mut_null(doc));
+    yyjson_mut_obj_add_val(doc, root, "airQualityEstimatedCo2Ppm",
+                          concentrations ? yyjson_mut_uint(doc, reading.estimated_co2_ppm) : yyjson_mut_null(doc));
+    yyjson_mut_obj_add_val(doc, root, "airQualityRawLevel",
+                          fresh && !concentrations ? yyjson_mut_uint(doc, reading.raw_level) : yyjson_mut_null(doc));
+}
+
 static void system_api_add_telemetry(yyjson_mut_doc *doc, yyjson_mut_val *root, GlobalState *g) {
     if (!doc || !root || !g) return;
 
@@ -57,6 +74,9 @@ static void system_api_add_telemetry(yyjson_mut_doc *doc, yyjson_mut_val *root, 
     yyjson_mut_obj_add_float(doc, root, "fanspeed", g->POWER_MANAGEMENT_MODULE.fan_perc);
     yyjson_mut_obj_add_uint(doc, root, "fanrpm", g->POWER_MANAGEMENT_MODULE.fan_rpm);
     yyjson_mut_obj_add_uint(doc, root, "fan2rpm", g->POWER_MANAGEMENT_MODULE.fan2_rpm);
+    if (g->DEVICE_CONFIG.family.id == BITAIR) {
+        system_api_add_air_quality(doc, root);
+    }
 
     // Hashrate / Mining Group
     yyjson_mut_obj_add_float(doc, root, "hashRate", g->SYSTEM_MODULE.current_hashrate);

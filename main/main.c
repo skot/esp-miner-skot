@@ -33,6 +33,7 @@
 #include "esp_ota_ops.h"
 #include "esp_netif_sntp.h"
 #include "bitair.h"
+#include "bitair_air_quality.h"
 #include "bitair_indicator.h"
 #include "vcore.h"
 
@@ -158,6 +159,12 @@ void app_main(void)
     esp_err_t indicator_ret = bitair_indicator_init(&GLOBAL_STATE);
     if (indicator_ret != ESP_OK) {
         ESP_LOGW(TAG, "Front LED unavailable: %s", esp_err_to_name(indicator_ret));
+    }
+    if (GLOBAL_STATE.DEVICE_CONFIG.family.id == BITAIR) {
+        esp_err_t sensor_ret = bitair_air_quality_init();
+        if (sensor_ret != ESP_OK) {
+            ESP_LOGW(TAG, "Air quality sensor unavailable: %s", esp_err_to_name(sensor_ret));
+        }
     }
     if (scoreboard_init(&GLOBAL_STATE.SYSTEM_MODULE.scoreboard) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to init scoreboard");

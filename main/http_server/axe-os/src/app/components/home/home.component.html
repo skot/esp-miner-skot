@@ -24,6 +24,35 @@
     </div>
   }
 
+  @if (info.airQualityTvocUgM3 !== undefined) {
+    <section class="card" aria-labelledby="air-quality-heading">
+      <h2 id="air-quality-heading" class="text-lg font-medium mb-3">Air Quality</h2>
+      @if (info.airQualityTvocUgM3 != null) {
+        <dl class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-0">
+          <div>
+            <dt class="text-secondary">TVOC</dt>
+            <dd class="font-medium text-xl">{{ info.airQualityTvocUgM3 | number }} µg/m³</dd>
+          </div>
+          <div>
+            <dt class="text-secondary">Formaldehyde</dt>
+            <dd class="font-medium text-xl">{{ info.airQualityFormaldehydeUgM3 | number }} µg/m³</dd>
+          </div>
+          <div>
+            <dt class="text-secondary">Estimated CO₂ (eCO₂)</dt>
+            <dd class="font-medium text-xl">{{ info.airQualityEstimatedCo2Ppm | number }} ppm</dd>
+          </div>
+        </dl>
+      } @else if (info.airQualityRawLevel != null) {
+        <dl class="mb-0">
+          <dt class="text-secondary">Raw sensor level</dt>
+          <dd class="font-medium text-xl">{{ info.airQualityRawLevel | number }}</dd>
+        </dl>
+      } @else {
+        <p class="text-secondary mb-0">No recent sensor readings</p>
+      }
+    </section>
+  }
+
   <div class="grid-stack" [class.gs-edit-mode]="editMode" #gridStack>
     <!-- Hashrate -->
     <div class="grid-stack-item" gs-id="hashrate">

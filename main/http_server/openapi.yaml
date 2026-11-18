@@ -429,6 +429,18 @@ components:
         fanspeed:
           type: number
           description: Current fan speed percentage
+        airQualityTvocUgM3:
+          type: [integer, 'null']
+          description: Bitair TVOC in micrograms per cubic meter. Null when unavailable and omitted on other boards.
+        airQualityFormaldehydeUgM3:
+          type: [integer, 'null']
+          description: Bitair formaldehyde in micrograms per cubic meter. Null when unavailable and omitted on other boards.
+        airQualityEstimatedCo2Ppm:
+          type: [integer, 'null']
+          description: Bitair sensor-reported equivalent CO2 estimate in ppm. Null when unavailable and omitted on other boards.
+        airQualityRawLevel:
+          type: [integer, 'null']
+          description: Bitair legacy sensor level without units. Null when unavailable and omitted on other boards.
         temptarget:
           type: number
           description: Target Temperature for the PID Controller
