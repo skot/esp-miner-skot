@@ -18,6 +18,13 @@
 #define BAP_send_message frequency_test_send
 #define BAP_send_message_with_queue frequency_test_send
 #define SYSTEM_get_display_hashes frequency_test_display_hashes
+#define ASIC_get_chip_details frequency_test_chip_details
+#define ASIC_get_asic_measurement frequency_test_asic_rate
+#define ASIC_get_domain_measurement frequency_test_domain_rate
+#include "asic.h"
+size_t frequency_test_chip_details(GlobalState *state, asic_chip_detail_t *details, size_t max_chips);
+esp_err_t frequency_test_asic_rate(GlobalState *state, uint8_t asic_nr, asic_domain_measurement_t *measurement);
+esp_err_t frequency_test_domain_rate(GlobalState *state, uint8_t asic_nr, uint8_t domain_nr, asic_domain_measurement_t *measurement);
 #include "nvs_config.h"
 int64_t frequency_test_time(void);
 void frequency_test_restart(void);
@@ -44,10 +51,36 @@ static unsigned sent;
 static struct {
     bap_command_t command;
     char parameter[32];
-    char value[72];
+    char value[96];
 } responses[16];
 
 int64_t frequency_test_time(void) { return clock_us; }
+static asic_chip_detail_t test_details[4];
+static size_t test_detail_count;
+static float test_asic_rates[4];
+static bool test_rates_available;
+static float test_domain_rates[4][4];
+
+size_t frequency_test_chip_details(GlobalState *state, asic_chip_detail_t *details, size_t max_chips)
+{
+    (void)state;
+    size_t count = test_detail_count < max_chips ? test_detail_count : max_chips;
+    memcpy(details, test_details, count * sizeof(*details));
+    return count;
+}
+esp_err_t frequency_test_asic_rate(GlobalState *state, uint8_t asic_nr, asic_domain_measurement_t *measurement)
+{
+    (void)state;
+    measurement->hashrate = test_asic_rates[asic_nr];
+    return test_rates_available ? ESP_OK : ESP_ERR_INVALID_STATE;
+}
+esp_err_t frequency_test_domain_rate(GlobalState *state, uint8_t asic_nr, uint8_t domain_nr, asic_domain_measurement_t *measurement)
+{
+    (void)state;
+    measurement->hashrate = test_domain_rates[asic_nr][domain_nr];
+    return test_rates_available ? ESP_OK : ESP_ERR_INVALID_STATE;
+}
+
 static const char *test_hostname = "";
 static const char *test_network_target = "";
 static const char *test_best_share = "";
@@ -105,6 +138,8 @@ static GlobalState *fixture(void)
 static void release_fixture(GlobalState *state)
 {
     test_hostname = test_network_target = test_best_share = test_last_share = "";
+    test_detail_count = 0;
+    test_rates_available = false;
     free(state);
     bap_global_state = NULL;
     vSemaphoreDelete(bap_subscription_mutex);
@@ -375,5 +410,103 @@ TEST_CASE("BAP pushes share hashes with best_difficulty and the target with bloc
     expect(10, BAP_CMD_RES, "bestShareHash", BEST_HASH);
     expect(11, BAP_CMD_RES, "lastShareHash", BEST_HASH);
     TEST_ASSERT_EQUAL(12, sent);
+    release_fixture(state);
+}
+
+static void four_bzm_chips(GlobalState *state)
+{
+    state->DEVICE_CONFIG.family.asic_count = 4;
+    state->DEVICE_CONFIG.family.asic.hash_domains = 1;
+    memset(test_details, 0, sizeof(test_details));
+    for (int chip = 0; chip < 4; ++chip) {
+        asic_chip_detail_t *detail = &test_details[chip];
+        detail->domain_count = 2;
+        detail->has_temperature = detail->has_voltage = detail->has_frequency = true;
+        detail->temperature_c = 57.6f + chip;
+        detail->domain_voltage_mv[0] = 350.4f + chip;
+        detail->domain_voltage_mv[1] = 349.6f;
+        detail->domain_frequency_mhz[0] = 800;
+        detail->domain_frequency_mhz[1] = chip == 2 ? 787 : 800;
+        test_asic_rates[chip] = 750.2f + chip;
+    }
+    test_detail_count = 4;
+    test_rates_available = true;
+}
+
+TEST_CASE("BAP temperature subscription pushes per-chip lists for the ASIC page", "[asic][bap][display]")
+{
+    GlobalState *state = fixture();
+    four_bzm_chips(state);
+    command("BAP,SUB,temperature,1000", 1);
+    BAP_send_subscription_update(state);
+    expect(1, BAP_CMD_RES, "chipTemp", "0.000000");
+    expect(2, BAP_CMD_RES, "vrTemp", "0.000000");
+    expect(3, BAP_CMD_RES, "asicTemp", "58,59,60,61");
+    expect(4, BAP_CMD_RES, "asicVoltage", "700,701,702,703");
+    expect(5, BAP_CMD_RES, "domainVoltage", "350/350,351/350,352/350,353/350");
+    expect(6, BAP_CMD_RES, "asicFrequency", "800,800,794,800");
+    expect(7, BAP_CMD_RES, "domainFrequency", "800/800,800/800,800/787,800/800");
+    expect(8, BAP_CMD_RES, "asicHashrate", "750,751,752,753");
+    TEST_ASSERT_EQUAL(9, sent);   // BZM counts hashrate per chip: no domainHashrate
+
+    // Unchanged lists are not repeated; a changed one is.
+    clock_us += 1000000;
+    BAP_send_subscription_update(state);
+    TEST_ASSERT_EQUAL(9, sent);
+    test_asic_rates[1] = 760;
+    clock_us += 1000000;
+    BAP_send_subscription_update(state);
+    expect(9, BAP_CMD_RES, "asicHashrate", "750,760,752,753");
+    TEST_ASSERT_EQUAL(10, sent);
+
+    // A chip without a reading holds back that list only.
+    test_details[3].has_voltage = false;
+    test_details[0].temperature_c = 70;
+    clock_us += 1000000;
+    BAP_send_subscription_update(state);
+    expect(10, BAP_CMD_RES, "asicTemp", "70,59,60,61");
+    TEST_ASSERT_EQUAL(11, sent);
+
+    // Renewing the subscription resends every list it can.
+    sent = 0;
+    command("BAP,SUB,temperature,1000", 1);
+    clock_us += 1000000;
+    BAP_send_subscription_update(state);
+    expect(3, BAP_CMD_RES, "asicTemp", "70,59,60,61");
+    expect(4, BAP_CMD_RES, "asicFrequency", "800,800,794,800");
+    expect(5, BAP_CMD_RES, "domainFrequency", "800/800,800/800,800/787,800/800");
+    expect(6, BAP_CMD_RES, "asicHashrate", "750,760,752,753");
+    TEST_ASSERT_EQUAL(7, sent);
+    release_fixture(state);
+}
+
+TEST_CASE("BAP per-chip lists are left out when the board cannot fill them", "[asic][bap][display]")
+{
+    GlobalState *state = fixture();
+    four_bzm_chips(state);
+    test_rates_available = false;
+    test_detail_count = 0;
+    command("BAP,SUB,temperature,1000", 1);
+    BAP_send_subscription_update(state);
+    TEST_ASSERT_EQUAL(3, sent);   // ACK, chipTemp, vrTemp
+
+    // More chips than the display shows: nothing per chip.
+    state->DEVICE_CONFIG.family.asic_count = 6;
+    test_rates_available = true;
+    clock_us += 1000000;   // Past the one-second duplicate filter
+    command("BAP,SUB,temperature,1000", 1);
+    BAP_send_subscription_update(state);
+    TEST_ASSERT_EQUAL(6, sent);   // ACK, chipTemp, vrTemp again
+
+    // Hash-counting domains go out when no rail domains could be confused with them.
+    state->DEVICE_CONFIG.family.asic_count = 2;
+    state->DEVICE_CONFIG.family.asic.hash_domains = 4;
+    test_domain_rates[0][0] = 300; test_domain_rates[0][1] = 301; test_domain_rates[0][2] = 302; test_domain_rates[0][3] = 303;
+    test_domain_rates[1][0] = 310; test_domain_rates[1][1] = 311; test_domain_rates[1][2] = 312; test_domain_rates[1][3] = 313;
+    clock_us += 1000000;
+    BAP_send_subscription_update(state);
+    expect(6, BAP_CMD_RES, "asicHashrate", "750,751");
+    expect(7, BAP_CMD_RES, "domainHashrate", "300/301/302/303,310/311/312/313");
+    TEST_ASSERT_EQUAL(8, sent);
     release_fixture(state);
 }

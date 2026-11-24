@@ -2,6 +2,7 @@
 #define ASIC_H
 
 #include <esp_err.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "asic_job.h"
@@ -34,6 +35,26 @@ esp_err_t ASIC_get_asic_measurement(GlobalState * GLOBAL_STATE, uint8_t asic_nr,
                                     asic_domain_measurement_t * measurement);
 esp_err_t ASIC_get_domain_measurement(GlobalState * GLOBAL_STATE, uint8_t asic_nr,
                                       uint8_t domain_nr, asic_domain_measurement_t * measurement);
+
+#define ASIC_DETAIL_MAX_DOMAINS 4
+
+/* Per-chip readings for accessories. A domain here is a part of the chip with
+ * its own rail and clock (on BZM, an engine stack and its PLL); it is not the
+ * same as a hash-counting domain. Values a driver cannot supply are false. */
+typedef struct {
+    bool has_temperature;
+    float temperature_c;
+    uint8_t domain_count;
+    bool has_voltage;
+    float domain_voltage_mv[ASIC_DETAIL_MAX_DOMAINS];
+    bool has_frequency;
+    float domain_frequency_mhz[ASIC_DETAIL_MAX_DOMAINS];
+} asic_chip_detail_t;
+
+/* Fill one entry per chip, up to max_chips, and return the number filled:
+ * the family's chip count, or 0 when the driver has no per-chip readings.
+ * Never blocks on the ASIC driver, so it is safe from accessory tasks. */
+size_t ASIC_get_chip_details(GlobalState * GLOBAL_STATE, asic_chip_detail_t * details, size_t max_chips);
 void ASIC_set_difficulty(GlobalState * GLOBAL_STATE, uint8_t difficulty_power);
 void ASIC_clear_work(GlobalState * GLOBAL_STATE);
 void ASIC_init_job_slots(GlobalState * GLOBAL_STATE);

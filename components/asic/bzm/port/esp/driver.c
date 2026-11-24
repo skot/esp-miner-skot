@@ -145,6 +145,7 @@ bzm_bringup_outcome_t BZM_step_frequency_domains(
     bool allow_initial_jump, bzm_bringup_report_t *report, float *actual_mhz)
 { return bzm_driver_step_frequency_domains(target_mhz, allow_initial_jump, report, actual_mhz); }
 bool BZM_get_state(bzm_bringup_state_t *state) { return bzm_driver_get_state(state); }
+bool BZM_try_get_state(bzm_bringup_state_t *state) { return bzm_driver_try_get_state(state); }
 bool BZM_hold_reset(void) { return bzm_driver_hold_reset(); }
 void BZM_set_dispatch_authorizer(bzm_dispatch_authorizer_t authorize, void *context)
 { bzm_driver_set_dispatch_authorizer(authorize, context); }

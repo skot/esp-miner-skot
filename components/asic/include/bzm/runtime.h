@@ -63,6 +63,9 @@ bzm_bringup_outcome_t bzm_driver_step_frequency_domains(
     bool allow_initial_jump, bzm_bringup_report_t *report,
     float *actual_mhz);
 bool bzm_driver_get_state(bzm_bringup_state_t * state);
+/* As bzm_driver_get_state(), but returns false instead of waiting while the
+ * reactor is busy, for readers that must not stall (accessory telemetry). */
+bool bzm_driver_try_get_state(bzm_bringup_state_t * state);
 bool bzm_driver_hold_reset(void);
 /* The callback is evaluated before dispatch and before every engine write.
  * It must be non-blocking and must not call back into this driver. NULL is

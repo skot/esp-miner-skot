@@ -1113,6 +1113,17 @@ bool bzm_driver_get_state(bzm_bringup_state_t * state)
     return true;
 }
 
+bool bzm_driver_try_get_state(bzm_bringup_state_t * state)
+{
+    if (BZM_STATE == NULL || state == NULL)
+        return false;
+    if (pthread_mutex_trylock(&REACTOR_LOCK) != 0)
+        return false;
+    *state = DRIVER_BRINGUP;
+    pthread_mutex_unlock(&REACTOR_LOCK);
+    return true;
+}
+
 bool bzm_driver_hold_reset(void)
 {
     if (BZM_STATE == NULL) return bzm_control_set_asic_reset(false) == BZM_OK;

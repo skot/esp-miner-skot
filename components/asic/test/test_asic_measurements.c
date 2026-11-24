@@ -1,3 +1,4 @@
+#include <string.h>
 #include <stdlib.h>
 #include "unity.h"
 #define TEST_STUB_GLOBAL_STATE_H
@@ -9,9 +10,26 @@
 #define ASIC_get_temperature measurement_test_temperature
 #define BZM_get_hashrate_measurement measurement_test_bzm
 #define BZM_read_temperature measurement_test_bzm_temperature
+#define BZM_get_telemetry_snapshot measurement_test_telemetry
+#define BZM_try_get_state measurement_test_clocks
+#define esp_timer_get_time measurement_test_now
 #include "components/asic/asic_measurement.c"
 
 static bool software_available;
+static bool telemetry_available, clocks_available;
+static bzm_telemetry_store_t test_telemetry;
+static bzm_bringup_state_t test_clocks;
+int64_t measurement_test_now(void) { return 10000000; }
+bool measurement_test_telemetry(bzm_telemetry_store_t *snapshot)
+{
+    *snapshot = test_telemetry;
+    return telemetry_available;
+}
+bool measurement_test_clocks(bzm_bringup_state_t *state)
+{
+    *state = test_clocks;
+    return clocks_available;
+}
 static uint8_t requested_asic;
 static unsigned temperature_reads;
 float measurement_test_bzm_temperature(GlobalState *state)
@@ -86,5 +104,57 @@ TEST_CASE("ASIC native temperature requires a capability and a supported driver"
     state->DEVICE_CONFIG.family.asic.native_temperature = true;
     TEST_ASSERT_EQUAL_FLOAT(-1, ASIC_get_temperature(state));
     TEST_ASSERT_EQUAL_UINT32(1, temperature_reads);
+    free(state);
+}
+
+TEST_CASE("ASIC chip details report fresh BZM telemetry and per-PLL clocks", "[asic][bap]")
+{
+    GlobalState *state = calloc(1, sizeof(*state));
+    TEST_ASSERT_NOT_NULL(state);
+    asic_chip_detail_t details[4];
+
+    state->DEVICE_CONFIG.family = FAMILY_GAMMA;
+    TEST_ASSERT_EQUAL(0, ASIC_get_chip_details(state, details, 4));
+    TEST_ASSERT_EQUAL(0, ASIC_get_chip_details(NULL, details, 4));
+
+    state->DEVICE_CONFIG.family = FAMILY_BONANZA;
+    telemetry_available = clocks_available = false;
+    TEST_ASSERT_EQUAL(0, ASIC_get_chip_details(state, details, 4));
+
+    memset(&test_telemetry, 0, sizeof(test_telemetry));
+    for (int chip = 0; chip < 4; ++chip) {
+        bzm_telemetry_sample_t *sample = &test_telemetry.samples[chip];
+        sample->received = sample->thermal_valid = sample->voltage_valid = true;
+        sample->asic_id = bzm_asic_wire_ids[chip];
+        sample->timestamp_us = 9500000;
+        sample->temperature_c = 55.0f + chip;
+        sample->ch0_mv = 350.0f + chip;
+        sample->ch1_mv = 349.0f;
+        test_clocks.domain_clock_mhz[chip][0] = 800;
+        test_clocks.domain_clock_mhz[chip][1] = 775;
+    }
+    test_telemetry.samples[2].timestamp_us = 7000000;   // Older than two seconds
+    test_telemetry.samples[3].voltage_valid = false;
+    test_clocks.running = true;
+    telemetry_available = clocks_available = true;
+
+    TEST_ASSERT_EQUAL(4, ASIC_get_chip_details(state, details, 4));
+    TEST_ASSERT_EQUAL_UINT8(2, details[0].domain_count);
+    TEST_ASSERT_TRUE(details[1].has_temperature);
+    TEST_ASSERT_EQUAL_FLOAT(56, details[1].temperature_c);
+    TEST_ASSERT_TRUE(details[1].has_voltage);
+    TEST_ASSERT_EQUAL_FLOAT(351, details[1].domain_voltage_mv[0]);
+    TEST_ASSERT_EQUAL_FLOAT(349, details[1].domain_voltage_mv[1]);
+    TEST_ASSERT_FALSE(details[2].has_temperature);
+    TEST_ASSERT_FALSE(details[2].has_voltage);
+    TEST_ASSERT_TRUE(details[3].has_temperature);
+    TEST_ASSERT_FALSE(details[3].has_voltage);
+    TEST_ASSERT_TRUE(details[3].has_frequency);
+    TEST_ASSERT_EQUAL_FLOAT(775, details[3].domain_frequency_mhz[1]);
+
+    test_clocks.running = false;    // Clocks mean nothing until the chips run
+    TEST_ASSERT_EQUAL(4, ASIC_get_chip_details(state, details, 4));
+    TEST_ASSERT_FALSE(details[0].has_frequency);
+    TEST_ASSERT_EQUAL(2, ASIC_get_chip_details(state, details, 2));
     free(state);
 }

@@ -274,3 +274,27 @@ hash). They are also pushed on change by existing subscriptions:
 `networkTarget` with `block_height`. Only the best difficulty is stored across
 restarts, so after a restart `bestShareHash` is not sent until that stored best
 is beaten.
+
+### Per-chip lists for bonanzaDisplay's ASIC page
+
+While `temperature` is subscribed, the host also pushes these lists on change,
+for boards with one to four chips. A chip-level list has one whole number per
+chip, separated by commas; a domain list gives each chip's domains separated by
+`/`. A list is sent only when every chip has a value for it.
+
+| Property | Example | Unit |
+| --- | --- | --- |
+| `asicTemp` | `58,57,60,59` | °C |
+| `asicHashrate` | `752,748,760,741` | GH/s |
+| `asicFrequency` | `800,800,800,800` | MHz, the mean of the chip's domain clocks |
+| `asicVoltage` | `702,698,705,700` | mV, the sum of the chip's domain rails |
+| `domainVoltage` | `351/351,349/349,353/352,350/350` | mV |
+| `domainFrequency` | `800/800,800/800,800/787,800/800` | MHz |
+| `domainHashrate` | `376/376,374/374` | GH/s |
+
+On Bonanza (BZM) a domain is one of the chip's two engine stacks: its voltage
+is the stack's CH0 or CH1 telemetry rail and its frequency the stack's PLL.
+Temperatures and rails come from telemetry no older than two seconds. BZM
+counts hashrate per chip, so it does not send `domainHashrate`; families with
+more than one hash-counting domain send it only when it cannot be confused
+with the rail and clock domains.

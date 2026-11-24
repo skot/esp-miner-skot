@@ -24,6 +24,7 @@
 #define bzm_driver_step_frequency_domains test_driver_step_frequency_domains
 #define bzm_driver_start test_driver_start
 #define bzm_driver_get_state test_driver_get_state
+#define bzm_driver_try_get_state test_driver_try_get_state
 #define bzm_driver_hold_reset test_driver_hold_reset
 #define bzm_driver_set_dispatch_authorizer test_driver_dispatch_authorizer
 #define bzm_driver_set_operation_authorizer test_driver_operation_authorizer
