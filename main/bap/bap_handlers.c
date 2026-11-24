@@ -17,6 +17,7 @@
 #include "bap_uart.h"
 #include "bap_subscription.h"
 #include "bap.h"
+#include "system.h"
 
 static const char *TAG = "BAP_HANDLERS";
 
@@ -238,6 +239,25 @@ void BAP_send_request(bap_parameter_t param, GlobalState *state) {
             BAP_send_message(BAP_CMD_RES, "poolPort", port_str);
             BAP_send_message(BAP_CMD_RES, "poolUser", state->SYSTEM_MODULE.pools[prim_idx].user);
             BAP_send_request(BAP_PARAM_FREQUENCY, state);
+
+            // Empty until the first job arrives; accessories keep their fallback until then.
+            if (state->network_diff_string[0] != '\0') {
+                BAP_send_message(BAP_CMD_RES, "networkDifficulty", state->network_diff_string);
+            }
+
+            char *hostname = nvs_config_get_string(NVS_CONFIG_HOSTNAME);
+            if (hostname && hostname[0] != '\0') {
+                BAP_send_message(BAP_CMD_RES, "hostname", hostname);
+            }
+            free(hostname);
+
+            {
+                char network_target[65], best_share[65], last_share[65];
+                SYSTEM_get_display_hashes(state, network_target, best_share, last_share);
+                if (network_target[0]) BAP_send_message(BAP_CMD_RES, "networkTarget", network_target);
+                if (best_share[0]) BAP_send_message(BAP_CMD_RES, "bestShareHash", best_share);
+                if (last_share[0]) BAP_send_message(BAP_CMD_RES, "lastShareHash", last_share);
+            }
             break;
         case BAP_PARAM_FREQUENCY: {
             char number[32];

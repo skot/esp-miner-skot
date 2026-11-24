@@ -58,6 +58,9 @@ static uint64_t total_uptime_at_system_start;
 
 static const char * TAG = "system";
 
+// Guards the 256-bit values the BAP task reads while mining tasks write them.
+static portMUX_TYPE display_hash_lock = portMUX_INITIALIZER_UNLOCKED;
+
 //local function prototypes
 static esp_err_t ensure_overheat_mode_config();
 
@@ -560,6 +563,10 @@ void SYSTEM_decode_and_apply_coinbase(GlobalState * GLOBAL_STATE, const miner_jo
         if (net_diff > 0.0 && net_diff != (double)UINT32_MAX) {
             GLOBAL_STATE->network_nonce_diff = (uint64_t) net_diff;
             suffixString(net_diff, GLOBAL_STATE->network_diff_string, DIFF_STRING_SIZE, 0);
+            portENTER_CRITICAL(&display_hash_lock);
+            memcpy(GLOBAL_STATE->network_target, network_target, 32);
+            GLOBAL_STATE->has_network_target = true;
+            portEXIT_CRITICAL(&display_hash_lock);
         }
     }
 
@@ -647,7 +654,7 @@ void SYSTEM_decode_and_apply_coinbase(GlobalState * GLOBAL_STATE, const miner_jo
     GLOBAL_STATE->coinbase = *result;
 }
 
-void SYSTEM_notify_found_nonce(GlobalState * GLOBAL_STATE, double diff, bool is_block)
+void SYSTEM_notify_found_nonce(GlobalState * GLOBAL_STATE, const uint8_t hash[32], double diff, bool is_share, bool is_block)
 {
     SystemModule * module = &GLOBAL_STATE->SYSTEM_MODULE;
 
@@ -655,6 +662,13 @@ void SYSTEM_notify_found_nonce(GlobalState * GLOBAL_STATE, double diff, bool is_
         module->block_found++;
         module->show_new_block = true;
         ESP_LOGI(TAG, "FOUND BLOCK!!!!!!!!!!!!!!!!!!!!!! diff: %f (count: %d)", diff, module->block_found);
+    }
+
+    if (is_share || is_block) {
+        portENTER_CRITICAL(&display_hash_lock);
+        memcpy(module->last_share_hash, hash, 32);
+        module->has_last_share_hash = true;
+        portEXIT_CRITICAL(&display_hash_lock);
     }
 
     if ((uint64_t) diff > module->best_session_nonce_diff) {
@@ -667,12 +681,54 @@ void SYSTEM_notify_found_nonce(GlobalState * GLOBAL_STATE, double diff, bool is_
     }
     module->best_nonce_diff = (uint64_t) diff;
 
+    // Only the difficulty is kept in NVS, so after a restart the best hash is
+    // unknown until the stored best is beaten.
+    portENTER_CRITICAL(&display_hash_lock);
+    memcpy(module->best_share_hash, hash, 32);
+    module->has_best_share_hash = true;
+    portEXIT_CRITICAL(&display_hash_lock);
+
     nvs_config_set_u64(NVS_CONFIG_BEST_DIFF, module->best_nonce_diff);
 
     // make the best_nonce_diff into a string
     suffixString((uint64_t) diff, module->best_diff_string, DIFF_STRING_SIZE, 0);
 
     ESP_LOGI(TAG, "New best difficulty: %s", module->best_diff_string);
+}
+
+static void hash_to_hex(const uint8_t value[32], bool known, char out[65])
+{
+    if (!known) {
+        out[0] = '\0';
+        return;
+    }
+    static const char digits[] = "0123456789abcdef";
+    for (int i = 0; i < 32; i++) {
+        uint8_t byte = value[31 - i]; // most significant byte first
+        out[2 * i] = digits[byte >> 4];
+        out[2 * i + 1] = digits[byte & 0x0f];
+    }
+    out[64] = '\0';
+}
+
+void SYSTEM_get_display_hashes(GlobalState * GLOBAL_STATE, char network_target[65], char best_share[65], char last_share[65])
+{
+    SystemModule * module = &GLOBAL_STATE->SYSTEM_MODULE;
+    uint8_t net[32], best[32], last[32];
+    bool has_net, has_best, has_last;
+
+    portENTER_CRITICAL(&display_hash_lock);
+    memcpy(net, GLOBAL_STATE->network_target, 32);
+    memcpy(best, module->best_share_hash, 32);
+    memcpy(last, module->last_share_hash, 32);
+    has_net = GLOBAL_STATE->has_network_target;
+    has_best = module->has_best_share_hash;
+    has_last = module->has_last_share_hash;
+    portEXIT_CRITICAL(&display_hash_lock);
+
+    hash_to_hex(net, has_net, network_target);
+    hash_to_hex(best, has_best, best_share);
+    hash_to_hex(last, has_last, last_share);
 }
 
 static esp_err_t ensure_overheat_mode_config() {

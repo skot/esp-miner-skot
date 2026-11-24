@@ -253,3 +253,24 @@ before its five-minute expiry; renewal also sends a fresh snapshot. Send
 `$BAP,UNSUB,frequency*68\r\n` to stop updates. Previously supported requests
 and subscriptions retain their behavior, and the existing parser, checksum
 acceptance and interval handling remain unchanged.
+
+### Dashboard fields for bonanzaDisplay
+
+The `systemInfo` reply also carries these properties. Each is sent only once
+the host has a value, so clients should keep their own fallback until then.
+
+| Property | Value |
+| --- | --- |
+| `networkDifficulty` | Network difficulty, formatted like `best_difficulty` (for example `129.44T`) |
+| `hostname` | The configured host name |
+| `networkTarget` | The current job's network target, expanded from `nBits` |
+| `bestShareHash` | Hash of the all-time best share |
+| `lastShareHash` | Hash of the most recent result that met the pool or network target |
+
+The three hash-like values are 256-bit numbers written as exactly 64 lowercase
+hex digits, most significant first (the way a block explorer prints a block
+hash). They are also pushed on change by existing subscriptions:
+`bestShareHash` and `lastShareHash` with `best_difficulty`, and
+`networkTarget` with `block_height`. Only the best difficulty is stored across
+restarts, so after a restart `bestShareHash` is not sent until that stored best
+is beaten.

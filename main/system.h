@@ -19,7 +19,12 @@ esp_err_t SYSTEM_init_peripherals(GlobalState * GLOBAL_STATE);
 void SYSTEM_notify_submitted_share(GlobalState * GLOBAL_STATE);
 void SYSTEM_notify_accepted_share(GlobalState * GLOBAL_STATE);
 void SYSTEM_notify_rejected_share(GlobalState * GLOBAL_STATE, char * error_msg);
-void SYSTEM_notify_found_nonce(GlobalState * GLOBAL_STATE, double diff, bool is_block);
+// hash is the nonce's double-SHA256 (little-endian); is_share means it met the pool target.
+void SYSTEM_notify_found_nonce(GlobalState * GLOBAL_STATE, const uint8_t hash[32], double diff, bool is_share, bool is_block);
+
+// Copy the network target, best share hash and last share hash as 64 hex digits,
+// most significant first. A value that is not known yet is returned as "".
+void SYSTEM_get_display_hashes(GlobalState * GLOBAL_STATE, char network_target[65], char best_share[65], char last_share[65]);
 void SYSTEM_notify_new_ntime(GlobalState * GLOBAL_STATE, uint32_t ntime);
 void SYSTEM_record_response_time(GlobalState * GLOBAL_STATE, float response_time_ms, uint16_t batch_count);
 

@@ -121,6 +121,12 @@ typedef struct SystemModule
     int cached_partitions_count;
     char mdns_hostname[64];
     char full_hostname[70];
+    // 256-bit values for accessories (BAP), little-endian as hashed.
+    // Guarded by SYSTEM_get_display_hashes(); see system.c.
+    uint8_t last_share_hash[32];
+    bool has_last_share_hash;
+    uint8_t best_share_hash[32];
+    bool has_best_share_hash;
 } SystemModule;
 
 typedef struct SelfTestNonceMeasurement
@@ -173,6 +179,8 @@ typedef struct GlobalState
     mining_notification_result_t coinbase_staging;
     uint64_t network_nonce_diff;
     char network_diff_string[DIFF_STRING_SIZE];
+    uint8_t network_target[32]; // little-endian, expanded from the job's nBits
+    bool has_network_target;
     char block_signals[MAX_BLOCK_SIGNALS][MAX_BLOCK_SIGNAL_LEN];
     int block_signals_count;
 } GlobalState;

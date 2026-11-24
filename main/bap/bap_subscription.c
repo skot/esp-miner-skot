@@ -21,6 +21,7 @@
 #include "bap.h"
 #include "connect.h"
 #include "nvs_config.h"
+#include "system.h"
 
 static const char *TAG = "BAP_SUBSCRIPTION";
 
@@ -44,6 +45,9 @@ typedef struct {
     char wifi_rssi[32];
     char wifi_ip[32];
     char found_block[16];
+    char network_target[65];
+    char best_share_hash[65];
+    char last_share_hash[65];
 } bap_last_values_t;
 
 typedef struct {
@@ -63,6 +67,9 @@ typedef struct {
     bool wifi_rssi;
     bool wifi_ip;
     bool found_block;
+    bool network_target;
+    bool best_share_hash;
+    bool last_share_hash;
 } bap_last_values_valid_t;
 
 static bap_last_values_t last_values = {0};
@@ -146,9 +153,12 @@ void BAP_subscription_handle_subscribe(const char *parameter, const char *value)
                 break;
             case BAP_PARAM_BEST_DIFFICULTY:
                 last_values_valid.best_difficulty = false;
+                last_values_valid.best_share_hash = false;
+                last_values_valid.last_share_hash = false;
                 break;
             case BAP_PARAM_BLOCK_HEIGHT:
                 last_values_valid.block_height = false;
+                last_values_valid.network_target = false;
                 break;
             case BAP_PARAM_WIFI:
                 last_values_valid.wifi_ssid = false;
@@ -319,6 +329,16 @@ void BAP_send_subscription_update(GlobalState *state) {
                             char best_diff_str[32];
                             snprintf(best_diff_str, sizeof(best_diff_str), "%s", state->SYSTEM_MODULE.best_diff_string);
                             BAP_send_if_changed("best_difficulty", best_diff_str, last_values.best_difficulty, sizeof(last_values.best_difficulty), &last_values_valid.best_difficulty);
+
+                            // 64 hex digits each; unknown values are not sent.
+                            char network_target[65], best_share[65], last_share[65];
+                            SYSTEM_get_display_hashes(state, network_target, best_share, last_share);
+                            if (best_share[0]) {
+                                BAP_send_if_changed("bestShareHash", best_share, last_values.best_share_hash, sizeof(last_values.best_share_hash), &last_values_valid.best_share_hash);
+                            }
+                            if (last_share[0]) {
+                                BAP_send_if_changed("lastShareHash", last_share, last_values.last_share_hash, sizeof(last_values.last_share_hash), &last_values_valid.last_share_hash);
+                            }
                         }
                         break;
 
@@ -327,6 +347,13 @@ void BAP_send_subscription_update(GlobalState *state) {
                             char block_height_str[32];
                             snprintf(block_height_str, sizeof(block_height_str), "%d", state->block_height);
                             BAP_send_if_changed("block_height", block_height_str, last_values.block_height, sizeof(last_values.block_height), &last_values_valid.block_height);
+
+                            // The network target changes with the job's nBits, so it rides with block height.
+                            char network_target[65], best_share[65], last_share[65];
+                            SYSTEM_get_display_hashes(state, network_target, best_share, last_share);
+                            if (network_target[0]) {
+                                BAP_send_if_changed("networkTarget", network_target, last_values.network_target, sizeof(last_values.network_target), &last_values_valid.network_target);
+                            }
                         }
                         break;
 

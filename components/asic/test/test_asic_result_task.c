@@ -109,10 +109,13 @@ void result_task_spy_record_nonce(GlobalState *state, const uint8_t hash[32])
     fixture_self_tests++;
 }
 
-void result_task_spy_notify_found_nonce(GlobalState *state, double difficulty,
+void result_task_spy_notify_found_nonce(GlobalState *state, const uint8_t hash[32],
+                                        double difficulty, bool is_share,
                                         bool is_block)
 {
+    (void)is_share;
     TEST_ASSERT_EQUAL_PTR(&fixture_state, state);
+    TEST_ASSERT_NOT_NULL(hash);
     TEST_ASSERT_TRUE(difficulty > 0);
     TEST_ASSERT_FALSE(is_block);
     fixture_notifications++;

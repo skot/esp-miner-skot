@@ -69,7 +69,7 @@ void ASIC_result_task(void *pvParameters)
         // 3. Telemetry & Display (deferred after submission)
         double nonce_diff = target_to_diff(hash_result);
 
-        SYSTEM_notify_found_nonce(GLOBAL_STATE, nonce_diff, is_block);
+        SYSTEM_notify_found_nonce(GLOBAL_STATE, hash_result, nonce_diff, is_share, is_block);
 
         uint32_t version_bits = asic_result->rolled_version ^ job->version;
         scoreboard_add(&GLOBAL_STATE->SYSTEM_MODULE.scoreboard, nonce_diff, job->job_id, job->extranonce2, job->ntime, asic_result->nonce, version_bits);
