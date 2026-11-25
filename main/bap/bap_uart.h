@@ -56,6 +56,9 @@ void BAP_send_init_message(GlobalState *state);
 
 /**
  * @brief Send AP mode message
+ *
+ * Sends CMD,mode,ap_mode and, while the setup access point is up,
+ * RES,apSsid,<name> with that network's name.
  * @param state Global state (can be NULL)
  */
 void BAP_send_ap_message(GlobalState *state);

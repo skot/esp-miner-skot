@@ -94,7 +94,9 @@ The BAP implementation is organized into several modules:
 #### Mode Awareness
 BAP operates differently based on the device's WiFi connection status:
 - **Connected Mode**: Full functionality available
-- **AP Mode**: Limited functionality for WiFi configuration
+- **AP Mode**: Limited functionality for WiFi configuration. Every five
+  seconds while WiFi is not connected the host sends `CMD,mode,ap_mode`, and
+  while its setup access point is up, also `RES,apSsid,<name>`
 
 #### Subscription Management
 - Clients can subscribe to real-time parameter updates
@@ -298,3 +300,23 @@ Temperatures and rails come from telemetry no older than two seconds. BZM
 counts hashrate per chip, so it does not send `domainHashrate`; families with
 more than one hash-counting domain send it only when it cannot be confused
 with the rail and clock domains.
+
+### Setup network name for bonanzaDisplay's WiFi setup screen
+
+In AP mode the host refuses requests and subscriptions, so it pushes the name
+of its setup network with every `ap_mode` message:
+
+```
+$BAP,CMD,mode,ap_mode*HH
+$BAP,RES,apSsid,Bitaxe_A1B2*HH
+```
+
+The name is `Bitaxe_` and the last two bytes of the access point's MAC
+address in hex, the same name the host's own screen puts in its QR code. The
+access point starts at every boot and stops once WiFi connects, so both
+messages are also sent for the first few seconds of a normal start; clients
+should wait a little before showing a setup screen. `apSsid` is sent only
+while the access point is up (`apEnabled` in the web API), so not after it is
+switched off by hand. The network is open and its setup page is at
+`192.168.4.1`. A client should not treat this `RES` as the host being
+connected.

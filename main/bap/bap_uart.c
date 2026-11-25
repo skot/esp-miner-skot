@@ -109,6 +109,13 @@ void BAP_send_init_message(GlobalState *state) {
 
 void BAP_send_ap_message(GlobalState *state) {
     BAP_send_message(BAP_CMD_CMD, "mode", "ap_mode");
+
+    // Name the setup network so an accessory can show how to join it (the
+    // bonanzaDisplay WiFi setup screen draws a QR code from it). Only while
+    // the network is up: it can be switched off while WiFi is still down.
+    if (state && state->SYSTEM_MODULE.ap_enabled && state->SYSTEM_MODULE.ap_ssid[0] != '\0') {
+        BAP_send_message(BAP_CMD_RES, "apSsid", state->SYSTEM_MODULE.ap_ssid);
+    }
 }
 
 

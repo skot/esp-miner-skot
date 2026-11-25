@@ -7,7 +7,7 @@ idf_component_register(SRC_DIRS "." "bzm"
                                     "${ESP_MINER_ROOT}/main" "${ESP_MINER_ROOT}"
                        PRIV_INCLUDE_DIRS "../private_include"
                        REQUIRES cmock stratum stratum_v2 asic
-                       PRIV_REQUIRES app_update connect esp_wifi esp_timer esp_psram esp_driver_gpio esp_driver_ledc esp_adc esp_lcd heap)
+                       PRIV_REQUIRES app_update connect esp_wifi esp_timer esp_psram esp_driver_gpio esp_driver_uart esp_driver_ledc esp_adc esp_lcd heap)
 
 # Compile each public BZM header using only the ASIC component's exported
 # dependencies. These targets must not inherit this test component's private
